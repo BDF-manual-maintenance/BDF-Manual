@@ -58,6 +58,7 @@ html_context = {
     "github_user": "LZ0211", # Username
     "github_repo": "BDF-Manual", # Repo name
     "github_version": "master", # Version
+    #"conf_py_path": "/source/", # Path in the checkout to the docs root
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
