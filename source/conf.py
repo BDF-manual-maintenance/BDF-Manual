@@ -29,7 +29,8 @@ author = 'WangC'
 # ones.
 extensions = [
     'sphinxcontrib.bibtex',
-    'sphinx.ext.mathjax'
+    'sphinx.ext.mathjax',
+    'rst2pdf.pdfbuilder'
 ]
 
 bibtex_bibfiles = ['refs.bib']
@@ -42,7 +43,7 @@ templates_path = ['_templates']
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = 'en'
+language = 'zh'
 
 numfig = True
 
@@ -50,6 +51,15 @@ numfig = True
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
+
+latex_elements = {
+'preamble': '''
+\\hypersetup{unicode=true}
+\\usepackage{CJKutf8}
+\\AtBeginDocument{\\begin{CJK}{UTF8}{gbsn}}
+\\AtEndDocument{\\end{CJK}}
+'''
+}
 
 
 # -- Options for HTML output -------------------------------------------------
