@@ -32,7 +32,6 @@ extensions = [
     'sphinx.ext.mathjax'
 ]
 
-bibtex_encoding = 'latin'
 bibtex_bibfiles = ['refs.bib']
 
 # Add any paths that contain templates here, relative to this directory.
