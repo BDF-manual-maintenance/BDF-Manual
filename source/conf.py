@@ -34,6 +34,10 @@ extensions = [
 
 bibtex_bibfiles = ['refs.bib']
 
+mathjax3_config = {
+    "tex": {"extensions": ["mhchem.js"]}
+}
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -55,6 +59,7 @@ latex_engine = 'xelatex'
 
 latex_elements = {
     'preamble': r'''
+\usepackage[version=4]{mhchem}
 \hypersetup{unicode=true}
 \usepackage{ctex}
 \addto\captionsenglish{\renewcommand{\chaptername}{}}
