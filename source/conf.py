@@ -29,8 +29,7 @@ author = 'WangC'
 # ones.
 extensions = [
     'sphinxcontrib.bibtex',
-    'sphinx.ext.mathjax',
-    'rst2pdf.pdfbuilder'
+    'sphinx.ext.mathjax'
 ]
 
 bibtex_bibfiles = ['refs.bib']
@@ -51,6 +50,8 @@ numfig = True
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
+
+latex_engine = 'xelatex'
 
 latex_elements = {
 'preamble': '''
