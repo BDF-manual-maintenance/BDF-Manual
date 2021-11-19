@@ -1,5 +1,6 @@
 5.  计算模块功能及输入
 ************************************
+.. _bdf-route:
 
 .. image:: images/modules.png
    :width: 600
