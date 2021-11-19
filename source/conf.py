@@ -55,9 +55,10 @@ latex_engine = 'xelatex'
 
 latex_elements = {
     'fncychap' : '',
-    'preamble': '''
-\\hypersetup{unicode=true}
-\\usepackage{ctex}
+    'preamble': r'''
+\hypersetup{unicode=true}
+\usepackage{ctex}
+\addto\captionsenglish{\renewcommand{\chaptername}{}}
 '''
 }
 
