@@ -54,7 +54,6 @@ exclude_patterns = []
 latex_engine = 'xelatex'
 
 latex_elements = {
-    'fncychap' : '',
     'preamble': r'''
 \hypersetup{unicode=true}
 \usepackage{ctex}
