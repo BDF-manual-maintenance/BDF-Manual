@@ -56,9 +56,7 @@ latex_engine = 'xelatex'
 latex_elements = {
 'preamble': '''
 \\hypersetup{unicode=true}
-\\usepackage{CJKutf8}
-\\AtBeginDocument{\\begin{CJK}{UTF8}{gbsn}}
-\\AtEndDocument{\\end{CJK}}
+\\usepackage{ctex}
 '''
 }
 
