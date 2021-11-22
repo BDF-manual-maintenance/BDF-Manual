@@ -21,6 +21,7 @@ BDFpro的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和�
 -------------------------------------------------------
 
 .. code-block:: python
+
     $compass
     title
      CH3Cl geomopt
