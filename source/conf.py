@@ -28,6 +28,9 @@ author = 'WangC'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    "sphinx_panels",
+    "sphinx_copybutton",
+    "sphinx_togglebutton",
     'sphinxcontrib.bibtex',
     'sphinx.ext.mathjax'
 ]
