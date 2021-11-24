@@ -104,7 +104,7 @@ Compass模块主要完成计算任务的初始化工作，包括读入用户定�
      Basis
        cc-pVDZ
      Geometry
-     。。。。。。。。。
+     ...
      End geometry
      Skeleton
      Check
@@ -125,7 +125,7 @@ Compass模块主要完成计算任务的初始化工作，包括读入用户定�
 :guilabel:`Unit` 参数类型：字符串
 ---------------------------------------------
 
-默认值：Bohr
-可选值：Bohr/Angstrom
+ * 默认值：Bohr
+ * 可选值：Bohr/Angstrom
+  
 指定分子坐标输入中键长的单位，默认是Angstrom。 有效值Bohr表示输入键长单位为原子单位，Angstrom表示键长单位为埃。
-   
