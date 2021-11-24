@@ -8,13 +8,25 @@ BDF用户手册
 
 .. toctree::
    :maxdepth: 3
+   :caption: 快速开始
   
    Introduction
    Installation
    Input and Output
+
+.. toctree::
+   :maxdepth: 3
+   :caption: 用户指导
+
    User Guide
    Input Library
    Example
+   Application
+
+.. toctree::
+   :maxdepth: 3
+   :caption: 杂项
+   
    FQA
    References
 
