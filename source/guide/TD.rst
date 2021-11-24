@@ -9,6 +9,395 @@ BDF支持多种激发态计算方法，其中以基于Kohn-Sham参考态的线�
 
 除此之外，BDF还支持在pp-TDA水平下计算激发态，以及利用MOM方法在SCF水平下计算激发态等。
 
+
+闭壳层体系计算：R-TDDFT
+----------------------------------------------------------
+
+R-TDDFT用于计算闭壳层体系。如果基态计算从RHF出发，TDDFT模块执行的是TDHF计算。
+利用TDDFT计算H2O分子激发能，简洁输入如下：
+
+.. code-block:: python
+
+  #!bdf.sh
+  TDDFT/B3lyp/cc-pvdz     
+  
+  geometry
+  O
+  H  1  R1
+  H  1  R1  2 109.
+  
+  R1=1.0       # OH bond length in angstrom
+  end geometry
+
+这里，关键词
+
+* ``TDDFT/B3lyp/cc-pvdz`` 指定执行TDDFT计算，所用泛函为 ``B3lyp`` ,基组为 ``cc-pVDZ``. 
+
+与之对应的高级输入为：
+
+.. code-block:: python
+
+  $compass
+  geometry
+    O
+    H 1 1.0
+    H 1 1.0 2 109.
+  end geometry
+  skeleton
+  basis
+    cc-pvdz
+  $end
+   
+  $xuanyuan
+  direct
+  maxmem
+    512MW
+  $end
+   
+  $scf
+  rks      # Restricted Kohn-sham
+  dft      # DFT exchange-correlation functional B3lyp
+    b3lyp
+  charge   # charge = 0
+    0
+  spin     # 2S+1=1， singlet
+    1
+  $end
+  
+  # input for tddft
+  $tddft
+  imethod   # imethod=1, starts from rhf/rks
+    1
+  isf       # isf=0, no spin-flip
+    0
+  itda     # itda=0, TDDFT
+    0
+  idiag    # Davidson diagonalization for solving Casida equation
+    1
+  iroot    # Each irreps, calculate 1 root. on default, 10 roots are calculated for each irreps
+    1
+  memjkop  #maxium memeory for Coulomb and Exchange operator. 512MW(Mega Words).
+    512
+  $end
+
+完成计算将顺序调用 ``compass`` , ``xuanyuan`` , ``scf`` 及 ``tddft`` 四个模块。其中 ``scf`` 模块执行 ``RKS`` 计算。
+基于RKS的计算结果，进行后续的 ``TDDFT`` 计算，注意 ``TDDFT`` 中的 ``imethod`` 关键词值设定为 ``1`` 。Kohn-Sham计算的输出前面已经
+介绍过，这里我们只关注 ``TDDFT`` 计算的结果。程序输出会先给出TDDFT计算的设置信息方便用户检查是否计算的设置，如下：
+
+.. code-block:: python
+
+      --------------------------------------------------   
+      --- PRINT: Information about TDDFT calculation ---   
+      --------------------------------------------------   
+   ERI Maxblk=     8M
+   [print level]
+    iprt= 0
+   [method]
+    R-TD-DFT 
+    isf= 0
+    SC Excitations 
+    RPA: (A-B)(A+B)Z=w2*Z 
+   [special choice for method]
+    ialda= 0
+   [active space]
+    Full active space 
+   [algorithm]
+    Target Excited State in each rep / Diag method :
+    1   A1       1   1
+    2   A2       1   1
+    3   B1       1   1
+    4   B2       1   1
+   [dvdson_parameters]
+    iupdate =   3
+    Nfac =  50
+    Nmaxcycle=  50
+    nblock   =  50
+    crit_e   = 0.10E-06
+    crit_vec = 0.10E-04
+    crit_demo= 0.10E-07
+    crit_indp= 0.10E-09
+    guess    =  20
+    dump     =   0
+   [output eigenvector control]
+    cthrd= 0.100
+      -------------------------------------------------   
+      --- END : Information about TDDFT calculation ---   
+      -------------------------------------------------   
+
+这里，
+
+* ``R-TD-DFT`` 表示正在进行的是基于限制性基态波函数计算的TDDFT；
+* ``isf= 0`` 表示计算不翻转自旋；
+* ``ialda= 0`` 表示使用 ``Full none-collinear Kernel``，这是非自旋翻转TDDFT的默认Kernel。
+
+下面的输出给出了每个不可约表示计算的根的数目。
+
+.. code-block:: python
+
+    Target Excited State in each rep / Diag method :
+    1   A1       1   1
+    2   A2       1   1
+    3   B1       1   1
+    4   B2       1   1
+
+TDDFT模块还会打印占据轨道，虚轨道等TDDFT计算的活性轨道信息
+
+.. code-block:: python
+
+             Print [Active] Orbital List         
+              ---[Alpha set]---
+   idx irep (rep,ibas,type)       F_av(eV)     iact 
+ ---------------------------------------------------
+    1    1   A1     1   2          -520.34813    0.05
+    2    1   A1     2   2           -26.42196    1.84
+    3    3   B1     1   2           -13.66589    2.96
+    4    1   A1     3   2            -9.50404    2.49
+    5    4   B2     1   2            -7.62124    2.12
+    6    1   A1     4   0             1.23186    9.86
+    7    3   B1     2   0             3.27539   11.48
+    8    3   B1     3   0            15.02893    7.40
+    9    1   A1     5   0            15.44682    6.60
+   10    1   A1     6   0            24.53525    4.35
+   11    4   B2     2   0            25.07569    3.88
+   12    3   B1     4   0            27.07545    6.17
+   13    2   A2     1   0            33.09515    3.99
+   14    1   A1     7   0            34.03695    5.08
+   15    4   B2     3   0            39.36812    4.67
+   16    3   B1     5   0            43.83066    4.86
+   17    1   A1     8   0            43.91179    4.34
+   18    3   B1     6   0            55.56126    4.35
+   19    1   A1     9   0            56.13188    4.04
+   20    4   B2     4   0            78.06511    2.06
+   21    2   A2     2   0            80.16952    2.10
+   22    1   A1    10   0            83.17934    2.38
+   23    1   A1    11   0            94.37171    2.81
+   24    3   B1     7   0            99.90789    2.86
+
+这里，轨道1-5是占据轨道，6-24是虚轨道，其中，第5个和第6个轨道分别是HOMO和LUMO轨道, 分别属于不可约表示B2和不可约表示A1，
+轨道能分别是-7.62124 eV和1.23186 eV。由于H2O分子有4个不可约表示，TDDFT会对每个不可约表示逐一求解。
+在进入Davidson迭代求解Casida方程之前，系统会估计内存使用情况，
+
+.. code-block:: python
+
+ ==============================================
+  Jrep: 1  ExctSym:  A1  (convert to td-psym)
+  Irep: 1  PairSym:  A1  GsSym:  A1
+  Nexit:       1     Nsos:      33
+ ==============================================
+ Estimated memory for JK operator:          0.053 M
+ Maxium memory to calculate JK operator:         512.000 M
+ Allow to calculate    1 roots at one pass for RPA ...
+ Allow to calculate    2 roots at one pass for TDA ...
+
+  Nlarge=               33 Nlimdim=               33 Nfac=               50
+  Estimated mem for dvdson storage (RPA) =           0.042 M          0.000 G
+  Estimated mem for dvdson storage (TDA) =           0.017 M          0.000 G
+
+这里，系统统计存储JK算符需要的内存约 0.053MB, 输入设置的内存是512MB (见 ``memjkop`` 关键词 )。
+系统提示RPA计算，及完全的TDDFT计算每次(one pass)可以算1个根，TDA计算每次可以算2个根。由于分子体系小，内存足够。
+分子体系较大时，如果这里输出的允许的每次可算根的数目小于系统这是数目，TDDFT模块将根据最大允许可算根的数目，通过
+多次积分计算构造JK算符，计算效率会降低，用户需要用 MEMJKOP关键词增加内存。Davidson迭代开始计算输出信息如下，
+
+.. code-block:: python
+
+      Iteration started !
+  
+   Niter=     1   Nlarge =      33   Nmv =       2
+   Ndim =     2   Nlimdim=      33   Nres=      31
+   Approximated Eigenvalue (i,w,diff/eV,diff/a.u.):
+      1        9.5246226546        9.5246226546           0.350E+00
+   No. of converged eigval:     0
+   Norm of Residuals:
+      1        0.0120867135        0.0549049429           0.121E-01           0.549E-01
+   No. of converged eigvec:     0
+   Max norm of residues   :  0.549E-01
+   *** New Directions : sTDDFT-Davidson step ***
+   Left  Nindp=    1
+   Right Nindp=    1
+   Total Nindp=    2
+   [tddft_dvdson_ZYNI]
+   Timing For TDDFT_AVmat, Total:         0.08s         0.02s         0.02s
+                         MTrans1:         0.00s         0.02s         0.00s
+                         COULPOT:         0.00s         0.00s         0.00s
+                         AVint  :         0.08s         0.00s         0.02s
+                         MTrans2:         0.00s         0.00s         0.00s
+  
+   TDDFT ZYNI-AV time-TOTAL         0.08 S         0.02 S         0.02 S 
+   TDDFT ZYNI-AV time-Coulp         0.08 S         0.02 S         0.02 S 
+   TDDFT ZYNI-AV time-JKcon         0.00 S         0.00 S         0.00 S 
+  
+       tddft JK operator time:         0.00 S         0.00 S         0.00 S 
+  
+  
+   Niter=     2   Nlarge =      33   Nmv =       4
+   Ndim =     4   Nlimdim=      33   Nres=      29
+   Approximated Eigenvalue (i,w,diff/eV,diff/a.u.):
+      1        9.3817966321        0.1428260225           0.525E-02
+   No. of converged eigval:     0
+   Norm of Residuals:
+      1        0.0029082582        0.0074085379           0.291E-02           0.741E-02
+   No. of converged eigvec:     0
+
+收敛信息如下：
+
+.. code-block:: python
+
+       Niter=     5   Nlarge =      33   Nmv =      10
+   Ndim =    10   Nlimdim=      33   Nres=      23
+   Approximated Eigenvalue (i,w,diff/eV,diff/a.u.):
+      1        9.3784431931        0.0000001957           0.719E-08
+   No. of converged eigval:     1
+   ### Cong: Eigenvalues have Converged ! ###
+   Norm of Residuals:
+      1        0.0000009432        0.0000023006           0.943E-06           0.230E-05
+   No. of converged eigvec:     1
+   Max norm of residues   :  0.230E-05
+   ### Cong.  Residuals Converged ! ###
+  
+   ------------------------------------------------------------------
+    Orthogonality check2 for iblock/dim =      0       1
+    Averaged nHxProd =     10.000
+    Ndim =        1  Maximum nonzero deviation from Iden = 0.333E-15
+   ------------------------------------------------------------------
+  
+   ------------------------------------------------------------------
+    Statistics for [dvdson_rpa_block]:
+     No.  of blocks =        1
+     Size of blocks =       50
+     No.  of eigens =        1
+     No.  of HxProd =       10      Averaged =    10.000
+     Eigenvalues (a.u.) = 
+          0.3446513056
+   ------------------------------------------------------------------
+  
+这里，5次迭代计算收敛，上面输出的最后4行，随后打印了收敛后电子态的信息，
+
+.. code-block:: python
+
+   No.     1    w=      9.3784 eV      -76.0358398606 a.u.  f= 0.0767   D<Pab>= 0.0000   Ova= 0.5201
+        CV(0):   A1(   3 )->  A1(   4 )  c_i:  0.9883  Per: 97.7%  IPA:    10.736 eV  Oai: 0.5163
+        CV(0):   B1(   1 )->  B1(   2 )  c_i: -0.1265  Per:  1.6%  IPA:    16.941 eV  Oai: 0.6563
+   Estimate memory in tddft_init mem:           0.001 M
+
+其中第1行的信息，
+
+* ``No.     1    w=      9.3784 eV`` 表示第一激发态激发能为 ``9.3784 eV``;
+* ``-76.0358398606 a.u.`` 给出第一激发态的总能量;
+* ``f= 0.0767`` 给出第一激发态的振子强度;
+* ``D<Pab>= 0.0000`` 为激发态的<S^2>值与基态的<S^2>值之差（对于自旋守恒跃迁，该值反映了激发态的自旋污染程度；对于自旋翻转跃迁，该值与理论值``S(S+1)(激发态)-S(S+1)(基态)`` 之差反映了激发态的自旋污染程度）；
+* ``Ova= 0.5201`` 为绝对重叠积分（absolute overlap integral，取值范围为[0,1]，该值越接近0，说明相应的激发态的电荷转移特征越明显，否则说明局域激发特征越明显）。
+
+第2行和第3行给出激发主组态信息
+
+* ``CV(0):`` 中CV(0)表示该激发是Core到Virtual轨道激发，0表示是Singlet激发;
+* ``A1(   3 )->  A1(   4 )`` 表示是从A1表示的第3个轨道即发到A1表示的第4个轨道，结合上面输出轨道信息，这是HOMO-2到LUMO的激发；
+* ``c_i: 0.9883`` 代表该跃迁在整个激发态里的线性组合系数为0.9883;
+* ``Per: 97.7%`` 表示该激发组态占97.7%；
+* ``IPA:    14.207 eV`` 代表该跃迁所涉及的两个轨道的能量差为10.736 eV；
+ * ``Oai: 0.5001`` 表示假如该激发态只有这一个跃迁的贡献，那么该激发态的绝对重叠积分为0.5163，由这一信息可以方便地得知哪些跃迁是局域激发，哪些跃迁是电荷转移激发。
+
+
+所有不可约表示求解完后，所有的激发态会按照能量高低排列总结输出，
+
+.. code-block:: python
+
+  No. Pair   ExSym   ExEnergies  Wavelengths      f     D<S^2>          Dominant Excitations             IPA   Ova     En-E1
+
+    1  B2    1  B2    7.1935 eV    172.36 nm   0.0188   0.0000  99.8%  CV(0):  B2(   1 )->  A1(   4 )   8.853 0.426    0.0000
+    2  A2    1  A2    9.0191 eV    137.47 nm   0.0000   0.0000  99.8%  CV(0):  B2(   1 )->  B1(   2 )  10.897 0.356    1.8256
+    3  A1    2  A1    9.3784 eV    132.20 nm   0.0767   0.0000  97.7%  CV(0):  A1(   3 )->  A1(   4 )  10.736 0.520    2.1850
+    4  B1    1  B1   11.2755 eV    109.96 nm   0.0631   0.0000  98.0%  CV(0):  A1(   3 )->  B1(   2 )  12.779 0.473    4.0820
+
+
+开壳层体系计算：U-TDDFT
+----------------------------------------------------------
+开壳层体系可以用U-TDDFT计算，例如对于H2O+离子，先进行UKS计算，然后利用U-TDDFT计算激发态，一个典型的输入为，
+
+.. code-block:: python
+
+  $compass
+  #Notice: length unit for geometry is angstrom
+  geometry
+   O
+   H 1 1.0
+   H 1 1.0 2 109.
+  end geometry
+   skeleton
+  basis
+   cc-pvdz
+  group
+   C(1)  # Force to use C1 symmetry
+  $end
+   
+  $xuanyuan
+  direct
+  maxmem
+   512MW
+  $end
+   
+  $scf
+  uks
+  dft
+   b3lyp
+  charge
+   1
+  spin
+   2
+  $end
+   
+  $tddft
+  imethod
+   2
+  iroot
+   4
+  $end
+
+这个输入要注意的几个细节是：
+
+* 1. ``compass`` 模块中利用关键词 ``group`` 强制计算使用点群 ``C(1)`` ;
+* 2. ``scf`` 模块设置 ``UKS`` 计算， ``charge`` 为 ``1`` ， ``spin`` (自旋多重度,2S+1)=2;   
+* 3. ``tddft`` 模块设置 ``imethod`` 为 ``2`` ，``iroot`` 设定每个不可约表示算4个根，由于用了C1对称性，计算给出水的阳离子的前四个激发态。
+
+从输出
+
+.. code-block:: python
+
+        --------------------------------------------------   
+    --- PRINT: Information about TDDFT calculation ---   
+    --------------------------------------------------   
+ ERI Maxblk=     8M
+ [print level]
+  iprt= 0
+ [method]
+  U-TD-DFT 
+  isf= 0
+  SC Excitations 
+  RPA: (A-B)(A+B)Z=w2*Z 
+
+可以看出执行的是TDDFT计算。计算总结输出的4个激发态为，
+
+.. code-block:: python
+
+      No. Pair   ExSym   ExEnergies  Wavelengths      f     D<S^2>          Dominant Excitations             IPA   Ova     En-E1
+
+    1   A    2   A    2.1958 eV    564.65 nm   0.0009   0.0023  99.4% CO(bb):   A(   4 )->   A(   5 )   5.954 0.626    0.0000
+    2   A    3   A    6.3479 eV    195.32 nm   0.0000   0.0030  99.3% CO(bb):   A(   3 )->   A(   5 )   9.983 0.578    4.1521
+    3   A    4   A   12.0990 eV    102.47 nm   0.0028   1.9312  65.8% CV(bb):   A(   4 )->   A(   6 )  14.636 0.493    9.9033
+    4   A    5   A   13.3619 eV     92.79 nm   0.0174   0.0004  97.6% CV(aa):   A(   4 )->   A(   6 )  15.624 0.419   11.1661
+
+
+
+开壳层体系：自旋匹配(Spin-adapted)的TDDFT
+----------------------------------------------------------
+
+
+计算自旋翻转(spin-flip)的开壳层激发态:SF-TDDFT
+----------------------------------------------------------
+
+基于TDDFT的自旋轨道耦合计算: TDDFT-SOC
+----------------------------------------------------------
+
+
 TDDFT计算示例1：UV-Vis吸收光谱的计算（垂直激发）
 ----------------------------------------------------------
 垂直激发能以及振子强度是TDDFT最基本的应用场景之一。以下以乙烯在PBE0/def2-SVP级别下的垂直激发为例，介绍TDDFT垂直激发计算的输入文件写法以及输出文件的分析。
