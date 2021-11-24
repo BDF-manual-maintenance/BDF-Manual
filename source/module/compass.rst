@@ -101,7 +101,7 @@ Compass模块主要完成计算任务的初始化工作，包括读入用户定�
      Basis
        cc-pVDZ
      Geometry
-     。。。。。。。。。
+     ...
      End geometry
      Skeleton
      Check
@@ -120,3 +120,42 @@ Compass模块主要完成计算任务的初始化工作，包括读入用户定�
 可选值：Bohr/Angstrom
 指定分子坐标输入中键长的单位，默认是Angstrom。 有效值Bohr表示输入键长单位为原子单位，Angstrom表示键长单位为埃。
    
+:guilabel:`Skeleton` 参数类型：Bool型
+指定BDF计算对对称性的处理方式。BDF有两种分子点群对称性处理方式：一种是先构造对称匹配的轨道，原子轨道积分计算过程中会对称化积分，存储基于对称匹配轨道的积分使用，该方法只支持非积分直接的计算如SCF，MCSCF，MRCI，CCSD等。这个做法主要用于电子相关计算如MRCI等；另一种做法，BDF不产生对称匹配的积分，而是只计算存储对称独立的原子轨道积分，在计算Hartree-Fock或其他时，直接产生对称匹配的算符如J、K矩阵。后一种做法是Skeleton方法，即只计算“骨架”原子轨道积分。BDF默认使用的是先计算对称匹配积分的方法。对于积分直接的SCF，TDDFT等计算，需要指定使用Skeleton方法。
+
+:guilabel:`Extcharge` 参数类型：Bool型
+无需输入值
+指定计算需要外加点电荷，外加点电荷放置于名为bdftask.extcharg的文件中。该文件为xyz格式，内容如下：
+第一行输入一个整数N，定义需要多少个附加电荷。
+第二行是标题行。
+第三到末尾，总共N行，定义附加电荷的坐标与电量，格式如下。
+Atom x y z charge
+
+:guilabel:`Thresh` 参数类型：字符串
+可选值：Coarse/Medium/Strict
+指定判断分子对称性的阈值。BDF的一个特色是对分子点群的支持。COMPASS模块可以自动识别分子所属的对称群，并按照对称群将分子严格对称化。由于分子建模精度，分子可能不严格属于某个对称点群，本参数可以通过控制分子对称判断的阈值。实际的对称性判断程序利用三个阈值判断分子对称性。
+
+ .. code-block:: python
+     
+     $COMPASS 
+     Title
+       C6H6 Molecule test run, cc-pVDZ
+     Basis
+       cc-pVDZ
+     Geometry
+     C    0.00000000000000   1.39499100000000   0.00000000000000
+     C   -1.20809764405066   0.69749550000000   0.00000000000000
+     C    0.00000000000000  -1.39499100000000   0.00000000000000
+     ...
+     End geometry
+     Skeleton
+     Check
+     Thresh
+       Medium
+     $END
+
+:guilabel:`Uncontract` 参数类型：Bool型
+强制使用Primitive的高斯基函数计算，无论输入基组是否是收缩基组，通常用于测试。
+
+:guilabel:`Primitive` 参数类型：Bool型
+指定只输入Primitive基函数,通常用于测试。
