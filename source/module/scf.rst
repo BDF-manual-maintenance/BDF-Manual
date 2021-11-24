@@ -7,16 +7,20 @@ SCF模块是BDF的核心计算模块之一，进行Hartree-Fock和DFT计算。
 :guilabel:`RHF/UHF/ROHF` 参数类型：Βοοl型
 ------------------------------------------------
 如果做Hartree-Fock计算，这三个参数必须3选1，用于控制Hartree-Fock计算的类型。
-``RHF`` 为Restricted Hartree-Fock；
-``UHF`` 为Unrestricted Hartree-Fock；
-``ROHF`` 为Restricted Open-shell Hartree-Fock
+``RHF`` Restricted Hartree-Fock
+
+``UHF`` Unrestricted Hartree-Fock
+
+``ROHF`` Restricted Open-shell Hartree-Fock
 
 :guilabel:`RKS/UKS/ROKS` 参数类型：Βοοl型
 ---------------------------------------------------
 如果做DFT计算，这三个参数必须3选1，用于控制DFT计算的类型。
-``RKS`` 为Restricted Kohn-Sham；
-``UKS`` 为Unrestricted Kohn-Sham；
-``ROKS`` 为Restricted Open-shell Kohn-Sham
+``RKS`` Restricted Kohn-Sham
+
+``UKS`` Unrestricted Kohn-Sham
+
+``ROKS`` Restricted Open-shell Kohn-Sham
 
 **波函数与占据数关键词**
 
