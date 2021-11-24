@@ -108,7 +108,15 @@ Compass模块主要完成计算任务的初始化工作，包括读入用户定�
      Group
        D(2h)
      $END
-     
 
+:guilabel:`Nosymm` 参数类型：Bool型
+强制BDF在计算时忽略分子对称性。注意，使用了这个参数，分子坐标不会旋转。默认情况下，分子坐标会被旋转到标准取向(Standard orientation)
 
+:guilabel:`Norotate` 参数类型：Bool型
+与参数Nosymm一样，强制忽略分子对称性，不做将分子坐标旋转到标准取向。
+
+:guilabel:`Unit` 参数类型：字符串
+默认值：Bohr
+可选值：Bohr/Angstrom
+指定分子坐标输入中键长的单位，默认是Angstrom。 有效值Bohr表示输入键长单位为原子单位，Angstrom表示键长单位为埃。
    
