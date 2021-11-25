@@ -10,7 +10,7 @@ Xuanyuan模块主要计算单、双电子积分和其他必要的积分并存储
 
 .. note::
 
-    积分直接的SCF计算，需要在Compass模块中加上Skeleton关键词。
+    积分直接的SCF计算，需要在compass模块中加上 :ref:`Skeleton<compass.skeleton>` 关键词。
 
 .. code-block:: python
 
