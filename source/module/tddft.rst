@@ -6,45 +6,47 @@ TDDFT模块基于线形响应理论，通过求解Casida方程计算分子激发
 
 :guilabel:`Imethod` 参数类型：整型
 ------------------------------------------------
-可选值：1、2
+ * 默认值：
+ * 可选值：1、2
 
-指定基于哪种基态计算方法进行TDDFT计算。1为R-TDFDT, 基态为RHF/RKS方法；2为U-TDDFT，基态为UHF/UKS/ROHF/ROKS方法。其中自旋匹配X-TDDFT需要从ROKS/ROHF出发，采用U-TDDFT，利用imethod=1,itest=1,icorrect=1计算。
+指定基于哪种基态计算方法进行TDDFT计算。1为R-TDFDT, 基态为RHF/RKS方法；2为U-TDDFT，基态为UHF/UKS/ROHF/ROKS方法。
+
+其中自旋匹配X-TDDFT需要从ROKS/ROHF出发，采用U-TDDFT，利用imethod=1,itest=1,icorrect=1计算。
 
 :guilabel:`Isf` 参数类型：整型
 ---------------------------------------------------
-可选值：0、1、2
+ * 默认值：0
+ * 可选值：0、1、2
 
 控制是否进行spin-flip的TDDDFT计算。0为no spin-flip；1为spin flip up；-1为spin flip down。
 
 :guilabel:`Itda` 参数类型：整型
 ------------------------------------------------
-默认值：0
-
-可选值：0、1
+ * 默认值：0
+ * 可选值：0、1
 
 控制是否进行TDA计算。0为完全TDDDFT计算，使用TDA；完全TDDFT计算，不使用TDA。
 
 :guilabel:`Ialda` 参数类型：整型
 ---------------------------------------------------
-可选值：0、1、2、3、4
+ * 可选值：0、1、2、3、4
 
 指定TDDFT交换相关核。0为full non-collinear kernel；1为non-collinear ALDA kernel；2为no-collinear ALDA0 kernel, 推荐spin-flip TDDFT计算时使用；3为full non-collinear，产生自自旋平均密度；4为full collinear kernel (spin-flip TDDFT梯度与NAC)。
 
 :guilabel:`Itest & icorrect` 参数类型：整型
 ------------------------------------------------
-默认值：0
-
-可选值：Itest为1、icorrect为2
+ * 默认值：0
+ * 可选值：Itest为1、icorrect为2
 
 Itest与icorrect参数与imetehod=2联用，基于ROKS/ROHF轨道做X-TDDFT计算。
 
 :guilabel:`iact & elw & eup` 参数类型：整型，浮点型，浮点型
----------------------------------------------------
+------------------------------------------------------------
 Iact=1，通过定义激发能量下限与上限，指定TDDFT求解某个能量窗口的激发态。Elw为浮点数，能量下限，单位eV；Eup为浮点数，能量上限，单位eV。
 
 :guilabel:`Idiag` 参数类型：整型
 ------------------------------------------------
-可选值：1、2、3
+ * 可选值：1、2、3
 
 指定TDDFT的对角化方法。1为基于Davidson方法的迭代对角化；2为完全对角化；3为iVI 对角化，支持TDA与AO-TDDFT。
 
@@ -54,7 +56,7 @@ Iact=1，通过定义激发能量下限与上限，指定TDDFT求解某个能量
 
 :guilabel:`Iguess` 参数类型：整型
 ------------------------------------------------
-可选值：10*x+y
+ * 可选值：10*x+y
 
 控制TDDFT初始猜测波函数。X=0: 对角元猜测；X=1: 从文件读入初始波函数；X=2: 紧束缚近似猜测；Y=0: 不存储Davidson迭代中间过程向量；Y=1: 存储Davidson迭代中间过程向量。
 
@@ -106,15 +108,15 @@ nfiles是包含n+1个整数的多行参数，第一行输入为n，表示要读�
 
 :guilabel:`Isoc` 参数类型：整型
 ---------------------------------------------------
-可选值：1、2、3
+ * 默认值：1
+ * 可选值：1、2、3
 
 指定TDDFT-SOC计算方法。1为仅闭壳层体系计算；2为一般的SOC计算；3为仅打印两个自旋独立态之间的SOC耦合矩阵元，不对角化Hsoc。
 
 :guilabel:`Ifgs` 参数类型：整型
 ------------------------------------------------
-默认值：0
-
-可选值：0、1
+ * 默认值：0
+ * 可选值：0、1
 
 指定TDDFT-SOC计算是否包含基态。0为TDDFT-SOC计算不包含基态；1为TDDDFT-SOC计算包含基态。
 
@@ -135,22 +137,22 @@ nfiles是包含n+1个整数的多行参数，第一行输入为n，表示要读�
      #First TDDFT, singlets S0-S9.
      $tddft
      imethod
-     1
+      1
      isf
-     0
+      0
      iext
-     10
+      10
      ....
      $end
 
      #Second TDDFT, triplet T1-T10
      $tddft
      imethod
-     1
+      1
      isf
-     1
+      1
      iexit
-     10
+      10
      $end
 
      $tddft
@@ -215,8 +217,7 @@ nfiles是包含n+1个整数的多行参数，第一行输入为n，表示要读�
 
 :guilabel:`Imemshrink` 参数类型：整型
 ---------------------------------------------------
-默认值：0
-
-可选值：0、1
+ * 默认值：0
+ * 可选值：0、1
 
 控制积分直接TDDFT计算J、K算符时，OpenMP并行对内存的使用方式。0为不降低内存使用量；1为降低OpenMP并行内存使用量，效率稍低。如果计算的分子体系特别大，要求的计算根数目特别多，memjkop参数无法在增大内存，使用这个参数比积分多次计算效率高。
