@@ -9,9 +9,7 @@ SCF模块是BDF的核心计算模块之一，进行Hartree-Fock和DFT计算。
 如果做Hartree-Fock计算，这三个参数必须3选1，用于控制Hartree-Fock计算的类型。
 
 ``RHF`` Restricted Hartree-Fock
-
 ``UHF`` Unrestricted Hartree-Fock
-
 ``ROHF`` Restricted Open-shell Hartree-Fock
 
 :guilabel:`RKS/UKS/ROKS` 参数类型：Βοοl型
@@ -19,22 +17,22 @@ SCF模块是BDF的核心计算模块之一，进行Hartree-Fock和DFT计算。
 如果做DFT计算，这三个参数必须3选1，用于控制DFT计算的类型。
 
 ``RKS`` Restricted Kohn-Sham
-
 ``UKS`` Unrestricted Kohn-Sham
-
 ``ROKS`` Restricted Open-shell Kohn-Sham
 
 **波函数与占据数关键词**
 
 :guilabel:`Charge` 参数类型：整数
 ------------------------------------------------
-默认值：0
+ * 默认值：0
 
 指定计算的分子体系的电荷数。
 
 :guilabel:`Spin` 参数类型：整数
 ---------------------------------------------------
-指定计算的分子体系的自旋，这里输入的是自旋多重度2S+1。
+ * 默认值：2S+1
+
+指定计算的分子体系的自旋，这里输入的是自旋多重度。自旋多重度定义为2S+1，其中S是自旋角动量，它与体系内的单电子数N相关，S=N/2。所以自旋多重度也等于``单电子数+1``。
 
 :guilabel:`Occupy` 参数类型：整数数组
 ------------------------------------------------
@@ -73,41 +71,41 @@ Alpha & Beta必须联用，用于UHF/UKS计算，分别指定alpha或beta轨道�
 指定在Coulpot+Cosx计算每种原子类型的径向与角向格点数。
 
 .. code-block:: python
+
      #CH2分子，Coulpot+Cosx计算
      $scf
      RKS
      Coulpot+Cosx
      CosxNGrid
-     C 20 194
-     H 20 194
+      C 20 194
+      H 20 194
      ...
      $end
 
 :guilabel:`Grid` 参数类型：字符串
 ------------------------------------------------
-默认值：Medium
-
-可选值：Ultra Coarse、Coarse、Medium、Fine、Ultra Fine、SG1
+ * 默认值：Medium
+ * 选值：Ultra Coarse、Coarse、Medium、Fine、Ultra Fine、SG1
 
 指定DFT计算格点类型。
 
 :guilabel:`Gridtype` 参数类型：整型
 ------------------------------------------------
-默认值：0
-
-可选值：0、1、2、3
+ * 默认值：0
+ * 可选值：0、1、2、3
 
 指定DFT计算径向与角向布点方法。
 
 :guilabel:`Partitiontype` 参数类型：整型
 ---------------------------------------------------
-可选值：0、1
+ * 默认值：
+ * 可选值：0、1
 
 指定DFT格点分割类型。0为Becke分割；1为Stratmann-Scuseria-Frisch分割。
 
 :guilabel:`Numinttype` 参数类型：整型
 ------------------------------------------------
-默认值：0
+ * 默认值：0
 
 指定数值积分计算方法，值为 x*10+y。
 
@@ -116,7 +114,7 @@ Alpha & Beta必须联用，用于UHF/UKS计算，分别指定alpha或beta轨道�
 指定数值积分是不使用分子对称性，仅用于程序调试。
 
 :guilabel:`DirectGrid/NoDirectGrid` 参数类型：Bool型
-------------------------------------------------
+-----------------------------------------------------
 指定数值积分采用直接积分的模式，不保存基组值等信息。对于DirectSCF必须使用DirectGrid。只有少数非DirectSCF情况下NoDirectGrid。
 
 :guilabel:`NoGridSwitch` 参数类型：Bool型
@@ -129,9 +127,8 @@ Alpha & Beta必须联用，用于UHF/UKS计算，分别指定alpha或beta轨道�
 
 :guilabel:`Coulpot` 参数类型：整型
 ------------------------------------------------
-默认值：0
-
-可选值：0、1、2
+ * 默认值：0
+ * 可选值：0、1、2
 
 控制MEPC计算产生库伦势Vc与原子核吸引势Vn矩阵的方法。0为利用解析积分计算Vc与Vn；1为利用多级展开计算Vc，利用解析积分计算Vn；2为利用多级展开计算Vc，数值积分计算Vn。
 
@@ -141,7 +138,7 @@ Alpha & Beta必须联用，用于UHF/UKS计算，分别指定alpha或beta轨道�
 
 :guilabel:`Coulpottol` 参数类型：整型
 ------------------------------------------------
-默认值：8
+ * 默认值：8
 
 定义多级展开的精度阈值，越大越精确。
 
@@ -157,7 +154,7 @@ Alpha & Beta必须联用，用于UHF/UKS计算，分别指定alpha或beta轨道�
 
 :guilabel:`Maxitter` 参数类型：整型
 ---------------------------------------------------
-默认值：50
+ * 默认值：50
 
 定义SCF计算的最大迭代次数。
 
@@ -187,13 +184,13 @@ Alpha & Beta必须联用，用于UHF/UKS计算，分别指定alpha或beta轨道�
 
 :guilabel:`MaxDiis` 参数类型：整型
 ---------------------------------------------------
-默认值：8
+ * 默认值：8
 
 指定DIIS方法子空间维数。
 
 :guilabel:`Iaufbau` 参数类型：整型
 ------------------------------------------------
-可选值：2、3
+ * 可选值：2、3
 
 定义用什么方法指定占据轨道。
 
@@ -205,7 +202,8 @@ Alpha & Beta必须联用，用于UHF/UKS计算，分别指定alpha或beta轨道�
 
 :guilabel:`Blkiop` 参数类型：整型
 ------------------------------------------------
-可选值：SAI、DDS、DNR、DGN、FNR、FGN、iVI、CHC
+ * 默认值：
+ * 可选值：SAI、DDS、DNR、DGN、FNR、FGN、iVI、CHC
 
 控制在SCF迭代中使用分块对角化方法，通常用于iVI或FLMO计算。
 
@@ -217,15 +215,15 @@ Alpha & Beta必须联用，用于UHF/UKS计算，分别指定alpha或beta轨道�
 
 :guilabel:`Print` 参数类型：整型
 ------------------------------------------------
-默认值：0
+ * 默认值：0
+ * 可选值：0、1
 
 仅用于程序调试，控制SCF的打印级别。
 
 :guilabel:`IprtMo` 参数类型：整型
 ------------------------------------------------
-默认值：0
-
-可选值：0、1、2
+ * 默认值：0
+ * 可选值：0、1、2
 
 控制如何打印分子轨道。0为仅打印前几个轨道占据数与轨道能；1为打印轨道能和占据数；2为打印所有分子轨道信息。
 
@@ -249,7 +247,7 @@ Alpha & Beta必须联用，用于UHF/UKS计算，分别指定alpha或beta轨道�
 
 :guilabel:`Tollin` 参数类型：浮点型
 ---------------------------------------------------
-默认值：1.D-7
+ * 默认值：1.D-7
 
 控制基组线性相关检查的阈值。
 
@@ -258,7 +256,7 @@ Alpha & Beta必须联用，用于UHF/UKS计算，分别指定alpha或beta轨道�
 MOM是一种ΔSCF方法，可以通过强制SCF每次迭代的占据轨道与初始占据轨道最大重叠来使SCF收敛到激发态。MOM方法通常收敛比基态困难。
 
 :guilabel:`IfPair & hpalpha, hpbeta` 参数类型：整型
-------------------------------------------------
+---------------------------------------------------
 Ifpair参数指定电子如何激发，确定MOM方法的电子占初态，必须与hpalpha和hpbeta参数联用。电子激发通过相对于基态通过指定从占据轨道到虚轨道的激发确定。
 
 .. code-block:: python
