@@ -71,6 +71,7 @@ Alpha & Beta必须联用，用于UHF/UKS计算，分别指定alpha或beta轨道�
 指定在Coulpot+Cosx计算每种原子类型的径向与角向格点数。
 
 .. code-block:: python
+
      #CH2分子，Coulpot+Cosx计算
      $scf
      RKS

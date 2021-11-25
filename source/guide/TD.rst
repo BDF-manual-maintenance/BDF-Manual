@@ -294,7 +294,7 @@ TDDFT模块还会打印占据轨道，虚轨道等TDDFT计算的活性轨道信�
 * ``c_i: 0.9883`` 代表该跃迁在整个激发态里的线性组合系数为0.9883;
 * ``Per: 97.7%`` 表示该激发组态占97.7%；
 * ``IPA:    14.207 eV`` 代表该跃迁所涉及的两个轨道的能量差为10.736 eV；
- * ``Oai: 0.5001`` 表示假如该激发态只有这一个跃迁的贡献，那么该激发态的绝对重叠积分为0.5163，由这一信息可以方便地得知哪些跃迁是局域激发，哪些跃迁是电荷转移激发。
+* ``Oai: 0.5001`` 表示假如该激发态只有这一个跃迁的贡献，那么该激发态的绝对重叠积分为0.5163，由这一信息可以方便地得知哪些跃迁是局域激发，哪些跃迁是电荷转移激发。
 
 
 所有不可约表示求解完后，所有的激发态会按照能量高低排列总结输出，
@@ -312,6 +312,26 @@ TDDFT模块还会打印占据轨道，虚轨道等TDDFT计算的活性轨道信�
 开壳层体系计算：U-TDDFT
 ----------------------------------------------------------
 开壳层体系可以用U-TDDFT计算，例如对于H2O+离子，先进行UKS计算，然后利用U-TDDFT计算激发态，一个典型的输入为，
+
+.. code-block:: python
+
+    #!bdf.sh
+    TDDFT/B3lyp/cc-pvdz iroot=4 group=C(1) charge=1    
+    
+    geometry
+    O
+    H  1  R1
+    H  1  R1  2 109.
+    
+    R1=1.0     # OH bond length in angstrom 
+    end geometry
+
+这里，关键词，
+* ``iroot=4`` 指定TDDFT计算每个不可约表示计算4个根；
+* ``charge=1`` 指定体系的电荷为+1；
+* ``group=C(1)`` 指定强制使用C1点群计算。
+
+与之对应的高级输入为，
 
 .. code-block:: python
 
@@ -346,7 +366,7 @@ TDDFT模块还会打印占据轨道，虚轨道等TDDFT计算的活性轨道信�
   $end
    
   $tddft
-  imethod
+  imethod  # ask for U-TDDFT. This keyword can be neglected. It can be determined from SCF
    2
   iroot
    4
@@ -374,7 +394,7 @@ TDDFT模块还会打印占据轨道，虚轨道等TDDFT计算的活性轨道信�
   SC Excitations 
   RPA: (A-B)(A+B)Z=w2*Z 
 
-可以看出执行的是TDDFT计算。计算总结输出的4个激发态为，
+可以看出执行的是U-TDDFT计算。计算总结输出的4个激发态为，
 
 .. code-block:: python
 
