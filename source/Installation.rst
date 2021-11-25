@@ -18,13 +18,15 @@
  * Fortran编译器（支持fortran95及更新版本的语法）
  * C++ 编译器（支持C++03及更新版本的语法）
  * C 编译器
+ * BLAS/LAPACK 数学库
+  
+通常使用GCC 4.6及以上的版本即可正常编译。
 
-通常使用GCC 4.6及以上的版本即可完成编译。
-
-
-CMake (version 2.8.11 or higher)
-an optimized BLAS/LAPACK library (alternative for the slow built-in library based on Netlib)
-openmpi (version 1.4.1 or higher)
+可选配置：
+ * Intel Parallel Studio XE Cluster版C/C++ Fortran编译器
+ * CMake 2.8.11版本及以上（使用cmake进行编译）
+ * 优化的BLAS/LAPACK 库（如Intel的MKL，AMD的ACML，OpenBLAS等）
+ * openmpi 1.4.1版本及以上（编译并行版本的BDF）
 
 
 程序运行

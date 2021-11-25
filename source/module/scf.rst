@@ -8,17 +8,17 @@ SCF模块是BDF的核心计算模块之一，进行Hartree-Fock和DFT计算。
 ------------------------------------------------
 如果做Hartree-Fock计算，这三个参数必须3选1，用于控制Hartree-Fock计算的类型。
 
-``RHF`` Restricted Hartree-Fock
-``UHF`` Unrestricted Hartree-Fock
-``ROHF`` Restricted Open-shell Hartree-Fock
+ * ``RHF`` Restricted Hartree-Fock
+ * ``UHF`` Unrestricted Hartree-Fock
+ * ``ROHF`` Restricted Open-shell Hartree-Fock
 
 :guilabel:`RKS/UKS/ROKS` 参数类型：Βοοl型
 ---------------------------------------------------
 如果做DFT计算，这三个参数必须3选1，用于控制DFT计算的类型。
 
-``RKS`` Restricted Kohn-Sham
-``UKS`` Unrestricted Kohn-Sham
-``ROKS`` Restricted Open-shell Kohn-Sham
+ * ``RKS`` Restricted Kohn-Sham
+ * ``UKS`` Unrestricted Kohn-Sham
+ * ``ROKS`` Restricted Open-shell Kohn-Sham
 
 **波函数与占据数关键词**
 
@@ -32,7 +32,7 @@ SCF模块是BDF的核心计算模块之一，进行Hartree-Fock和DFT计算。
 ---------------------------------------------------
  * 默认值：2S+1
 
-指定计算的分子体系的自旋，这里输入的是自旋多重度。自旋多重度定义为2S+1，其中S是自旋角动量，它与体系内的单电子数N相关，S=N/2。所以自旋多重度也等于``单电子数+1``。
+指定计算的分子体系的自旋，这里输入的是自旋多重度。自旋多重度定义为2S+1，其中S是自旋角动量，它与体系内的单电子数N相关，S=N/2。所以自旋多重度也等于 ``单电子数+1`` 。
 
 :guilabel:`Occupy` 参数类型：整数数组
 ------------------------------------------------
