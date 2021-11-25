@@ -17,6 +17,27 @@ Compass模块主要完成计算任务的初始化工作，包括读入用户定�
      End of Geometry
      $End
 
+:guilabel:`basis-multi` 参数类型：字符串
+----------------------------------------------
+对不同元素指定不同的基组，第一行是默认基组，之后的行对不同元素或原子指定其它基组，
+格式为 **元素=基组名** 或者 **元素1,元素2, ...,元素n=基组名** 。
+
+.. code-block::
+
+  $Compass
+  Basis-multi
+    3-21g
+    C,N = 6-31g
+    Xe = cc-pvdz-pp
+  End Basis
+  Geometry
+  H    0.0  0.0 -1.1
+  C    0.0  0.0  0.0
+  N    0.0  0.0  1.0
+  Xe   3.0  0.0  0.0
+  End geometry
+  $End
+
 :guilabel:`RI-J/RI-K/RI-C` 参数类型：字符串
 ---------------------------------------------
 密度拟合近似 (Density-fitting approximation) 加速算法的辅助基组。
@@ -133,14 +154,10 @@ Compass模块主要完成计算任务的初始化工作，包括读入用户定�
 :guilabel:`Unit` 参数类型：字符串
 ---------------------------------------------------
 
- * 默认值：Bohr
+ * 默认值：Angstrom
  * 可选值：Bohr, Angstrom
 
-Bohr表示输入键长单位为原子单位，Angstrom表示键长单位为埃。
-
-.. note::
-
-    指定分子坐标输入中键长的单位，默认是Angstrom
+Bohr表示坐标输入的长度单位为原子单位制，Angstrom表示长度单位为埃。
 
 
 :guilabel:`Skeleton` 参数类型：Bool型
