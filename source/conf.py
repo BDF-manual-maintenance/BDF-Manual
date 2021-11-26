@@ -140,7 +140,8 @@ class BDFLexer(RegexLexer):
         'comment': [
             (r'#.*', Comment.Single),
             (r'^\*.*', Comment.Single),
-            (r'^%.*', Comment.Single),
+            (r'\n(\*.*)', bygroups(Comment.Single)),
+            (r'\n(%.*)', bygroups(Comment.Preproc)),
         ]
     }
 

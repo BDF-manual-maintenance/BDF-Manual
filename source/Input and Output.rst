@@ -164,7 +164,7 @@ BDF混合输入文件的基本结构如下：
 
 以水合离子为例来详细描述BDF混合输入格式：
 
-.. code-block:: python
+.. code-block:: bdf
 
   #!H2O+.bdf
   B3lyp/3-21G iroots=4 
@@ -194,7 +194,7 @@ BDF的分子结构输入从 ``Geometry`` 开始，到 ``End geometry`` 结束，
 直角坐标格式输入
 --------------------------------------------------------------------------
 
-.. code-block:: python
+.. code-block:: bdf
 
  Geometry
  O  0.00000   0.00000    0.36937
@@ -207,7 +207,7 @@ BDF的分子结构输入从 ``Geometry`` 开始，到 ``End geometry`` 结束，
 
 简单的内坐标输入如下：
 
-.. code-block:: python
+.. code-block:: bdf
  
  Geometry
  O
@@ -217,7 +217,7 @@ BDF的分子结构输入从 ``Geometry`` 开始，到 ``End geometry`` 结束，
 
 内坐标输入，利用变量定义内坐标数值如下：
 
-.. code-block:: python
+.. code-block:: bdf
  
  Geometry
  O
@@ -232,7 +232,7 @@ BDF的分子结构输入从 ``Geometry`` 开始，到 ``End geometry`` 结束，
 
 例1：H2O的坐标输入，势能面扫描，键长从0.75 开始，按照0.05 step，计算20个点。
 
-.. code-block:: python
+.. code-block:: bdf
  
  Geometry
  O
@@ -244,7 +244,7 @@ BDF的分子结构输入从 ``Geometry`` 开始，到 ``End geometry`` 结束，
 
 例2：H2O的坐标输入，势能面扫描，键长从0.75 开始，按照0.05 step，计算20个点。SCF通过Read获取初始猜测轨道。
 
-.. code-block:: python
+.. code-block:: bdf
  
  B3lyp/3-21G Scan Guess=read
 
@@ -261,7 +261,7 @@ BDF的分子结构输入从 ``Geometry`` 开始，到 ``End geometry`` 结束，
 从指定文件中读入分子坐标
 --------------------------------------------------------------------------
 
-.. code-block:: python
+.. code-block:: bdf
  
  Geometry
  file=filename.xyz
