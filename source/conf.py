@@ -115,7 +115,8 @@ class BDFLexer(RegexLexer):
             include('keywords'),
             include('bool'),
             include('numbers'),
-            ('.+', Text),
+            (r'\S+', Text),
+            (r'\s+', Text),
         ],
         'modules': [
             (words((
@@ -143,7 +144,7 @@ class BDFLexer(RegexLexer):
             (r'#.*', Comment.Single),
             (r'^\*.*', Comment.Single),
             (r'\n(\*.*)', bygroups(Comment.Single)),
-            (r'\n(%.*)', bygroups(Comment.Preproc)),
+            (r'%.*', Comment.Preproc),
         ]
     }
 
