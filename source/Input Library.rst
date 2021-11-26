@@ -1,6 +1,5 @@
 模块功能
 ************************************
-.. _bdf-route:
 
 .. image:: images/modules.png
    :width: 600

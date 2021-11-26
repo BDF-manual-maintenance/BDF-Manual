@@ -29,5 +29,104 @@
  * openmpi 1.4.1版本及以上（编译并行版本的BDF）
 
 
+配置编译BDF
+==========================================================================
+
+以Linux下Bash Shell为例，所有操作均在BDF的主目录:
+
+Intel Fortran、C/C++编译器及MKL数学库
+------------------------------------------------------
+
+
+.. code-block:: shell
+
+    #设置编译器
+    $export FC=ifort
+    $export CC=icc
+    $export CXX=icpc
+    #设置数学库
+    $export MATHLIB=”-lmkl_intel_ilp64 -lmkl_sequential -lmkl_core”
+    $export MATHINCLUDE=”-I/opt/intel/mkl/include”
+    #配置BDF，产生Makefile
+    $./configure --enable-mkl=yes --enable-openmp=yes --enable-i8=yes
+    #编译BDF
+    $make 
+
+
+Intel Fortran编译器，gcc/g++编译器，MKL数学库
+------------------------------------------------------
+
+.. code-block:: shell
+
+    #设置编译器
+    $export FC=ifort
+    $export CC=icc
+    $export CXX=g++
+    #设置数学库
+    $export MATHLIB=”-lmkl_intel_ilp64 -lmkl_sequential -lmkl_core”
+    $export MATHINCLUDE=”-I/opt/intel/mkl/include”
+    #配置BDF，产生Makefile
+    $./configure --enable-mkl=yes --enable-openmp=yes --enable-i8=yes
+    #编译BDF
+    $make 
+
+
+GNU的Fortran编译器gfortran，gcc/g++编译器，Netlib的Blas和Lapack数学库
+--------------------------------------------------------------------------
+
+.. code-block:: shell
+
+    #设置编译器
+    $export FC=gfortran
+    $export CC=icc
+    $export CXX=g++
+    #设置数学库
+    $export MATHLIB=”-L/home/bsuo/lapack-3.8.0 -llapack -lblas -lcblas -llapacke”
+    $export MATHINCLUDE=”-I/home/bsuo/lapack-3.8.0/LAPACKE/include -I/home/bsuo/lapack-3.8.0/CBLAS/include”
+    #配置BDF，产生Makefile
+    $./configure --enable-mkl=no --enable-openmp=yes --enable-i8=yes
+    #编译BDF
+    $make 
+
+cmake编译BDF-GTO
+==========================================================================
+
+Intel Fortran编译器，gcc/g++编译器，MKL数学库
+------------------------------------------------------
+
+.. code-block:: shell
+
+    #设置编译器
+    $export FC=ifort
+    $export CC=icc
+    $export CXX=g++
+    #cmake由setup命令自动执行
+    $./setup --fc=${FC} --cc=${CC} --cxx=${CXX} --bdfpro --int64 --mkl sequential $1
+    #在build目录下构建BDF
+    $cd build 
+    $make
+    #安装BDF
+    $make install
+    #将build下bdf-pkg-pro复制至任意路径后，在bdfrc中写入正确路径，如：
+    $BDFHOME=/home/user/bdf-pkg-pro
+    #运行命令
+    $$BDFHOME/sbin/bdfdrv.py -r **.inp
+
 程序运行
-================================================
+==========================================================================
+
+BDF需要在Linux终端下运行。运行BDF，需要先准备输入文件。输入文件的具体格式在手册后几节详述。这里我们利用BDF自带的测试算例作为例子，先简述如何运行BDF。
+假设用户目录为 /home/user, BDF被安装在 /home/user/bdf-pkg-pro中。准备好输入文件 ``ch2-hf.inp`` 之后，按照如下方法执行。 
+
+.. code-block:: shell
+
+    #在/home/user中新建一个文件夹test
+    $mkdir test
+    $cd test
+    #拷贝/home/user/bdf-pkg-pro/tests/easyinput/ch2-hf.inp到test文件夹
+    $cp /home/user/bdf-pkg-pro/tests/easyinput/ch2-hf.inp
+    #在test目录中运行提交命令
+    $$BDFHOME/sbin/bdfdrv.py -r **.inp
+
+
+

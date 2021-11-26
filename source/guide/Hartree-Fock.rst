@@ -33,7 +33,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
 
 这个简单的输入对应的BDF高级输入为：
 
-.. code-block:: python
+.. code-block:: bdf
 
   $compass
   geometry

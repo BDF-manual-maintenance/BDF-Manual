@@ -402,16 +402,240 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
      Sum of electronic and thermal Free Energies:         -499.826695
      ====================================================================================
 
-用户可根据需要读取零点能、焓、Gibbs自由能等数据。
+用户可根据需要读取零点能、焓、Gibbs自由能等数据。注意以上所有热力学量是在以下各个假设下得到的：（1）频率校正因子为1.0；（2）温度为298.15 K；（3）压强为1 atm；（4）电子态的简并度为1。如用户的计算不属于以上情形，可以通过一系列关键词进行指定，如以下的写法代表频率校正因子为0.98，温度为373.15 K，压强为2 atm，电子态的简并度为2：
 
-过渡态结构优化：HCN/HNC异构反应的过渡态优化
+.. code-block:: python
+
+    $bdfopt
+    hess
+     only
+    scale
+     0.98
+    temp
+     373.15
+    press
+     2.0
+    ndeg
+     2
+    $end
+    
+其中尤其需要注意的是电子态的简并度，对于非相对论或标量相对论计算，且电子态不存在空间简并性的情形，电子态的简并度等于自旋多重度（2S+1）；对于存在空间简并性的电子态，还应乘上电子态的空间简并度。至于考虑了旋轨耦合的相对论性计算（如TDDFT/SOC计算），则应将自旋多重度替换为相应旋量态的简并度，决定旋量态的简并度的规则较为复杂，此处从略。
+
+有时因SCF不收敛或其他外在原因，导致频率计算中断，此时可在BDFOPT模块里加入''restarthess''关键词进行断点续算，节省计算时间，如：
+
+.. code-block:: python
+
+    $bdfopt
+    hess
+     only
+    restarthess
+    $end
+
+此外值得注意的是，可以在同一个BDF任务里依次实现结构优化与频率分析（即所谓的opt+freq计算），而无需单独编写两个输入文件。为此只需将BDFOPT模块的输入改为：
+
+.. code-block:: python
+
+    $bdfopt
+    solver
+     1
+    hess
+     final
+    $end
+
+其中final表示在结构优化成功结束后才进行数值Hessian计算；若结构优化不收敛，则程序直接报错退出，而不进行Hessian及频率、热力学量的计算。由此可以看出，前述的频率计算输入文件中的only，即为只进行频率计算而不进行结构优化之意。
+
+过渡态结构优化：HCN/HNC异构反应的过渡态优化和频率计算
 -------------------------------------------------------
 
-To be done
+准备以下输入文件：
+
+.. code-block:: python
+
+    $compass
+    title
+     HCN <-> HNC transition state
+    basis
+     def2-SVP
+    geometry
+     C                  0.00000000    0.00000000    0.00000000
+     N                  0.00000000    0.00000000    1.14838000
+     H                  1.58536000    0.00000000    1.14838000
+    end geometry
+    skeleton
+    $end
+
+    $bdfopt
+    solver
+     1
+    hess
+     init+final
+    iopt
+     10
+    $end
+
+    $xuanyuan
+    direct
+    $end
+
+    $scf
+    rks
+    dft
+     b3lyp
+    $end
+
+    $resp
+    geom
+    $end
+
+其中''iopt 10''表示优化过渡态。
+
+无论是优化极小值点结构，还是优化过渡态，程序都必须在第一步结构优化之前产生一个初始的Hessian，以备后续结构优化步骤使用。一般而言，初始Hessian应当与初始结构下的精确Hessian定性符合，尤其是虚频数目必须一致。对于极小值点的优化，这个要求很容易满足，即便是分子力学级别的Hessian（所谓“模型Hessian”）也能做到和精确Hessian定性一致，因此此时程序以模型Hessian为初始Hessian，而无需计算精确Hessian。然而对于过渡态优化，模型Hessian一般不存在虚频，因此必须产生精确Hessian作为初始Hessian。以上输入文件的''hess init+final''即表示既产生初始Hessian以备过渡态优化需要（此Hessian因为不是在梯度为0的结构上计算的，频率及热化学量没有明确物理意义，因此仅计算Hessian而不做频率分析），又在结构优化收敛后再次进行Hessian计算，以得到频率分析结果。也可将''init+final''替换为''init''，即只产生初始Hessian，而结构优化收敛后不再次计算Hessian，但因过渡态优化（乃至所有结构优化任务）一般需要检验最终收敛的结构的虚频数目，因此不建议省略final关键词。
+
+计算的输出与优化极小值点结构类似。最后频率分析时可以看到收敛的结构有且仅有一个虚频（-1104 cm^-1）：
+
+.. code-block:: python
+
+     Results of vibrations:
+     Normal frequencies (cm^-1), reduced masses (AMU), force constants (mDyn/A)
+
+                                                       1                                 2                                 3
+              Irreps                                  A'                                A'                                A'
+         Frequencies                          -1104.1414                         2092.7239                         2631.2601
+      Reduced masses                              1.1680                           11.9757                            1.0591
+     Force constants                             -0.8389                           30.9012                            4.3205
+            Atom  ZA               X         Y         Z             X         Y         Z             X         Y         Z
+               1   6         0.04309   0.07860   0.00000       0.71560   0.09001   0.00000      -0.00274  -0.06631   0.00000
+               2   7         0.03452  -0.06617   0.00000      -0.62958  -0.08802   0.00000       0.00688  -0.01481   0.00000
+               3   1        -0.99304  -0.01621   0.00000       0.22954   0.15167   0.00000      -0.06313   0.99566   0.00000
+
+代表确实找到了过渡态。
+
+在以上计算中，初始Hessian的理论级别与过渡态优化的理论级别一致。因初始Hessian只需定性正确即可，实际计算中可以在另一个较低的级别下计算初始Hessian，再在较高理论级别下优化过渡态。仍以以上算例为例，假如我们想在HF/STO-3G级别下计算初始Hessian，而在B3LYP/def2-SVP级别下优化过渡态，可以按照以下步骤进行：
+
+（1）准备以下输入文件，命名为HCN-inithess.inp：
+
+.. code-block:: python
+
+    $compass
+    title
+     HCN <-> HNC transition state, initial Hessian
+    basis
+     STO-3G
+    geometry
+     C                  0.00000000    0.00000000    0.00000000
+     N                  0.00000000    0.00000000    1.14838000
+     H                  1.58536000    0.00000000    1.14838000
+    end geometry
+    skeleton
+    $end
+
+    $bdfopt
+    hess
+     only
+    $end
+
+    $xuanyuan
+    direct
+    $end
+
+    $scf
+    rhf
+    $end
+
+    $resp
+    geom
+    $end
+
+（2）用BDF运行该输入文件，得到Hessian文件HCN-inithess.hess；
+
+（3）将HCN-inithess.hess复制或重命名为HCN-optTS.hess；
+
+（4）准备以下输入文件，命名为HCN-optTS.inp：
+
+.. code-block:: python
+
+    $compass
+    title
+     HCN <-> HNC transition state
+    basis
+     def2-SVP
+    geometry
+     C                  0.00000000    0.00000000    0.00000000
+     N                  0.00000000    0.00000000    1.14838000
+     H                  1.58536000    0.00000000    1.14838000
+    end geometry
+    skeleton
+    $end
+
+    $bdfopt
+    solver
+     1
+    hess
+     init+final
+    iopt
+     10
+    readhess
+    $end
+
+    $xuanyuan
+    direct
+    $end
+
+    $scf
+    rks
+    dft
+     b3lyp
+    $end
+
+    $resp
+    geom
+    $end
+
+其中关键词readhess表示读取与该输入文件同名的hess文件（即HCN-optTS.hess）作为初始Hessian。注意尽管该输入文件不会重新计算初始Hessian，仍然需要写''hess init+final''而不是''hess final‘’。
+
+（5）运行该输入文件即可。
 
 限制性结构优化
 -------------------------------------------------------
 
+BDF还支持在结构优化中限制一个或多个内坐标的值，方法是在BDFOPT模块中加入constrain关键词。constrain关键词后的第一行为一个整数（以下称为N），表示总的限制数目；第2行到第N+1行表示每个限制的定义。例如以下输入表示在结构优化时限制第2个原子和第5个原子之间的距离（这两个原子之间不一定需要有化学键）：
+
+.. code-block:: python
+
+    $bdfopt
+    solver
+     1
+    constrain
+     1
+     2 5
+    $end
+
+以下输入表示在结构优化时限制第1个原子和第2个原子之间的距离，同时还限制第2、第5、第10个原子形成的键角（同样地，不要求第2、第5个原子，或第5、第10个原子之间有化学键）：
+
+.. code-block:: python
+
+    $bdfopt
+    solver
+     1
+    constrain
+     2
+     1 2
+     2 5 10
+    $end
+ 
+ 以下输入表示在结构优化时限制第5、第10、第15、第20个原子之间的二面角，同时还限制第10、第15、第20、第25个原子之间的二面角：
+ 
+ .. code-block:: python
+
+    $bdfopt
+    solver
+     1
+    constrain
+     2
+     5 10 15 20
+     10 15 20 25
+    $end
+ 
 几何优化常见问题
 -------------------------------------------------------
 
