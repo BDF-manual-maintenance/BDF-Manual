@@ -509,7 +509,7 @@ BDF用户既可以使用基组库中的标准基组，也可以自定义基组�
 
 高级别密度拟合基组可以用在低级别基组上，例如 ``c-pVTZ/C`` 可以用于在 ``cc-pVTZ`` 上做RI-J，对于没有标配辅助基组的pople系列基组如 ``6-31G**`` 也可以用 ``cc-pVTZ/J`` 做RI-J或RIJCOSX。反之，高级别轨道基组结合低级别的辅助基组则会带来较明显的误差。
 
-.. code-block::
+.. code-block:: bdf
 
   $Compass
   Basis
