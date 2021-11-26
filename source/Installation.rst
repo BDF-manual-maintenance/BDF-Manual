@@ -29,5 +29,157 @@
  * openmpi 1.4.1版本及以上（编译并行版本的BDF）
 
 
+.. _1.1 配置编译BDF:
+
+配置编译BDF
+==========================================================================
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+以Linux下Bash Shell为例，所有操作均在BDF的主目录:
+
+
+.. _1.1.1 Intel Fortran、C/C++编译器及MKL数学库:
+
+Intel Fortran、C/C++编译器及MKL数学库
+------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+.. code-block:: python
+
+    #设置编译器
+    $export FC=ifort
+    $export CC=icc
+    $export CXX=icpc
+    #设置数学库
+    $export MATHLIB=”-lmkl_intel_ilp64 -lmkl_sequential -lmkl_core”
+    $export MATHINCLUDE=”-I/opt/intel/mkl/include”
+    #配置BDF，产生Makefile
+    $./configure --enable-mkl=yes --enable-openmp=yes --enable-i8=yes
+    #编译BDF
+    $make 
+
+.. _ 1.1.2 Intel Fortran编译器，gcc/g++编译器，MKL数学库:
+
+Intel Fortran编译器，gcc/g++编译器，MKL数学库
+------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.. code-block:: python
+
+    #设置编译器
+    $export FC=ifort
+    $export CC=icc
+    $export CXX=g++
+    #设置数学库
+    $export MATHLIB=”-lmkl_intel_ilp64 -lmkl_sequential -lmkl_core”
+    $export MATHINCLUDE=”-I/opt/intel/mkl/include”
+    #配置BDF，产生Makefile
+    $./configure --enable-mkl=yes --enable-openmp=yes --enable-i8=yes
+    #编译BDF
+    $make 
+
+.. _ 1.1.3 GNU的Fortran编译器gfortran，gcc/g++编译器，Netlib的Blas和Lapack数学库:
+
+GNU的Fortran编译器gfortran，gcc/g++编译器，Netlib的Blas和Lapack数学库
+------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------------
+
+.. code-block:: python
+
+    #设置编译器
+    $export FC=gfortran
+    $export CC=icc
+    $export CXX=g++
+    #设置数学库
+    $export MATHLIB=”-L/home/bsuo/lapack-3.8.0 -llapack -lblas -lcblas -llapacke”
+    $export MATHINCLUDE=”-I/home/bsuo/lapack-3.8.0/LAPACKE/include -I/home/bsuo/lapack-3.8.0/CBLAS/include”
+    #配置BDF，产生Makefile
+    $./configure --enable-mkl=no --enable-openmp=yes --enable-i8=yes
+    #编译BDF
+    $make 
+
+.. _ 1.2 cmake编译BDF-GTO:
+
+
+cmake编译BDF-GTO
+==========================================================================
+
+------------------------------------------------------------------------------------------------------------
+
+
+
+.. _ 1.2.1 Intel Fortran编译器，gcc/g++编译器，MKL数学库:
+
+Intel Fortran编译器，gcc/g++编译器，MKL数学库
+------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------------
+
+.. code-block:: python
+
+    #设置编译器
+    $export FC=ifort
+    $export CC=icc
+    $export CXX=g++
+    #cmake由setup命令自动执行
+    $./setup --fc=${FC} --cc=${CC} --cxx=${CXX} --bdfpro --int64 --mkl sequential $1
+    #在build目录下构建BDF
+    $cd build 
+    $make
+    #安装BDF
+    $make install
+    #将build下bdf-pkg-pro复制至任意路径后，在bdfrc中写入正确路径，如：
+    $BDFHOME=/home/user/bdf-pkg-pro
+    #运行命令
+    $$BDFHOME/sbin/bdfdrv.py -r **.inp
+
+.. _ 1.3 程序运行:
+
+
 程序运行
-================================================
+==========================================================================
+
+------------------------------------------------------------------------------------------------------------
+
+BDF需要在Linux终端下运行。运行BDF，需要先准备输入文件。输入文件的具体格式在手册后几节详述。这里我们利用BDF自带的测试算例作为例子，先简述如何运行BDF。
+假设用户目录为 /home/user, BDF被安装在 /home/user/bdf-pkg-pro中。准备好输入文件 ``ch2-hf.inp`` 之后，按照如下方法执行。 
+
+.. code-block:: python
+
+    #在/home/user中新建一个文件夹test
+    $mkdir test
+    $cd test
+    #拷贝/home/user/bdf-pkg-pro/tests/easyinput/ch2-hf.inp到test文件夹
+    $cp /home/user/bdf-pkg-pro/tests/easyinput/ch2-hf.inp
+    #在test目录中运行提交命令
+    $$BDFHOME/sbin/bdfdrv.py -r **.inp
+
+我们还可以写 ``run.sh`` 脚本来运行BDF，之后使用 :guilabel:`run.sh` 提交任务。
+
+在 ``run.sh`` 中写入如下内容：
+
+.. code-block:: python
+
+    #!/bin/bash
+
+    export BDFHOME=/home/user/bdf-pkg-pro
+    export BDF_TMPDIR=/tmp/$RANDOM
+    
+    export OMP_NUM_THREADS=2
+    export OMP_STACKSIZE=1G
+
+    $BDFHOME/sbin/bdfdrv.py -r $1
+
+更改脚本的运行权限
+$chmod +x run.sh
+
+运行BDF
+$./run.sh ch2-hf.inp或$./run.sh ch2-hf.inp > ch2-hf.log
+
+若使用排队系统（例如PBS/slurm等）提交任务，只需配置完成相应的 ``.pbs`` 或 ``.slurm`` 脚本，之后使用 :guilabel:`qsub xx.pbs` 或用 :guilabel:`sbatch xx.slurm` 提交任务即可。
+
