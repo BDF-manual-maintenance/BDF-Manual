@@ -48,7 +48,7 @@ Intel Fortran、C/C++编译器及MKL数学库
 
 
 
-.. code-block:: python
+.. code-block:: shell
 
     #设置编译器
     $export FC=ifort
@@ -69,7 +69,7 @@ Intel Fortran编译器，gcc/g++编译器，MKL数学库
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-.. code-block:: python
+.. code-block:: shell
 
     #设置编译器
     $export FC=ifort
@@ -90,7 +90,7 @@ GNU的Fortran编译器gfortran，gcc/g++编译器，Netlib的Blas和Lapack数学
 
 ------------------------------------------------------------------------------------------------------------
 
-.. code-block:: python
+.. code-block:: shell
 
     #设置编译器
     $export FC=gfortran
@@ -121,7 +121,7 @@ Intel Fortran编译器，gcc/g++编译器，MKL数学库
 
 ------------------------------------------------------------------------------------------------------------
 
-.. code-block:: python
+.. code-block:: shell
 
     #设置编译器
     $export FC=ifort
@@ -150,7 +150,7 @@ Intel Fortran编译器，gcc/g++编译器，MKL数学库
 BDF需要在Linux终端下运行。运行BDF，需要先准备输入文件。输入文件的具体格式在手册后几节详述。这里我们利用BDF自带的测试算例作为例子，先简述如何运行BDF。
 假设用户目录为 /home/user, BDF被安装在 /home/user/bdf-pkg-pro中。准备好输入文件 ``ch2-hf.inp`` 之后，按照如下方法执行。 
 
-.. code-block:: python
+.. code-block:: shell
 
     #在/home/user中新建一个文件夹test
     $mkdir test

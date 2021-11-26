@@ -37,6 +37,8 @@ extensions = [
 
 bibtex_bibfiles = ['refs.bib']
 
+bibtex_default_style = 'plain'
+
 mathjax3_config = {
     "tex": {"extensions": ["mhchem.js"]}
 }
