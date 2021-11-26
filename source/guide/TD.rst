@@ -308,6 +308,17 @@ TDDFT模块还会打印占据轨道，虚轨道等TDDFT计算的活性轨道信�
     3  A1    2  A1    9.3784 eV    132.20 nm   0.0767   0.0000  97.7%  CV(0):  A1(   3 )->  A1(   4 )  10.736 0.520    2.1850
     4  B1    1  B1   11.2755 eV    109.96 nm   0.0631   0.0000  98.0%  CV(0):  A1(   3 )->  B1(   2 )  12.779 0.473    4.0820
 
+随后还打印了跃迁矩和振子强度，可以用来绘制谱图。
+
+.. code-block:: python
+
+  *** Ground to excited state Transition electric dipole moments (Au) ***
+    State          X           Y           Z          Osc.
+       1      -0.0000      -0.3266       0.0000       0.0188       0.0188
+       2       0.0000       0.0000       0.0000       0.0000       0.0000
+       3       0.0000       0.0000       0.5777       0.0767       0.0767
+       4       0.4778      -0.0000       0.0000       0.0631       0.0631   
+
 
 开壳层体系计算：U-TDDFT
 ----------------------------------------------------------
@@ -327,6 +338,7 @@ TDDFT模块还会打印占据轨道，虚轨道等TDDFT计算的活性轨道信�
     end geometry
 
 这里，关键词，
+
 * ``iroot=4`` 指定TDDFT计算每个不可约表示计算4个根；
 * ``charge=1`` 指定体系的电荷为+1；
 * ``group=C(1)`` 指定强制使用C1点群计算。
@@ -374,9 +386,9 @@ TDDFT模块还会打印占据轨道，虚轨道等TDDFT计算的活性轨道信�
 
 这个输入要注意的几个细节是：
 
-* 1. ``compass`` 模块中利用关键词 ``group`` 强制计算使用点群 ``C(1)`` ;
-* 2. ``scf`` 模块设置 ``UKS`` 计算， ``charge`` 为 ``1`` ， ``spin`` (自旋多重度,2S+1)=2;   
-* 3. ``tddft`` 模块设置 ``imethod`` 为 ``2`` ，``iroot`` 设定每个不可约表示算4个根，由于用了C1对称性，计算给出水的阳离子的前四个激发态。
+* ``compass`` 模块中利用关键词 ``group`` 强制计算使用点群 ``C(1)`` ;
+* ``scf`` 模块设置 ``UKS`` 计算， ``charge`` 为 ``1`` ， ``spin`` (自旋多重度,2S+1)=2;   
+* ``tddft`` 模块设置 ``imethod`` 为 ``2`` ，``iroot`` 设定每个不可约表示算4个根，由于用了C1对称性，计算给出水的阳离子的前四个激发态。
 
 从输出
 
@@ -407,14 +419,160 @@ TDDFT模块还会打印占据轨道，虚轨道等TDDFT计算的活性轨道信�
 
 
 
-开壳层体系：自旋匹配(Spin-adapted)的TDDFT
+开壳层体系：SA-TDDFT
+----------------------------------------------------------
+SA-TDDFT，即spin-adapted TDDFT用于计算开壳层体系，开壳层体系的三重态耦合的双占据到虚轨道激发态(在BDF中标记为CV(1))存在自旋污染问题，因而其激发能
+常被高估，SA-TDDFT用于解决这里问题，考虑N2+分子，SA-TDDFT的计算输入为,
+
+.. code-block:: python
+
+    $compass
+    #Notice: length unit for geometry is angstrom
+    geometry
+     N 0.00  0.00  0.00
+     N 0.00  0.00  1.1164 
+    end geometry
+    skeleton
+    basis
+     aug-cc-pvtz
+    group
+     D(2h)  # Force to use C1 symmetry
+    $end
+     
+    $xuanyuan
+    direct
+    maxmem
+     512MW
+    $end
+     
+    $scf
+    roks # ask for ROKS calculation
+    dft
+     b3lyp
+    charge
+     1
+    spin
+     2
+    $end
+     
+    $tddft
+    imethod # ask for U-TDDFT method
+     2
+    icorrect # spin-adapted correction to U-TDDFT,must specified in SA-TDDFT
+     1
+    itest  # must specified in SA-TDDFT
+     1
+    itrans # transform the final eigenvector in U-TDDFT from the spin-orbital based representation to spin-adapted basis
+     1
+    iroot
+     5
+    $end
+
+这里， ``scf`` 模块要求是用 ``ROKS`` 方法计算基态，在 ``tddft`` 输入中，
+
+* ``imethod`` 设置为2，使用U-TDDFT方法计算；
+* ``icorrect`` 设置为1，对U-TDDFT波函数做自旋匹配修正；
+* ``itest`` 必须设置为1；
+* ``itrans`` 设置为1，U-TDDFT波函数被变换会自旋匹配波函数做分析，只有 ``scf`` 计算使用ROKS/ROHF才有效。
+
+激发态输出为，
+
+.. code-block:: python
+
+  No. Pair   ExSym   ExEnergies  Wavelengths      f     D<S^2>          Dominant Excitations             IPA   Ova     En-E1
+
+    1 B3u    1 B3u    0.7902 eV   1568.99 nm   0.0017   0.0195  98.6%  CO(0): B3u(   1 )->  Ag(   3 )   3.812 0.605    0.0000
+    2 B2u    1 B2u    0.7902 eV   1568.99 nm   0.0017   0.0195  98.6%  CO(0): B2u(   1 )->  Ag(   3 )   3.812 0.605    0.0000
+    3 B1u    1 B1u    3.2165 eV    385.46 nm   0.0378   0.3137  82.6%  CO(0): B1u(   2 )->  Ag(   3 )   5.487 0.897    2.4263
+    4 B1u    2 B1u    8.2479 eV    150.32 nm   0.0008   0.9514  48.9%  CV(1): B3u(   1 )-> B2g(   1 )  12.415 0.903    7.4577
+    5  Au    1  Au    8.9450 eV    138.61 nm   0.0000   1.2618  49.1%  CV(0): B3u(   1 )-> B3g(   1 )  12.903 0.574    8.1548
+    6  Au    2  Au    9.0519 eV    136.97 nm   0.0000   1.7806  40.1%  CV(1): B2u(   1 )-> B2g(   1 )  12.415 0.573    8.2617
+    7 B1u    3 B1u    9.0519 eV    136.97 nm   0.0000   1.7806  40.1%  CV(1): B2u(   1 )-> B3g(   1 )  12.415 0.906    8.2617
+
+这里，第3、6、7激发态都是CV(1)态，其 ``D<S^2>`` 值较大，存在自旋污染问题。
+
+
+计算自旋翻转(spin-flip)的TDDFT
 ----------------------------------------------------------
 
+从H2O分子闭壳层的基态出发，可以通过自旋翻转的TDDFT(spin-flip TDDFT -- SF-TDDFT)计算三重激发态，输入为：
 
-计算自旋翻转(spin-flip)的开壳层激发态:SF-TDDFT
-----------------------------------------------------------
+.. code-block:: python
 
-基于TDDFT的自旋轨道耦合计算: TDDFT-SOC
+  $compass
+  #Notice: length unit for geometry is angstrom
+  geometry
+   O
+   H 1 1.0
+   H 1 1.0 2 109.
+  end geometry
+   skeleton
+  basis
+   cc-pvdz
+  group
+   C(1)  # Force to use C1 symmetry
+  $end
+   
+  $xuanyuan
+  direct
+  maxmem
+   512MW
+  $end
+   
+  $scf
+  rks    # ask for RKS calculation 
+  dft
+   b3lyp
+  $end
+   
+  $tddft
+  imethod  # ask for R-TDDFT. This keyword can be neglected. It can be determined from SCF
+   1
+  isf      # ask for spin-flip up TDDFT calculation
+   1 
+  iroot
+   4
+  $end
+
+TDDFT计算快结束时有输出信息如下，
+
+.. code-block::
+
+     *** List of excitations ***
+
+  Ground-state spatial symmetry:   A
+  Ground-state spin: Si=  0.0000
+
+  Spin change: isf=  1
+  D<S^2>_pure=  2.0000 for excited state (Sf=Si+1)
+  D<S^2>_pure=  0.0000 for excited state (Sf=Si)
+
+  Imaginary/complex excitation energies :   0 states
+  Reversed sign excitation energies :   0 states
+
+  No. Pair   ExSym   ExEnergies  Wavelengths      f     D<S^2>          Dominant Excitations             IPA   Ova     En-E1
+
+    1   A    1   A    6.4131 eV    193.33 nm   0.0000   2.0000  99.2%  CV(1):   A(   5 )->   A(   6 )   8.853 0.426    0.0000
+    2   A    2   A    8.2309 eV    150.63 nm   0.0000   2.0000  97.7%  CV(1):   A(   4 )->   A(   6 )  10.736 0.519    1.8177
+    3   A    3   A    8.4793 eV    146.22 nm   0.0000   2.0000  98.9%  CV(1):   A(   5 )->   A(   7 )  10.897 0.357    2.0661
+    4   A    4   A   10.1315 eV    122.37 nm   0.0000   2.0000  92.8%  CV(1):   A(   4 )->   A(   7 )  12.779 0.479    3.7184
+
+ *** Ground to excited state Transition electric dipole moments (Au) ***
+    State          X           Y           Z          Osc.
+       1       0.0000       0.0000       0.0000       0.0000       0.0000
+       2       0.0000       0.0000       0.0000       0.0000       0.0000
+       3       0.0000       0.0000       0.0000       0.0000       0.0000
+       4       0.0000       0.0000       0.0000       0.0000       0.0000
+
+其中， ``Spin change: isf=  1`` 提示自旋做了翻转，由于基态是单重态，基态到激发态跃迁是自旋禁阻的，所以振子强度和跃迁矩都是0.
+
+.. hint::
+
+  * SF-TDDFT不只能从单重态出发，向上翻转自旋计算三重态；还可以从二重态出发，向上翻转自旋计算四重态。
+  * SF-TDDFT还可以从三重态出发，向下翻转自旋计算单重态，这时需要设置 ``isf`` 为 ``-1``。
+
+
+基于sf-X2C-TDDFT-SOC的自旋轨道耦合计算
 ----------------------------------------------------------
 
 

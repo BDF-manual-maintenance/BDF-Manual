@@ -16,25 +16,14 @@
 
 .. include:: module/bdfopt.rst
 
-.. include:: module/traint.rst
-
-.. include:: module/mp2.rst
-
-.. include:: module/mcscf.rst
-
-.. include:: module/drt.rst
-
-.. include:: module/mrci.rst
-
-.. include:: module/xianci.rst
-
-.. include:: module/localmo.rst
-
 .. include:: module/grad.rst
 
 .. include:: module/resp.rst
 
+.. include:: module/elecoup.rst
+
+.. include:: module/localmo.rst
+
 .. include:: module/expandmo.rst
 
-.. include:: module/elecoup.rst
 
