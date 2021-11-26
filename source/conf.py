@@ -124,13 +124,14 @@ class BDFLexer(RegexLexer):
         ],
         "keywords": [
             (words((
-                'basis', 'charge', 'spin', 'title', 'RI-J','RI-K','RI-C','Group','Unit','Thresh','maxmem','RS','Heff','Hsoc','NuclearInuc','Cholesky','Occupy','Alpha','Beta','DFT','NPTRAD','NPTANG','COSXNGRID','Grid','Gridtype','Partitiontype','Numinttype','Guess'), suffix=r'\b'),
-             Name.Attribute),
+                'basis', 'charge', 'spin', 'title', 'RI-J','RI-K','RI-C','Group','Unit','Thresh','maxmem','RS','Heff','Hsoc','NuclearInuc','Cholesky','Occupy','Alpha','Beta','DFT','NPTRAD','NPTANG','COSXNGRID','Grid','Gridtype','Partitiontype','Numinttype','ThreshRho','ThreshBSS','Coulpot','Coulpotmax','Coulpottol','Maxitter','Vshift','Damp','ThrEne','ThrDen', 'ThreshConverg', 'MaxDiis','Iaufbau','Iaufbau','Iaufbau','Iviop','Print','IprtMo','Tollin','IfPair','hpalpha','hpbeta','Pinalpha','Pinbeta','Imethod','Isf','Itda','Ialda','Itest','icorrect','iact','elw','eup','Idiag','Aokxc','Iguess','Crit_e','Cirt_vec','Iroot','Nroot','Istore','Nprt','Cdthrd','Nfiles','Isoc','Ifgs','Imatsoc','Imatrsf','Imatrso','Ntoanalyze','Memjkop','Imemshrink','Solver','Maxcycle','TolGrad','TolStep','IOpt','Update','ICoord','ILine','Constrain','Hess','ReCalcHess','NumHessStep','Frozen','Orbital','Symmetry','Nelectron','Core','Delete','Close','Active','Actel','Roots'
+                'Guess'), suffix=r'\b'),
+             Name.Builtin),
         ],
         "bool": [
             (words((
-                'Nosymm', 'norotate', 'skeleton', 'extcharge', 'uncontract', 'primitive', 'direct', 'scalar','direct','soint','RHF','UHF','ROHF','RKS','UKS','ROKS','D3','NosymGrid'), suffix=r'\b'),
-            Name.Builtin),
+                'Nosymm', 'norotate', 'skeleton', 'extcharge', 'uncontract', 'primitive', 'direct', 'scalar','direct','soint','RHF','UHF','ROHF','RKS','UKS','ROKS','D3','NosymGrid','DirectGrid','NoDirectGrid','NoGridSwitch','COSX','Coulpot+COSX','NoDiis','Noscforb','Pyscforb','Molden','Checklin','Lefteig','UTDDFT','TDDFT','FCIDUMP','Nature'), suffix=r'\b'),
+            Name.Attribute),
         ],
         'numbers': [
             (r'\d+\.\d+', Number.Float),
