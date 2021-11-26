@@ -37,6 +37,8 @@ extensions = [
 
 bibtex_bibfiles = ['refs.bib']
 
+bibtex_default_style = 'plain'
+
 mathjax3_config = {
     "tex": {"extensions": ["mhchem.js"]}
 }
@@ -89,3 +91,62 @@ html_context = {
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+
+from pygments.lexer import RegexLexer,words,include,bygroups
+from pygments.token import *
+import re
+
+class BDFLexer(RegexLexer):
+   
+    name = 'BDF'
+    aliases = ['bdf']
+    filenames = ['*.inp']
+    mimetypes = ['text/x-bdf']
+
+    flags = re.IGNORECASE
+
+    tokens = {
+        'root': [
+            include('comment'),
+            (r'\b(geometry)([\s\S]+)(end geometry)\b',bygroups(Keyword.Namespace, Text, Keyword.Namespace)),
+            (r'\b(basis-multi)([\s\S]+)(end basis)\b',bygroups(Keyword.Namespace, Text, Keyword.Namespace)),
+            include('modules'),
+            include('keywords'),
+            include('bool'),
+            include('numbers'),
+            (r'\S+', Text),
+            (r'\s+', Text),
+        ],
+        'modules': [
+            (words((
+                '$compass', '$bdfopt', '$drt', '$elecoup', '$expandmo', '$grad', '$localmo',
+                '$mcscf', '$mp2', '$mrci', '$resp', '$scf', '$tddft', '$traint',
+                '$xianci', '$xuanyuan','$end'), suffix=r'\b'),
+             Name.Function),
+        ],
+        "keywords": [
+            (words((
+                'basis', 'charge', 'spin', 'title', 'RI-J','RI-K','RI-C','Group','Unit','Thresh','maxmem','RS','Heff','Hsoc','NuclearInuc','Cholesky','Occupy','Alpha','Beta','DFT','NPTRAD','NPTANG','COSXNGRID','Grid','Gridtype','Partitiontype','Numinttype','ThreshRho','ThreshBSS','Coulpot','Coulpotmax','Coulpottol','Maxitter','Vshift','Damp','ThrEne','ThrDen', 'ThreshConverg', 'MaxDiis','Iaufbau','Iaufbau','Iaufbau','Iviop','Print','IprtMo','Tollin','IfPair','hpalpha','hpbeta','Pinalpha','Pinbeta','Imethod','Isf','Itda','Ialda','Itest','icorrect','iact','elw','eup','Idiag','Aokxc','Iguess','Crit_e','Cirt_vec','Iroot','Nroot','Istore','Nprt','Cdthrd','Nfiles','Isoc','Ifgs','Imatsoc','Imatrsf','Imatrso','Ntoanalyze','Memjkop','Imemshrink','Solver','Maxcycle','TolGrad','TolStep','IOpt','Update','ICoord','ILine','Constrain','Hess','ReCalcHess','NumHessStep','Frozen','Orbital','Symmetry','Nelectron','Core','Delete','Close','Active','Actel','Roots','Guess'), suffix=r'\b'),
+             Name.Builtin),
+        ],
+        "bool": [
+            (words((
+                'Nosymm', 'norotate', 'skeleton', 'extcharge', 'uncontract', 'primitive', 'direct', 'scalar','direct','soint','RHF','UHF','ROHF','RKS','UKS','ROKS','D3','NosymGrid','DirectGrid','NoDirectGrid','NoGridSwitch','COSX','Coulpot+COSX','NoDiis','Noscforb','Pyscforb','Molden','Checklin','Lefteig','UTDDFT','TDDFT','FCIDUMP','Nature'), suffix=r'\b'),
+            Name.Attribute),
+        ],
+        'numbers': [
+            (r'\d+\.\d+', Number.Float),
+            (r'\d+[ed][+-]?[0-9]+', Number.Float),
+            (r'\d+', Number.Integer),
+        ],
+        'comment': [
+            (r'#.*', Comment.Single),
+            (r'^\*.*', Comment.Single),
+            (r'\n(\*.*)', bygroups(Comment.Single)),
+            (r'%.*', Comment.Preproc),
+        ]
+    }
+
+def setup(sphinx):
+    sphinx.add_lexer("bdf", BDFLexer)
