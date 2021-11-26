@@ -23,7 +23,7 @@ RKS/UKS和ROKS计算
 -------------------------------------------------
 限制性Kohn-Sham(Restricted Kohn-Sham -- RKS)方法，这里以简洁输入的模式给出一个H2O分子的DFT计算算例，使用了B3lyp泛函。
 
-.. code-block:: python
+.. code-block:: bdf
 
   #!bdf.sh
   B3lyp/3-21G    
@@ -37,7 +37,6 @@ RKS/UKS和ROKS计算
   end geometry
 
 这个输入对应的高级模式的输入为
-
 
 
 基于RS杂化泛函的Kohn-Sham计算

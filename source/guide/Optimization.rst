@@ -20,7 +20,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 基态结构优化：一氯甲烷（CH3Cl）在B3LYP/def2-SV(P)水平下的结构优化
 -------------------------------------------------------------------------
 
-.. code-block:: python
+.. code-block:: bdf
 
     $compass
     title
@@ -68,7 +68,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 以上述CH3Cl的结构优化任务为例，可以看到''.out''文件里BDFOPT模块的输出：
 
-.. code-block:: python
+.. code-block:: 
 
        Geometry Optimization step :    1
 
@@ -99,7 +99,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 因BDFOPT是在内坐标下优化的结构，为了产生下一步的分子结构，必须先产生分子的内坐标。因此在第一步结构优化时，输出文件还会给出各个内坐标的定义（即参与形成相应的键、键角、二面角的原子编号），以及各个内坐标的值（键长的单位为埃，键角、二面角的单位为度）：
 
-.. code-block:: python
+.. code-block:: 
 
     |******************************************************************************|
            Redundant internal coordinates on Angstrom/Degree
@@ -132,7 +132,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 待分子结构更新完成后，程序计算梯度以及几何步长的大小，判断结构优化是否收敛：
 
-.. code-block:: python
+.. code-block:: 
 
                            Force-RMS    Force-Max     Step-RMS     Step-Max
         Conv. tolerance :  0.2000E-03   0.3000E-03   0.8000E-03   0.1200E-02
@@ -141,7 +141,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 仅当均方根力（Force-RMS）、最大力（Force-Max）、均方根步长（Step-RMS）、最大步长（Step-Max）的当前值均小于对应的收敛限的时候（也即''Geom. converge''栏均为Yes），程序才认为结构优化收敛。对于本算例，结构优化在第5步时收敛，此时输出信息不仅包含各收敛判据的值，还会明确告知用户几何优化已收敛，并分别以笛卡尔坐标和内坐标的形式打印收敛的分子结构：
 
-.. code-block:: python
+.. code-block:: 
 
         Good Job, Geometry Optimization converged in     5 iterations!
 
@@ -191,7 +191,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 与此同时，程序还会产生后缀为''.optgeom''的文件，其内容是收敛的分子结构的笛卡尔坐标，但单位为Bohr而非Angstrom：
 
-.. code-block:: python
+.. code-block:: 
 
     GEOM
             C             -0.7303234729        -2.0107211546        -0.0000057534
@@ -200,7 +200,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
             H             -2.7178161476        -2.0052051760        -0.6126883555
             Cl             0.4272106261         1.1761889168        -0.0000021938
 
-''.optgeom''文件可以用''$BDFHOME/sbin/''下的工具''optgeom2xyz.py''转为xyz格式，从而可以在支持xyz格式的任何可视化软件里观看优化后的分子结构。例如如果待转换的文件名为filename.optgeom，则在命令行执行：（注意必须先设定环境变量$BDFHOME，或手动用BDF文件夹的路径替代下述命令里的$BDFHOME）
+``.optgeom`` 文件可以用 ``$BDFHOME/sbin/`` 下的工具 ``optgeom2xyz.py`` 转为xyz格式，从而可以在支持xyz格式的任何可视化软件里观看优化后的分子结构。例如如果待转换的文件名为filename.optgeom，则在命令行执行：（注意必须先设定环境变量$BDFHOME，或手动用BDF文件夹的路径替代下述命令里的$BDFHOME）
 
 .. code-block:: bash
 
@@ -213,7 +213,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 结构优化收敛后，即可进行频率分析。准备以下输入文件：
 
-.. code-block:: python
+.. code-block:: bdf
 
     $compass
     title
@@ -251,7 +251,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 其中分子结构为上述结构优化任务得到的收敛的结构。注意我们在BDFOPT模块中添加了''hess only''，其中''hess''代表计算（数值）Hessian，而''only''的含义将在后续章节详述。程序将分子的每个原子分别向x轴正方向、x轴负方向、y轴正方向、y轴负方向、z轴正方向、z轴负方向进行扰动，并计算扰动的结构下的梯度，如：
 
-.. code-block:: python
+.. code-block:: 
 
      Displacing atom    1 (+x)...
 
@@ -277,7 +277,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 若体系的原子数为N，则共需计算6N个梯度。然而实际上程序还会顺便计算未扰动的结构的梯度，以供用户检查前述结构优化是否确实已经收敛，因此程序实际共计算6N+1个梯度。最后程序通过有限差分方法得到体系的Hessian：
 
-.. code-block:: python
+.. code-block:: 
 
     |--------------------------------------------------------------------------------|
               Molecular Hessian - Numerical Hessian (BDFOPT)
@@ -339,7 +339,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 接下来BDF调用UniMoVib程序进行频率和热力学量的计算。首先是振动所属不可约表示、振动频率、约化质量、力常数和简正模的结果：
 
-.. code-block:: python
+.. code-block:: 
 
      ************************************
      ***  Properties of Normal Modes  ***
@@ -404,7 +404,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 用户可根据需要读取零点能、焓、Gibbs自由能等数据。注意以上所有热力学量是在以下各个假设下得到的：（1）频率校正因子为1.0；（2）温度为298.15 K；（3）压强为1 atm；（4）电子态的简并度为1。如用户的计算不属于以上情形，可以通过一系列关键词进行指定，如以下的写法代表频率校正因子为0.98，温度为373.15 K，压强为2 atm，电子态的简并度为2：
 
-.. code-block:: python
+.. code-block:: bdf
 
     $bdfopt
     hess
@@ -423,7 +423,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 有时因SCF不收敛或其他外在原因，导致频率计算中断，此时可在BDFOPT模块里加入''restarthess''关键词进行断点续算，节省计算时间，如：
 
-.. code-block:: python
+.. code-block:: bdf
 
     $bdfopt
     hess
@@ -433,7 +433,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 此外值得注意的是，可以在同一个BDF任务里依次实现结构优化与频率分析（即所谓的opt+freq计算），而无需单独编写两个输入文件。为此只需将BDFOPT模块的输入改为：
 
-.. code-block:: python
+.. code-block:: bdf
 
     $bdfopt
     solver
@@ -449,7 +449,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 准备以下输入文件：
 
-.. code-block:: python
+.. code-block:: bdf
 
     $compass
     title
@@ -514,7 +514,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 （1）准备以下输入文件，命名为HCN-inithess.inp：
 
-.. code-block:: python
+.. code-block:: bdf
 
     $compass
     title
@@ -552,7 +552,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 （4）准备以下输入文件，命名为HCN-optTS.inp：
 
-.. code-block:: python
+.. code-block:: bdf
 
     $compass
     title
@@ -600,7 +600,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 BDF还支持在结构优化中限制一个或多个内坐标的值，方法是在BDFOPT模块中加入constrain关键词。constrain关键词后的第一行为一个整数（以下称为N），表示总的限制数目；第2行到第N+1行表示每个限制的定义。例如以下输入表示在结构优化时限制第2个原子和第5个原子之间的距离（这两个原子之间不一定需要有化学键）：
 
-.. code-block:: python
+.. code-block:: bdf
 
     $bdfopt
     solver
@@ -612,7 +612,7 @@ BDF还支持在结构优化中限制一个或多个内坐标的值，方法是�
 
 以下输入表示在结构优化时限制第1个原子和第2个原子之间的距离，同时还限制第2、第5、第10个原子形成的键角（同样地，不要求第2、第5个原子，或第5、第10个原子之间有化学键）：
 
-.. code-block:: python
+.. code-block:: bdf
 
     $bdfopt
     solver
@@ -625,7 +625,7 @@ BDF还支持在结构优化中限制一个或多个内坐标的值，方法是�
  
  以下输入表示在结构优化时限制第5、第10、第15、第20个原子之间的二面角，同时还限制第10、第15、第20、第25个原子之间的二面角：
  
- .. code-block:: python
+.. code-block:: bdf
 
     $bdfopt
     solver
