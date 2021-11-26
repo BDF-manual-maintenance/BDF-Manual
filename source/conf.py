@@ -89,3 +89,55 @@ html_context = {
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+
+from pygments.lexer import RegexLexer,words,include
+from pygments.token import *
+import re
+
+class BDFLexer(RegexLexer):
+   
+    name = 'BDF'
+    aliases = ['bdf']
+    filenames = ['*.inp']
+    mimetypes = ['text/x-bdf']
+
+    flags = re.IGNORECASE
+
+    tokens = {
+        'root': [
+            (r'(\n\s*|\t)', Whitespace),
+            (r'#.*$', Comment.Single),
+            (r'^\*.*$', Comment.Single),
+            include('modules'),
+            include('keywords'),
+            include('bool'),
+            include('numbers'),
+            ('[^$]+', Text),
+        ],
+        'modules': [
+            (words((
+                '$compass', '$bdfopt', '$drt', '$elecoup', '$expandmo', '$grad', '$localmo',
+                '$mcscf', '$mp2', '$mrci', '$resp', '$scf', '$tddft', '$traint',
+                '$xianci', '$xuanyuan','$end'), suffix=r'\b'),
+             Name.Function),
+        ],
+        "keywords": [
+            (words((
+                'geometry', 'end', 'basis-multi', 'basis', 'End geometry', 'end basis','charge', 'spin', 'title', 'RI-J','RI-K','RI-C','Group','Unit','Thresh','maxmem','RS','Heff','Hsoc','NuclearInuc','Cholesky','Occupy','Alpha','Beta','DFT'), suffix=r'\s'),
+             Name.Attribute),
+        ],
+        "bool": [
+            (words((
+                'Nosymm', 'norotate', 'skeleton', 'extcharge', 'uncontract', 'primitive', 'direct', 'scalar','direct','soint','RHF','UHF','ROHF','RKS','UKS','ROKS','D3'), suffix=r'\s'),
+            Name.Builtin),
+        ],
+        'numbers': [
+            (r'\d+\.\d+', Number.Float),
+            (r'\d+[ed][+-]?[0-9]+', Number.Float),
+            (r'\d+', Number.Integer),
+        ],
+    }
+
+def setup(sphinx):
+    sphinx.add_lexer("bdf", BDFLexer)
