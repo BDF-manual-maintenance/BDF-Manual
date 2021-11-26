@@ -91,7 +91,7 @@ html_context = {
 html_static_path = ['_static']
 
 
-from pygments.lexer import RegexLexer,words,include
+from pygments.lexer import RegexLexer,words,include,bygroups
 from pygments.token import *
 import re
 
@@ -106,14 +106,14 @@ class BDFLexer(RegexLexer):
 
     tokens = {
         'root': [
-            (r'(\n\s*|\t)', Whitespace),
-            (r'#.*$', Comment.Single),
-            (r'^\*.*$', Comment.Single),
+            include('comment'),
+            (r'\b(geometry)([\s\S]+)(end geometry)\b',bygroups(Keyword.Namespace, Text, Keyword.Namespace)),
+            (r'\b(basis-multi)([\s\S]+)(end basis)\b',bygroups(Keyword.Namespace, Text, Keyword.Namespace)),
             include('modules'),
             include('keywords'),
             include('bool'),
             include('numbers'),
-            ('[^$]+', Text),
+            ('.+', Text),
         ],
         'modules': [
             (words((
@@ -124,12 +124,12 @@ class BDFLexer(RegexLexer):
         ],
         "keywords": [
             (words((
-                'geometry', 'end', 'basis-multi', 'basis', 'End geometry', 'end basis','charge', 'spin', 'title', 'RI-J','RI-K','RI-C','Group','Unit','Thresh','maxmem','RS','Heff','Hsoc','NuclearInuc','Cholesky','Occupy','Alpha','Beta','DFT'), suffix=r'\s'),
+                'basis', 'charge', 'spin', 'title', 'RI-J','RI-K','RI-C','Group','Unit','Thresh','maxmem','RS','Heff','Hsoc','NuclearInuc','Cholesky','Occupy','Alpha','Beta','DFT','NPTRAD','NPTANG','COSXNGRID','Grid','Gridtype','Partitiontype','Numinttype','Guess'), suffix=r'\b'),
              Name.Attribute),
         ],
         "bool": [
             (words((
-                'Nosymm', 'norotate', 'skeleton', 'extcharge', 'uncontract', 'primitive', 'direct', 'scalar','direct','soint','RHF','UHF','ROHF','RKS','UKS','ROKS','D3'), suffix=r'\s'),
+                'Nosymm', 'norotate', 'skeleton', 'extcharge', 'uncontract', 'primitive', 'direct', 'scalar','direct','soint','RHF','UHF','ROHF','RKS','UKS','ROKS','D3','NosymGrid'), suffix=r'\b'),
             Name.Builtin),
         ],
         'numbers': [
@@ -137,6 +137,11 @@ class BDFLexer(RegexLexer):
             (r'\d+[ed][+-]?[0-9]+', Number.Float),
             (r'\d+', Number.Integer),
         ],
+        'comment': [
+            (r'#.*', Comment.Single),
+            (r'^\*.*', Comment.Single),
+            (r'^%.*', Comment.Single),
+        ]
     }
 
 def setup(sphinx):

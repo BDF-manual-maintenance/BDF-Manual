@@ -19,7 +19,7 @@ BDF的简洁输入(easy input)
 
 以水分子的单点能计算为例来详细描述BDF简洁输入格式：
 
-.. code-block:: python
+.. code-block:: bdf
 
   #!H2O.bdf
   B3lyp/3-21G 
@@ -45,7 +45,7 @@ BDF的高级输入格式是起初在开发基于高斯基函数是采用的输�
 
 同样，以水分子为例来详细描述BDF高级输入格式：
 
-.. code-block:: python
+.. code-block:: bdf
 
   #Example for BDF advanced input
   $compass
