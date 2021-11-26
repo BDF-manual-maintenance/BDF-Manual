@@ -141,6 +141,7 @@ class BDFLexer(RegexLexer):
             (r'\d+', Number.Integer),
         ],
         'comment': [
+            (r'\/\*.*?\*\/', Comment.Preproc),
             (r'#.*', Comment.Single),
             (r'^\*.*', Comment.Single),
             (r'\n(\*.*)', bygroups(Comment.Single)),
