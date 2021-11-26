@@ -160,27 +160,5 @@ BDF需要在Linux终端下运行。运行BDF，需要先准备输入文件。输
     #在test目录中运行提交命令
     $$BDFHOME/sbin/bdfdrv.py -r **.inp
 
-我们还可以写 ``run.sh`` 脚本来运行BDF，之后使用 :guilabel:`run.sh` 提交任务。
 
-在 ``run.sh`` 中写入如下内容：
-
-.. code-block:: python
-
-    #!/bin/bash
-
-    export BDFHOME=/home/user/bdf-pkg-pro
-    export BDF_TMPDIR=/tmp/$RANDOM
-    
-    export OMP_NUM_THREADS=2
-    export OMP_STACKSIZE=1G
-
-    $BDFHOME/sbin/bdfdrv.py -r $1
-
-更改脚本的运行权限
-$chmod +x run.sh
-
-运行BDF
-$./run.sh ch2-hf.inp或$./run.sh ch2-hf.inp > ch2-hf.log
-
-若使用排队系统（例如PBS/slurm等）提交任务，只需配置完成相应的 ``.pbs`` 或 ``.slurm`` 脚本，之后使用 :guilabel:`qsub xx.pbs` 或用 :guilabel:`sbatch xx.slurm` 提交任务即可。
 
