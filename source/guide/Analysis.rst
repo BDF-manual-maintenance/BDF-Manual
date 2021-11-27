@@ -5,7 +5,18 @@ BDF支持的波函数分析有：Mulliken布居分析和Lowdin布居分析，包
 
 BDF支持的单电子性质有：偶极矩，各种光谱性质，以及sf-X2C/SCF情况下的穆斯堡尔有效接触密度。
 
-更多的波函数分析及单电子性质，可以通过产生molden格式的数据文件，用第三方程序完成。
+更多的波函数分析及单电子性质，可以通过在 ``scf`` 模块中产生molden格式的数据文件，用第三方程序完成。输入示例：
+
+.. code-block:: bdf
+
+  $scf
+  rks
+  dft functional
+   b3lyp
+  molden
+  $end
+
+标准的molden格式仅支持spdfg型高斯基函数，但在BDF中已推广到h函数。
 
 有效接触密度
 ------------------------------------------------
@@ -23,7 +34,7 @@ BDF支持的单电子性质有：偶极矩，各种光谱性质，以及sf-X2C/S
 计算ECD需要同时考虑相对论效应（在BDF中用X2C哈密顿，通过 ``heff`` =21，22，或23指认）和有限尺寸的原子核。
 在sf-X2C-AU/B3LYP级别的输入示例如下：
 
-.. code-block::
+.. code-block:: bdf
 
   $xuanyuan
   scalar
@@ -61,16 +72,15 @@ molden2aim
 ------------------------------------------------
 下载： https://github.com/zorkzou/Molden2AIM
 
-molden2aim的用途是把BDF产生的molden文件转化为wfn，wfx，或NBO-47格式的数据文件，用于各种分析。
-
-标准的molden格式仅支持spdfg型高斯基函数，但在BDF和molden2aim中已推广到h函数。
+molden2aim的用途是把BDF产生的molden文件转化为wfn，wfx，或NBO-47格式的数据文件，用于各种分析。支持spdfgh型高斯基函数以及ECP。
 
 Multiwfn
 ------------------------------------------------
 下载： http://sobereva.com/multiwfn/
 
-Multiwfn是功能强大的波函分析程序。通过BDF产生的molden数据文件（支持spdfgh基函数和赝势）或经molden2aim转化的wfn、wfx数据文件，可以用Multiwfn进行各种波函数分析和绘图，
-例如电子密度拓扑分析（也称量子理论的分子中原子；QTAIM），电子局域函数（ELF），布居分析，键级分析，原子电荷，等。
+Multiwfn是功能强大的波函分析程序。通过BDF产生的molden数据文件（支持spdfgh基函数和赝势）或经molden2aim转化的wfn、wfx数据文件，
+可以用Multiwfn进行各种波函数分析，例如电子密度拓扑分析（也称 *分子中原子的量子理论* ；QTAIM），电子局域函数（ELF），布居分析，
+键级分析，原子电荷分析，等，也可以绘制分子轨道、电子密度和各种实空间函数的图像。
 细节参见Multiwfn使用手册。
 
 NBO分析
