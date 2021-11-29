@@ -3,5 +3,4 @@
 
 .. bibliography::
     :cited:
-    
-
+    :list: citation

@@ -172,7 +172,7 @@ Hyperpolarizability:<<A,B,C>>(wB,wC)。
 
 :guilabel:`Fnac` 参数类型：Bool型
 ------------------------------------------------
-指定resp计算一阶非绝热耦合(first-oder noadibatic couplings)向量，需要与Single或者Double参数联用，分别指定计算基态-激发态、激发态-激发态非绝热耦合向量。
+指定resp计算一阶非绝热耦合（first-oder noadibatic couplings）向量，需要与Single或者Double参数联用，分别指定计算基态-激发态、激发态-激发态非绝热耦合向量。
 
 :guilabel:`Single` 参数类型：Bool型
 ------------------------------------------------
