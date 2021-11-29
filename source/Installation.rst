@@ -29,66 +29,7 @@
  * openmpi 1.4.1版本及以上（编译并行版本的BDF）
 
 
-配置编译BDF
-==========================================================================
-
-以Linux下Bash Shell为例，所有操作均在BDF的主目录:
-
-Intel Fortran、C/C++编译器及MKL数学库
-------------------------------------------------------
-
-
-.. code-block:: shell
-
-    #设置编译器
-    $export FC=ifort
-    $export CC=icc
-    $export CXX=icpc
-    #设置数学库
-    $export MATHLIB=”-lmkl_intel_ilp64 -lmkl_sequential -lmkl_core”
-    $export MATHINCLUDE=”-I/opt/intel/mkl/include”
-    #配置BDF，产生Makefile
-    $./configure --enable-mkl=yes --enable-openmp=yes --enable-i8=yes
-    #编译BDF
-    $make 
-
-
-Intel Fortran编译器，gcc/g++编译器，MKL数学库
-------------------------------------------------------
-
-.. code-block:: shell
-
-    #设置编译器
-    $export FC=ifort
-    $export CC=icc
-    $export CXX=g++
-    #设置数学库
-    $export MATHLIB=”-lmkl_intel_ilp64 -lmkl_sequential -lmkl_core”
-    $export MATHINCLUDE=”-I/opt/intel/mkl/include”
-    #配置BDF，产生Makefile
-    $./configure --enable-mkl=yes --enable-openmp=yes --enable-i8=yes
-    #编译BDF
-    $make 
-
-
-GNU的Fortran编译器gfortran，gcc/g++编译器，Netlib的Blas和Lapack数学库
---------------------------------------------------------------------------
-
-.. code-block:: shell
-
-    #设置编译器
-    $export FC=gfortran
-    $export CC=icc
-    $export CXX=g++
-    #设置数学库
-    $export MATHLIB=”-L/home/bsuo/lapack-3.8.0 -llapack -lblas -lcblas -llapacke”
-    $export MATHINCLUDE=”-I/home/bsuo/lapack-3.8.0/LAPACKE/include -I/home/bsuo/lapack-3.8.0/CBLAS/include”
-    #配置BDF，产生Makefile
-    $./configure --enable-mkl=no --enable-openmp=yes --enable-i8=yes
-    #编译BDF
-    $make 
-
-cmake编译BDF-GTO
+cmake编译BDF
 ==========================================================================
 
 Intel Fortran编译器，gcc/g++编译器，MKL数学库

@@ -37,7 +37,7 @@ extensions = [
 
 bibtex_bibfiles = ['refs.bib']
 
-bibtex_default_style = 'plain'
+bibtex_default_style = 'mystyle'
 
 mathjax3_config = {
     "tex": {"extensions": ["mhchem.js"]}
@@ -141,6 +141,7 @@ class BDFLexer(RegexLexer):
             (r'\d+', Number.Integer),
         ],
         'comment': [
+            (r'\/\*.*?\*\/', Comment.Single),
             (r'#.*', Comment.Single),
             (r'^\*.*', Comment.Single),
             (r'\n(\*.*)', bygroups(Comment.Single)),
@@ -150,3 +151,14 @@ class BDFLexer(RegexLexer):
 
 def setup(sphinx):
     sphinx.add_lexer("bdf", BDFLexer)
+
+
+import pybtex.plugin
+from pybtex.style.formatting.unsrt import Style as UnsrtStyle
+from pybtex.style.template import field
+
+class MyStyle(UnsrtStyle):
+    def format_title(self, e, which_field):
+        return field(which_field)
+
+pybtex.plugin.register_plugin('pybtex.style.formatting', 'mystyle', MyStyle)

@@ -21,6 +21,8 @@
 
 .. include:: guide/Point-Group.rst
 
+.. include:: guide/Point-Charge.rst
+
 .. include:: guide/Optimization.rst
 
 .. include:: guide/Analysis.rst

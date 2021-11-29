@@ -40,7 +40,7 @@ Compass模块主要完成计算任务的初始化工作，包括读入用户定�
 
 :guilabel:`RI-J/RI-K/RI-C` 参数类型：字符串
 ---------------------------------------------
-密度拟合近似 (Density-fitting approximation) 加速算法的辅助基组。
+密度拟合近似（Density-fitting approximation）加速算法的辅助基组。
 
  * RI-J：库伦拟合基组
  * RI-K：交换拟合基组
@@ -144,7 +144,7 @@ Compass模块主要完成计算任务的初始化工作，包括读入用户定�
 
 .. attention:: 
 
-    使用了这个参数，分子坐标不会旋转。默认情况下，分子坐标会被旋转到标准取向 (Standard orientation)
+    使用了这个参数，分子坐标不会旋转。默认情况下，分子坐标会被旋转到标准取向（Standard orientation）
 
 :guilabel:`Norotate` 参数类型：Bool型
 ------------------------------------------------
