@@ -101,7 +101,7 @@ localmo模快用于产生定域化的分子轨道，包含了Boys，Pipek-Maye�
 
 :guilabel:`Anaylze` 参数类型：Bool型
 ------------------------------------------------
-指定分析用户给定的定域轨道，计算占据-空轨道对的数目和MOS(Molecular Orbital Spread)。分析定域轨道需要从BDF_TMPDIR读入名为bdftask.testorb的文件，并进行轨道分析。这一轨道文件与SCF的bdftask.scforb格式相同，均为文本文件。
+指定分析用户给定的定域轨道，计算占据-空轨道对的数目和MOS（Molecular Orbital Spread）。分析定域轨道需要从BDF_TMPDIR读入名为bdftask.testorb的文件，并进行轨道分析。这一轨道文件与SCF的bdftask.scforb格式相同，均为文本文件。
 
 :guilabel:`Momatch` 参数类型：Bool型
 ------------------------------------------------
