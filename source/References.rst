@@ -1,7 +1,5 @@
 参考文献及引用说明
 ************************************
 
-.. bibliography::
-    :cited:
-    
-
+.. bibliography:: 
+    :cited:
