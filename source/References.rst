@@ -3,4 +3,4 @@
 
 .. bibliography::
     :cited:
-    :style: unsrt
+    :list: citation
