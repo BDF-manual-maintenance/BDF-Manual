@@ -37,6 +37,8 @@ extensions = [
 
 bibtex_bibfiles = ['refs.bib']
 
+bibtex_default_style = 'plain'
+
 mathjax3_config = {
     "tex": {"extensions": ["mhchem.js"]}
 }
@@ -113,7 +115,8 @@ class BDFLexer(RegexLexer):
             include('keywords'),
             include('bool'),
             include('numbers'),
-            ('.+', Text),
+            (r'\S+', Text),
+            (r'\s+', Text),
         ],
         'modules': [
             (words((
@@ -138,10 +141,11 @@ class BDFLexer(RegexLexer):
             (r'\d+', Number.Integer),
         ],
         'comment': [
+            (r'\/\*.*?\*\/', Comment.Single),
             (r'#.*', Comment.Single),
             (r'^\*.*', Comment.Single),
             (r'\n(\*.*)', bygroups(Comment.Single)),
-            (r'\n(%.*)', bygroups(Comment.Preproc)),
+            (r'%.*', Comment.Preproc),
         ]
     }
 
