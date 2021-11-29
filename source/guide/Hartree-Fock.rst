@@ -61,16 +61,16 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
   $end
 
 从高级输入可以看出，BDF将按顺序执行模块 ``compass`` ， ``xuanyuan`` 和 ``scf`` 完成水分子的单点能量计算。
-``compass`` 用于读入分子结构，基函数等基本信息，判断分子的对称性，将分子转动到标准取向(Standard orientation，详见BDF对群论的使用小节)，产生对称匹配轨道等，
+``compass`` 用于读入分子结构，基函数等基本信息，判断分子的对称性，将分子转动到标准取向（Standard orientation，详见BDF对群论的使用小节），产生对称匹配轨道等，
 并将这些信息存入BDF的执行目录下的文件 ``h2o.chkfil`` 。 ``compass`` 中的关键词
 
  * ``geommetry`` 到 ``end geometry`` 之间定义的分子结构;
  * ``basis`` 定义基组为``3-21G``;
- * ``Skeleton`` 指定只计算对称独立的单、双电子积分，构造骨架Fock矩阵并对称化(详见BDF对群论的使用小节)。 
+ * ``Skeleton`` 指定只计算对称独立的单、双电子积分，构造骨架Fock矩阵并对称化（详见BDF对群论的使用小节）。 
 
 执行完 ``compass`` 模块后，BDF利用 ``xuanyuan`` 模块计算单、双电子积分。
 
- * ``direct`` 关键词指定后续的自洽场计算采用积分直接的计算方法(详见BDF的积分计算方法小节);
+ * ``direct`` 关键词指定后续的自洽场计算采用积分直接的计算方法（详见BDF的积分计算方法小节）;
  * ``maxmem`` 指定积分计算是可用的缓冲区内存为512 Mega Words。
 
 最后，BDF执行 ``scf`` 模块，完成基于Hartree-Fock的自洽场计算。
@@ -157,7 +157,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
 
  * ``Input BDF Keywords`` 给出了一些基本控制参数； 
  * ``Basis set`` 给出计算所用基组；
- * ``Wavefunction, Charges and spin`` 给出了体系电荷、总的核电荷数和自旋多重度(2S+1)；
+ * ``Wavefunction, Charges and spin`` 给出了体系电荷、总的核电荷数和自旋多重度（2S+1）；
  * ``Energy method`` 给出能量计算方法；
  * ``Accleration method`` 给出双电子积分计算加速方法；
  * ``Potential energy sufface method`` 给出势能面计算方法，这里是单点能量计算。
@@ -336,7 +336,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
      Timing caluclate K2 integrals.
      CPU:       0.00 SYS:       0.00 WALL:       0.00
     
-从输出我们看到单电子重叠、动能与核吸引积分被计算，还计算了偶极矩和四极矩积分。由于输入要求积分直接的SCF计算(Direct SCF)，双电子积分计算被忽略。
+从输出我们看到单电子重叠、动能与核吸引积分被计算，还计算了偶极矩和四极矩积分。由于输入要求积分直接的SCF计算（Direct SCF），双电子积分计算被忽略。
 
 最后，BDF调用 ``scf`` 模块执行 ``RHF`` 自洽场计算。需要关注的信息有：
 
@@ -609,7 +609,7 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
 限制性开壳层Hartree-Fock方法
 ------------------------------------------------------------------------------------------
 
-限制性开壳层Hartree-Fock(Restricted open-shell Hartree-Fock - ROHF)可以计算开壳层分子体系，在BDF中，ROHF
+限制性开壳层Hartree-Fock（Restricted open-shell Hartree-Fock - ROHF）可以计算开壳层分子体系，在BDF中，ROHF
 可与SA-TDDFT结合，解决激发态的自旋污染问题。这里给出一个 ``CH2`` 三重态的ROHF算例，
 
 .. code-block:: python
