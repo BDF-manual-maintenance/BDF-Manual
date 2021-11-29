@@ -196,7 +196,7 @@ Alpha & Beta必须联用，用于UHF/UKS计算，分别指定alpha或beta轨道�
 
 :guilabel:`Smeartemp` 参数类型：整型
 ---------------------------------------------------
-通过引入高温，通过费米模糊化(Fermi Smearing)方法改变前线轨道的占据数，从而改善DFT的收敛。对于HOMO-LUMO能差非常小或者前线轨道能级简并的体系，该方法能改善DFT的收敛性。注意BDF如果使用Fermi Smearing方法，最终的能量包含了电子熵能(the electronic entropy)的贡献,名为-TS-ele，从E_tot中间减掉这一项是电子能量。
+通过引入高温，通过费米模糊化（Fermi Smearing）方法改变前线轨道的占据数，从而改善DFT的收敛。对于HOMO-LUMO能差非常小或者前线轨道能级简并的体系，该方法能改善DFT的收敛性。注意BDF如果使用Fermi Smearing方法，最终的能量包含了电子熵能（the electronic entropy）的贡献,名为-TS-ele，从E_tot中间减掉这一项是电子能量。
 
 **Fock矩阵对角化控制关键词**
 

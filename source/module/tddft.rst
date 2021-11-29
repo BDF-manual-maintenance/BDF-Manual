@@ -31,7 +31,7 @@ TDDFT模块基于线形响应理论，通过求解Casida方程计算分子激发
 ---------------------------------------------------
  * 可选值：0、1、2、3、4
 
-指定TDDFT交换相关核。0为full non-collinear kernel；1为non-collinear ALDA kernel；2为no-collinear ALDA0 kernel, 推荐spin-flip TDDFT计算时使用；3为full non-collinear，产生自自旋平均密度；4为full collinear kernel (spin-flip TDDFT梯度与NAC)。
+指定TDDFT交换相关核。0为full non-collinear kernel；1为non-collinear ALDA kernel；2为no-collinear ALDA0 kernel, 推荐spin-flip TDDFT计算时使用；3为full non-collinear，产生自自旋平均密度；4为full collinear kernel（spin-flip TDDFT梯度与NAC）。
 
 :guilabel:`Itest & icorrect` 参数类型：整型
 ------------------------------------------------
@@ -190,7 +190,7 @@ nfiles是包含n+1个整数的多行参数，第一行输入为n，表示要读�
      2 4
      $END
 
-**自然跃迁轨道(Natural Transition Orbital -- NTO)分析**
+**自然跃迁轨道（Natural Transition Orbital -- NTO）分析**
 
 :guilabel:`Ntoanalyze` 参数类型：整型数组
 ---------------------------------------------------
