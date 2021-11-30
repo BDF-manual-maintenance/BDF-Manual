@@ -42,5 +42,6 @@ BDF用户手册
    :caption: 杂项
    
    FQA
+   Cite
    References
 

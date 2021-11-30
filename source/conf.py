@@ -64,6 +64,8 @@ latex_engine = 'xelatex'
 
 latex_elements = {
     'preamble': r'''
+\usepackage{cite}
+\usepackage{longtable}
 \usepackage[version=4]{mhchem}
 \hypersetup{unicode=true}
 \usepackage{ctex}
