@@ -359,7 +359,7 @@
 
 示例4：检验非阿贝尔群和骨架矩阵法。算例下载链接 :download:`test029.zip <files/test029.zip>`  
 
-.. code-block: python
+.. code-block:: python
 
      # 1st task
      $COMPASS 
@@ -450,7 +450,7 @@
 
 示例5：自旋体系。算例下载链接 :download:`test031.zip <files/test031.zip>`  
 
-.. code-block: python
+.. code-block:: python
 
      $COMPASS 
      Title
@@ -481,9 +481,9 @@
      3 0 0 1 0 2 1 0
      $END
 
-示例6：势能面扫描。算例下载链接 :download:`test032.zip <files/test032>`
+示例6：势能面扫描。算例下载链接 :download:`test032.zip <files/test032.zip>`
 
-.. code-block: python
+.. code-block:: python
 
      #!test032.bdf
      HF/cc-pvdz scan
@@ -502,7 +502,7 @@
 
 示例7：Cholesky分解。算例下载链接 :download:`test033.zip <files/test033.zip>`
 
-.. code-block: python
+.. code-block:: python
 
      $COMPASS 
      Title
@@ -601,7 +601,7 @@
 
 示例8：辅助基组的DFT计算。算例下载链接 :download:`test041.zip <files/test041.zip>`
 
-.. code-block: python
+.. code-block:: python
 
      ######### C(2v) group is used
      $COMPASS 
@@ -710,4 +710,3 @@
      gridtype
      100
      $END
-     
