@@ -167,27 +167,6 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
     HOMO-LUMO gap:      -0.06306010 au      -1.71595329 eV
 
 
-Kohn-Sham支持的交换相关泛函
--------------------------------------------------
-BDF的Kohn-Sham密度泛函计算，支持限制性(restricted)、非限制性(unrestricted)和
-限制性开壳层(restricted open-shell)Kohn-Sham计算，简称为RKS、UKS和ROKS。其输入与RHF、UHF和ROHF接近，
-关键是要指定交换相关泛函。BDF支持LDA，GGA，Meta-GGA，Hybrid，RS Hybrid和Hyrid Meta-GGA等多种泛函。
-
-.. table:: BDF中支持的泛函
-    :widths: 40 60
-
-    ====================================== ====================================
-     泛函类型                                       泛函
-    ====================================== ====================================
-     局域密度近似方法 (LDA)                   LSDA, SVWN5, SAOP
-     广义梯度近似方法 (GGA)                   BP86, BLYP, PBE, PW91, OLYP, KT2
-     含动能密度的广义梯度近似法 (meta-GGA)     TPSS, M06L
-     杂化泛函 (Hybrid)                       B3LYP, GB3LYP, BHHLYP, PBE0, B3PW91, HFLYP, VBLYP
-     范围分离泛函 (RS Hybrid)                 wB97, wB97X, CAM-B3LYP, LC-BLYP
-     杂化含动能密度泛函 (Hyrid Meta-GGA)      TPSSh, M062X
-     双杂化泛函 ()                           B2PLYP
-    ====================================== ====================================
-
 RKS/UKS和ROKS计算
 -------------------------------------------------
 限制性Kohn-Sham(Restricted Kohn-Sham -- RKS)方法，这里以简洁输入的模式给出一个H2O分子的DFT计算算例，使用了B3lyp泛函。
@@ -249,16 +228,16 @@ H2O+离子的ROKS计算，简洁输入如下，
 
 .. code-block:: python
 
-#!bdf.sh
-ROKS/B3lyp/cc-pvdz charge=1    
-
-geometry
-O
-H  1  R1
-H  1  R1  2 109.
-
-R1=1.0     # OH bond length in angstrom 
-end geometry
+    #!bdf.sh
+    ROKS/B3lyp/cc-pvdz charge=1    
+    
+    geometry
+    O
+    H  1  R1
+    H  1  R1  2 109.
+    
+    R1=1.0     # OH bond length in angstrom 
+    end geometry
 
 .. hint::
     相比于Hartree-Fock，Kohn-Sham需要在高级输入使用dft关键词执行交换相关泛函。如果是简洁输入，只需指定交换相关泛函和基组。系统会根据自旋态选择使用RKS或UKS，如果要使用ROKS，必须明确输入。
