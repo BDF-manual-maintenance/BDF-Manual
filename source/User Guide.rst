@@ -7,6 +7,8 @@
 
 .. include:: guide/Gaussian-Basis-Sets.rst
 
+.. include:: guide/XCFunctional.rst
+
 .. include:: guide/SCF.rst
 
 .. include:: guide/SCFTech.rst
