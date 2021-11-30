@@ -1,7 +1,6 @@
 算例说明
 ************************************
 
-算例下载链接 :download:`input.zip <files/input.zip>`
 
 示例1：计算SCF能量梯度、结构优化。算例下载链接 :download:`test003.zip <files/test003.zip>`
 
@@ -352,8 +351,8 @@
      Occupied
      3 0 1 1
      DFT
-       CAM-B3lyp 
-     numinttype
+       CAM-B3lyp      #杂化泛函
+     numinttype       
       1
      $END     
 
@@ -710,3 +709,279 @@
      gridtype
      100
      $END
+     
+     
+示例9：阿贝尔群对称结构的TD-DFT梯度计算。算例下载链接 :download:`test063.zip <files/test063.zip>`
+
+.. code-block:: python
+     $COMPASS 
+     Title
+      H2O Molecule test run, cc-pvdz
+     Basis
+     cc-pvdz
+     Geometry
+      O  0.000000000   0.000000000    0.369372944
+      H  0.000000000  -0.783975899   -0.184686472 
+      H  0.000000000   0.783975899   -0.184686472 
+     End geometry
+     Check
+     Skeleton
+     $END
+     
+     $XUANYUAN
+     direct
+     $END
+     
+     $SCF
+     RKS                    #Restricted Kohn-Sham
+     dft functional
+      B3lyp
+     $END
+     
+     #Full TDDFT
+     $TDDFT
+     imethod        # 指定基于哪种基态计算方法进行TDDFT计算，imethod=1为R-TDFDT, 基态为RHF/RKS方法
+      1
+     isf                 # isf=0, no spin-flip
+      0
+     itda              #完全TDDDFT计算，使用TDA
+      0
+     idiag            #指定TDDFT的对角化方法，idiag=1为基于Davidson方法的迭代对角化
+      1
+     iprint
+      3
+     iexit             #每一次重复计算1个激发态，calculate 1 excitation state for every irrep
+      1
+     istore          # 指定波函数存储，save TDDFT wave function in 1st scratch file
+     1
+     lefteig         #指定TDDFT计算，X-Y向量也保存到文件中
+     crit_vec       #指定TDDFT计算波函数收敛阈值
+     1.d-8 
+     crit_e          #指定TDDFT计算能量收敛阈值
+     1.d-14
+     $END
+     
+     $resp
+     geom
+     norder      #解析梯度
+     1
+     method    #指定TD-DFT激发态计算
+     2
+     iroot         # 指定计算$tddft模块计算的第一个态的梯度，select the lowest state from all irreps, in this case the B2 state 
+     1              # this is particularly useful if the user don't know which irrep to follow
+     nfiles
+     1
+     $end
+
+示例10：DFT基态梯度计算。算例下载链接 :download:`test065.zip <files/test065.zip>`
+
+.. code-block:: python
+     $COMPASS 
+     Title
+      H2O+ grad 
+     Basis
+      cc-pvdz
+     Geometry
+      O  0.000000000   0.000000000    0.369372944
+      H  0.000000000  -0.783975899   -0.184686472 
+      H  0.000000000   0.783975899   -0.184686472 
+     End geometry
+     skeleton
+     group      #指定分子的对称点群
+     c(2v)
+     check
+     $END
+     
+     $XUANYUAN
+     $END
+     
+     $SCF
+     UKS        #Unrestricted Kohn-Sham
+     dft          # DFT exchange-correlation functional B3LYP
+     B3LYP
+     charge
+     1
+     spin        #指定计算电子态的自旋多重度，值为2S+1=2
+     2
+     $END
+     
+     $resp
+     geom 
+     norder          #解析梯度
+     1
+     method       #指定DFT基态计算
+     1
+     $end
+
+示例11：非阿贝尔群对称性的条件下进行TD-DFT梯度的计算。算例下载链接 :download:`test068.zip <files/test068.zip>`
+
+.. code-block:: python
+     $COMPASS 
+     Title
+      C6H6 SF-TD-DFT gradient, lowest & second lowest triplet state
+     Basis
+      cc-pvdz
+     Geometry
+      C                  1.20809735    0.69749533   -0.00000000
+      C                  0.00000000    1.39499067   -0.00000000
+      C                 -1.20809735    0.69749533   -0.00000000
+      C                 -1.20809735   -0.69749533   -0.00000000
+      C                  0.00000000   -1.39499067   -0.00000000
+      C                  1.20809735   -0.69749533   -0.00000000
+      H                  2.16038781    1.24730049   -0.00000000
+      H                  0.00000000    2.49460097   -0.00000000
+      H                 -2.16038781    1.24730049   -0.00000000
+      H                 -2.16038781   -1.24730049   -0.00000000
+      H                  0.00000000   -2.49460097   -0.00000000
+      H                  2.16038781   -1.24730049   -0.00000000
+     End geometry
+     Check
+     thresh
+     medium
+     skeleton
+     $END
+     
+     $XUANYUAN
+     direct
+     $END
+     
+     $SCF
+     RKS
+     dft functional
+      # for SF-TD-DFT, a larger amount of HF exchange is required than
+      # for spin-conserving TD-DFT. Thus, for most organic molecules, 
+      # BHHLYP (cx=50%) is recommended over B3LYP (cx=20%).
+      BHHLYP
+     $END
+     
+     $TDDFT
+     imethod      # imethod=1, starts from rhf/rks
+      1
+     isf             # isf=1, spin flip up
+      1
+     itda           # itda=0, TDDFT
+      0
+     idiag          # Davidson diagonalization for solving Casida equation
+      1 
+     iprint
+      3
+     iexit       #每一次重复计算1个激发态，calculate 1 excitation state for every irrep
+      1
+     istore    # save TDDFT wave function in 1st scratch file
+      1
+     ialda
+      4 # collinear kernel
+     lefteig     ##指定TDDFT计算，X-Y向量也保存到文件中
+     crit_vec   #指定TDDFT计算波函数收敛阈值
+      1.d-6
+     crit_e       #指定TDDFT计算能量收敛阈值
+      1.d-8
+     $END
+     
+     $resp
+     geom
+     norder      #解析梯度
+      1
+     method   #指定TD-DFT激发态计算
+      2
+     iroot
+      1 2 # lowest and second lowest root
+     nfiles
+      1
+     jahnteller
+      1 # follow irrep component 1
+     $end
+
+示例12：基于TDDFT的非绝热耦合计算。算例下载链接 :download:`test081.zip <files/test081.zip>`
+
+.. code-block:: python
+     $compass
+     title
+      PhCOMe
+     basis
+      def2-SVP
+     geometry
+             C             -0.3657620861         4.8928163606         0.0000770328
+             C             -2.4915224786         3.3493223987        -0.0001063823
+             C             -2.2618953860         0.7463412225        -0.0001958732
+             C              0.1436118499        -0.3999193588        -0.0000964543
+             C              2.2879147462         1.1871091769         0.0000824391
+             C              2.0183382809         3.7824607425         0.0001740921
+             H             -0.5627800515         6.9313968857         0.0001389666
+             H             -4.3630645857         4.1868310874        -0.0002094148
+             H             -3.9523568496        -0.4075513123        -0.0003833263
+             H              4.1604797959         0.3598389310         0.0001836001
+             H              3.6948496439         4.9629708946         0.0003304312
+             C              0.3897478526        -3.0915327760        -0.0002927344
+             O              2.5733215239        -4.1533492423        -0.0002053903
+             C             -1.8017552120        -4.9131221777         0.0003595831
+             H             -2.9771560760        -4.6352720097         1.6803279168
+             H             -2.9780678476        -4.6353463569        -1.6789597597
+             H             -1.1205416224        -6.8569277129         0.0002044899
+     end geometry
+     skeleton
+     unit          # Set unit of length as Bohr
+      bohr
+     nosymm
+     check
+     $end
+     
+     $XUANYUAN
+     Direct        # ask for direct SCF
+     Schwarz
+     $END
+     
+     $SCF
+     rks           # Restricted Kohn-Sham calculation
+     dft            # ask for bhhlyp functional
+      bhhlyp 
+     $END
+     
+     $tddft
+     imethod        # 指定基于哪种基态计算方法进行TDDFT计算，imethod=1为R-TDFDT, 基态为RHF/RKS方法
+      1
+     isf           # request for triplets (spin flip up)
+      1
+     itda
+      0
+     ialda           # use collinear kernel (NAC only supports collinear kernel)
+      4
+     iexit         #每一次重复计算2个激发态，calculate 2 excitation state for every irrep
+      2
+     crit_vec       #指定TDDFT计算波函数收敛阈值
+      1.d-6
+     crit_e        #指定TDDFT计算能量收敛阈值
+      1.d-8
+     partitiontype           #SSF分割
+      1
+     lefteig        #X-Y向量也保存到文件中
+     istore         # 指定波函数存储，save TDDFT wave function in 1st scratch file
+      1
+     iguess        # use sTDDFT guess (and also sTDDFT preconditioner)
+      20 
+     iprt            #指定输出信息的详略程度
+      2
+     $end
+     
+     # EX-EX NAC
+     $resp
+     iprt
+      1
+     QUAD           #指定resp进行二次响应计算
+     FNAC            #指定resp计算一阶非绝热耦合向量
+     double           #double为激发态-激发态非绝热耦合向量
+     norder           #1为解析梯度
+      1
+     method          #指定TD-DFT激发态计算
+      2
+     nfiles
+      1
+     pairs     #指定计算那两组激发态之间的非绝热耦合向量
+      1
+      1 1 1 1 1 2
+     noresp    #指定在Double和FNAC计算中忽略跃迁密度矩阵的响应项
+     $end
+
+示例13：。算例下载链接 :download:`test085.zip <files/test085.zip>`
+
+.. code-block:: python
