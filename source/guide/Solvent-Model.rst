@@ -35,8 +35,8 @@ BDF目前支持基态溶剂化效应计算，包括HF和DFT方法。以下是甲
     rks
     dft
     b3lyp
-   solvent
-    water
+   solvent   #溶剂化计算开关
+    water    #指定溶剂
     grid
        medium
   $END
@@ -244,9 +244,9 @@ BDF目前支持基态溶剂化效应计算，包括HF和DFT方法。以下是甲
 .. code-block:: bdf 
 
   solvent
-    user
+    user   #用户指定
   dielectric
-    78.3553
+    78.3553   #输入介电常数
 
 
 .. note::

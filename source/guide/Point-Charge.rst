@@ -15,8 +15,8 @@ BDF支持将MM区原子电荷作为点电荷输入进行计算。点电荷以与
     H   0.000000   0.785178  -0.427319
     H   0.000000  -0.785178  -0.427319
     End Geometry
-    Extcharge  /*表示需要输入点电荷*/
-    point      /*表示输入电荷类型为点电荷*/                                                                                                                                        
+    Extcharge  #表示需要输入点电荷
+    point      #表示输入电荷类型为点电荷                                                                                                                                        
     Check
     Skeleton
     $END
@@ -32,10 +32,10 @@ BDF支持将MM区原子电荷作为点电荷输入进行计算。点电荷以与
 
 点电荷输入文件（文件名 h2o.extcharge）如下：
 
-.. code-block:: C
+.. code-block:: bdf
 
-    External charge, Point charge   /*第一行为标题和说明行*/
-    6                               /*要输入的点电荷数*/ 
+    External charge, Point charge   #第一行为标题和说明行
+    6                               #要输入的点电荷数 
     C1     -0.732879     0.000000     5.000000     0.114039 
     C2      0.366440     0.000000     5.780843    -0.456155 
     C3      0.366440     0.000000     4.219157    -0.456155
@@ -45,12 +45,12 @@ BDF支持将MM区原子电荷作为点电荷输入进行计算。点电荷以与
 
 点电荷的默认输入格式为:  标签  电荷  坐标 x y z; 坐标单位默认为埃。坐标输入单位也可以为Bohr，输入格式如下：
 
-.. code-block:: C
+.. code-block:: bdf
 
-    External charge, Point charge   /* title line*/
-    6    Bohr                       /* Unit: Bohr */ 
+    External charge, Point charge   # title line
+    6    Bohr                       # Unit: Bohr  
     C1     -0.732879     0.000000     5.000000     0.114039 
-    /*     省略 */ 
+    #     省略 # 
 
 
 .. 本小节结束
