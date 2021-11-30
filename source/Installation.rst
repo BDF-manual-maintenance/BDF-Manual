@@ -24,7 +24,7 @@
 
 可选配置：
  * Intel Parallel Studio XE Cluster版C/C++ Fortran编译器
- * CMake 2.8.11版本及以上（使用cmake进行编译）
+ * CMake 3.15版本及以上（使用cmake进行编译）
  * 优化的BLAS/LAPACK 库（如Intel的MKL，AMD的ACML，OpenBLAS等）
  * openmpi 1.4.1版本及以上（编译并行版本的BDF）
 
