@@ -76,7 +76,25 @@ BDF需要在Linux终端下运行。运行BDF，需要先准备输入文件。输
 
 单机运行BDF，用Shell脚本执行作业
 ---------------------------------------------
-假设用户目录为 /home/user, BDF被安装在 /home/user/bdf-pkg-pro中。准备好输入文件 ``ch2-hf.inp`` 之后，按照如下方法执行。 
+假设用户目录为 /home/user, BDF被安装在 /home/user/bdf-pkg-pro中。准备好输入文件 ``ch2-hf.inp`` 之后，需要在准备一个shell脚本，输入如下内容
+
+.. code-block:: shell
+
+    #!/bin/bash
+
+    export BDFHOME=/home/user/bdf-pkg-pro
+    export BDF_WORKDIR=./
+    export BDF_TMPDIR=/tmp/$RANDOM
+
+    ulimit -s unlimited
+    ulimit -t unlimited
+
+    export OMP_NUM_THREADS=4
+    export OMP_STACKSIZE=512M 
+
+    $BDFHOME/bdfdrv.py -r $1
+
+并命名为run.sh，利用 "chmod +x run.sh"赋予脚本执行权限，然后按照如下方法执行。 
 
 .. code-block:: shell
 
@@ -86,9 +104,11 @@ BDF需要在Linux终端下运行。运行BDF，需要先准备输入文件。输
     #拷贝/home/user/bdf-pkg-pro/tests/easyinput/ch2-hf.inp到test文件夹
     $cp /home/user/bdf-pkg-pro/tests/easyinput/ch2-hf.inp
     #在test目录中运行提交命令
-    $$BDFHOME/sbin/bdfdrv.py -r **.inp
+    $./run.x ch2-hf.inp &> ch2-hf.out&
 
-
+.. hint::
+    BDF将输出打印至标准输出，需要用重定向命令 ``>`` 定向到文件ch2-hf.out中。
+    
 利用PBS作业管理系统提交BDF作业
 ------------------------------------------------
 
@@ -96,6 +116,32 @@ PBS提交BDF的作业脚本示例如下：
 
 .. code-block:: shell
 
+    #!/bin/bash
+    #PBS -N jobname
+    #PBS -l nodes=1:ppn=4
+    #PBS -l walltime=1200:00:00
+    #PBS -q batch
+    #PBS -S /bin/bash
+    
+    #### Set the environment variables #######
+    #module load tools/openmpi-3.0.1-intel-socket
+    
+    #### Set the PATH to find your applications #####
+    export BDFHOME=/home/bbs/bdf-pkg-pro
+    
+    # 指定BDF运行的临时文件存储目录
+    export BDF_TMPDIR=/tmp/$RANDOM
+    
+    # 指定OpenMP的Stack内存大小
+    export OMP_STACKSIZE=2G
+    
+    # 指定OpenMP可用线程数，应该等于ppn定义的数目
+    export OMP_NUM_THREADS=4
+    
+    #### Do not modify this section ! #####
+    cd $PBS_O_WORKDIR
+    
+    $BDFHOME/bdfdrv.py -r jobname.inp
 
 
 利用Slurm作业管理系统提交BDF作业
@@ -105,6 +151,6 @@ PBS提交BDF的作业脚本示例如下：
 
 
 .. important::
-    * stacksize的问题。intel Fortran编译器对程序运行的堆区(stack)内存要求较大，Linux系统默认的stacksize的大小通常太小，需要通过ulimit -s unlimited指定堆区内存大小。
-    * OpenMP并行的线程数。OMP_NUM_THREAS用于设定OpenMP的并行线程数。BDF依赖于OpenMP并行提高计算效率。如果用户使用了Bash Shell，可以用命令 ``export OMP_NUM_THREADS=N`` 指定使用N个OpenMP线程加速计算。
-    * OpenMP可用堆区内存，用户可以用 ``export OMP_STACKSIZE=1024M`` 指定OpenMP可用的堆区内存大小。
+    1. stacksize的问题。intel Fortran编译器对程序运行的堆区(stack)内存要求较大，Linux系统默认的stacksize的大小通常太小，需要通过ulimit -s unlimited指定堆区内存大小。
+    2. OpenMP并行的线程数。OMP_NUM_THREAS用于设定OpenMP的并行线程数。BDF依赖于OpenMP并行提高计算效率。如果用户使用了Bash Shell，可以用命令 ``export OMP_NUM_THREADS=N`` 指定使用N个OpenMP线程加速计算。
+    3. OpenMP可用堆区内存，用户可以用 ``export OMP_STACKSIZE=1024M`` 指定OpenMP可用的堆区内存大小。
