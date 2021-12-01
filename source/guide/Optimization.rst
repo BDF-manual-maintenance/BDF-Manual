@@ -204,7 +204,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 ``.optgeom`` 文件可以用 ``$BDFHOME/sbin/`` 下的工具 ``optgeom2xyz.py`` 转为xyz格式，从而可以在支持xyz格式的任何可视化软件里观看优化后的分子结构。例如如果待转换的文件名为filename.optgeom，则在命令行执行：（注意必须先设定环境变量$BDFHOME，或手动用BDF文件夹的路径替代下述命令里的$BDFHOME）
 
-.. code-block:: bash
+.. code-block:: shell
 
     $BDFHOME/sbin/optgeom2xyz.py filename
 
@@ -502,7 +502,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 计算的输出与优化极小值点结构类似。最后频率分析时可以看到收敛的结构有且仅有一个虚频（-1104 cm :sup:`-1`）：
 
-.. code-block:: python
+.. code-block:: 
 
      Results of vibrations:
      Normal frequencies (cm^-1), reduced masses (AMU), force constants (mDyn/A)
@@ -775,7 +775,7 @@ BDF还支持在结构优化中限制一个或多个内坐标的值，方法是�
 
 注意该任务不仅需要计算T1态和T2态的梯度，还需要计算T1态和T2态之间的非绝热耦合矢量（由最后一个RESP模块完成），相关关键词参见激发态梯度和非绝热耦合矢量相关章节，此处不再赘述。在BDFOPT模块的输入中， ``imulti 2`` 代表优化CI。和普通结构优化任务类似，CI优化会输出每步的梯度和步长收敛情况，与此同时还会输出能量收敛情况。例如以上算例最后一步优化的输出为：
 
-.. code-block:: bdf
+.. code-block:: 
 
     Testing convergence  in cycle    6
         Energy  0.0000E+00 Target: 1.0000E-06 converged?  yes

@@ -23,7 +23,7 @@ BDF支持在计算中考虑分子点群对称性。除某些计算任务（如�
 
 注意因为初始结构不严格满足 :math:`C_{3v}` 对称性，这里用``thresh medium``选择较松的判断对称性的阈值（默认为``tight``，也可选择更松的``loose``）。由输出文件可以看到，程序自动识别出该分子属于 :math:`C_{3v}` 点群：
 
-.. code-block:: bdf
+.. code-block:: 
 
   gsym: C03V, noper=    6
    Exiting zgeomsort....
@@ -34,7 +34,7 @@ BDF支持在计算中考虑分子点群对称性。除某些计算任务（如�
 
 注意点群名称的下标需要用括号括起来，诸如 :math:`C_{\infty v}, D_{\infty h}` 群的 :math:`\infty` 需要写作INF。接下来打印不可约表示信息、CG系数表等。在COMPASS部分输出的最后，程序给出该点群下不可约表示的列表，以及属于每个不可约表示的轨道的数目：
 
-.. code-block:: bdf
+.. code-block:: 
 
   |--------------------------------------------------|
             Symmetry adapted orbital

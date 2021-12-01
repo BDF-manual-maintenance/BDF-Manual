@@ -84,7 +84,7 @@ R-TDDFT用于计算闭壳层体系。如果基态计算从RHF出发，TDDFT模�
 基于RKS的计算结果，进行后续的 ``TDDFT`` 计算，注意 ``TDDFT`` 中的 ``imethod`` 关键词值设定为 ``1`` 。Kohn-Sham计算的输出前面已经
 介绍过，这里我们只关注 ``TDDFT`` 计算的结果。程序输出会先给出TDDFT计算的设置信息方便用户检查是否计算的设置，如下：
 
-.. code-block:: bdf
+.. code-block:: 
 
       --------------------------------------------------   
       --- PRINT: Information about TDDFT calculation ---   
@@ -132,7 +132,7 @@ R-TDDFT用于计算闭壳层体系。如果基态计算从RHF出发，TDDFT模�
 
 下面的输出给出了每个不可约表示计算的根的数目。
 
-.. code-block:: bdf
+.. code-block:: 
 
     Target Excited State in each rep / Diag method :
     1   A1       1   1
@@ -142,7 +142,7 @@ R-TDDFT用于计算闭壳层体系。如果基态计算从RHF出发，TDDFT模�
 
 TDDFT模块还会打印占据轨道，虚轨道等TDDFT计算的活性轨道信息
 
-.. code-block:: bdf
+.. code-block:: 
 
              Print [Active] Orbital List         
               ---[Alpha set]---
@@ -177,7 +177,7 @@ TDDFT模块还会打印占据轨道，虚轨道等TDDFT计算的活性轨道信�
 轨道能分别是-7.62124 eV和1.23186 eV。由于H2O分子有4个不可约表示，TDDFT会对每个不可约表示逐一求解。
 在进入Davidson迭代求解Casida方程之前，系统会估计内存使用情况，
 
-.. code-block:: bdf
+.. code-block:: 
 
  ==============================================
   Jrep: 1  ExctSym:  A1  (convert to td-psym)
@@ -198,7 +198,7 @@ TDDFT模块还会打印占据轨道，虚轨道等TDDFT计算的活性轨道信�
 分子体系较大时，如果这里输出的允许的每次可算根的数目小于系统这是数目，TDDFT模块将根据最大允许可算根的数目，通过
 多次积分计算构造JK算符，计算效率会降低，用户需要用 MEMJKOP关键词增加内存。Davidson迭代开始计算输出信息如下，
 
-.. code-block:: bdf
+.. code-block:: 
 
       Iteration started !
   
@@ -240,7 +240,7 @@ TDDFT模块还会打印占据轨道，虚轨道等TDDFT计算的活性轨道信�
 
 收敛信息如下：
 
-.. code-block:: bdf
+.. code-block:: 
 
        Niter=     5   Nlarge =      33   Nmv =      10
    Ndim =    10   Nlimdim=      33   Nres=      23
@@ -272,7 +272,7 @@ TDDFT模块还会打印占据轨道，虚轨道等TDDFT计算的活性轨道信�
   
 这里，5次迭代计算收敛，上面输出的最后4行，随后打印了收敛后电子态的信息，
 
-.. code-block:: bdf
+.. code-block:: 
 
    No.     1    w=      9.3784 eV      -76.0358398606 a.u.  f= 0.0767   D<Pab>= 0.0000   Ova= 0.5201
         CV(0):   A1(   3 )->  A1(   4 )  c_i:  0.9883  Per: 97.7%  IPA:    10.736 eV  Oai: 0.5163
@@ -299,7 +299,7 @@ TDDFT模块还会打印占据轨道，虚轨道等TDDFT计算的活性轨道信�
 
 所有不可约表示求解完后，所有的激发态会按照能量高低排列总结输出，
 
-.. code-block:: bdf
+.. code-block:: 
 
   No. Pair   ExSym   ExEnergies  Wavelengths      f     D<S^2>          Dominant Excitations             IPA   Ova     En-E1
 
@@ -310,7 +310,7 @@ TDDFT模块还会打印占据轨道，虚轨道等TDDFT计算的活性轨道信�
 
 随后还打印了跃迁矩和振子强度，可以用来绘制谱图。
 
-.. code-block:: bdf
+.. code-block:: 
 
   *** Ground to excited state Transition electric dipole moments (Au) ***
     State          X           Y           Z          Osc.
@@ -392,7 +392,7 @@ TDDFT模块还会打印占据轨道，虚轨道等TDDFT计算的活性轨道信�
 
 从输出
 
-.. code-block:: bdf
+.. code-block:: 
 
     --------------------------------------------------   
     --- PRINT: Information about TDDFT calculation ---   
@@ -408,7 +408,7 @@ TDDFT模块还会打印占据轨道，虚轨道等TDDFT计算的活性轨道信�
 
 可以看出执行的是U-TDDFT计算。计算总结输出的4个激发态为，
 
-.. code-block:: bdf
+.. code-block:: 
 
       No. Pair   ExSym   ExEnergies  Wavelengths      f     D<S^2>          Dominant Excitations             IPA   Ova     En-E1
 
@@ -477,7 +477,7 @@ SA-TDDFT，即spin-adapted TDDFT用于计算开壳层体系，开壳层体系的
 
 激发态输出为，
 
-.. code-block:: bdf
+.. code-block:: 
 
   No. Pair   ExSym   ExEnergies  Wavelengths      f     D<S^2>          Dominant Excitations             IPA   Ova     En-E1
 
@@ -693,7 +693,7 @@ TDDFT计算快结束时有输出信息如下，
 
 耦合矩阵元的打印输出如下，
 
-.. code-block:: bdf
+.. code-block:: 
 
     [tddft_soc_matsoc]
 
@@ -725,7 +725,7 @@ TDDFT计算快结束时有输出信息如下，
 
 SOC计算结果为，
 
-.. code-block:: bdf
+.. code-block:: 
 
         Totol No. of States:   161  Print:    10
   
@@ -807,9 +807,9 @@ SOC计算结果为，
   * ``1 1`` 表示基态偶极矩；
   * ``1 2`` 表示第一个与第二个 ``SOC-SI`` 态间的偶极矩。
 
-跃迁矩的输入如下：
+跃迁矩的输出如下：
 
-.. code-block:: bdf
+.. code-block:: 
 
    [tddft_soc_matrso]: Print selected matrix elements of [dpl] 
   
@@ -921,7 +921,7 @@ TDDFT计算示例1：UV-Vis吸收光谱的计算（垂直激发）
 
 输出文件中，COMPASS、XUANYUAN和SCF模块的输出与SCF单点能算例类似，在此不再赘述。TDDFT模块输出一些基本信息以后，进入实际的TDDFT计算，首先输出每个不可约表示的总激发态数，以及程序将求解的激发态数目（以每个不可约表示均计算2个激发态的输入文件为例）：
 
-.. code-block:: bdf
+.. code-block:: 
   
  [tddft_select]
  [ Targeted Excited States / Diag method ]
@@ -939,7 +939,7 @@ TDDFT计算示例1：UV-Vis吸收光谱的计算（垂直激发）
 
 之后程序对每个不可约表示进行逐一求解，例如Ag表示（需要注意的是，此处ExctSym是激发态的不可约表示，而PairSym是激发态所涉及的占据轨道和虚轨道的不可约表示的直积；ExctSym等于PairSym和基态的不可约表示的直积。对于该示例，因基态属于全同表示，ExctSym和PairSym相同，但是对于开壳层分子，基态不一定属于全同表示，因此ExctSym和PairSym可能会不同）：
 
-.. code-block:: bdf
+.. code-block:: 
   
  ==============================================
   Jrep: 1  ExctSym:  Ag  (convert to td-psym)
@@ -989,7 +989,7 @@ TDDFT计算示例1：UV-Vis吸收光谱的计算（垂直激发）
 
 经5次Davidson迭代后，程序求得了最低的两个Ag激发态，其激发能分别为12.80 eV和14.56 eV，并给出两个态的主要成分：
 
-.. code-block:: bdf
+.. code-block:: 
 
  No.     1    w=     12.8023 eV      -77.9524434004 a.u.  f= 0.0000   D<Pab>= 0.0000   Ova= 0.5044
       CV(0):   Ag(   3 )->  Ag(   4 )  c_i: -0.9836  Per: 96.7%  IPA:    14.207 eV  Oai: 0.5001
@@ -1019,7 +1019,7 @@ TDDFT计算示例1：UV-Vis吸收光谱的计算（垂直激发）
 
 待所有不可约表示均计算完毕后，程序会把所有不可约表示的计算结果汇总，并按激发能从低到高排序：
 
-.. code-block:: bdf
+.. code-block:: 
 
  *** List of excitations ***
 
