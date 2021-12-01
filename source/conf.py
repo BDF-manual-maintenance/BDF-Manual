@@ -148,8 +148,8 @@ class BDFLexer(RegexLexer):
             Name.Constant),
         ],
         'numbers': [
-            (r'\d+\.\d+', Number.Float),
-            (r'\d+[ed][+-]?[0-9]+', Number.Float),
+            (r'[+-]?\d+\.\d+', Number.Float),
+            (r'[+-]?\d+(\.)?[ed][+-]?[0-9]+', Number.Float),
             (r'\d+', Number.Integer),
         ],
         'comment': [
