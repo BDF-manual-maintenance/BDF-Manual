@@ -124,7 +124,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
 
 如果输入文件采用的是BDF简洁输入模式， ``h2o.out`` 中会给出一些基本的用户设置信息,
 
-.. code-block:: python
+.. code-block:: 
 
     |=========================================== BDF Control parameters ================================================|
     
@@ -161,7 +161,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
 
 随后，系统执行 ``compass`` 模块，会给出如下提示：
 
-.. code-block:: python
+.. code-block::
 
     |******************************************************************************|
     
@@ -173,7 +173,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
 
 然后以笛卡尔坐标的形式打印输入的分子结构及每种类型原子的基函数
 
-.. code-block:: python
+.. code-block::
 
     |-------------------------------------------------------------------------------------------|
     
@@ -214,7 +214,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
 
 然后，自动判断分子对称性，并根据用户设置决定是否转动为标准取向模式，
 
-.. code-block:: python
+.. code-block::
 
     Auto decide molecular point group! Rotate coordinates into standard orientation!
     Threshold= 0.10000E-08 0.10000E-11 0.10000E-03
@@ -245,7 +245,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
 细心的用户可能已经注意到，这里的水分子的坐标与输入的不一样。最后， ``compass`` 会产生对称匹配轨道（Symmetry adapted orbital），并给出偶极矩和四极矩所属
 的不可约表示，打印 ``C2v`` 点群的乘法表，给出总的基函数数目和每个不可约表示对称匹配轨道数目。由于BDF深度使用了群论，感兴趣的用户可以通过BDF的输出对照学习群论知识。
 
-.. code-block:: python
+.. code-block::
 
     Number of irreps:    4
     IRREP:   3   4   1
@@ -288,7 +288,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
 
 最后， ``compass`` 计算正常结束，会给出如下输出：
 
-.. code-block:: python
+.. code-block::
 
     |******************************************************************************|
 
@@ -310,7 +310,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
 只计算和保存单电子积分及需要做Schwartz积分与筛选的特殊双电子积分。如果用户指定了 ``nodirect`` 关键词，双电子积分
 将被计算并保存到硬盘。 ``xuanyuan`` 模块的输出比较简单，一般不需要特别关注。这里，我们给出最关键的输出：
 
-.. code-block:: python
+.. code-block:: 
 
     [aoint_1e]
       Calculating one electron integrals ...
@@ -337,7 +337,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
 
 最后，BDF调用 ``scf`` 模块执行 ``RHF`` 自洽场计算。需要关注的信息有：
 
-.. code-block:: python
+.. code-block:: 
 
      Wave function information ...
      Total Nuclear charge    :      10
@@ -350,7 +350,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
 这里给出了电荷、自旋多重度，核电荷数及电子数等信息，用户应当检查电子态是否正确。
 然后，首先进行原子计算，并产生分子计算的初始猜测密度矩阵，
 
-.. code-block:: python
+.. code-block:: 
 
      [ATOM SCF control]
       heff=                     0
@@ -363,13 +363,13 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
 
 并检查处理基函数可能的线性相关问题，
 
-.. code-block:: python
+.. code-block::
 
      Check basis set linear dependence! Tolerance =   0.100000E-04
 
 然后进入SCF迭代，8次迭代收敛后关闭DIIS和Level shift等加速收敛方法并重新计算能量，
 
-.. code-block:: python
+.. code-block:: out
 
     Iter.   idiis  vshift       SCF Energy            DeltaE          RMSDeltaD          MaxDeltaD      Damping    Times(S) 
        1      0    0.000     -75.4652250437      -0.6073993867       0.0394104979       0.2382197472    0.0000      0.00
@@ -388,7 +388,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
 
 最后打印不同项的能量贡献和维里比，
 
-.. code-block:: python
+.. code-block:: 
 
      Final scf result
        E_tot =               -75.58383169
@@ -414,7 +414,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
 
 能量打印后输出的是轨道的占据情况，轨道能，HUMO-LOMO能量和gap信息。
 
-.. code-block:: python
+.. code-block:: 
 
      [Final occupation pattern: ]
     
@@ -460,7 +460,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
 
 为了减少输出行数，BDF默认不打印轨道成分及分子轨道系数，只按照不可约表示分类给出部分轨道占据数和轨道能信息，如下：
 
-.. code-block:: python
+.. code-block:: 
 
       Symmetry   1 A1      
     
@@ -487,7 +487,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
              
 ``scf`` 模块最后打印的是Mulliken和Lowdin布居分析的结果，分子的偶极矩信息。
 
-.. code-block:: python
+.. code-block:: 
 
      [Mulliken Population Analysis]
       Atomic charges: 

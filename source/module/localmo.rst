@@ -76,7 +76,7 @@ localmo模快用于产生定域化的分子轨道，包含了Boys，Pipek-Maye�
 ------------------------------------------------
 指定在MCSCF定域化中从那个文件读入轨道。
 
-.. code-block:: python
+.. code-block:: bdf
 
      $LocalMO
      Orbital
@@ -107,7 +107,7 @@ localmo模快用于产生定域化的分子轨道，包含了Boys，Pipek-Maye�
 ------------------------------------------------
 指定分析两组分子轨道的相似，两组轨道分别存储在$BDFTASK.testorb与$BDFTASK.checkorb中。如果是UHF/UKS轨道，默认将分析alpha 与beta轨道的相似性。如果$BDFTASK.checkorb不存在，该关键词将被忽略。
 
-.. code-block:: python
+.. code-block:: bdf
 
      %cp $BDF_WORKDIR/$BDFTASK.flmoorb $BDF_WORKDIR/$BDFTASK.testorb
      %cp $BDF_WORKDIR/$BDFTASK.canorb $BDF_WORKDIR/$BDFTASK.checkorb

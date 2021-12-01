@@ -598,6 +598,7 @@
      11
      $end
 
+
 示例8：辅助基组的DFT计算。算例下载链接 :download:`test041.zip <files/test041.zip>`
 
 .. code-block:: bdf
@@ -709,6 +710,10 @@
      gridtype
      100
      $END
+
+.. _test062:
+
+插入test062
      
      
 示例9：阿贝尔群对称结构的TD-DFT梯度计算。算例下载链接 :download:`test063.zip <files/test063.zip>`
@@ -1070,8 +1075,9 @@
 
 示例14：计算自旋翻转(spin-flip)的TDA。算例下载链接 :download:`test098.zip <files/test098.zip>`
 
-.. code-block:: python
+.. code-block:: bdf
 
+     $COMPASS
      Title
       N2+ 
      Basis
