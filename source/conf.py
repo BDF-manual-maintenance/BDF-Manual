@@ -19,7 +19,7 @@
 
 project = 'BDF-Manual'
 copyright = '2021, WangC'
-author = 'WangC'
+author = '索兵兵, 王聪 等'
 
 
 # -- General configuration ---------------------------------------------------
