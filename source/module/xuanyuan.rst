@@ -12,7 +12,7 @@ Xuanyuan模块主要计算单、双电子积分和其他必要的积分并存储
 
     积分直接的SCF计算，需要在compass模块中加上 :ref:`Skeleton<compass.skeleton>` 关键词。
 
-.. code-block:: python
+.. code-block:: bdf
 
      $xuanyuan
      Direct
@@ -22,7 +22,7 @@ Xuanyuan模块主要计算单、双电子积分和其他必要的积分并存储
 --------------------------------------
 指定非积分直接的SCF双电子积分计算缓存大小。大的缓存可以减少积分排序的次数。输入格式为数字+MW或数字+GW，1 Word=2 Byte， 因此512MW就等于1024MB。
 
-.. code-block:: python
+.. code-block:: bdf
     
      $xuanyuan
      Maxmem
@@ -33,7 +33,7 @@ Xuanyuan模块主要计算单、双电子积分和其他必要的积分并存储
 --------------------------------------
 指定Range-Speration泛函如CAM-B3LYP等的系数。建议值：0.33，如果DFT使用了Range-Speration泛函，必须加入此参数。
 
-.. code-block:: python
+.. code-block:: bdf
     
      $xuanyuan
      RS
@@ -55,7 +55,7 @@ Xuanyuan模块主要计算单、双电子积分和其他必要的积分并存储
 
 指定相对论哈密顿，如果只输入了Scalar，未加Heff，则默认是sf-X2C哈密顿。
 
-.. code-block:: python
+.. code-block:: bdf
     
      $xuanyuan
      Scaler
@@ -73,7 +73,7 @@ Xuanyuan模块主要计算单、双电子积分和其他必要的积分并存储
 
 指定SOC积分类型。
 
-.. code-block:: python
+.. code-block:: bdf
     
      $xuanyuan
      Soint
@@ -94,7 +94,7 @@ Xuanyuan模块主要计算单、双电子积分和其他必要的积分并存储
 
 指定对双电子积分做Cholesky分解，设置Cholesky分解的方法及阈值。
 
-.. code-block:: python
+.. code-block:: bdf
     
      $xuanyuan
      Cholesky

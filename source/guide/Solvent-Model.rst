@@ -8,7 +8,7 @@ ddCOSMO(domain-decomposition COSMO solvation model)，对于显示溶剂模型�
 ------------------------------------------------
 BDF目前支持基态溶剂化效应计算，包括HF和DFT方法。以下是甲醛分子溶剂化效应计算的输入文件：
 
-.. code-block:: bdf 
+.. code-block:: bdf
 
   $COMPASS
   Title

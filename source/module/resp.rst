@@ -23,7 +23,7 @@ resp模块用于计算DFT/TDDFT的梯度，TDDFT的基态-激发态，激发态-
 ------------------------------------------------
 对于TD-DFT响应性质计算，指定读取哪个$tddft块的计算结果；注意当该参数等于x时，并不简单代表读取第x个$tddft块的计算结果，而是指读取istore值为x的那个$tddft块的计算结果。例如对于某闭壳层分子，以下输入（$compass、$xuanyuan、$scf略去）：
 
-.. code-block:: python
+.. code-block:: bdf
 
      $tddft
      imethod
@@ -65,7 +65,7 @@ resp模块用于计算DFT/TDDFT的梯度，TDDFT的基态-激发态，激发态-
 
 指定进行DFT基态计算还是TD-DFT激发态计算。1为基态，如指定2，则为激发态计算。使用Imethod，Method将被删除。
 
-.. code-block:: python
+.. code-block:: bdf
 
      #计算第一个TD-DFT激发态的TD-DFT梯度
      $tddft
@@ -88,7 +88,7 @@ resp模块用于计算DFT/TDDFT的梯度，TDDFT的基态-激发态，激发态-
      1
      $end
 
-.. code-block:: python
+.. code-block:: bdf
 
      #计算基态梯度
      $resp
@@ -122,7 +122,7 @@ resp模块用于计算DFT/TDDFT的梯度，TDDFT的基态-激发态，激发态-
 ------------------------------------------------
 这两个关键字指定计算哪个/哪些态的TD-DFT梯度。分4种情况：
 （1）	既指定IRep，又指定IRoot：如以下的输入
-.. code-block:: python
+.. code-block:: bdf
 
      #计算第2个不可约表示（irrep）下的第3个根的梯度
      irep
@@ -132,7 +132,7 @@ resp模块用于计算DFT/TDDFT的梯度，TDDFT的基态-激发态，激发态-
 
 （2）	只指定IRep：计算该不可约表示下的所有根的梯度。
 （3）	只指定IRoot：例如
-.. code-block:: python
+.. code-block:: bdf
 
      #将所有不可约表示下计算的根按照能量从低到高排序，然后计算第3个根的梯度
      iroot
@@ -144,7 +144,7 @@ resp模块用于计算DFT/TDDFT的梯度，TDDFT的基态-激发态，激发态-
 ------------------------------------------------
 如果分子具有高的对称性，分子所属点群是高阶点群，基于TDDFT的结构优化分子可能出现JahnTeller形变，但形变方向可能有多个。例如，一个具有Ih对称性的分子，有一个三重简并的激发态T2g，可以降低到对称性达到D2h，D3d，D5d或其他子群。因此，TDDFT结构优化中，分子可能结构优化的第二步可能降低对称性。JahnTeller关键词用于指定一个分子点群，从而引导分子向指定的点群方向形变。
 
-.. code-block:: python
+.. code-block:: bdf
 
      $Tddft
      ...

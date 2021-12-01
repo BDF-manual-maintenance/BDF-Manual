@@ -8,7 +8,7 @@ BDF的自洽场包括Hartree-Fock和Kohn-Sham方法，
 对于基数电子体系或高自旋态，需要用 ``UHF`` 或者限制性开壳层Hartree-Fock （restricted open-shell Hartree-Fock）方法。
 BDF默认奇数电子体系自旋多重度为2，BDF将利用UHF计算。例如对于C3H5
 
-.. code-block:: python
+.. code-block:: bdf
 
     #!bdf.sh
     UHF/3-21G 
@@ -26,7 +26,7 @@ BDF默认奇数电子体系自旋多重度为2，BDF将利用UHF计算。例如�
 
 UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自旋多重度是否正确，
 
-.. code-block:: python
+.. code-block:: 
 
     wave function information ...
     total nuclear charge    :      23
@@ -38,7 +38,7 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
 
 轨道占据情况按 ``Alpha`` 和 ``Beta`` 轨道分别给出，
 
-.. code-block:: python
+.. code-block:: 
 
     [Final occupation pattern: ]
     
@@ -60,7 +60,7 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
     
 轨道能， ``HOMO-LUMO gap`` 也按照 ``Alpha`` 和 ``Beta`` 轨道分开打印
 
-.. code-block:: python
+.. code-block:: 
 
     [Orbital energies:]
    
@@ -102,7 +102,7 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
 限制性开壳层Hartree-Fock(Restricted open-shell Hartree-Fock - ROHF)可以计算开壳层分子体系，在BDF中，ROHF
 可与SA-TDDFT结合，解决激发态的自旋污染问题。这里给出一个 ``CH2`` 三重态的ROHF算例，
 
-.. code-block:: python
+.. code-block:: bdf
 
     #!bdf.sh
     rohf/cc-pvdz spin=3
@@ -116,7 +116,7 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
 这里，在第二行指定使用 ``ROHF`` 方法，且利用关键词 ``spin=3`` 设定计算三重态。ROHF的输出和UHF类似，
 但其 ``Alpha`` 轨道和 ``Beta`` 是一样的，所以相对应的 ``Alpha`` 和 ``Beta`` 轨道能量相等，如下所示：
 
-.. code-block:: python
+.. code-block:: 
 
     [Orbital energies:]
    
@@ -158,7 +158,7 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
                  
 由于 ``Alpha`` 与 ``Beta`` 轨道的占据数不同， ``Alpha`` 的HOMO、LUMO轨道、轨道能与 ``Beta`` 的不同，如下：
 
-.. code-block:: python
+.. code-block:: 
 
     Alpha   HOMO energy:      -0.16343739 au      -4.44735961 eV  Irrep: B2      
     Alpha   LUMO energy:       0.05571960 au       1.51620803 eV  Irrep: A1      
@@ -171,7 +171,7 @@ RKS/UKS和ROKS计算
 -------------------------------------------------
 限制性Kohn-Sham(Restricted Kohn-Sham -- RKS)方法，这里以简洁输入的模式给出一个H2O分子的DFT计算算例，使用了B3lyp泛函。
 
-.. code-block:: python
+.. code-block:: bdf
 
   #!bdf.sh
   B3lyp/3-21G    
@@ -186,7 +186,7 @@ RKS/UKS和ROKS计算
 
 这个输入对应的高级模式的输入为
 
-.. code-block:: python
+.. code-block:: bdf
 
     $compass
     geometry # On default: bond length unit in angstrom
@@ -211,7 +211,7 @@ RKS/UKS和ROKS计算
 
 这里，输入要求使用 ``B3lyp`` 泛函。相比于Hartree-Fock，输出多了Exc项的贡献，如下所示：
 
-.. code-block:: python
+.. code-block:: 
 
    Final scf result
      E_tot =               -75.93603354
@@ -226,7 +226,7 @@ RKS/UKS和ROKS计算
 
 H2O+离子的ROKS计算，简洁输入如下，
 
-.. code-block:: python
+.. code-block:: bdf
 
     #!bdf.sh
     ROKS/B3lyp/cc-pvdz charge=1    
@@ -255,7 +255,7 @@ CAM-B3LYP等RS杂化泛函，将库伦相互作用分为长短程，
 采用BDF高级输入时，可以通过xuanyuan模块中的关键字RS，调整 :math:`\mu` 参数。CAM-B3lyp默认的:math:`\mu` 参数为0.33。例如 1,3-Butadiene
 分子，利用CAM-B3lyp的RKS计算高级模式输入为，
 
-.. code-block:: python
+.. code-block:: bdf
 
    $compass
    basis
@@ -297,7 +297,7 @@ CAM-B3LYP等RS杂化泛函，将库伦相互作用分为长短程，
 常见的交换相关泛函如B3lyp对弱相互作用不能很好的描述，这时，在计算能量或者做分子结构优化时，需要加入色散矫正。BDF采用了Stefen Grimme开发的
 D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入如下，
 
-.. code-block:: python
+.. code-block:: bdf
 
     #!bdf.sh
     B3lyp/cc-pvdz     
@@ -316,7 +316,7 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
 
 在Kohn-Sham计算结束后加入色散矫正，计算输出如下，
 
-.. code-block:: python
+.. code-block:: 
 
     diis/vshift is closed at iter =   8
       9      0    0.000     -76.3804911662      -0.0000000001       0.0000000170       0.0000001684    0.0000      0.02
@@ -351,7 +351,7 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
 
 例如，H2O分子计算采用了M062X泛函，属于Hybrid Meta-GGA泛函，要求密集的积分格点，需要采用BDF的高级输入和简洁输入混合模式，如下所示：
 
-.. code-block:: python
+.. code-block:: bdf
 
     #!bdf.sh
     M062X/cc-pvdz     
@@ -371,7 +371,7 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
 
 BDF在Kohn-Sham计算的开始几步采用“Ultra coarse”积分格点，如下所示，
 
-.. code-block:: python
+.. code-block:: 
 
     Switch to Ultra Coarse grid ...
     [ATOM SCF control]
@@ -405,7 +405,7 @@ BDF在Kohn-Sham计算的开始几步采用“Ultra coarse”积分格点，如�
 
 当能量收敛到0.01 Hartree之内时，会切换积分格点到Ultra fine，输出如下所示：
 
-.. code-block:: python
+.. code-block:: 
 
      3      2    0.000     -76.3545948190      -0.0080960042       0.0057803268       0.0577528497    0.0000      0.02
      Switch to Ultra Fine grid ...

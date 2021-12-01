@@ -15,16 +15,18 @@
 
 .. include:: guide/TD.rst
 
+.. include:: guide/Relativity.rst
+
 .. include:: guide/QM-MM.rst
+
+.. include:: guide/Optimization.rst
 
 .. include:: guide/Solvent-Model.rst
 
-.. include:: guide/Relativity.rst
+.. include:: guide/Analysis.rst
 
 .. include:: guide/Point-Group.rst
 
 .. include:: guide/Point-Charge.rst
 
-.. include:: guide/Optimization.rst
 
-.. include:: guide/Analysis.rst

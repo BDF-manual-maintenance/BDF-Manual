@@ -19,7 +19,7 @@
 
 project = 'BDF-Manual'
 copyright = '2021, WangC'
-author = 'WangC'
+author = '索兵兵, 王聪 等'
 
 
 # -- General configuration ---------------------------------------------------
@@ -94,6 +94,8 @@ html_context = {
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+# pygments_style = 'colorful'
+
 
 from pygments.lexer import RegexLexer,words,include,bygroups
 from pygments.token import *
@@ -111,10 +113,13 @@ class BDFLexer(RegexLexer):
     tokens = {
         'root': [
             include('comment'),
-            (r'\b(geometry)([\s\S]+)(end geometry)\b',bygroups(Keyword.Namespace, Text, Keyword.Namespace)),
-            (r'\b(basis-multi)([\s\S]+)(end basis)\b',bygroups(Keyword.Namespace, Text, Keyword.Namespace)),
+            (r'\b(geometry)([^\$]*)?(end geometry)\b',bygroups(Keyword.Namespace, Text, Keyword.Namespace)),
+            (r'\b(basis-multi)([\s\S]*)?(end basis)\b',bygroups(Keyword.Namespace, Text, Keyword.Namespace)),
             include('modules'),
             include('keywords'),
+            include('values'),
+            (r'C\([123456is]\)|C\([23456][vh]\)|D\([23456]h?\)|S\([468]\)|S\(10\)|T\(d\)|O\(h\)|I\(h\)',Name.Constant),
+            (r'STO-\dG|3-21\+*G|6-311?\+*G\S*|(aug-)?cc-p[VCw]\S+|(ma-)?Def2-[SDTQ]Z?V\(?P\S*|Sapporo-\S*|Stuttgart-\S*|Dirac-Dyall\S*|(Modified-)?LANL\d+\S*|\d+(m|g)w',Name.Constant),
             include('bool'),
             include('numbers'),
             (r'\S+', Text),
@@ -137,9 +142,14 @@ class BDFLexer(RegexLexer):
                 'Nosymm', 'norotate', 'skeleton', 'extcharge', 'uncontract', 'primitive', 'direct', 'scalar','direct','soint','RHF','UHF','ROHF','RKS','UKS','ROKS','D3','NosymGrid','DirectGrid','NoDirectGrid','NoGridSwitch','COSX','Coulpot+COSX','NoDiis','Noscforb','Pyscforb','Molden','Checklin','Lefteig','UTDDFT','TDDFT','FCIDUMP','Nature'), suffix=r'\b'),
             Name.Attribute),
         ],
+        "values": [
+            (words((
+                'Angstrom','Ang','Bohr','Coarse','Medium','Strict','read', 'b3lyp', 'b3pw91', 'bp86', 'LSDA', 'SVWN5', 'SAOP', 'BLYP', 'PBE', 'PW91', 'OLYP', 'KT2', 'TPSS', 'M06L', 'GB3LYP', 'BHHLYP', 'PBE0', 'HFLYP', 'VBLYP', 'wB97', 'wB97X', 'CAM-B3LYP', 'LC-BLYP', 'TPSSh', 'M062X', 'B2PLYP', 'only', 'init', 'final', 'init+final', 'S-CD', '1c-CD',  'ADZP-ANO', 'ANO-DK3', 'ANO-R', 'ANO-R0', 'ANO-R1', 'ANO-R2', 'ANO-R3', 'ANO-RCC', 'ANO-RCC-VDZ', 'ANO-RCC-VDZP', 'ANO-RCC-VTZP', 'ANO-RCC-VQZP', 'ANO-RCC-VTZ', 'jorge-DZP', 'jorge-TZP', 'jorge-QZP', 'jorge-DZP-DKH', 'jorge-TZP-DKH', 'jorge-QZP-DKH', 'SARC-DKH2', 'SARC2-QZV-DKH2', 'SARC2-QZVP-DKH2', 'x2c-SVPall', 'x2c-TZVPall', 'x2c-TZVPPall', 'x2c-QZVPall', 'x2c-QZVPPall', 'x2c-SVPall-2c', 'x2c-TZVPall-2c', 'x2c-TZVPPall-2c', 'x2c-QZVPall-2c', 'x2c-QZVPPall-2c', 'UGBS', 'Dirac-RPF-4Z', 'Dirac-aug-RPF-4Z', 'SVP-BSEX', 'DZP', 'DZVP', 'TZVPP', 'IGLO-II', 'IGLO-III', 'Sadlej-pVTZ', 'Wachters+f', 'Pitzer-AVDZ-PP', 'Pitzer-VDZ-PP', 'Pitzer-VTZ-PP', 'CRENBL', 'CRENBS', 'DHF-SVP', 'DHF-TZVP', 'DHF-TZVPP', 'DHF-QZVP', 'DHF-QZVPP', 'SBKJC-VDZ', 'SBKJC-POLAR', 'pSBKJC'), suffix=r'\b'),
+            Name.Constant),
+        ],
         'numbers': [
-            (r'\d+\.\d+', Number.Float),
-            (r'\d+[ed][+-]?[0-9]+', Number.Float),
+            (r'[+-]?\d+\.\d+', Number.Float),
+            (r'[+-]?\d+(\.)?[ed][+-]?[0-9]+', Number.Float),
             (r'\d+', Number.Integer),
         ],
         'comment': [
@@ -151,9 +161,9 @@ class BDFLexer(RegexLexer):
         ]
     }
 
+
 def setup(sphinx):
     sphinx.add_lexer("bdf", BDFLexer)
-
 
 import pybtex.plugin
 from pybtex.style.formatting.unsrt import Style as UnsrtStyle
