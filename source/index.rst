@@ -3,9 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. raw:: html
-
-   <h1>BDF软件简介</h1>
+BDF软件简介
+*************
 
 BDF（Beijing Density Functional）是一个独立完整、具有完全自主知识产权的量子化学计算软件包，也是国际上第一个基于现代密度泛函理论、能准确计算分子体系基态总能量的完全相对论密度泛函程序（早期的类似程序因数值积分精度太差不能准确计算总能量）。
 
