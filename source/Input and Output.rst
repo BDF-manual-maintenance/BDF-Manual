@@ -120,7 +120,7 @@ BDF的混合输入（mixed input）
 
 BDF混合输入文件的基本结构如下：
 
-.. code-block:: python
+.. code-block:: bdf
 
   #!name.bdf
   方法/泛函/基组1[原子组]/基组2[原子组] 关键词 关键词=选项 关键词=选项1，选项2

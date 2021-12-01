@@ -29,7 +29,7 @@ BDF默认的是Atom猜测。改变BDF的初始猜测，简洁输入模式下可�
 
 这里，我们在第二行是用了关键词 ``guess=Hcore`` 指定使用 ``Hcore`` 猜测。SCF迭代了18次收敛。
 
-.. code-block:: bdf
+.. code-block:: 
 
     Iter.   idiis  vshift       SCF Energy            DeltaE          RMSDeltaD          MaxDeltaD      Damping    Times(S) 
    1      0    0.000    -130.4887395291     174.6809293768       0.4015311621       5.3256687709    0.0000      0.03
@@ -219,7 +219,7 @@ BDF的SCF计算默认采用原子计算密度矩阵构建分子密度矩阵的�
 
 expandmo模块的输出为，
 
-.. code-block:: bdf
+.. code-block:: 
 
     |******************************************************************************|
     
@@ -271,7 +271,7 @@ expandmo模块的输出为，
 
 第二次SCF计算的输出为，
 
-.. code-block:: bdf
+.. code-block:: 
 
     /Users/bsuo/check/bdf/bdfpro/ch3cho_exporb.scforb
     Read guess orb:  nden=1  nreps= 1  norb=  285  lenmo=  81225
@@ -409,7 +409,7 @@ MOM(maximum overlap method)是一种Delta SCF的方法，可以用以计算激�
 
 这里，第一次SCF计算收敛结果为，
 
-.. code-block:: bdf
+.. code-block:: 
 
      Superposition of atomic densities as initial guess.
      skipaocheck T F
@@ -456,7 +456,7 @@ MOM(maximum overlap method)是一种Delta SCF的方法，可以用以计算激�
 可以看出，第一次SCF计算使用了atom猜测，计算得到S0的能量为 -169.8658334023 a.u. 。第二次SCF计算读入了第一次SCF的收敛轨道，
 并使用MOM方法做SCF计算，输出文件先提示读入了分子轨道，并给出占据情况，
 
-.. code-block:: bdf
+.. code-block:: 
 
      Read initial orbitals from user specified file.
 
@@ -480,7 +480,7 @@ MOM(maximum overlap method)是一种Delta SCF的方法，可以用以计算激�
     
 这里，iden=1为alpha轨道，irep=1指第一个不可约表示，总共有norb=66个轨道，其中，第10个轨道的占据数为0.00，第11个轨道占据数为1.00。经14次SCF迭代，收敛的S1态能量为 -169.6222628003 a.u.,如下所示：
 
-.. code-block:: python
+.. code-block:: 
     
     Iter.   idiis  vshift       SCF Energy            DeltaE          RMSDeltaD          MaxDeltaD      Damping    Times(S) 
        1      0    0.000    -169.5056320703     125.0315786109       0.0204280318       1.4631744569    0.0000      0.45
@@ -534,7 +534,7 @@ SCF收敛后，轨道占据情况也被打印，可以看到alpah轨道中第一
 
 第三个SCF计算给出了T1态能量，为-169.6248370697 a.u., 输出如下：
 
-.. code-block:: bdf
+.. code-block:: 
 
     Iter.   idiis  vshift       SCF Energy            DeltaE          RMSDeltaD          MaxDeltaD      Damping    Times(S) 
       1      0    0.000    -169.4117392632      -0.1587851952       0.0838214772       9.1411822251    0.0000      0.17
