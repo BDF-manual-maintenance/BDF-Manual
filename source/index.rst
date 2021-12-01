@@ -47,6 +47,3 @@ BDF用户手册
    Cite
    References
 
-.. raw:: latex
-
-   \printbibliography[heading=none]
