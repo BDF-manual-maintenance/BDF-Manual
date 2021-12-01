@@ -3,7 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-**BDF软件简介**
+.. raw:: html
+
+   <h1>BDF软件简介</h1>
 
 BDF（Beijing Density Functional）是一个独立完整、具有完全自主知识产权的量子化学计算软件包，也是国际上第一个基于现代密度泛函理论、能准确计算分子体系基态总能量的完全相对论密度泛函程序（早期的类似程序因数值积分精度太差不能准确计算总能量）。
 
@@ -19,8 +21,9 @@ BDF的研发始于1993年，并于1997年正式命名 :cite:`doi:10.1007/s002140
 
 BDF的研发任重而道远。其成功与否不仅取决于研发人员的长期努力，更离不开广大用户的鼓励和支持。
 
+================
 BDF用户手册
-=======================================
+================
 
 .. toctree::
    :maxdepth: 3
