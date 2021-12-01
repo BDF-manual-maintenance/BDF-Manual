@@ -124,7 +124,7 @@ nfiles是包含n+1个整数的多行参数，第一行输入为n，表示要读�
 ---------------------------------------------------
 指定需要计算的SOC矩阵元。
 
-.. code-block:: python
+.. code-block:: bdf
 
      ...
      #SCF calculation for the ground state S0. It is a singlet.
@@ -177,7 +177,7 @@ nfiles是包含n+1个整数的多行参数，第一行输入为n，表示要读�
 ---------------------------------------------------
 指定打印考虑了SOC之后电子态之间的跃迁偶极矩。
 
-.. code-block:: python
+.. code-block:: bdf
 
      $TDDFT
      ...
@@ -196,7 +196,7 @@ nfiles是包含n+1个整数的多行参数，第一行输入为n，表示要读�
 ---------------------------------------------------
 指定对TDDFT计算的某些态做NTO分析。
 
-.. code-block:: python
+.. code-block:: bdf
 
      $TDDFT
      istore

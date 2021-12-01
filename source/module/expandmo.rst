@@ -10,7 +10,7 @@ expandmo模块用于将小基组计算的MO扩展为大基组MO，扩展的MO可
 ------------------------------------------------
 指定原子价空间(AVAS)被用于自动构建MCSCF的活性轨道。
 
-.. code-block:: python
+.. code-block:: bdf
 
      #本算例位于tests/input/test086.inp 
      #指定Co原子的五个活性d轨道。
@@ -44,7 +44,7 @@ Expandmo模块依赖文件如下：
 |                  | BDF_WORKDDIR中           |          |          |
 +------------------+--------------------------+----------+----------+
 
-.. code-block:: python
+.. code-block:: bdf
 
      #利用cc-pVDZ基组计算CH2分子，然后扩展分子轨道系数到aug-cc-pVDZ基组，并用于SCF计算的的初始猜测轨道
      # First we perform a small basis set calculation by using CC-PVDZ.
