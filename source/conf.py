@@ -70,16 +70,6 @@ latex_elements = {
 \hypersetup{unicode=true}
 \usepackage{ctex}
 \addto\captionsenglish{\renewcommand{\chaptername}{}}
-''',
-    'tableofcontents':'''
-\section{Installation}
-\section{Input and Output}
-\section{User Guide}
-\section{Input Library}
-\section{Example}
-\section{Application}
-\section{FQA}
-\section{Cite}
 '''
 }
 
