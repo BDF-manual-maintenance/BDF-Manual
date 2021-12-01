@@ -115,6 +115,7 @@ class BDFLexer(RegexLexer):
             (r'\b(basis-multi)([\s\S]+)(end basis)\b',bygroups(Keyword.Namespace, Text, Keyword.Namespace)),
             include('modules'),
             include('keywords'),
+            include('values'),
             include('bool'),
             include('numbers'),
             (r'\S+', Text),
@@ -136,6 +137,11 @@ class BDFLexer(RegexLexer):
             (words((
                 'Nosymm', 'norotate', 'skeleton', 'extcharge', 'uncontract', 'primitive', 'direct', 'scalar','direct','soint','RHF','UHF','ROHF','RKS','UKS','ROKS','D3','NosymGrid','DirectGrid','NoDirectGrid','NoGridSwitch','COSX','Coulpot+COSX','NoDiis','Noscforb','Pyscforb','Molden','Checklin','Lefteig','UTDDFT','TDDFT','FCIDUMP','Nature'), suffix=r'\b'),
             Name.Attribute),
+        ],
+        "values": [
+            (words((
+                'read', 'b3lyp', 'b3pw91', 'bp86'), suffix=r'\b'),
+            Name.Constant),
         ],
         'numbers': [
             (r'\d+\.\d+', Number.Float),
