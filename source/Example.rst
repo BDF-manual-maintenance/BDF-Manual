@@ -1066,3 +1066,152 @@
      iroot        #指定计算$tddft模块计算的第一个态的梯度
       1
      $end
+
+
+示例14：计算自旋翻转(spin-flip)的TDA。算例下载链接 :download:`test098.zip <files/test098.zip>`
+
+.. code-block:: python
+
+     Title
+      N2+ 
+     Basis
+      aug-cc-pvtz
+     Geometry
+      N     0.00000        0.00000       0.5582
+      N     0.00000        0.00000      -0.5582 
+     End geometry
+     skeleton
+     check
+     group
+      d(2h)
+     $END
+     
+     $XUANYUAN
+     direct
+     schwarz
+     $END
+     
+     % echo "SVWN SCF "
+     $SCF
+     ROKS           #Restricted Open-shell Kohn-Sham 
+     DFT 
+     svwn5
+     charge 
+      1
+     SPIN
+     2
+     $END
+     
+     % echo "SVWN spin-flip TDA "
+     $TDDFT
+     IMETHOD    #ask for U-TDDFT
+      2
+     ISF               # ask for spin-flip up TDDFT calculation
+      1
+     ITDA            #ask for TDA
+      1
+     IDIAG          #基于Davidson方法的迭代对角化
+      1
+     ialda
+      2
+     iexit
+     20
+     MemJKOP
+      2048
+     $END
+     
+     % echo "BLYP SCF "
+     $SCF
+     ROKS
+     DFT 
+     blyp
+     charge 
+      1
+     SPIN
+     2
+     $END
+     
+     % echo "BLYP spin-flip TDA "
+     $TDDFT
+     IMETHOD     # ask for U-TDDFT
+      2
+     ISF         # ask for spin-flip up TDDFT calculation
+      1
+     ITDA          #TDA
+      1
+     IDIAG
+      1
+     ialda
+      2
+     iexit
+     20
+     MemJKOP
+      2048
+     $END
+     
+     % echo "B3LYP SCF "
+     $SCF
+     ROKS
+     DFT 
+     b3lyp
+     charge 
+      1
+     SPIN
+     2
+     $END
+     
+     % echo "B3LYP spin-flip TDA "
+     $TDDFT
+     IMETHOD
+      2
+     ISF
+      1
+     ITDA
+      1
+     IDIAG
+      1
+     ialda
+      2
+     iexit
+     20
+     MemJKOP
+      2048
+     $END
+     
+     $XUANYUAN
+     direct
+     schwarz
+     rs
+      0.33
+     $END
+     
+     % echo "cam-B3LYP SCF "
+     $SCF
+     ROKS
+     DFT 
+     cam-b3lyp
+     charge 
+      1
+     SPIN
+     2
+     $END
+     
+     % echo "cam-B3LYP spin-flip TDA "
+     $TDDFT
+     IMETHOD
+      2
+     ISF
+      1
+     ITDA
+      1
+     IDIAG
+      1
+     ialda
+      2
+     iexit
+     20
+     MemJKOP
+      2048
+     $END
+
+
