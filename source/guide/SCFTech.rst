@@ -27,9 +27,9 @@ BDF默认的是Atom猜测。改变BDF的初始猜测，简洁输入模式下可�
     O       2.2198078005        0.0000024315        0.2188182082
     end geometry
 
-这里，我们在第二行是用了关键词 ``guess=hore`` 指定使用 ``Hcore`` 猜测。SCF迭代了18次收敛。
+这里，我们在第二行是用了关键词 ``guess=Hcore`` 指定使用 ``Hcore`` 猜测。SCF迭代了18次收敛。
 
-.. code-block:: bdf
+.. code-block:: 
 
     Iter.   idiis  vshift       SCF Energy            DeltaE          RMSDeltaD          MaxDeltaD      Damping    Times(S) 
    1      0    0.000    -130.4887395291     174.6809293768       0.4015311621       5.3256687709    0.0000      0.03
@@ -219,7 +219,7 @@ BDF的SCF计算默认采用原子计算密度矩阵构建分子密度矩阵的�
 
 expandmo模块的输出为，
 
-.. code-block:: bdf
+.. code-block:: 
 
     |******************************************************************************|
     
@@ -267,11 +267,11 @@ expandmo模块的输出为，
         End running module expandmo
     |******************************************************************************|
 
-可以看出，小基组有82个轨道，大基组有285个轨道，expandmo读入了SCF收敛的正则轨道，扩展到大基组并写入临时文件。
+可以看出，小基组有62个轨道，大基组有285个轨道，expandmo读入了SCF收敛的正则轨道，扩展到大基组并写入临时文件。
 
 第二次SCF计算的输出为，
 
-.. code-block:: bdf
+.. code-block:: 
 
     /Users/bsuo/check/bdf/bdfpro/ch3cho_exporb.scforb
     Read guess orb:  nden=1  nreps= 1  norb=  285  lenmo=  81225
@@ -403,13 +403,13 @@ MOM(maximum overlap method)是一种Delta SCF的方法，可以用以计算激�
 
 这个算例执行了四次SCF计算，
 
- * 第一次SCF计算，利用UKS方法计算甲酰胺分子的基态S0。输入利用alpha与beta两个关键词，分别指定了alpha和beta轨道的占据情况。甲酰胺分子基态是单重态S0，这里指定的alpha和beta占据情况相同。 ``10 2`` 分别指定不可约表示A‘与A“的轨道分别有10个和2个占据。SCF模块将根据构造原理，按照轨道能量由低到高填充电子到轨道上。
- * 第二次SCF计算，利用UKS与MOM方法计算甲酰胺分子的S1态。这里的关键点有：1 利用guess=read指定读入上一步UKS的收敛轨道；2 利用alpha、beta关键词设置了每个对称性轨道的占据数；3 设置了变量ifpair，需要和hpalpha，hpbeta联用，用于指定空穴-粒子（hole-particle - HP）轨道对的电子激发情况；4 设置了hpalpha变量，指定激发的HP轨道对。数字1表示激发一对HP轨道，下面指定两行指定轨道激发情况，第一列表示从第一个不可约表示的把第10个alpha轨道的电子激发到第11个alpha轨道，第二列元素都为零，表示第二个不可约表示的轨道不做激发； 5 iaufbau变量设置为2，指定要进行MOM计算。
-* 第二次SCF计算，利用UKS与MOM方法计算甲酰胺分子的T1态。输入中，我们利用alpha和beta关键词指定轨道占据情况，其中alpha轨道的占据数为 ``11 2`` ，表示对称性为A‘和A“的alpha轨道上分别有11和2个电子占据， beta轨道的占据情况为 ``9 2`` 。 iaufbau=0表示轨道占据按照构造原理由低到高排列。
+* 第一次SCF计算，利用UKS方法计算甲酰胺分子的基态S0。输入利用alpha与beta两个关键词，分别指定了alpha和beta轨道的占据情况。甲酰胺分子基态是单重态S0，这里指定的alpha和beta占据情况相同。 ``10 2`` 分别指定不可约表示A‘与A“的轨道分别有10个和2个占据。SCF模块将根据构造原理，按照轨道能量由低到高填充电子到轨道上。
+* 第二次SCF计算，利用UKS与MOM方法计算甲酰胺分子的S1态。这里的关键点有：1 利用guess=read指定读入上一步UKS的收敛轨道；2 利用alpha、beta关键词设置了每个对称性轨道的占据数；3 设置了变量ifpair，需要和hpalpha，hpbeta联用，用于指定空穴-粒子（hole-particle - HP）轨道对的电子激发情况；4 设置了hpalpha变量，指定激发的HP轨道对。数字1表示激发一对HP轨道，下面指定两行指定轨道激发情况，第一列表示从第一个不可约表示的把第10个alpha轨道的电子激发到第11个alpha轨道，第二列元素都为零，表示第二个不可约表示的轨道不做激发； 5 iaufbau变量设置为2，指定要进行MOM计算。
+* 第三次SCF计算，利用UKS与MOM方法计算甲酰胺分子的T1态。输入中，我们利用alpha和beta关键词指定轨道占据情况，其中alpha轨道的占据数为 ``11 2`` ，表示对称性为A‘和A“的alpha轨道上分别有11和2个电子占据， beta轨道的占据情况为 ``9 2`` 。 iaufbau=0表示轨道占据按照构造原理由低到高排列。
 
 这里，第一次SCF计算收敛结果为，
 
-.. code-block:: bdf
+.. code-block:: 
 
      Superposition of atomic densities as initial guess.
      skipaocheck T F
@@ -454,9 +454,9 @@ MOM(maximum overlap method)是一种Delta SCF的方法，可以用以计算激�
       Virial Theorem      2.003102
 
 可以看出，第一次SCF计算使用了atom猜测，计算得到S0的能量为 -169.8658334023 a.u. 。第二次SCF计算读入了第一次SCF的收敛轨道，
-并使用MOM方法做 ::math:: Delta :: SCF计算，输出文件先提示读入了分子轨道，并给出占据情况，
+并使用MOM方法做SCF计算，输出文件先提示读入了分子轨道，并给出占据情况，
 
-.. code-block:: bdf
+.. code-block:: 
 
      Read initial orbitals from user specified file.
 
@@ -480,7 +480,7 @@ MOM(maximum overlap method)是一种Delta SCF的方法，可以用以计算激�
     
 这里，iden=1为alpha轨道，irep=1指第一个不可约表示，总共有norb=66个轨道，其中，第10个轨道的占据数为0.00，第11个轨道占据数为1.00。经14次SCF迭代，收敛的S1态能量为 -169.6222628003 a.u.,如下所示：
 
-.. code-block:: python
+.. code-block:: 
     
     Iter.   idiis  vshift       SCF Energy            DeltaE          RMSDeltaD          MaxDeltaD      Damping    Times(S) 
        1      0    0.000    -169.5056320703     125.0315786109       0.0204280318       1.4631744569    0.0000      0.45
@@ -534,7 +534,7 @@ SCF收敛后，轨道占据情况也被打印，可以看到alpah轨道中第一
 
 第三个SCF计算给出了T1态能量，为-169.6248370697 a.u., 输出如下：
 
-.. code-block:: bdf
+.. code-block:: 
 
     Iter.   idiis  vshift       SCF Energy            DeltaE          RMSDeltaD          MaxDeltaD      Damping    Times(S) 
       1      0    0.000    -169.4117392632      -0.1587851952       0.0838214772       9.1411822251    0.0000      0.17

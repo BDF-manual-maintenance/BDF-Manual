@@ -6,7 +6,7 @@ Compass模块主要完成计算任务的初始化工作，包括读入用户定�
 ----------------------------------------------
 指定计算所用的基组名称。BDF基组存储在$BDFHOME/basis_library中，当前计算任务中所有原子的基组应被放置在本参数指定的文件中。由于基组通过本参数指定的文件读入，用户可以通过自定义基组（见自定义基组说明）文件为不同原子指定不同的基组。
 
- .. code-block:: python
+ .. code-block:: bdf
 
      $Compass
      Basis
@@ -22,7 +22,7 @@ Compass模块主要完成计算任务的初始化工作，包括读入用户定�
 对不同元素指定不同的基组，第一行是默认基组，之后的行对不同元素或原子指定其它基组，
 格式为 **元素=基组名** 或者 **元素1,元素2, ...,元素n=基组名** 。
 
-.. code-block::
+.. code-block:: bdf
 
   $Compass
   Basis-multi
@@ -46,7 +46,7 @@ Compass模块主要完成计算任务的初始化工作，包括读入用户定�
  * RI-K：交换拟合基组
  * RI-C：相关拟合基组
 
- .. code-block:: python
+ .. code-block:: bdf
 
      $Compass
      Basis
@@ -65,7 +65,7 @@ Compass模块主要完成计算任务的初始化工作，包括读入用户定�
 
 ``直角坐标`` 模式
 
- .. code-block:: python
+ .. code-block:: bdf
 
      $Compass
      Basis
@@ -78,7 +78,7 @@ Compass模块主要完成计算任务的初始化工作，包括读入用户定�
 
 ``内坐标`` 模式
 
- .. code-block:: python
+ .. code-block:: bdf
 
      $Compass
      Basis
@@ -95,7 +95,7 @@ Compass模块主要完成计算任务的初始化工作，包括读入用户定�
 --------------------------------------
 指定分子的对称点群。BDF会自动判断分子的对称性，HF/DFT/TDDFT都支持高阶分子点群。一些电子相关计算，如MCSCF，MRCI等只支持D2h及其子群。因此，本参数可用来强制BDF使用阿贝尔群计算。
 
- .. code-block:: python
+ .. code-block:: bdf
 
      #C6H6分子最高对称性是D6h，不指定分子点群，BDF可以判断出苯分子的对称性，并按照D6h群计算计算
      $COMPASS
@@ -181,7 +181,7 @@ Atom x y z charge
 
 指定判断分子对称性的阈值。BDF的一个特色是对分子点群的支持。compass模块可以自动识别分子所属的对称群，并按照对称群将分子严格对称化。由于分子建模精度，分子可能不严格属于某个对称点群，本参数可以通过控制分子对称判断的阈值。实际的对称性判断程序利用三个阈值判断分子对称性。
 
- .. code-block:: python
+ .. code-block:: bdf
      
      $COMPASS 
      Title

@@ -26,7 +26,7 @@ BDF默认奇数电子体系自旋多重度为2，BDF将利用UHF计算。例如�
 
 UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自旋多重度是否正确，
 
-.. code-block:: bdf
+.. code-block:: 
 
     wave function information ...
     total nuclear charge    :      23
@@ -38,7 +38,7 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
 
 轨道占据情况按 ``Alpha`` 和 ``Beta`` 轨道分别给出，
 
-.. code-block:: python
+.. code-block:: 
 
     [Final occupation pattern: ]
     
@@ -60,7 +60,7 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
     
 轨道能， ``HOMO-LUMO gap`` 也按照 ``Alpha`` 和 ``Beta`` 轨道分开打印
 
-.. code-block:: bdf
+.. code-block:: 
 
     [Orbital energies:]
    
@@ -116,7 +116,7 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
 这里，在第二行指定使用 ``ROHF`` 方法，且利用关键词 ``spin=3`` 设定计算三重态。ROHF的输出和UHF类似，
 但其 ``Alpha`` 轨道和 ``Beta`` 是一样的，所以相对应的 ``Alpha`` 和 ``Beta`` 轨道能量相等，如下所示：
 
-.. code-block:: bdf
+.. code-block:: 
 
     [Orbital energies:]
    
@@ -158,7 +158,7 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
                  
 由于 ``Alpha`` 与 ``Beta`` 轨道的占据数不同， ``Alpha`` 的HOMO、LUMO轨道、轨道能与 ``Beta`` 的不同，如下：
 
-.. code-block:: bdf
+.. code-block:: 
 
     Alpha   HOMO energy:      -0.16343739 au      -4.44735961 eV  Irrep: B2      
     Alpha   LUMO energy:       0.05571960 au       1.51620803 eV  Irrep: A1      
@@ -211,7 +211,7 @@ RKS/UKS和ROKS计算
 
 这里，输入要求使用 ``B3lyp`` 泛函。相比于Hartree-Fock，输出多了Exc项的贡献，如下所示：
 
-.. code-block:: bdf
+.. code-block:: 
 
    Final scf result
      E_tot =               -75.93603354
@@ -316,7 +316,7 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
 
 在Kohn-Sham计算结束后加入色散矫正，计算输出如下，
 
-.. code-block:: bdf
+.. code-block:: 
 
     diis/vshift is closed at iter =   8
       9      0    0.000     -76.3804911662      -0.0000000001       0.0000000170       0.0000001684    0.0000      0.02
@@ -371,7 +371,7 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
 
 BDF在Kohn-Sham计算的开始几步采用“Ultra coarse”积分格点，如下所示，
 
-.. code-block:: bdf
+.. code-block:: 
 
     Switch to Ultra Coarse grid ...
     [ATOM SCF control]
@@ -405,7 +405,7 @@ BDF在Kohn-Sham计算的开始几步采用“Ultra coarse”积分格点，如�
 
 当能量收敛到0.01 Hartree之内时，会切换积分格点到Ultra fine，输出如下所示：
 
-.. code-block:: bdf
+.. code-block:: 
 
      3      2    0.000     -76.3545948190      -0.0080960042       0.0057803268       0.0577528497    0.0000      0.02
      Switch to Ultra Fine grid ...

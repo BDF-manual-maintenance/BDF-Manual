@@ -151,8 +151,34 @@ class BDFLexer(RegexLexer):
         ]
     }
 
+class OutLexer(RegexLexer):
+   
+    name = 'Out'
+    aliases = ['out']
+    filenames = ['*.out']
+    mimetypes = ['text/x-bdf']
+
+    flags = re.IGNORECASE
+
+    tokens = {
+        'root': [
+            (r'\[.+?\]',Keyword.Namespace),
+            (r'(|-{10,}?|)([\s\S]+)(|-{10,}?|)\b',bygroups(Keyword.Namespace, Text, Keyword.Namespace)),
+            (r'(|\*{10,}?|)([\s\S]+)(|\*{10,}?|)\b',bygroups(Keyword.Namespace, Text, Keyword.Namespace)),
+            include('numbers'),
+            (r'\S+', Text),
+            (r'\s+', Text),
+        ],
+        'numbers': [
+            (r'\d+\.\d+', Number.Float),
+            (r'\d+[ed][+-]?[0-9]+', Number.Float),
+            (r'\d+', Number.Integer),
+        ]
+    }
+
 def setup(sphinx):
     sphinx.add_lexer("bdf", BDFLexer)
+    sphinx.add_lexer("out", OutLexer)
 
 
 import pybtex.plugin
