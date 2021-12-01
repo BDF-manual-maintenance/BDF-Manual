@@ -4,7 +4,7 @@
 
 示例1：计算SCF能量梯度、结构优化。算例下载链接 :download:`test003.zip <files/test003.zip>`
 
-.. code-block:: python
+.. code-block:: bdf
 
      $COMPASS 
      Title
@@ -37,7 +37,7 @@
 
 示例2：自动识别对称性&指认对称性。算例下载链接 :download:`test006.zip <files/test006.zip>`
 
-.. code-block:: python
+.. code-block:: bdf
 
      $COMPASS    
      Title
@@ -297,7 +297,7 @@
 
 示例3：DFT计算。算例下载链接 :download:`test012.zip <files/test012.zip>`
 
-.. code-block:: python
+.. code-block:: bdf
 
      $COMPASS  
      Title
@@ -358,7 +358,7 @@
 
 示例4：检验非阿贝尔群和骨架矩阵法。算例下载链接 :download:`test029.zip <files/test029.zip>`  
 
-.. code-block:: python
+.. code-block:: bdf
 
      # 1st task
      $COMPASS 
@@ -449,7 +449,7 @@
 
 示例5：自旋体系。算例下载链接 :download:`test031.zip <files/test031.zip>`  
 
-.. code-block:: python
+.. code-block:: bdf
 
      $COMPASS 
      Title
@@ -482,7 +482,7 @@
 
 示例6：势能面扫描。算例下载链接 :download:`test032.zip <files/test032.zip>`
 
-.. code-block:: python
+.. code-block:: bdf
 
      #!test032.bdf
      HF/cc-pvdz scan
@@ -501,7 +501,7 @@
 
 示例7：Cholesky分解。算例下载链接 :download:`test033.zip <files/test033.zip>`
 
-.. code-block:: python
+.. code-block:: bdf
 
      $COMPASS 
      Title
@@ -600,7 +600,7 @@
 
 示例8：辅助基组的DFT计算。算例下载链接 :download:`test041.zip <files/test041.zip>`
 
-.. code-block:: python
+.. code-block:: bdf
 
      ######### C(2v) group is used
      $COMPASS 
@@ -713,7 +713,7 @@
      
 示例9：阿贝尔群对称结构的TD-DFT梯度计算。算例下载链接 :download:`test063.zip <files/test063.zip>`
 
-.. code-block:: python
+.. code-block:: bdf
 
      $COMPASS 
      Title
@@ -776,7 +776,7 @@
 
 示例10：DFT基态梯度计算。算例下载链接 :download:`test065.zip <files/test065.zip>`
 
-.. code-block:: python
+.. code-block:: bdf
 
      $COMPASS 
      Title
@@ -817,7 +817,7 @@
 
 示例11：非阿贝尔群对称性的条件下进行TD-DFT梯度的计算。算例下载链接 :download:`test068.zip <files/test068.zip>`
 
-.. code-block:: python
+.. code-block:: bdf
 
      $COMPASS 
      Title
@@ -897,7 +897,7 @@
 
 示例12：基于TDDFT的非绝热耦合计算。算例下载链接 :download:`test081.zip <files/test081.zip>`
 
-.. code-block:: python
+.. code-block:: bdf
 
      $compass
      title
@@ -988,7 +988,7 @@
 
 示例13：限制性结构优化以及开壳层体系的SA-TDDFT计算。算例下载链接 :download:`test085.zip <files/test085.zip>`
 
-.. code-block:: python
+.. code-block:: bdf
 
      $compass
      title
