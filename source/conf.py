@@ -120,6 +120,7 @@ class BDFLexer(RegexLexer):
             include('values'),
             (r'C\([123456is]\)|C\([23456][vh]\)|D\([23456]h?\)|S\([468]\)|S\(10\)|T\(d\)|O\(h\)|I\(h\)',Name.Constant),
             (r'STO-\dG|3-21\+*G|6-311?\+*G\S*|(aug-)?cc-p[VCw]\S+|(ma-)?Def2-[SDTQ]Z?V\(?P\S*|Sapporo-\S*|Stuttgart-\S*|Dirac-Dyall\S*|(Modified-)?LANL\d+\S*|\d+(m|g)w',Name.Constant),
+            (r'\b(title)\s*\n(\S*)\n',bygroups(Name.Builtin,Text)),
             include('bool'),
             include('numbers'),
             (r'\S+', Text),
