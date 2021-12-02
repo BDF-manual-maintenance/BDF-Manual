@@ -68,7 +68,7 @@
      $end
 
      $scf
-     RHF
+     RHF              #Restricted Hartree-Fock
      $end
 
      $COMPASS    
@@ -90,7 +90,7 @@
      H    2.16038783830607  -1.24730050000000   0.00000000000000
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
-     Skeleton          
+     Skeleton          #只计算“骨架”原子轨道积分 
      Check
      Group
        D(6h)           #指定D6h点群
@@ -100,7 +100,7 @@
      $end
 
      $scf
-     RHF
+     RHF               #Restricted Hartree-Fock
      $end
 
      $COMPASS    
@@ -372,9 +372,9 @@
      End geometry
      Check
      Unit
-       Bohr
+       Bohr          #指定坐标长度单位
      Group
-       D(2h)
+       D(2h)         #指定D2h点群
      $END
 
      $xuanyuan
@@ -382,9 +382,9 @@
 
      $SCF
      ROHF            #Restricted Open-shell Hartree-Fock
-     charge
+     charge          #电荷数1
       1
-     spin
+     spin            #自旋多重度2
       2
      $END
 
@@ -411,7 +411,7 @@
      $end
 
      $SCF
-     ROHF
+     ROHF             #Restricted Open-shell Hartree-Fock
      charge
        1
      spin
@@ -514,22 +514,22 @@
      H     0.000000       -1.65723       -0.94197
      H     0.000000        1.65723       -0.94197
      End geometry
-     UNIT
+     UNIT                #指定坐标长度单位
      Bohr
      Check
-     skeleton
+     skeleton            #只计算“骨架”原子轨道积分
      Group
-       C(1)
+       C(1)              #指定C1点群
      $END
 
      $XUANYUAN
      $END
 
      $SCF
-     RKS
+     RKS                 #Restricted Kohn-Sham
      Dft functional
      SVWN5
-     numinttype
+     numinttype          #数值积分
      11
      $END
 
@@ -619,7 +619,7 @@
      DEF2-SV(P)           #密度拟合基组
      Skeleton
      Group
-      C(2v)
+      C(2v)               #指定C2v点群
      $END
 
      $XUANYUAN
@@ -996,13 +996,13 @@
       H                  2.16038781   -1.24730049   -0.00000000
      End geometry
      Check
-     thresh
+     thresh        #判断分子对称性的阈值
      medium
      skeleton
      $END
      
      $XUANYUAN
-     direct
+     direct        #积分直接的scf计算
      $END
      
      $SCF
@@ -1048,7 +1048,7 @@
       1 2        # lowest and second lowest root
      nfiles
       1
-     jahnteller
+     jahnteller  
       1          # follow irrep component 1
      $end
 
