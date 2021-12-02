@@ -711,12 +711,164 @@
      100
      $END
 
-.. _test062:
+示例9：计算电荷转移，库仑和交换积分。算例下载链接 :download:`test062.zip <files/test062.zip>`
 
-插入test062
+.. code-block:: bdf
+
+     $COMPASS 
+     Title
+       CH2 Molecule test run, cc-pvqz 
+     Basis
+     cc-pvdz
+     Geometry
+     C      0.000000    0.000000  0.000000  
+     C      1.332000    0.000000  0.000000  
+     H     -0.574301   -0.928785  0.000000  
+     H     -0.574301    0.928785  0.000000  
+     H      1.906301    0.928785  0.000000  
+     H      1.906301   -0.928785  0.000000  
+     End geometry
+     Group
+       C(1)
+     Skeleton                      #只计算“骨架”原子轨道积分
+     check
+     $END
+
+     $xuanyuan
+     Direct                        #积分直接的SCF计算
+     Schwartz                      #Schwartz不等式
+     $end
+
+     $scf
+     RKS                           #Restricted Kohn-Sham
+     dft functional
+       PBE0
+     threshconverg                 #指定SCF收敛的能量和密度矩阵阈值
+       1.d-10 1.d-8
+     optscreen                     #为直接积分设定阈值
+       1
+     $end
+  
+     %cp $BDFTASK.scforb $BDF_WORKDIR/$BDFTASK.scforb1
+     %cp $BDFTASK.scforb $BDF_WORKDIR/$BDFTASK.scforb2
      
+     $COMPASS 
+     Title
+       CH2 Molecule test run, cc-pvqz 
+     Basis
+       cc-pvdz
+     Geometry
+     C      0.000000    0.000000  0.000000  
+     C      1.332000    0.000000  0.000000  
+     H     -0.574301   -0.928785  0.000000  
+     H     -0.574301    0.928785  0.000000  
+     H      1.906301    0.928785  0.000000  
+     H      1.906301   -0.928785  0.000000  
+     C     -0.000000    0.000000  3.500000  
+     C      1.332000   -0.000000  3.500000  
+     H     -0.574301    0.928785  3.500000  
+     H     -0.574301   -0.928785  3.500000  
+     H      1.906301   -0.928785  3.500000  
+     H      1.906301    0.928785  3.500000  
+     End geometry
+     Group
+      C(1)
+     Skeleton
+     Nfragment
+      2
+     check
+     $END
      
-示例9：阿贝尔群对称结构的TD-DFT梯度计算。算例下载链接 :download:`test063.zip <files/test063.zip>`
+     $xuanyuan
+     Direct
+     Schwartz
+     $end
+     
+     # calculate Electron and hole transfer integrals
+     # Hole transfer: Donnar HOMO to Accepter HOMO
+     # Electraon transfer: Donner LUMO to Accepter LUMO
+     $elecoup
+     electrans
+      2                          #计算2对轨道间的迁移积分
+      8 8 1
+      9 9 1
+     dft
+      pbe0
+     $END
+
+     # calculate excitation energy transfer integrals
+     # S-S and T-T coupling: Donnar HOMO->LUMO Excitation to Accepter HOMO->LUMO excitation
+     $elecoup
+     enertrans 
+      2
+      8  9 8  9 1
+      8 10 8 10 1
+     dft
+      pbe0
+     iprint
+      1
+     $END
+     
+     $elecoup
+     enertrans 
+      2
+      8  9 8  9 1
+      8 10 8 10 1
+     dft
+      pbe0
+     orthmo
+     iprint
+      1
+     $END
+     
+     # wzk20210502: add test for range-separated functionals
+     $xuanyuan
+     Direct
+     Schwartz
+     rs                             #指定Range-Speration泛函
+     0.33
+     $end
+
+     $elecoup
+     electrans
+      2
+      8 8 1
+      9 9 1
+     dft # note: this calculates CAM-B3LYP coupling matrix elements upon PBE0 orbitals
+      cam-b3lyp
+     $END
+     
+     $elecoup
+     enertrans 
+      2
+      8  9 8  9 1
+      8 10 8 10 1
+     dft
+      cam-b3lyp
+     iprint
+      1
+     $END
+     
+     $elecoup
+     enertrans 
+      2
+      8  9 8  9 1
+      8 10 8 10 1
+     dft
+      cam-b3lyp
+     orthmo
+     iprint
+      1
+     $END
+     
+     &database
+     fragment 1  6
+      1 2 3 4 5 6
+     fragment 2 6
+      7 8 9 10 11 12
+     &end  
+     
+示例10：阿贝尔群对称结构的TD-DFT梯度计算。算例下载链接 :download:`test063.zip <files/test063.zip>`
 
 .. code-block:: bdf
 
@@ -779,7 +931,7 @@
      1
      $end
 
-示例10：DFT基态梯度计算。算例下载链接 :download:`test065.zip <files/test065.zip>`
+示例11：DFT基态梯度计算。算例下载链接 :download:`test065.zip <files/test065.zip>`
 
 .. code-block:: bdf
 
@@ -820,7 +972,7 @@
      1
      $end
 
-示例11：非阿贝尔群对称性的条件下进行TD-DFT梯度的计算。算例下载链接 :download:`test068.zip <files/test068.zip>`
+示例12：非阿贝尔群对称性的条件下进行TD-DFT梯度的计算。算例下载链接 :download:`test068.zip <files/test068.zip>`
 
 .. code-block:: bdf
 
@@ -900,7 +1052,7 @@
       1          # follow irrep component 1
      $end
 
-示例12：基于TDDFT的非绝热耦合计算。算例下载链接 :download:`test081.zip <files/test081.zip>`
+示例13：基于TDDFT的非绝热耦合计算。算例下载链接 :download:`test081.zip <files/test081.zip>`
 
 .. code-block:: bdf
 
@@ -991,7 +1143,7 @@
      noresp      #指定在Double和FNAC计算中忽略跃迁密度矩阵的响应项
      $end
 
-示例13：限制性结构优化以及开壳层体系的SA-TDDFT计算。算例下载链接 :download:`test085.zip <files/test085.zip>`
+示例14：限制性结构优化以及开壳层体系的SA-TDDFT计算。算例下载链接 :download:`test085.zip <files/test085.zip>`
 
 .. code-block:: bdf
 
@@ -1073,7 +1225,7 @@
      $end
 
 
-示例14：计算自旋翻转(spin-flip)的TDA。算例下载链接 :download:`test098.zip <files/test098.zip>`
+示例15：计算自旋翻转(spin-flip)的TDA。算例下载链接 :download:`test098.zip <files/test098.zip>`
 
 .. code-block:: bdf
 
