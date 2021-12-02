@@ -161,8 +161,10 @@ resp模块用于计算DFT/TDDFT的梯度，TDDFT的基态-激发态，激发态-
 ------------------------------------------------
 指定resp求解约化的线性响应方程 :math:`[(A-B)(A+B)w2](X+Y) = RVo+RVvo`
 
-:guilabel:`Pola: Aoper,Boper,Bfreq` 参数类型：字符串
+:guilabel:`Pola` 参数类型：字符串
 --------------------------------------------------------
+可选值：Aoper、Boper、Bfreq
+
 Plorizability: <<A; B>>(wB),其中A，B算符可以是dipole(DIP), Quadruple(QUA), SOC(HSO), EFG。
 
 :guilabel:`Quad` 参数类型：Bool型
