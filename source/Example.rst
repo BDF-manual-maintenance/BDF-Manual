@@ -1372,4 +1372,142 @@
       2048
      $END
 
+示例16：iOI计算（基于分片方法的大体系SCF计算）。算例下载链接 :download:`test106.zip <files/test106.zip>`
+
+.. code-block:: bdf
+
+     # autofrag: a Python-based automatic fragmentation driver. Automatically
+     # fragments an arbitrary molecule, and prepares the BDF input files of the
+     # fragments (xxx.fragmentyyy.inp) and the global system (xxx.global.inp).
+     $autofrag
+     method
+      ioi # To request a conventional FLMO calculation, change ioi to flmo
+     nprocs
+      2 # Use at most 2 parallel processes in calculating the subsystems
+     $end
+
+     $compass
+     Title
+      hydroxychloroquine (diprotonated)
+     Basis
+      6-31G(d)
+     Geometry # snapshot of GFN2-xTB molecular dynamics at 298 K
+     C    -4.2028   -1.1506    2.9497 
+     C    -4.1974   -0.4473    4.1642 
+     C    -3.7828    0.9065    4.1812 
+     C    -3.4934    1.5454    2.9369 
+     C    -3.4838    0.8240    1.7363 
+     C    -3.7584   -0.5191    1.7505 
+     H    -4.6123   -0.8793    5.0715 
+     C    -3.3035    3.0061    2.9269 
+     H    -3.1684    1.2214    0.8030 
+     H    -3.7159   -1.1988    0.9297 
+     C    -3.1506    3.6292    4.2183 
+     C    -3.3495    2.9087    5.3473 
+     H    -2.8779    4.6687    4.2878 
+     H    -3.2554    3.3937    6.3124 
+     N    -3.5923    1.5989    5.4076 
+     Cl   -4.6402   -2.7763    3.0362 
+     H    -3.8651    1.0100    6.1859 
+     N    -3.3636    3.6632    1.7847 
+     H    -3.4286    2.9775    1.0366 
+     C    -3.5305    5.2960   -0.0482 
+     H    -2.4848    5.4392   -0.0261 
+     H    -3.5772    4.3876   -0.6303 
+     C    -4.1485    6.5393   -0.7839 
+     H    -3.8803    6.3760   -1.8559 
+     H    -5.2124    6.5750   -0.7031 
+     C    -3.4606    7.7754   -0.2653 
+     H    -2.3720    7.6699   -0.3034 
+     H    -3.7308    7.9469    0.7870 
+     N    -3.8415    8.9938   -1.0424 
+     H    -3.8246    8.8244   -2.0837 
+     C    -2.7415    9.9365   -0.7484 
+     H    -1.7736    9.4887   -0.8943 
+     H    -2.8723   10.2143    0.3196 
+     C    -2.7911   11.2324   -1.6563 
+     H    -1.7773   11.3908   -2.1393 
+     H    -3.5107   10.9108   -2.4646 
+     H    -3.0564   12.0823   -1.1142 
+     C    -5.1510    9.6033   -0.7836 
+     H    -5.5290    9.1358    0.1412 
+     H    -5.0054   10.6820   -0.6847 
+     C    -6.2224    9.3823   -1.8639 
+     H    -6.9636   10.1502   -1.7739 
+     H    -5.8611    9.4210   -2.8855 
+     O    -6.7773    8.0861   -1.6209 
+     H    -7.5145    7.9086   -2.2227 
+     C    -4.0308    4.9184    1.3736 
+     H    -3.7858    5.6522    2.1906 
+     C    -5.5414    4.6280    1.3533 
+     H    -5.8612    3.8081    0.7198 
+     H    -5.9086    4.3451    2.3469 
+     H    -6.1262    5.5024    1.0605 
+     End geometry
+     Skeleton
+     Check
+     $end
+
+     $xuanyuan
+     Direct
+     Schwarz
+     rs # the range separation parameter omega (or mu) of wB97X
+      0.3
+     $end
+
+     $scf
+     rks
+     dft
+      wB97X
+     iprt
+      2
+     charge
+      2
+     coulpot+cosx
+     $end
+
+     $localmo
+     FLMO
+     $end
+
+示例17：双杂化泛函基态单点能计算。算例下载链接 :download:`test116.zip <files/test116.zip>`
+
+.. code-block:: bdf
+
+     $compass
+     title
+      NH3...H2O B2PLYP-D3/def2-TZVP
+     basis
+      def2-TZVP
+     RI-C
+      def2-TZVP # RI-MP2 auxiliary basis = def2-TZVP/C
+     geometry
+             N             -0.6347196970        -2.4888833088        -0.0001987285
+             H             -2.5637570606        -2.5802060356        -0.0187542806
+             H             -0.0589873685        -3.4710591095         1.5591466837
+             H             -0.0283791648        -3.4872452297        -1.5375008955
+             O              0.5661204194         2.8752419284         0.0000247838
+             H              0.1735090569         1.0640211402        -0.0014981011
+             H              2.3916890605         2.8947369696        -0.0002005778
+     end geometry
+     skeleton
+     check
+     unit
+      bohr
+     $end
+
+     $xuanyuan
+     direct
+     $end
+
+     $scf
+     rks
+     dft
+      B2PLYP
+     D3
+     coulpot+cosx
+     $end
+
+     $mp2
+     $end
 
