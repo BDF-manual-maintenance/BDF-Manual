@@ -58,7 +58,7 @@
      H    2.16038783830607  -1.24730050000000   0.00000000000000
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
-     Skeleton         #只计算“骨架”原子轨道积分 
+     Skeleton         #不产生对称匹配的积分 
      Check
      #Group
      #  D(6h)
@@ -90,7 +90,7 @@
      H    2.16038783830607  -1.24730050000000   0.00000000000000
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
-     Skeleton          #只计算“骨架”原子轨道积分 
+     Skeleton          #不产生对称匹配的积分 
      Check
      Group
        D(6h)           #指定D6h点群
@@ -338,7 +338,7 @@
      H  0.000000000   0.783975899   -0.184686472 
      End geometry
      Check
-     Skeleton        #只计算“骨架”原子轨道积分
+     Skeleton        #不产生对称匹配的积分
      $END
 
      $XUANYUAN
@@ -517,7 +517,7 @@
      UNIT                #指定坐标长度单位
      Bohr
      Check
-     skeleton            #只计算“骨架”原子轨道积分
+     skeleton            #不产生对称匹配的积分
      Group
        C(1)              #指定C1点群
      $END
@@ -730,7 +730,7 @@
      End geometry
      Group
        C(1)
-     Skeleton                      #只计算“骨架”原子轨道积分
+     Skeleton                      #不产生对称匹配的积分
      check
      $END
 
