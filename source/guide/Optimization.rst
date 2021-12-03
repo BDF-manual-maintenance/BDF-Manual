@@ -24,9 +24,9 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
     $compass
     title
-     CH3Cl geomopt
+       CH3Cl geomopt
     basis
-     def2-SV(P)
+       def2-SV(P)
     geometry
      C                  2.67184328    0.03549756   -3.40353093
      H                  2.05038141   -0.21545378   -2.56943947
@@ -219,9 +219,9 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
     $compass
     title
-     CH3Cl freq
+       CH3Cl freq
     basis
-     def2-SV(P)
+       def2-SV(P)
     geometry
           C          -0.93557703       0.15971089       0.58828595
           H          -1.71170348      -0.52644336       0.21665897
@@ -462,9 +462,9 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
     $compass
     title
-     HCN <-> HNC transition state
+       HCN <-> HNC transition state
     basis
-     def2-SVP
+       def2-SVP
     geometry
      C                  0.00000000    0.00000000    0.00000000
      N                  0.00000000    0.00000000    1.14838000
@@ -527,9 +527,9 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
     $compass
     title
-     HCN <-> HNC transition state, initial Hessian
+       HCN <-> HNC transition state, initial Hessian
     basis
-     STO-3G
+       STO-3G
     geometry
      C                  0.00000000    0.00000000    0.00000000
      N                  0.00000000    0.00000000    1.14838000
@@ -565,9 +565,9 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
     $compass
     title
-     HCN <-> HNC transition state
+       HCN <-> HNC transition state
     basis
-     def2-SVP
+       def2-SVP
     geometry
      C                  0.00000000    0.00000000    0.00000000
      N                  0.00000000    0.00000000    1.14838000
@@ -655,7 +655,7 @@ BDF还支持在结构优化中限制一个或多个内坐标的值，方法是�
     solver
      0
 
-相应地，前述各算例的``solver 1``代表使用BDF自带的结构优化代码而非DL-FIND来进行优化。原则上，极小值点和过渡态的优化也可用DL-FIND来实现，但效率一般不如BDF自带代码好，因此仅对于CI、MECP优化等BDF自带代码不支持的任务，才应调用DL-FIND。
+相应地，前述各算例的 ``solver 1`` 代表使用BDF自带的结构优化代码而非DL-FIND来进行优化。原则上，极小值点和过渡态的优化也可用DL-FIND来实现，但效率一般不如BDF自带代码好，因此仅对于CI、MECP优化等BDF自带代码不支持的任务，才应调用DL-FIND。
 
 以下为CI优化的示例输入，该输入文件计算了乙烯的T1态和T2态的锥形交叉点：
 
@@ -667,9 +667,9 @@ BDF还支持在结构优化中限制一个或多个内坐标的值，方法是�
 
     $COMPASS 
     Title
-     C2H4 Molecule test run
+       C2H4 Molecule test run
     Basis
-     6-31G
+       6-31G
     Geometry
      C                  0.00107880   -0.00318153    1.43425054
      C                  0.00066030    0.00195132   -1.43437339
@@ -683,15 +683,15 @@ BDF还支持在结构优化中限制一个或多个内坐标的值，方法是�
     $END
 
     $bdfopt
-    imulti
+    imulti             #优化CI
      2
-    maxcycle
+    maxcycle           #最大优化步数
      50
-    tolgrad
+    tolgrad            #方均根梯度的收敛标准
      1.d-4
-    tolstep
+    tolstep            #方均根步长的收敛标准
      5.d-3
-    tolene
+    tolene             #结构优化相邻两步能量变化的收敛标准
      1.d-6
     $end
 
@@ -798,9 +798,9 @@ BDF还支持在结构优化中限制一个或多个内坐标的值，方法是�
 
     $COMPASS 
     Title
-     C2H4 Molecule test run
+       C2H4 Molecule test run
     Basis
-     6-31G
+       6-31G
     Geometry
     C            -0.00000141      0.00000353      0.72393424
     C             0.00000417     -0.00000109     -0.72393515
