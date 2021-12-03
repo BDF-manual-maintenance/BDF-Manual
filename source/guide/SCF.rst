@@ -5,7 +5,7 @@ BDF的自洽场包括Hartree-Fock和Kohn-Sham方法，
 
 非限制性Hartree-Fock方法
 -----------------------------------------------------------------
-对于基数电子体系或高自旋态，需要用 ``UHF`` 或者限制性开壳层Hartree-Fock （restricted open-shell Hartree-Fock）方法。
+对于奇数电子体系或高自旋态，需要用 ``UHF`` 或者限制性开壳层Hartree-Fock （restricted open-shell Hartree-Fock）方法。
 BDF默认奇数电子体系自旋多重度为2，BDF将利用UHF计算。例如对于C3H5
 
 .. code-block:: bdf
