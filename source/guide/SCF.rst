@@ -369,7 +369,7 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
      ultra fine
     $end
 
-BDF在Kohn-Sham计算的开始几步采用“Ultra coarse”积分格点，如下所示，
+BDF在Kohn-Sham计算的开始几步采 ``Ultra coarse`` 积分格点，如下所示，
 
 .. code-block:: 
 
@@ -403,7 +403,7 @@ BDF在Kohn-Sham计算的开始几步采用“Ultra coarse”积分格点，如�
      Numerical Grid Generated SUCCESSFULLY! 
     Total and symmetry independent Grid Number:      4352      1181
 
-当能量收敛到0.01 Hartree之内时，会切换积分格点到Ultra fine，输出如下所示：
+当能量收敛到0.01 Hartree之内时，会切换积分格点到 ``Ultra fine`` ，输出如下所示：
 
 .. code-block:: 
 
