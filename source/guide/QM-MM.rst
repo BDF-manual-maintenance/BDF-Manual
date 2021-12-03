@@ -5,7 +5,7 @@ QM/MM组合方法一般把系统分为两个区域，QM区和MM区。将体系�
 .. math::
     E_{QM/MM}(\mathbb{S}) = E_{MM}(\mathbb{O})+E_{QM}(\mathbb{I+L})+E_{QM/MM}(\mathbb{I,O}) 
 
-其中
+其中, S 表示系统， I 表示QM层， O表示MM层，L表示连接原子。
 :math:`E_{MM}(\mathbb{O})`
 采用分子力学力场计算，
 :math:`E_{QM/MM}(\mathbb{I,O})`
@@ -29,7 +29,7 @@ BDF程序主要完成量子化学计算部分，其余部分由课题组修改�
 
 计算环境配置
 -------------------------------------------------
-推荐使用Anaconda管理和配置QM/MM计算环境（详见官网https://www.anaconda.com/）。
+推荐使用Anaconda管理和配置QM/MM计算环境（ `详见官网 <https://www.anaconda.com>`_ ）。
 
 *  在anaconda中配置运行环境
 
@@ -51,14 +51,14 @@ BDF中pDynamo-2已经内置于安装目录的sbin目录下，在sbin目录下依
   cd installation
   python ./intall.py
 
-安装脚本运行后，会生成environment_bash.com，environment_cshell.com两个环境配置文件。用户可以在自己的 ``.bashrc`` source 这个
+安装脚本运行后，会生成 environment_bash.com，environment_cshell.com两个环境配置文件。用户可以在自己的 ``.bashrc`` source 这个
 环境文件，设置运行环境。
 
 .. note::
 
-  编译过程会自动选择C编译器，对于MAC系统，建议使用homebrew安装GCC编译器，并添加 **CC=gcc-8(or 7 6)** 
+  编译过程会自动选择C编译器，对于MAC系统，建议使用 ``homebrew`` 安装GCC编译器，并添加 **CC=gcc-8(or 7 6)** 
 
-pDynamo-2运行时，默认调用sbin目录下的qmmmrun.sh文件进行QM计算.环境配置时，需要确保sbin目录在系统PATH中。
+pDynamo-2运行时，默认调用sbin目录下的 ``qmmmrun.sh`` 文件进行QM计算.环境配置时，需要确保sbin目录在系统PATH中。
 可以用如下命令添加。
 
 .. code-block:: bdf
@@ -71,7 +71,7 @@ pDynamo-2运行时，默认调用sbin目录下的qmmmrun.sh文件进行QM计算.
   
   PDYNAMO_BDFTMP=YourBDF_tmpPATH;   export PDYNAMO_BDFTMP
 
-若要检测pDynamo是否正确安装，可以运行软件自带的算例进行检测，算例文件位于* *pDynamo_2.0.0/book/examples** 目录中，
+若要检测pDynamo是否正确安装，可以运行软件自带的算例进行检测，算例文件位于 **pDynamo_2.0.0/book/examples** 目录中，
 可以运行一下命令测试：
 
 .. code-block:: bdf
@@ -164,7 +164,9 @@ pDynamo-2目前支持 ``Amber、CHARMM、Gromacs`` 等力场，同时支持 ``PD
   energy  = molecule.Energy ( )
 
 .. note::
-  QM/MM计算支持两种输入模式，对于简单的算例，可以在 ``QCModelBDF`` 类中作为参数输入。 相对复杂的算例可以采用 ``计算模版`` 方式输入。
+  * QM/MM计算支持两种输入模式，对于简单的算例，可以在 ``QCModelBDF`` 类中作为参数输入。 
+
+  * 相对复杂的算例可以采用 ``计算模版`` 方式输入。
 
 几何构型优化
 -------------------------------------------------
@@ -309,6 +311,7 @@ QM/MM-TDDFT计算。以前一节中完成的算例为例，可以继续添加如
   5
  $end
 
-----------------------------------------------------------------
+
+
 
 
