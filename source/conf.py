@@ -115,7 +115,7 @@ class BDFLexer(RegexLexer):
             include('comment'),
             (r'\b(geometry)([^\$]*)?(end geometry)\b',bygroups(Keyword.Namespace, Text, Keyword.Namespace)),
             (r'\b(basis-multi)([\s\S]*)?(end basis)\b',bygroups(Keyword.Namespace, Text, Keyword.Namespace)),
-            (r'\b(title)\s*\n([^\n]*)\n',bygroups(Name.Builtin,Text)),
+            (r'\b(title)\s*([^\n]*)',bygroups(Name.Builtin,Text)),
             include('modules'),
             include('keywords'),
             include('values'),
