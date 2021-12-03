@@ -655,7 +655,7 @@ BDF还支持在结构优化中限制一个或多个内坐标的值，方法是�
     solver
      0
 
-相应地，前述各算例的``solver 1``代表使用BDF自带的结构优化代码而非DL-FIND来进行优化。原则上，极小值点和过渡态的优化也可用DL-FIND来实现，但效率一般不如BDF自带代码好，因此仅对于CI、MECP优化等BDF自带代码不支持的任务，才应调用DL-FIND。
+相应地，前述各算例的 ``solver 1`` 代表使用BDF自带的结构优化代码而非DL-FIND来进行优化。原则上，极小值点和过渡态的优化也可用DL-FIND来实现，但效率一般不如BDF自带代码好，因此仅对于CI、MECP优化等BDF自带代码不支持的任务，才应调用DL-FIND。
 
 以下为CI优化的示例输入，该输入文件计算了乙烯的T1态和T2态的锥形交叉点：
 
@@ -683,15 +683,15 @@ BDF还支持在结构优化中限制一个或多个内坐标的值，方法是�
     $END
 
     $bdfopt
-    imulti
+    imulti             #优化CI
      2
-    maxcycle
+    maxcycle           #最大优化步数
      50
-    tolgrad
+    tolgrad            #方均根梯度的收敛标准
      1.d-4
-    tolstep
+    tolstep            #方均根步长的收敛标准
      5.d-3
-    tolene
+    tolene             #结构优化相邻两步能量变化的收敛标准
      1.d-6
     $end
 
