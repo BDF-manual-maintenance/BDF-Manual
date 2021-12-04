@@ -1,12 +1,16 @@
 自洽场方法：Hartree-Fock和Kohn-Sham
 ===========================================
 
-BDF的自洽场包括Hartree-Fock和Kohn-Sham方法，
+BDF的自洽场包括Hartree-Fock和Kohn-Sham方法。
+
+限制性Hartree-Fock方法
+-----------------------------------------------------------------
+对于所有电子均成对的偶数电子体系，应使用 ``RHF`` 方法进行Hartree-Fock计算，相关内容已在“第一个算例”章节提及，这里不再赘述。
 
 非限制性Hartree-Fock方法
 -----------------------------------------------------------------
-对于奇数电子体系或高自旋态，需要用 ``UHF`` 或者限制性开壳层Hartree-Fock （restricted open-shell Hartree-Fock）方法。
-BDF默认奇数电子体系自旋多重度为2，BDF将利用UHF计算。例如对于C3H5
+对于有不成对电子的体系，需要用 ``UHF`` 或者限制性开壳层Hartree-Fock （restricted open-shell Hartree-Fock）方法。
+对于奇数电子体系，BDF默认自旋多重度为2，且利用UHF计算。例如对于C3H5
 
 .. code-block:: bdf
 
@@ -99,7 +103,7 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
 限制性开壳层Hartree-Fock方法
 ------------------------------------------------------------------------------------------
 
-限制性开壳层Hartree-Fock(Restricted open-shell Hartree-Fock - ROHF)可以计算开壳层分子体系，在BDF中，ROHF
+限制性开壳层Hartree-Fock (Restricted open-shell Hartree-Fock - ROHF)可以计算开壳层分子体系，在BDF中，ROHF
 可与SA-TDDFT结合，解决激发态的自旋污染问题。这里给出一个 ``CH2`` 三重态的ROHF算例，
 
 .. code-block:: bdf
@@ -169,7 +173,7 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
 
 RKS/UKS和ROKS计算
 -------------------------------------------------
-限制性Kohn-Sham(Restricted Kohn-Sham -- RKS)方法，这里以简洁输入的模式给出一个H2O分子的DFT计算算例，使用了B3lyp泛函。
+限制性Kohn-Sham (Restricted Kohn-Sham -- RKS)方法，这里以简洁输入的模式给出一个H2O分子的DFT计算算例，使用了B3lyp泛函。
 
 .. code-block:: bdf
 
@@ -205,7 +209,7 @@ RKS/UKS和ROKS计算
     $end
     $scf
     rks # Restricted Kohn-Sham calculation
-    dft # ask for B3lyp functional, it is different with B3lyp implimented in Gaussian. 
+    dft # ask for B3lyp functional, it is different with B3lyp implemented in Gaussian. 
       b3lyp
     $end
 
@@ -294,7 +298,7 @@ CAM-B3LYP等RS杂化泛函，将库伦相互作用分为长短程，
 
 对弱相互作用的色散矫正
 -------------------------------------------------
-常见的交换相关泛函如B3lyp对弱相互作用不能很好的描述，这时，在计算能量或者做分子结构优化时，需要加入色散矫正。BDF采用了Stefen Grimme开发的
+常见的交换相关泛函如B3lyp对弱相互作用不能很好的描述，这时，在计算能量或者做分子结构优化时，需要加入色散矫正。BDF采用了Stefan Grimme开发的
 D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入如下，
 
 .. code-block:: bdf
@@ -369,7 +373,7 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
      ultra fine
     $end
 
-BDF在Kohn-Sham计算的开始几步采 ``Ultra coarse`` 积分格点，如下所示，
+BDF在Kohn-Sham计算的开始几步采用 ``Ultra coarse`` 积分格点，如下所示，
 
 .. code-block:: 
 
