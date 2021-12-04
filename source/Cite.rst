@@ -28,4 +28,10 @@
     :list: enumerated
     :filter: key in {"doi:10.1063/1.4885817", "doi:10.1063/1.4903986", "doi:10.1021/acs.accounts.1c00312"}
 
+**如果涉及和采用溶剂化效应，请额外引用下面的文献**
+
+.. bibliography::
+    :list: enumerated
+    :filter: key in {"doi:10.1063/1.4816767", "doi:10.1021/ct400280b", "doi:10.1063/1.4901304"}
+
 

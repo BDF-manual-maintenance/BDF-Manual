@@ -251,18 +251,7 @@ BDF目前支持基态溶剂化效应计算，包括HF和DFT方法。以下是甲
 
 .. note::
 
-  * 使用溶剂化效应模块需引用ddCOSMO相关文献。 
-
-    - E. Cancès, Y. Maday, B. Stamm "Domain decomposition for implicit solvation models" J. Chem. Phys. 139, 054111 (2013) 
-
-    - F. Lipparini, B. Stamm, E. Cancès, Y. Maday, B. Mennucci "Fast Domain Decomposition Algorithm for Continuum Solvation Models: 
-      Energy and First Derivatives" J. Chem. Theory Comput. 9, 3637–3648 (2013) 
-
-    - F. Lipparini, G. Scalmani, L. Lagardère, B. Stamm, E. Cancès, Y. Maday, J.-P. Piquemal, M. J. Frisch, B. Mennucci
-      "Quantum, classical, and hybrid QM/MM calculations in solution: General implementation of the ddCOSMO linear scaling 
-      strategy" J. Chem. Phys. 141, 184108 (2014)  
-
-  * 溶剂化效应目前只支持能量计算，梯度计算会在近期完成。 
+   溶剂化效应目前只支持能量计算，梯度计算会在近期完成。 
 
 
 激发态溶剂化效应
@@ -465,7 +454,6 @@ BDF目前支持基态溶剂化效应计算，包括HF和DFT方法。以下是甲
   $end
 
 
---------------------------------------------------------------------------------------------------
 
 
 
