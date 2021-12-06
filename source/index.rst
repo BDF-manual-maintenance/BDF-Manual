@@ -9,7 +9,10 @@
 BDF用户手册
 ================
 
-.. include:: Introduction.rst
+.. toctree::
+   :caption: 软件简介
+
+   Introduction
 
 .. toctree::
    :maxdepth: 3
