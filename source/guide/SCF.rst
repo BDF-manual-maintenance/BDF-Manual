@@ -173,7 +173,7 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
 
 RKS/UKS和ROKS计算
 -------------------------------------------------
-限制性Kohn-Sham (Restricted Kohn-Sham -- RKS)方法，这里以简洁输入的模式给出一个H2O分子的DFT计算算例，使用了B3lyp泛函。
+限制性Kohn-Sham (Restricted Kohn-Sham -- RKS)方法，这里以简洁输入的模式给出一个H :sub:`2` O 分子的DFT计算算例，使用了B3lyp泛函。
 
 .. code-block:: bdf
 
