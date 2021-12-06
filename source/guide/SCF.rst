@@ -228,7 +228,7 @@ RKS/UKS和ROKS计算
      E_xc  =                -7.50177140
     Virial Theorem      2.006909
 
-H2O+离子的ROKS计算，简洁输入如下，
+H2O :sup:`+`离子的ROKS计算，简洁输入如下，
 
 .. code-block:: bdf
 
@@ -351,7 +351,7 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
 
 虽然BDF默认对不同的泛函，按照精度要求自定义了积分格点，例如Meta-GGA类泛函对积分格点要求很高，BDF默认对Meta-GGA使用Fine类型的格点，
 用户可能还希望能对积分格点进行调节。Kohn-Sham泛函的积分格点可以在SCF模块的输入中通过Grid等关键词定义，Grid的有效值为 ``Ultra coarse`` ,
-``Coarse`` , ``medium`` , ``fine``, ``Ultra fine`` 等5个，积分格点依次增加，数值积分精度依次提高。
+``Coarse`` , ``medium`` , ``fine``, ``Ultra fine``, ``sg1`` 等6个，积分格点依次增加，数值积分精度依次提高。
 
 例如，H2O分子计算采用了M062X泛函，属于Hybrid Meta-GGA泛函，要求密集的积分格点，需要采用BDF的高级输入和简洁输入混合模式，如下所示：
 
