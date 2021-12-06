@@ -228,7 +228,7 @@ RKS/UKS和ROKS计算
      E_xc  =                -7.50177140
     Virial Theorem      2.006909
 
-:math:`H_{2}O^+`离子的ROKS计算，简洁输入如下，
+H :sub:`2` O :sup:`+`离子的ROKS计算，简洁输入如下，
 
 .. code-block:: bdf
 
