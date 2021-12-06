@@ -3,11 +3,13 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. include:: Introduction.rst
+
 
 ================
 BDF用户手册
 ================
+
+.. include:: Introduction.rst
 
 .. toctree::
    :maxdepth: 3
