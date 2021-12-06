@@ -63,11 +63,11 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
 
  * ``geommetry`` 到 ``end geometry`` 之间定义的分子结构;
  * ``basis`` 定义基组为 ``3-21G``;
- * ``Skeleton`` 指定只计算对称独立的单、双电子积分，构造骨架Fock矩阵并对称化(详见BDF对群论的使用小节)。 
+ * ``Skeleton`` 指定只计算对称独立的单、双电子积分，构造骨架Fock矩阵并对称化(详见BDF对群论的使用小节 :doc:`Point-Group` )。 
 
 执行完 ``compass`` 模块后，BDF利用 ``xuanyuan`` 模块计算单、双电子积分。
 
- * ``direct`` 关键词指定后续的自洽场计算采用积分直接的计算方法(详见BDF的积分计算方法小节);
+ * ``direct`` 关键词指定后续的自洽场计算采用积分直接的计算方法(详见BDF的积分计算方法小节 :doc:`xuanyuan` );
  * ``maxmem`` 指定积分计算是可用的缓冲区内存为512 Mega Words。
 
 最后，BDF执行 ``scf`` 模块，完成基于Hartree-Fock的自洽场计算。
