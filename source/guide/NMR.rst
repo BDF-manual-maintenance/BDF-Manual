@@ -12,7 +12,7 @@ BDF支持限制性Hartree-Fock（RHF）和限制性Kohn-Sham（RKS）方法的�
 
 
 
-全原子核磁共振屏蔽常数计算
+NMR算例
 ----------------------------------------------------------
 以下为甲烷分子核磁共振屏蔽常数计算的输入文件：
 
@@ -49,18 +49,18 @@ BDF支持限制性Hartree-Fock（RHF）和限制性Kohn-Sham（RKS）方法的�
 
   $NMR      # 核磁共振屏蔽常数计算模块
   icg
-   1        # 可输入0或1，0为不进行common gauge计算，1为进行common gauge计算，默认为0
+   1        # 可输入0或1，0为不进行COMMON GAUGE计算，1为进行COMMON GAUGE计算，默认为0
   igiao
-   1        # 可输入0或1，0为不进行giao计算，1为进行giao计算，默认为0
+   1        # 可输入0或1，0为不进行GIAO计算，1为进行GIAO计算，默认为0
   $END
 
 完成计算将顺序调用 ``compass`` , ``xuanyuan`` , ``scf`` 及 ``nmr`` 四个模块。其中 ``scf`` 模块执行 ``RKS`` 计算。
-基于RKS的计算结果，进行后续的 ``NMR`` 计算，其中 ``NMR`` 计算将顺序进行common gauge计算和GIAO计算，计算将给出所有原子的
+基于RKS的计算结果，进行后续的 ``NMR`` 计算，其中 ``NMR`` 计算将顺序进行COMMON GAUGE计算和GIAO计算，计算将给出所有原子的
 各向同性以及各向异性核磁共振屏蔽常数。
 
-common gauge
+COMMON GAUGE
 ----------------------------------------------------------
-可以通过关键词icg控制进行common gauge的NMR计算：
+可以通过关键词icg控制进行COMMON GAUGE的NMR计算：
 
 .. code-block:: bdf 
 
@@ -69,9 +69,9 @@ common gauge
     1
   $END
 
-可以输入0或者1，默认值为0，即不进行common gauge计算，输入为1时，则为进行common gauge计算。
+可以输入0或者1，默认值为0，即不进行COMMON GAUGE计算，输入为1时，则为进行COMMON GAUGE计算。
 
-在common gauge计算中，规范原点默认位于坐标原点，即（0，0，0）处，可以通过关键词igatom将规范原点指定在某个原子上，
+在COMMON GAUGE计算中，规范原点默认位于坐标原点，即（0，0，0）处，可以通过关键词igatom将规范原点指定在某个原子上，
 也可以通过cgcoord将规范原点设置为空间某个指定的位置，具体输入方式如下：
 
 .. code-block:: bdf 
@@ -164,10 +164,10 @@ GIAO
         31.204947      9.070921
         31.204946      9.070920
 
-同common gauge的情况，上面结果分别为C原子和H原子的GIAO核磁共振屏蔽常数，单位为ppm，
+同COMMON GAUGE的情况，上面结果分别为C原子和H原子的GIAO核磁共振屏蔽常数，单位为ppm，
 第一列为各向同性屏蔽常数，第二列为各向异性屏蔽常数。
 
 .. warning::
   输出中的关键词 ``Isotropic/anisotropic constant by atom type`` 
-  GIAO与common gauge的相同，在读取结果时应注意是在 ``[nmr_nr_cg]`` 后的，
-  还是 ``[nmr_nr_giao]`` 后的，来区分common gauge的结果还是GIAO的结果
+  GIAO与COMMON GAUGE的相同，在读取结果时应注意是在 ``[nmr_nr_cg]`` 后的，
+  还是 ``[nmr_nr_giao]`` 后的，来区分COMMON GAUGE的结果还是GIAO的结果
