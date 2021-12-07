@@ -33,7 +33,7 @@ BDF软件采用的是高斯型基函数。
 它有 :math:`2L+1` 个分量，例如 *d* 函数包含-2，-1，0，+1，+2。
 
 笛卡尔函数的优点是容易计算积分，但是存在冗余函数；而球函数恰好与 :math:`(L+1)(L+2)/2` 个磁量子数相对应，
-因此在量子化学程序中通常先在笛卡尔函数下计算积分，然后通过一定的线性关系（参见 Int. J. Quant. Chem. 54, 83, 1995），组合成球函数的积分。
+因此在量子化学程序中通常先在笛卡尔函数下计算积分，然后通过一定的线性关系 :cite:`schlegel1995` ，组合成球函数的积分。
 
 .. note::
 
@@ -41,15 +41,23 @@ BDF软件采用的是高斯型基函数。
   2. 笛卡尔基函数无论在精度上还是在效率上均无优势，尤其是对于全电子相对论计算还会导致数值不稳定，因此在BDF计算中一律采用球基函数。
   3. 笛卡尔基函数和球基函数会导致不同的结果。如果用其它量子化学程序重复BDF的计算结果，除保证结构、方法、基组相同外，还需检查是否用了球基函数。
 
-BDF内置的高斯基组主要来自以下基组库网站，也有少数基组来自原始文献。
+BDF内置的高斯基组主要来自以下基组库网站，各种基组的原始文献可以在相应的网站中找到。
 
-* Basis Set Exchange，可以输出BDF格式（注意：ECP基组要手动调整ECP数据的位置）： https://www.basissetexchange.org/
-* Stuttgart/Cologne赝势基组库： http://www.tc.uni-koeln.de/PP/clickpse.en.html
-* Turbomole基组库： http://www.cosmologic-services.de/basis-sets/basissets.php
-* Dyall相对论基组： http://dirac.chem.sdu.dk/basisarchives/dyall/index.html
+* Basis Set Exchange :cite:`bse2019` ：全电子基组，标量ECP基组，可以输出BDF格式（注意：ECP基组要手动调整ECP数据的位置）。 https://www.basissetexchange.org/
+* Stuttgart/Cologne赝势基组库：SOECP基组。 http://www.tc.uni-koeln.de/PP/clickpse.en.html
+* Turbomole基组库：全电子基组，标量ECP基组，SOECP基组。 http://www.cosmologic-services.de/basis-sets/basissets.php
+* Dyall相对论基组：全电子相对论基组。 http://dirac.chem.sdu.dk/basisarchives/dyall/index.html
 * Sapporo基组库： http://sapporo.center.ims.ac.jp/sapporo/
-* Clarkson大学ECP基组库： https://people.clarkson.edu/~pchristi/reps.html
-* ccECP基组库： https://pseudopotentiallibrary.org/
+* Clarkson大学ECP基组库：SOECP基组。 https://people.clarkson.edu/~pchristi/reps.html
+* ccECP基组库：标量ECP基组。 https://pseudopotentiallibrary.org/
+
+此外，有个别元素的内置基组来自原始文献：
+
+* 在全电子基组Dirac-RPF-4Z和Dirac-aug-RPF-4Z中：s-、p-区元素 :cite:`dasilva2014`，d-区元素 :cite:`dasilva2014a`，f-区元素 :cite:`dasilva2017`
+* 赝势基组Pitzer-AVDZ-PP、Pitzer-VDZ-PP、Pitzer-VTZ-PP :cite:`pitzer2000`
+* 在赝势基组CRENBL中：Ce - Lu :cite:`ermler1994`; Fr - Pu :cite:`ermler1991`; Am - Og :cite:`ermler1997,ermler1999` （注意：Basis Set Exchange上的Am - Og基组是错的！）
+* 在赝势基组CRENBS中：Am - Og :cite:`ermler1997,ermler1999` （注意：Basis Set Exchange上的Am - Og基组是错的！）
+* 在赝势基组Stuttgart-ECPMDFSO-QZVP中：Ac, Th, Pa :cite:`dolg2014`; U :cite:`dolg2009`
 
 BDF用户既可以使用BDF基组库中的标准基组，也可以使用自制基组。
 
