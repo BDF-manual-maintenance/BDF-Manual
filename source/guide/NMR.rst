@@ -2,8 +2,8 @@
 核磁共振屏蔽常数
 ================================================
 
-BDF支持Hartree-Fock和Kohn-Sham方法的核磁共振屏蔽常数（NMR）计算，其中外矢势规范原点的问题可以使用Common gauge方法
-和GIAO（gauge-including atomic orbitals）处理。
+BDF支持限制性Hartree-Fock（RHF）和限制性Kohn-Sham（RKS）方法的核磁共振屏蔽常数（NMR）计算，
+其中外矢势规范原点的问题可以使用Common gauge方法和GIAO（gauge-including atomic orbitals）处理。
 
 .. warning::
 
