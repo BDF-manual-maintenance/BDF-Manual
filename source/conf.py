@@ -130,7 +130,7 @@ class BDFLexer(RegexLexer):
             (words((
                 '$compass', '$bdfopt', '$drt', '$elecoup', '$expandmo', '$grad', '$localmo',
                 '$mcscf', '$mp2', '$mrci', '$resp', '$scf', '$tddft', '$traint',
-                '$xianci', '$xuanyuan','$end'), suffix=r'\b'),
+                '$xianci', '$xuanyuan','$nmr','$end'), suffix=r'\b'),
              Name.Function),
         ],
         "keywords": [
