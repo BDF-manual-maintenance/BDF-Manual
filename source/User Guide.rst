@@ -11,6 +11,8 @@
 
 .. include:: guide/SCF.rst
 
+.. include:: guide/Point-Group.rst
+
 .. include:: guide/SCFTech.rst
 
 .. include:: guide/TD.rst
@@ -23,10 +25,8 @@
 
 .. include:: guide/Solvent-Model.rst
 
-.. include:: guide/Analysis.rst
-
-.. include:: guide/Point-Group.rst
-
 .. include:: guide/Point-Charge.rst
+
+.. include:: guide/Analysis.rst
 
 

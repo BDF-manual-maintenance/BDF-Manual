@@ -58,7 +58,7 @@
      H    2.16038783830607  -1.24730050000000   0.00000000000000
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
-     Skeleton         #只计算“骨架”原子轨道积分 
+     Skeleton         #不产生对称匹配的积分 
      Check
      #Group
      #  D(6h)
@@ -68,7 +68,7 @@
      $end
 
      $scf
-     RHF
+     RHF              #Restricted Hartree-Fock
      $end
 
      $COMPASS    
@@ -90,7 +90,7 @@
      H    2.16038783830607  -1.24730050000000   0.00000000000000
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
-     Skeleton          
+     Skeleton          #不产生对称匹配的积分 
      Check
      Group
        D(6h)           #指定D6h点群
@@ -100,7 +100,7 @@
      $end
 
      $scf
-     RHF
+     RHF               #Restricted Hartree-Fock
      $end
 
      $COMPASS    
@@ -338,7 +338,7 @@
      H  0.000000000   0.783975899   -0.184686472 
      End geometry
      Check
-     Skeleton        #只计算“骨架”原子轨道积分
+     Skeleton        #不产生对称匹配的积分
      $END
 
      $XUANYUAN
@@ -372,9 +372,9 @@
      End geometry
      Check
      Unit
-       Bohr
+       Bohr          #指定坐标长度单位
      Group
-       D(2h)
+       D(2h)         #指定D2h点群
      $END
 
      $xuanyuan
@@ -382,9 +382,9 @@
 
      $SCF
      ROHF            #Restricted Open-shell Hartree-Fock
-     charge
+     charge          #电荷数1
       1
-     spin
+     spin            #自旋多重度2
       2
      $END
 
@@ -411,7 +411,7 @@
      $end
 
      $SCF
-     ROHF
+     ROHF             #Restricted Open-shell Hartree-Fock
      charge
        1
      spin
@@ -514,22 +514,22 @@
      H     0.000000       -1.65723       -0.94197
      H     0.000000        1.65723       -0.94197
      End geometry
-     UNIT
+     UNIT                #指定坐标长度单位
      Bohr
      Check
-     skeleton
+     skeleton            #不产生对称匹配的积分
      Group
-       C(1)
+       C(1)              #指定C1点群
      $END
 
      $XUANYUAN
      $END
 
      $SCF
-     RKS
+     RKS                 #Restricted Kohn-Sham
      Dft functional
      SVWN5
-     numinttype
+     numinttype          #数值积分
      11
      $END
 
@@ -619,7 +619,7 @@
      DEF2-SV(P)           #密度拟合基组
      Skeleton
      Group
-      C(2v)
+      C(2v)               #指定C2v点群
      $END
 
      $XUANYUAN
@@ -711,12 +711,164 @@
      100
      $END
 
-.. _test062:
+示例9：计算电荷转移，库仑和交换积分。算例下载链接 :download:`test062.zip <files/test062.zip>`
 
-插入test062
+.. code-block:: bdf
+
+     $COMPASS 
+     Title
+       CH2 Molecule test run, cc-pvqz 
+     Basis
+     cc-pvdz
+     Geometry
+     C      0.000000    0.000000  0.000000  
+     C      1.332000    0.000000  0.000000  
+     H     -0.574301   -0.928785  0.000000  
+     H     -0.574301    0.928785  0.000000  
+     H      1.906301    0.928785  0.000000  
+     H      1.906301   -0.928785  0.000000  
+     End geometry
+     Group
+       C(1)
+     Skeleton                      #不产生对称匹配的积分
+     check
+     $END
+
+     $xuanyuan
+     Direct                        #积分直接的SCF计算
+     Schwartz                      #Schwartz不等式
+     $end
+
+     $scf
+     RKS                           #Restricted Kohn-Sham
+     dft functional
+       PBE0
+     threshconverg                 #指定SCF收敛的能量和密度矩阵阈值
+       1.d-10 1.d-8
+     optscreen                     #为直接积分设定阈值
+       1
+     $end
+  
+     %cp $BDFTASK.scforb $BDF_WORKDIR/$BDFTASK.scforb1
+     %cp $BDFTASK.scforb $BDF_WORKDIR/$BDFTASK.scforb2
      
+     $COMPASS 
+     Title
+       CH2 Molecule test run, cc-pvqz 
+     Basis
+       cc-pvdz
+     Geometry
+     C      0.000000    0.000000  0.000000  
+     C      1.332000    0.000000  0.000000  
+     H     -0.574301   -0.928785  0.000000  
+     H     -0.574301    0.928785  0.000000  
+     H      1.906301    0.928785  0.000000  
+     H      1.906301   -0.928785  0.000000  
+     C     -0.000000    0.000000  3.500000  
+     C      1.332000   -0.000000  3.500000  
+     H     -0.574301    0.928785  3.500000  
+     H     -0.574301   -0.928785  3.500000  
+     H      1.906301   -0.928785  3.500000  
+     H      1.906301    0.928785  3.500000  
+     End geometry
+     Group
+      C(1)
+     Skeleton
+     Nfragment
+      2
+     check
+     $END
      
-示例9：阿贝尔群对称结构的TD-DFT梯度计算。算例下载链接 :download:`test063.zip <files/test063.zip>`
+     $xuanyuan
+     Direct
+     Schwartz
+     $end
+     
+     # calculate Electron and hole transfer integrals
+     # Hole transfer: Donnar HOMO to Accepter HOMO
+     # Electraon transfer: Donner LUMO to Accepter LUMO
+     $elecoup
+     electrans
+      2                          #计算2对轨道间的迁移积分
+      8 8 1
+      9 9 1
+     dft
+      pbe0
+     $END
+
+     # calculate excitation energy transfer integrals
+     # S-S and T-T coupling: Donnar HOMO->LUMO Excitation to Accepter HOMO->LUMO excitation
+     $elecoup
+     enertrans 
+      2
+      8  9 8  9 1
+      8 10 8 10 1
+     dft
+      pbe0
+     iprint
+      1
+     $END
+     
+     $elecoup
+     enertrans 
+      2
+      8  9 8  9 1
+      8 10 8 10 1
+     dft
+      pbe0
+     orthmo
+     iprint
+      1
+     $END
+     
+     # wzk20210502: add test for range-separated functionals
+     $xuanyuan
+     Direct
+     Schwartz
+     rs                             #指定Range-Speration泛函
+     0.33
+     $end
+
+     $elecoup
+     electrans
+      2
+      8 8 1
+      9 9 1
+     dft # note: this calculates CAM-B3LYP coupling matrix elements upon PBE0 orbitals
+      cam-b3lyp
+     $END
+     
+     $elecoup
+     enertrans 
+      2
+      8  9 8  9 1
+      8 10 8 10 1
+     dft
+      cam-b3lyp
+     iprint
+      1
+     $END
+     
+     $elecoup
+     enertrans 
+      2
+      8  9 8  9 1
+      8 10 8 10 1
+     dft
+      cam-b3lyp
+     orthmo
+     iprint
+      1
+     $END
+     
+     &database
+     fragment 1  6
+      1 2 3 4 5 6
+     fragment 2 6
+      7 8 9 10 11 12
+     &end  
+     
+示例10：阿贝尔群对称结构的TD-DFT梯度计算。算例下载链接 :download:`test063.zip <files/test063.zip>`
 
 .. code-block:: bdf
 
@@ -779,7 +931,7 @@
      1
      $end
 
-示例10：DFT基态梯度计算。算例下载链接 :download:`test065.zip <files/test065.zip>`
+示例11：DFT基态梯度计算。算例下载链接 :download:`test065.zip <files/test065.zip>`
 
 .. code-block:: bdf
 
@@ -820,7 +972,7 @@
      1
      $end
 
-示例11：非阿贝尔群对称性的条件下进行TD-DFT梯度的计算。算例下载链接 :download:`test068.zip <files/test068.zip>`
+示例12：非阿贝尔群对称性的条件下进行TD-DFT梯度的计算。算例下载链接 :download:`test068.zip <files/test068.zip>`
 
 .. code-block:: bdf
 
@@ -844,13 +996,13 @@
       H                  2.16038781   -1.24730049   -0.00000000
      End geometry
      Check
-     thresh
+     thresh        #判断分子对称性的阈值
      medium
      skeleton
      $END
      
      $XUANYUAN
-     direct
+     direct        #积分直接的scf计算
      $END
      
      $SCF
@@ -896,11 +1048,11 @@
       1 2        # lowest and second lowest root
      nfiles
       1
-     jahnteller
+     jahnteller  
       1          # follow irrep component 1
      $end
 
-示例12：基于TDDFT的非绝热耦合计算。算例下载链接 :download:`test081.zip <files/test081.zip>`
+示例13：基于TDDFT的非绝热耦合计算。算例下载链接 :download:`test081.zip <files/test081.zip>`
 
 .. code-block:: bdf
 
@@ -910,23 +1062,23 @@
      basis
       def2-SVP
      geometry
-             C             -0.3657620861         4.8928163606         0.0000770328
-             C             -2.4915224786         3.3493223987        -0.0001063823
-             C             -2.2618953860         0.7463412225        -0.0001958732
-             C              0.1436118499        -0.3999193588        -0.0000964543
-             C              2.2879147462         1.1871091769         0.0000824391
-             C              2.0183382809         3.7824607425         0.0001740921
-             H             -0.5627800515         6.9313968857         0.0001389666
-             H             -4.3630645857         4.1868310874        -0.0002094148
-             H             -3.9523568496        -0.4075513123        -0.0003833263
-             H              4.1604797959         0.3598389310         0.0001836001
-             H              3.6948496439         4.9629708946         0.0003304312
-             C              0.3897478526        -3.0915327760        -0.0002927344
-             O              2.5733215239        -4.1533492423        -0.0002053903
-             C             -1.8017552120        -4.9131221777         0.0003595831
-             H             -2.9771560760        -4.6352720097         1.6803279168
-             H             -2.9780678476        -4.6353463569        -1.6789597597
-             H             -1.1205416224        -6.8569277129         0.0002044899
+     C             -0.3657620861         4.8928163606         0.0000770328
+     C             -2.4915224786         3.3493223987        -0.0001063823
+     C             -2.2618953860         0.7463412225        -0.0001958732
+     C              0.1436118499        -0.3999193588        -0.0000964543
+     C              2.2879147462         1.1871091769         0.0000824391
+     C              2.0183382809         3.7824607425         0.0001740921
+     H             -0.5627800515         6.9313968857         0.0001389666
+     H             -4.3630645857         4.1868310874        -0.0002094148
+     H             -3.9523568496        -0.4075513123        -0.0003833263
+     H              4.1604797959         0.3598389310         0.0001836001
+     H              3.6948496439         4.9629708946         0.0003304312
+     C              0.3897478526        -3.0915327760        -0.0002927344
+     O              2.5733215239        -4.1533492423        -0.0002053903
+     C             -1.8017552120        -4.9131221777         0.0003595831
+     H             -2.9771560760        -4.6352720097         1.6803279168
+     H             -2.9780678476        -4.6353463569        -1.6789597597
+     H             -1.1205416224        -6.8569277129         0.0002044899
      end geometry
      skeleton
      unit        # Set unit of length as Bohr
@@ -991,7 +1143,7 @@
      noresp      #指定在Double和FNAC计算中忽略跃迁密度矩阵的响应项
      $end
 
-示例13：限制性结构优化以及开壳层体系的SA-TDDFT计算。算例下载链接 :download:`test085.zip <files/test085.zip>`
+示例14：限制性结构优化以及开壳层体系的SA-TDDFT计算。算例下载链接 :download:`test085.zip <files/test085.zip>`
 
 .. code-block:: bdf
 
@@ -1073,7 +1225,7 @@
      $end
 
 
-示例14：计算自旋翻转(spin-flip)的TDA。算例下载链接 :download:`test098.zip <files/test098.zip>`
+示例15：计算自旋翻转(spin-flip)的TDA。算例下载链接 :download:`test098.zip <files/test098.zip>`
 
 .. code-block:: bdf
 
@@ -1220,4 +1372,142 @@
       2048
      $END
 
+示例16：iOI计算（基于分片方法的大体系SCF计算）。算例下载链接 :download:`test106.zip <files/test106.zip>`
+
+.. code-block:: bdf
+
+     # autofrag: a Python-based automatic fragmentation driver. Automatically
+     # fragments an arbitrary molecule, and prepares the BDF input files of the
+     # fragments (xxx.fragmentyyy.inp) and the global system (xxx.global.inp).
+     $autofrag
+     method
+      ioi # To request a conventional FLMO calculation, change ioi to flmo
+     nprocs
+      2 # Use at most 2 parallel processes in calculating the subsystems
+     $end
+
+     $compass
+     Title
+      hydroxychloroquine (diprotonated)
+     Basis
+      6-31G(d)
+     Geometry # snapshot of GFN2-xTB molecular dynamics at 298 K
+     C    -4.2028   -1.1506    2.9497 
+     C    -4.1974   -0.4473    4.1642 
+     C    -3.7828    0.9065    4.1812 
+     C    -3.4934    1.5454    2.9369 
+     C    -3.4838    0.8240    1.7363 
+     C    -3.7584   -0.5191    1.7505 
+     H    -4.6123   -0.8793    5.0715 
+     C    -3.3035    3.0061    2.9269 
+     H    -3.1684    1.2214    0.8030 
+     H    -3.7159   -1.1988    0.9297 
+     C    -3.1506    3.6292    4.2183 
+     C    -3.3495    2.9087    5.3473 
+     H    -2.8779    4.6687    4.2878 
+     H    -3.2554    3.3937    6.3124 
+     N    -3.5923    1.5989    5.4076 
+     Cl   -4.6402   -2.7763    3.0362 
+     H    -3.8651    1.0100    6.1859 
+     N    -3.3636    3.6632    1.7847 
+     H    -3.4286    2.9775    1.0366 
+     C    -3.5305    5.2960   -0.0482 
+     H    -2.4848    5.4392   -0.0261 
+     H    -3.5772    4.3876   -0.6303 
+     C    -4.1485    6.5393   -0.7839 
+     H    -3.8803    6.3760   -1.8559 
+     H    -5.2124    6.5750   -0.7031 
+     C    -3.4606    7.7754   -0.2653 
+     H    -2.3720    7.6699   -0.3034 
+     H    -3.7308    7.9469    0.7870 
+     N    -3.8415    8.9938   -1.0424 
+     H    -3.8246    8.8244   -2.0837 
+     C    -2.7415    9.9365   -0.7484 
+     H    -1.7736    9.4887   -0.8943 
+     H    -2.8723   10.2143    0.3196 
+     C    -2.7911   11.2324   -1.6563 
+     H    -1.7773   11.3908   -2.1393 
+     H    -3.5107   10.9108   -2.4646 
+     H    -3.0564   12.0823   -1.1142 
+     C    -5.1510    9.6033   -0.7836 
+     H    -5.5290    9.1358    0.1412 
+     H    -5.0054   10.6820   -0.6847 
+     C    -6.2224    9.3823   -1.8639 
+     H    -6.9636   10.1502   -1.7739 
+     H    -5.8611    9.4210   -2.8855 
+     O    -6.7773    8.0861   -1.6209 
+     H    -7.5145    7.9086   -2.2227 
+     C    -4.0308    4.9184    1.3736 
+     H    -3.7858    5.6522    2.1906 
+     C    -5.5414    4.6280    1.3533 
+     H    -5.8612    3.8081    0.7198 
+     H    -5.9086    4.3451    2.3469 
+     H    -6.1262    5.5024    1.0605 
+     End geometry
+     Skeleton
+     Check
+     $end
+
+     $xuanyuan
+     Direct
+     Schwarz
+     rs # the range separation parameter omega (or mu) of wB97X
+      0.3
+     $end
+
+     $scf
+     rks
+     dft
+      wB97X
+     iprt
+      2
+     charge
+      2
+     coulpot+cosx
+     $end
+
+     $localmo
+     FLMO
+     $end
+
+示例17：双杂化泛函基态单点能计算。算例下载链接 :download:`test116.zip <files/test116.zip>`
+
+.. code-block:: bdf
+
+     $compass
+     title
+      NH3...H2O B2PLYP-D3/def2-TZVP
+     basis
+      def2-TZVP
+     RI-C
+      def2-TZVP # RI-MP2 auxiliary basis = def2-TZVP/C
+     geometry
+             N             -0.6347196970        -2.4888833088        -0.0001987285
+             H             -2.5637570606        -2.5802060356        -0.0187542806
+             H             -0.0589873685        -3.4710591095         1.5591466837
+             H             -0.0283791648        -3.4872452297        -1.5375008955
+             O              0.5661204194         2.8752419284         0.0000247838
+             H              0.1735090569         1.0640211402        -0.0014981011
+             H              2.3916890605         2.8947369696        -0.0002005778
+     end geometry
+     skeleton
+     check
+     unit
+      bohr
+     $end
+
+     $xuanyuan
+     direct
+     $end
+
+     $scf
+     rks
+     dft
+      B2PLYP
+     D3
+     coulpot+cosx
+     $end
+
+     $mp2
+     $end
 
