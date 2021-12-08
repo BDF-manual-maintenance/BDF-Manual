@@ -306,13 +306,13 @@ expandmo模块的输出为，
 
 分子轨道最大重叠方法计算激发态
 ------------------------------------------------
-MOM(maximum overlap method)是一种Delta SCF的方法，可以用以计算激发态。
+mom (maximum overlap method)是一种Delta SCF的方法，可以用以计算激发态。
 
 .. code-block:: bdf
 
     #----------------------------------------------------------------------
     # 
-    # MOM method: Gilbert,Besley,Gill,JPCA 2008,112,13164
+    # mom method: Gilbert,Besley,Gill,JPCA 2008,112,13164
     #
     # gs  = -169.86584128
     # ab  = -169.62226127
@@ -385,6 +385,7 @@ MOM(maximum overlap method)是一种Delta SCF的方法，可以用以计算激�
      10 0 
      11 0 
     iaufbau
+    
      0
     $END
     
@@ -404,8 +405,8 @@ MOM(maximum overlap method)是一种Delta SCF的方法，可以用以计算激�
 这个算例执行了四次SCF计算，
 
 * 第一次SCF计算，利用UKS方法计算甲酰胺分子的基态S0。输入利用alpha与beta两个关键词，分别指定了alpha和beta轨道的占据情况。甲酰胺分子基态是单重态S0，这里指定的alpha和beta占据情况相同。 ``10 2`` 分别指定不可约表示A‘与A“的轨道分别有10个和2个占据。SCF模块将根据构造原理，按照轨道能量由低到高填充电子到轨道上。
-* 第二次SCF计算，利用UKS与MOM方法计算甲酰胺分子的S1态。这里的关键点有：1 利用guess=read指定读入上一步UKS的收敛轨道；2 利用alpha、beta关键词设置了每个对称性轨道的占据数；3 设置了变量ifpair，需要和hpalpha，hpbeta联用，用于指定空穴-粒子（hole-particle - HP）轨道对的电子激发情况；4 设置了hpalpha变量，指定激发的HP轨道对。数字1表示激发一对HP轨道，下面指定两行指定轨道激发情况，第一列表示从第一个不可约表示的把第10个alpha轨道的电子激发到第11个alpha轨道，第二列元素都为零，表示第二个不可约表示的轨道不做激发； 5 iaufbau变量设置为2，指定要进行MOM计算。
-* 第三次SCF计算，利用UKS与MOM方法计算甲酰胺分子的T1态。输入中，我们利用alpha和beta关键词指定轨道占据情况，其中alpha轨道的占据数为 ``11 2`` ，表示对称性为A‘和A“的alpha轨道上分别有11和2个电子占据， beta轨道的占据情况为 ``9 2`` 。 iaufbau=0表示轨道占据按照构造原理由低到高排列。
+* 第二次SCF计算，利用UKS与mom方法计算甲酰胺分子的S1态。这里的关键点有：1 利用guess=read指定读入上一步UKS的收敛轨道；2 利用alpha、beta关键词设置了每个对称性轨道的占据数；3 设置了变量ifpair，需要和hpalpha，hpbeta联用，用于指定空穴-粒子（hole-particle - HP）轨道对的电子激发情况；4 设置了hpalpha变量，指定激发的HP轨道对。数字1表示激发一对HP轨道，下面指定两行指定轨道激发情况，第一列表示从第一个不可约表示的把第10个alpha轨道的电子激发到第11个alpha轨道，第二列元素都为零，表示第二个不可约表示的轨道不做激发； 5 iaufbau变量设置为2，指定要进行mom计算。
+* 第三次SCF计算，利用UKS与mom方法计算甲酰胺分子的T1态。输入中，我们利用alpha和beta关键词指定轨道占据情况，其中alpha轨道的占据数为 ``11 2`` ，表示对称性为A‘和A“的alpha轨道上分别有11和2个电子占据， beta轨道的占据情况为 ``9 2`` 。 iaufbau=0表示轨道占据按照构造原理由低到高排列。
 
 这里，第一次SCF计算收敛结果为，
 
@@ -454,7 +455,7 @@ MOM(maximum overlap method)是一种Delta SCF的方法，可以用以计算激�
       Virial Theorem      2.003102
 
 可以看出，第一次SCF计算使用了atom猜测，计算得到S0的能量为 -169.8658334023 a.u. 。第二次SCF计算读入了第一次SCF的收敛轨道，
-并使用MOM方法做SCF计算，输出文件先提示读入了分子轨道，并给出占据情况，
+并使用mom方法做SCF计算，输出文件先提示读入了分子轨道，并给出占据情况，
 
 .. code-block:: 
 
