@@ -18,34 +18,35 @@
  * Fortran编译器（支持fortran95及更新版本的语法）
  * C++ 编译器（支持C++03及更新版本的语法）
  * C 编译器
- * BLAS/LAPACK 数学库
-  
+ * BLAS/LAPACK 数学库，接口需为64位整数
+ * CMake 3.15版本及以上（使用cmake进行编译）
+ 
 通常使用GCC 4.6及以上的版本即可正常编译。
 
 可选配置：
  * Intel Parallel Studio XE Cluster版C/C++ Fortran编译器
- * CMake 3.15版本及以上（使用cmake进行编译）
  * 优化的BLAS/LAPACK 库（如Intel的MKL，AMD的ACML，OpenBLAS等）
  * openmpi 1.4.1版本及以上（编译并行版本的BDF）
-
+ * OpenCL 1.5级以上版本，AMD的Rocm或Nvidia 的Cuda(编译GPU版的BDF)
 
 cmake编译BDF
 ==========================================================================
 
-Intel Fortran编译器，gcc/g++编译器，MKL数学库
-------------------------------------------------------
+1. Intel Fortran编译器，gcc/g++编译器混合使用，链接MKL数学库，支持OpenMP并行
+--------------------------------------------------------------------------------
 
 .. code-block:: shell
 
     #设置编译器
     $export FC=ifort
-    $export CC=icc
+    $export CC=gcc
     $export CXX=g++
     #cmake由setup命令自动执行
-    $./setup --fc=${FC} --cc=${CC} --cxx=${CXX} --bdfpro --int64 --mkl sequential $1
+    $./setup --fc=${FC} --cc=${CC} --cxx=${CXX} --bdfpro --omp --int64 --mkl sequential $1
     #在build目录下构建BDF
-    $cd build 
-    $make
+    $cd build
+    #使用make命令编译BDF，利用-j4参数指定使用4个CPU并行编译 
+    $make -j4
     #安装BDF
     $make install
     #将build下bdf-pkg-pro复制至任意路径后，在bdfrc中写入正确路径，如：
@@ -53,10 +54,59 @@ Intel Fortran编译器，gcc/g++编译器，MKL数学库
     #运行命令
     $$BDFHOME/sbin/bdfdrv.py -r **.inp
 
+2. GNU编译器，gfortran、gcc/g++，链接MKL数学库，支持OpenMP并行
+-------------------------------------------------------------------
+
+.. code-block:: shell
+
+    #设置编译器
+    $export FC=gfortran
+    $export CC=gcc
+    $export CXX=g++
+    #cmake由setup命令自动执行
+    $./setup --fc=${FC} --cc=${CC} --cxx=${CXX} --bdfpro --omp --int64 --mkl sequential $1
+    #在build目录下构建BDF
+    $cd build
+    #使用make命令编译BDF，利用-j4参数指定使用4个CPU并行编译 
+    $make -j4
+    #安装BDF
+    $make install
+    #将build下bdf-pkg-pro复制至任意路径后，在bdfrc中写入正确路径，如：
+    $BDFHOME=/home/user/bdf-pkg-pro
+    #运行命令
+    $$BDFHOME/sbin/bdfdrv.py -r **.inp
+
+3. Intel编译器，ifort、icc/icpc，链接MKL数学库，支持OpenMP并行
+-------------------------------------------------------------------
+
+.. code-block:: shell
+
+    #设置编译器
+    $export FC=ifort
+    $export CC=icc
+    $export CXX=icpc
+    #cmake由setup命令自动执行
+    $./setup --fc=${FC} --cc=${CC} --cxx=${CXX} --bdfpro --omp --int64 --mkl sequential $1
+    #在build目录下构建BDF
+    $cd build
+    #使用make命令编译BDF，利用-j4参数指定使用4个CPU并行编译 
+    $make -j4
+    #安装BDF
+    $make install
+    #将build下bdf-pkg-pro复制至任意路径后，在bdfrc中写入正确路径，如：
+    $BDFHOME=/home/user/bdf-pkg-pro
+    #运行命令
+    $$BDFHOME/sbin/bdfdrv.py -r **.inp
+
+.. Warning::
+   1. gcc编译器9.0及以上版本，与Intel Fortran编译器混合使用，链接程序出错，原因是Intel Fortran编译器的OpenMP版本落后于GNU编译器。因而，GNU 9.0及以上编译器目前不支持GNU及Intel编译器混合编译。
+   2. Intel Fortran 2018版编译器Bug较多，请避免使用。
+
+
 程序运行
 ==========================================================================
 
-BDF需要在Linux终端下运行。运行BDF，需要先准备输入文件。输入文件的具体格式在手册后几节详述。这里我们利用BDF自带的测试算例作为例子，先简述如何运行BDF。
+BDF需在Linux终端下运行。运行BDF，需要先准备输入文件，输入文件的具体格式在手册后几节详述。BDF的安装装目录中的tests/input目录包含了BDF的一些输入算例。这里我们利用BDF自带的测试算例作为例子，先简述如何运行BDF。
 
 运行BDF会使用一些环境变量：
 
@@ -72,10 +122,27 @@ BDF需要在Linux终端下运行。运行BDF，需要先准备输入文件。输
 |BDFTASK              | BDF的计算任务名，如果输入为h2o.inp, 任务名为 h2o  | 否，自动设置         |
 +---------------------+---------------------------------------------------+----------------------+
 
-
 单机运行BDF，用Shell脚本执行作业
 ---------------------------------------------
-假设用户目录为 /home/user, BDF被安装在 /home/user/bdf-pkg-pro中。准备好输入文件 ``ch2-hf.inp`` 之后，按照如下方法执行。 
+假设用户目录为 /home/user, BDF被安装在 /home/user/bdf-pkg-pro中。准备好输入文件 ``ch2-hf.inp`` 之后，需要在准备一个shell脚本，输入如下内容
+
+.. code-block:: shell
+
+    #!/bin/bash
+
+    export BDFHOME=/home/user/bdf-pkg-pro
+    export BDF_WORKDIR=./
+    export BDF_TMPDIR=/tmp/$RANDOM
+
+    ulimit -s unlimited
+    ulimit -t unlimited
+
+    export OMP_NUM_THREADS=4
+    export OMP_STACKSIZE=512M 
+
+    $BDFHOME/bdfdrv.py -r $1
+
+并命名为run.sh，利用 "chmod +x run.sh"赋予脚本执行权限，然后按照如下方法执行。 
 
 .. code-block:: shell
 
@@ -85,9 +152,11 @@ BDF需要在Linux终端下运行。运行BDF，需要先准备输入文件。输
     #拷贝/home/user/bdf-pkg-pro/tests/easyinput/ch2-hf.inp到test文件夹
     $cp /home/user/bdf-pkg-pro/tests/easyinput/ch2-hf.inp
     #在test目录中运行提交命令
-    $$BDFHOME/sbin/bdfdrv.py -r **.inp
+    $./run.sh ch2-hf.inp &> ch2-hf.out&
 
-
+.. hint::
+    BDF将输出打印至标准输出，需要用重定向命令 ``>`` 定向到文件ch2-hf.out中。
+    
 利用PBS作业管理系统提交BDF作业
 ------------------------------------------------
 
@@ -95,6 +164,32 @@ PBS提交BDF的作业脚本示例如下：
 
 .. code-block:: shell
 
+    #!/bin/bash
+    #PBS -N jobname
+    #PBS -l nodes=1:ppn=4
+    #PBS -l walltime=1200:00:00
+    #PBS -q batch
+    #PBS -S /bin/bash
+    
+    #### Set the environment variables #######
+    #module load tools/openmpi-3.0.1-intel-socket
+    
+    #### Set the PATH to find your applications #####
+    export BDFHOME=/home/bbs/bdf-pkg-pro
+    
+    # 指定BDF运行的临时文件存储目录
+    export BDF_TMPDIR=/tmp/$RANDOM
+    
+    # 指定OpenMP的Stack内存大小
+    export OMP_STACKSIZE=2G
+    
+    # 指定OpenMP可用线程数，应该等于ppn定义的数目
+    export OMP_NUM_THREADS=4
+    
+    #### Do not modify this section ! #####
+    cd $PBS_O_WORKDIR
+    
+    $BDFHOME/bdfdrv.py -r jobname.inp
 
 
 利用Slurm作业管理系统提交BDF作业
@@ -104,6 +199,6 @@ PBS提交BDF的作业脚本示例如下：
 
 
 .. important::
-    * stacksize的问题。intel Fortran编译器对程序运行的堆区(stack)内存要求较大，Linux系统默认的stacksize的大小通常太小，需要通过ulimit -s unlimited指定堆区内存大小。
-    * OpenMP并行的线程数。OMP_NUM_THREAS用于设定OpenMP的并行线程数。BDF依赖于OpenMP并行提高计算效率。如果用户使用了Bash Shell，可以用命令 ``export OMP_NUM_THREADS=N`` 指定使用N个OpenMP线程加速计算。
-    * OpenMP可用堆区内存，用户可以用 ``export OMP_STACKSIZE=1024M`` 指定OpenMP可用的堆区内存大小。
+    1. stacksize的问题。intel Fortran编译器对程序运行的堆区(stack)内存要求较大，Linux系统默认的stacksize的大小通常太小，需要通过ulimit -s unlimited指定堆区内存大小。
+    2. OpenMP并行的线程数。OMP_NUM_THREAS用于设定OpenMP的并行线程数。BDF依赖于OpenMP并行提高计算效率。如果用户使用了Bash Shell，可以用命令 ``export OMP_NUM_THREADS=N`` 指定使用N个OpenMP线程加速计算。
+    3. OpenMP可用堆区内存，用户可以用 ``export OMP_STACKSIZE=1024M`` 指定OpenMP可用的堆区内存大小。
