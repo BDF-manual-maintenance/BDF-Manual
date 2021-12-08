@@ -16,7 +16,7 @@ BDF的Kohn-Sham密度泛函计算方法，支持限制性(restricted)、非限�
      杂化泛函 (Hybrid)                       B3LYP, GB3LYP, BHHLYP, PBE0, B3PW91, HFLYP, VBLYP
      范围分离泛函 (RS Hybrid)                 wB97, wB97X, CAM-B3LYP, LC-BLYP
      杂化含动能密度泛函 (Hyrid Meta-GGA)      TPSSh, M062X
-     双杂化泛函 ()                           B2PLYP
+     双杂化泛函 (Double Hybrid)               B2PLYP
     ====================================== ====================================
 
 .. note::
