@@ -434,7 +434,8 @@ mom(maximum occupation method)是一种 :math:`\{Delta}SCF` 的方法，可用�
        E_xc  =               -17.75524454
       Virial Theorem      2.003102
 
-可以看出，第一次SCF计算使用了原子猜测，计算得到S0的能量为 -169.8658334023 a.u. , 轨道占据情况如下，
+可以看出，第一次SCF计算使用了atom猜测，计算得到S0的能量为 -169.8658334023 a.u. 。第二次SCF计算读入了第一次SCF的收敛轨道，
+并使用mom方法做SCF计算，输出文件先提示读入了分子轨道，并给出占据情况，
 
 .. code-block::
 

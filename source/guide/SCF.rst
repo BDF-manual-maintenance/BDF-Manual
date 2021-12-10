@@ -6,7 +6,7 @@ BDF的自洽场包括Hartree-Fock和Kohn-Sham方法。
 限制性Hartree-Fock方法
 -----------------------------------------------------------------
 
-对于所有电子均成对的偶数电子体系，应使用 ``RHF`` 方法进行Hartree-Fock计算，相关内容已在 :ref:`第一个算例 <FirstExample>` 一节提及，这里不再赘述。
+对于所有电子均成对的偶数电子体系，应使用 ``RHF`` 方法进行Hartree-Fock计算，相关内容已在 :ref:`第一个算例章节<FirstExample>` 提及，这里不再赘述。
 
 非限制性Hartree-Fock方法
 -----------------------------------------------------------------
@@ -231,7 +231,7 @@ RKS/UKS和ROKS计算
      E_xc  =                -7.50177140
     Virial Theorem      2.006909
 
- :math: `H_{2}O^{+}` 离子的ROKS计算，简洁输入如下，
+:math:`H_{2}O^{+}` 离子的ROKS计算，简洁输入如下，
 
 .. code-block:: bdf
 
@@ -356,7 +356,7 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
 用户可能还希望能对积分格点进行调节。Kohn-Sham泛函的积分格点可以在SCF模块的输入中通过Grid等关键词定义，Grid的有效值为 ``Ultra coarse`` ,
 ``Coarse`` , ``medium`` , ``fine``, ``Ultra fine``, ``sg1`` 等6个，从 ``Ultra coarse`` 到 ``Ultra fine`` 积分格点依次增加，数值积分精度依次提高。
 
-例如，计算 :math:`H_2O` 分子计算采用了M062X泛函，M062X是一种Hybrid Meta-GGA类的泛函，要求密集的积分格点，需要采用BDF的高级输入和简洁输入混合模式，如下所示：
+例如， :math:`H_{2}O` 分子计算采用了M062X泛函，属于Hybrid Meta-GGA泛函，要求密集的积分格点，需要采用BDF的高级输入和简洁输入混合模式，如下所示：
 
 .. code-block:: bdf
 

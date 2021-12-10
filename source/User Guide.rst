@@ -17,6 +17,8 @@
 
 .. include:: guide/TD.rst
 
+.. include:: guide/NMR.rst
+
 .. include:: guide/Relativity.rst
 
 .. include:: guide/QM-MM.rst
