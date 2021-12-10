@@ -9,3 +9,6 @@
 
 **TDDFT计算的虚频问题(imaginary frequencies)?**
   xxxxxxxxxx
+
+**TDDFT的J、K算符可用内存与计算效率**
+   memjkop

@@ -23,7 +23,7 @@ BDF的简洁输入（easy input）
   #!H2O.bdf
   B3lyp/3-21G 
 
-  Geometry
+  Geometry  # 输入原子坐标，单位 Angstrom
   O 0.00000    0.00000   0.36827
   H 0.00000   -0.78398   -0.18468
   H 0.00000    0.78398   -0.18468
@@ -73,9 +73,9 @@ BDF高级输入是开发BDF时设置的输入格式，特点是 **模块引导�
   H 0.00000   -0.78398   -0.18468
   H 0.00000    0.78398   -0.18468
   End geometry
-  Basis
+  Basis # 基组
    3-21G
-  Group
+  Group # C2v点群，可不输入，程序会自动判断，常用于对高阶群指定D2h及其子群计算。
    C(2v)
   $end
 
@@ -83,16 +83,16 @@ BDF高级输入是开发BDF时设置的输入格式，特点是 **模块引导�
   $end
 
   $scf
-  RHF
+  RHF # restricted Hatree-Fock
   $end
 
   %cp $BDF_WORKDIR/$BDFTASK.scforb $BDF_TMPDIR/$BDFTASK.inporb
   $scf
-  RKS
+  RKS # restricted Kohn-Sham
   DFT
-   B3lyp     # B3LYP functional
+   B3lyp     # B3LYP functional， Notice， it is different with B3lyp in Gaussian. 
   Guess 
-   Read     #Read orbital from inporb as the initial guess orbital
+   Readmo    # Read orbital from inporb as the initial guess orbital
   $end
 
 一般的，BDF高级输入包含了多个计算模块的输入，具体模块名及调用顺序见BDF模块计算流程图(??)。上面所示的输入文件包含四个计算模块，分别为compass，xuanyuan和两个scf。compass主要用于读入输入分子坐标，基函数等信息，并存储为BDF内部的数据结构。compass的一个重要任务是对分子点群的处理，包括判断分子对称性，产生对称匹配的轨道（symmetry-adapted orbital）等。xuanyuan用于计算单、双电子积分。然后调用两次scf执行自洽场（self-consistent field）计算，一次为RHF（Restricted Hatree-Fock），另一次为RKS（Restrickted Kohn-Sham）。
@@ -179,7 +179,7 @@ BDF混合输入文件的基本结构如下：
 .. code-block:: bdf
 
   #!H2O+.bdf
-  B3lyp/3-21G iroots=4 
+  B3lyp/3-21G iroot=4 
 
   Geometry
   O 0.00000    0.00000   0.36827
@@ -193,9 +193,9 @@ BDF混合输入文件的基本结构如下：
   molden # 输出分子轨道为molden格式文件
   $end
 
-上例除了BDF简洁输入的必要内容外，还加入了以$scf开始，到$end结束的行。该输入混合了BDF简洁输入和高级输入的内容，在scf模块的输入中，加入了charge，值为1，用于计算H2O+离子，
-molden关键词控制scf将收敛后的轨道输出为molden格式文件用来作图。需要指出的是，在混合输入格式的第二行命令行，可以用charge=-1来控制计算H2O-阴离子，
-但若在后面的scf模块输入中，也使用了charge关键词，则后者具有最高的控制优先级，将覆盖命令行中的输入。换言之，在混合输入格式下，每个BDF计算模块的高级输入关键词具有最高的控制优先级。
+上例除了BDF简洁输入的必要内容外，还加入了以$scf开始，到$end结束的行。该输入混合了BDF简洁输入和高级输入的内容，在scf模块的输入中，加入了charge，值为1，用于计算 H2O+离子，
+molden关键词控制scf将收敛后的轨道输出为molden格式文件用来作图。需要指出的是，在混合输入格式的第二行命令行，可以用 ``charge = -1`` 来控制计算 :math:`H_2O^-` 阴离子，
+但若在后面的scf模块输入中，也使用了 ``charge`` 关键词，则后者具有最高的控制优先级，将覆盖命令行中的输入。换言之，在混合输入格式下，每个BDF计算模块的高级输入关键词具有最高的控制优先级。
 
 分子结构的输入格式
 ==========================================================================
@@ -206,18 +206,19 @@ BDF的分子结构输入从 ``Geometry`` 开始，到 ``End geometry`` 结束，
     BDF默认输入的坐标单位为埃(angstrom)，如果需要使用原子单位输入分子结构，需用关键词 ``unit=Bohr`` 来指定。BDF的简洁输入模式下， ``unit=Bohr`` 放在第二行控制行。 如果是高级输入模式，在Compass模块使用关键词 ``unit`` ，并指定值为Bohr。
 
 
-直角坐标格式输入
+分子结构的直角坐标格式输入
 --------------------------------------------------------------------------
 
 .. code-block:: bdf
 
-   Geometry
+   Geometry # default coodinate unit is angstrom 
    O  0.00000   0.00000    0.36937
    H  0.00000  -0.78398   -0.18468 
    H  0.00000   0.78398   -0.18468 
    End geometry
 
-内坐标格式输入
+.. _Internal-Coord:
+分子结构的内坐标格式输入 
 --------------------------------------------------------------------------
 
 内坐标采用定义键长、键角、二面角的格式输入，模式入下：
@@ -225,11 +226,11 @@ BDF的分子结构输入从 ``Geometry`` 开始，到 ``End geometry`` 结束，
 .. code-block:: bdf
 
    Geometry
-   原子1
-   原子2 1   R21                  # R12为原子2、1之间键长
-   原子3 1   R31  2 A312          # R31为原子3、1之间键长， A312为原子3、1、2定义的键角
-   原子4 3   R43  2 A432 1 D4321  # R43为原子4、3之间键长， A432为原子4、3、2定义的键角，D4321为原子4、3、2、1定义的二面角
-   原子5 3   R53  4 A534 1 D5341  # R53为原子5、3之间键长， A534为原子5、3、4定义的键角，D5341为原子5、4、3、1定义的二面角 
+   atom1
+   atom2 1   R21                  # R12为原子2、1之间键长
+   atom3 1   R31  2 A312          # R31为原子3、1之间键长， A312为原子3、1、2定义的键角
+   atom4 3   R43  2 A432 1 D4321  # R43为原子4、3之间键长， A432为原子4、3、2定义的键角，D4321为原子4、3、2、1定义的二面角
+   atom5 3   R53  4 A534 1 D5341  # R53为原子5、3之间键长， A534为原子5、3、4定义的键角，D5341为原子5、4、3、1定义的二面角 
    ...
    ...
    End Geometry

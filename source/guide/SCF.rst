@@ -5,12 +5,14 @@ BDF的自洽场包括Hartree-Fock和Kohn-Sham方法。
 
 限制性Hartree-Fock方法
 -----------------------------------------------------------------
-对于所有电子均成对的偶数电子体系，应使用 ``RHF`` 方法进行Hartree-Fock计算，相关内容已在“第一个算例”章节提及，这里不再赘述。
+
+对于所有电子均成对的偶数电子体系，应使用 ``RHF`` 方法进行Hartree-Fock计算，相关内容已在 :ref:`第一个算例 <FirstExample>` 一节提及，这里不再赘述。
 
 非限制性Hartree-Fock方法
 -----------------------------------------------------------------
+
 对于有不成对电子的体系，需要用 ``UHF`` 或者限制性开壳层Hartree-Fock （restricted open-shell Hartree-Fock）方法。
-对于奇数电子体系，BDF默认自旋多重度为2，且利用UHF计算。例如对于 :math:`C_3H_5`
+对于奇数电子体系，BDF默认自旋多重度为2，且利用UHF计算。例如计算 :math:`C_3H_5` 分子，
 
 .. code-block:: bdf
 
@@ -32,13 +34,13 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
 
 .. code-block:: 
 
-    wave function information ...
-    total nuclear charge    :      23
-    total electrons         :      23
-    ecp-core electrons      :       0
-    spin (2s+1)             :       2
-    num. of alpha electrons :      12
-    num. of beta  electrons :      11
+    Wave function information ...
+    Total Nuclear charge    :      23
+    Total electrons         :      23
+    Ecp-core electrons      :       0
+    Spin multiplicity(2S+1) :       2
+    Num. of alpha electrons :      12
+    Num. of beta  electrons :      11
 
 轨道占据情况按 ``Alpha`` 和 ``Beta`` 轨道分别给出，
 
@@ -103,21 +105,20 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
 限制性开壳层Hartree-Fock方法
 ------------------------------------------------------------------------------------------
 
-限制性开壳层Hartree-Fock (Restricted open-shell Hartree-Fock - ROHF)可以计算开壳层分子体系，在BDF中，ROHF
-可与SA-TDDFT结合，解决激发态的自旋污染问题。这里给出一个 ``CH2`` 三重态的ROHF算例，
+限制性开壳层Hartree-Fock (Restricted open-shell Hartree-Fock - ROHF)可以计算开壳层分子体系。这里给出一个 :math:`CH_2` 三重态的ROHF算例，
 
 .. code-block:: bdf
 
     #!bdf.sh
-    rohf/cc-pvdz spin=3
+    rohf/cc-pvdz spinmulti=3
     
-    geometry
+    geometry   # 输入坐标单位 Angstrom
      C     0.000000        0.00000        0.31399
      H     0.000000       -1.65723       -0.94197
      H     0.000000        1.65723       -0.94197
     end geometry
 
-这里，在第二行指定使用 ``ROHF`` 方法，且利用关键词 ``spin=3`` 设定计算三重态。ROHF的输出和UHF类似，
+这里，在第二行指定使用 ``ROHF`` 方法，且利用关键词 ``spinmulti=3`` 设定计算三重态。ROHF的输出和UHF类似，
 但其 ``Alpha`` 轨道和 ``Beta`` 是一样的，所以相对应的 ``Alpha`` 和 ``Beta`` 轨道能量相等，如下所示：
 
 .. code-block:: 
@@ -198,15 +199,17 @@ RKS/UKS和ROKS计算
     h 1 1.0
     h 1 1.0 2 109.
     end geometry
-    skeleton
+    skeleton # 计算骨架Fock矩阵
     basis
       3-21g
     $end
+
     $xuanyuan
     direct # ask for direct SCF
     maxmem
       512mw
     $end
+
     $scf
     rks # Restricted Kohn-Sham calculation
     dft # ask for B3lyp functional, it is different with B3lyp implemented in Gaussian. 
@@ -286,7 +289,7 @@ CAM-B3LYP等RS杂化泛函，将库伦相互作用分为长短程，
    $end
    
    $scf
-   rks
+   rks # restricted Kohn-Sham
    dft
     cam-b3lyp
    $end
@@ -315,7 +318,7 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
     end geometry
     
     $scf
-    D3
+    D3   # Gremme's dispersion correction
     $end
 
 在Kohn-Sham计算结束后加入色散矫正，计算输出如下，
@@ -351,9 +354,9 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
 
 虽然BDF默认对不同的泛函，按照精度要求自定义了积分格点，例如Meta-GGA类泛函对积分格点要求很高，BDF默认对Meta-GGA使用Fine类型的格点，
 用户可能还希望能对积分格点进行调节。Kohn-Sham泛函的积分格点可以在SCF模块的输入中通过Grid等关键词定义，Grid的有效值为 ``Ultra coarse`` ,
-``Coarse`` , ``medium`` , ``fine``, ``Ultra fine``, ``sg1`` 等6个，积分格点依次增加，数值积分精度依次提高。
+``Coarse`` , ``medium`` , ``fine``, ``Ultra fine``, ``sg1`` 等6个，从 ``Ultra coarse`` 到 ``Ultra fine`` 积分格点依次增加，数值积分精度依次提高。
 
-例如，H2O分子计算采用了M062X泛函，属于Hybrid Meta-GGA泛函，要求密集的积分格点，需要采用BDF的高级输入和简洁输入混合模式，如下所示：
+例如，计算 :math:`H_2O` 分子计算采用了M062X泛函，M062X是一种Hybrid Meta-GGA类的泛函，要求密集的积分格点，需要采用BDF的高级输入和简洁输入混合模式，如下所示：
 
 .. code-block:: bdf
 
@@ -369,7 +372,7 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
     end geometry
     
     $scf
-    grid
+    grid # set numerical integration grid as ultra fine
      ultra fine
     $end
 

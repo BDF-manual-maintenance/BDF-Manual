@@ -5,30 +5,30 @@ BDF支持将MM区原子电荷作为点电荷输入进行计算。点电荷以与
 
 .. code-block:: bdf
 
-    $COMPASS
-    Title
-    water molecule in backgroud of exteral charges
-    Basis
-      6-31g
-    Geometry
-    O   0.000000   0.000000   0.106830
-    H   0.000000   0.785178  -0.427319
-    H   0.000000  -0.785178  -0.427319
-    End Geometry
-    Extcharge  #表示需要输入点电荷
-    point      #表示输入电荷类型为点电荷                                                                                                                                        
-    Check
-    Skeleton
-    $END
+  $COMPASS
+  Title
+  water molecule in backgroud of exteral charges
+  Basis
+    6-31g
+  Geometry
+  O   0.000000   0.000000   0.106830
+  H   0.000000   0.785178  -0.427319
+  H   0.000000  -0.785178  -0.427319
+  End Geometry
+  Extcharge  #表示需要输入点电荷
+  point      #表示输入电荷类型为点电荷                                                                                                                                        
+  Check
+  Skeleton
+  $END
+  
+  $XUANYUAN
+   direct
+   schwarz
+  $END
 
-   $XUANYUAN
-     direct
-     schwarz
-    $END
-
-   $SCF
-   RHF
-   $END
+  $SCF
+  RHF
+  $END
 
 点电荷输入文件（文件名 h2o.extcharge）如下：
 

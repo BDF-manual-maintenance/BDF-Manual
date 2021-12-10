@@ -8,7 +8,8 @@
   * Atom : 利用原子密度矩阵组合分子密度矩阵猜测，默认选项。
   * Huckel : 半经验Huckel方法猜测；
   * Hcore : 对角化单电子哈密顿猜测；
-  * Read  : 读入分子轨道做为初始猜测。
+  * Readmo : 读入分子轨道做为初始猜测；
+  * Readdm : 读入密度矩阵做为初始猜测。
 
 BDF默认的是Atom猜测。改变BDF的初始猜测，简洁输入模式下可以使用关键词 ``guess`` , 如下所示
 
@@ -71,7 +72,7 @@ BDF默认的是Atom猜测。改变BDF的初始猜测，简洁输入模式下可�
      O 2.2198078005 0.0000024315 0.2188182082
    end geometry
    skeleton
-   unit # Set unit of length as Bohr
+   unit # set unit of coordinates as Bohr
      bohr
    basis
      6-31g
@@ -91,8 +92,7 @@ BDF默认的是Atom猜测。改变BDF的初始猜测，简洁输入模式下可�
 
 读入初始猜测轨道
 ------------------------------------------------------------------------------------------
-BDF的SCF计算默认采用原子计算密度矩阵构建分子密度矩阵的方式产生初始猜测轨道。实际在计算中，用户常读入已经收敛
-的分子轨道，做为计算的初始猜测。这里，我们先计算一个中性的 :math:`H_{2}O` 分子，得到收敛轨道后，做为 :math:`H_{2}O^{+}` 离子的初始猜测。
+BDF的SCF计算默认采用原子计算密度矩阵构建分子密度矩阵的方式产生初始猜测轨道。实际在计算中，用户常读入其他已收敛scf计算分子轨道，做为计算的初始猜测。本算例，我们先计算一个中性的 :math:`H_{2}O` 分子，得到收敛轨道后，做为 :math:`H_{2}O^{+}` 离子的初始猜测。
 
 第一步，计算 :math:`H_{2}O` 分子, 准备输入文件，并命名为 ``h2o.inp`` , 内容如下：
 
@@ -117,7 +117,7 @@ BDF的SCF计算默认采用原子计算密度矩阵构建分子密度矩阵的�
 .. code-block:: bdf
 
     #!bdf.sh
-    ROKS/B3lyp/cc-pvdz guess=read charge=1
+    ROKS/B3lyp/cc-pvdz guess=readmo charge=1
     
     geometry
     O
@@ -127,11 +127,11 @@ BDF的SCF计算默认采用原子计算密度矩阵构建分子密度矩阵的�
     R1=1.0     # OH bond length in angstrom
     end geometry
     
-    %cp $BDF_WORKDIR/h2o.scforb $BDF_TMPDIR/inporb
+    %cp $BDF_WORKDIR/h2o.scforb $BDF_TMPDIR/${BDFTASK}.inporb
 
 
 这里，使用了关键词 ``guess=read`` ，指定要读入初始猜测轨道。初始猜测轨道是用 ``%`` 引导的拷贝命令从
-环境变量 ``BDF_WORKDIR`` 定义的文件夹中的h2o.scforb复制为 ``BDF_TMPDIR`` 中的 ``inporb`` 文件。
+环境变量 ``BDF_WORKDIR`` 定义的文件夹中的h2o.scforb复制为 ``BDF_TMPDIR`` 中的 ``${BDFTASK}.inporb`` 文件。
 这里， ``BDF_WORKDIR`` 是执行计算任务的目录， ``BDF_TMPDIR`` 是BDF存储临时文件的目录。
 
 
@@ -157,7 +157,7 @@ BDF的SCF计算默认采用原子计算密度矩阵构建分子密度矩阵的�
      skeleton
     basis
      cc-pvdz
-    unit
+    unit # set unit of coordinates as Bohr
      Bohr
     $end
      
@@ -209,13 +209,13 @@ BDF的SCF计算默认采用原子计算密度矩阵构建分子密度矩阵的�
     $scf
     RHF
     guess
-     read
+     readmo
     iprtmo
      2
     $end
 
-上面的输入中，先执行使用了cc-pVDZ基组第一个RHF计算，然后利用 expandmo 模块，将第一次SCF计算的收敛轨道扩展到cc-pVTZ基组，
-最后做为利用 guess=read 做为SCF的要读入的初始猜测轨道。
+上面的输入中，先执行使用了 **cc-pVDZ** 基组第一个RHF计算，然后利用 expandmo 模块，将第一次 SCF 计算的收敛轨道扩展到 **cc-pVQZ** 基组，
+最后做为利用 guess=readmo 做为SCF的要读入的初始猜测轨道。
 
 expandmo模块的输出为，
 
@@ -297,22 +297,21 @@ expandmo模块的输出为，
      SCF iteration time:       517.800 S        0.733 S      175.617 S
 
 
-
-
-
 指定占据数计算激发态
 ------------------------------------------------
 
 
-分子轨道最大重叠方法计算激发态
-------------------------------------------------
-MOM(maximum overlap method)是一种Delta SCF的方法，可以用以计算激发态。
+.. _momMethod:
 
+分子轨道最大占据数(mom)方法计算激发态
+------------------------------------------------
+mom(maximum occupation method)是一种 :math:`\{Delta}SCF` 的方法，可用于计算激发态。
+                                    
 .. code-block:: bdf
 
     #----------------------------------------------------------------------
     # 
-    # MOM method: Gilbert,Besley,Gill,JPCA 2008,112,13164
+    # mom method: J. Liu, Y. Zhang, and W. Liu, J. Chem. Theory Comput. 10, 2436 (2014).
     #
     # gs  = -169.86584128
     # ab  = -169.62226127
@@ -356,7 +355,7 @@ MOM(maximum overlap method)是一种Delta SCF的方法，可以用以计算激�
     DFT
     B3LYP
     guess
-     read
+     readmo
     alpha
      10 2
     beta
@@ -369,25 +368,7 @@ MOM(maximum overlap method)是一种Delta SCF的方法，可以用以计算激�
     iaufbau
      2
     $END
-
-    # delt scf without mom
-    $SCF
-    UKS
-    DFT
-    B3LYP
-    alpha
-     10 2
-    beta
-     10 2
-    ifpair
-    hpalpha
-     1
-     10 0 
-     11 0 
-    iaufbau
-     0
-    $END
-    
+   
     # pure delta scf for triplet
     $SCF
     UKS
@@ -401,11 +382,11 @@ MOM(maximum overlap method)是一种Delta SCF的方法，可以用以计算激�
       0
     $END
 
-这个算例执行了四次SCF计算，
+这个算例执行了三次SCF计算，
 
-* 第一次SCF计算，利用UKS方法计算甲酰胺分子的基态S0。输入利用alpha与beta两个关键词，分别指定了alpha和beta轨道的占据情况。甲酰胺分子基态是单重态S0，这里指定的alpha和beta占据情况相同。 ``10 2`` 分别指定不可约表示A‘与A“的轨道分别有10个和2个占据。SCF模块将根据构造原理，按照轨道能量由低到高填充电子到轨道上。
-* 第二次SCF计算，利用UKS与MOM方法计算甲酰胺分子的S1态。这里的关键点有：1 利用guess=read指定读入上一步UKS的收敛轨道；2 利用alpha、beta关键词设置了每个对称性轨道的占据数；3 设置了变量ifpair，需要和hpalpha，hpbeta联用，用于指定空穴-粒子（hole-particle - HP）轨道对的电子激发情况；4 设置了hpalpha变量，指定激发的HP轨道对。数字1表示激发一对HP轨道，下面指定两行指定轨道激发情况，第一列表示从第一个不可约表示的把第10个alpha轨道的电子激发到第11个alpha轨道，第二列元素都为零，表示第二个不可约表示的轨道不做激发； 5 iaufbau变量设置为2，指定要进行MOM计算。
-* 第三次SCF计算，利用UKS与MOM方法计算甲酰胺分子的T1态。输入中，我们利用alpha和beta关键词指定轨道占据情况，其中alpha轨道的占据数为 ``11 2`` ，表示对称性为A‘和A“的alpha轨道上分别有11和2个电子占据， beta轨道的占据情况为 ``9 2`` 。 iaufbau=0表示轨道占据按照构造原理由低到高排列。
+* 第一次SCF，利用UKS方法计算甲酰胺分子的基态S0。输入利用alpha与beta两个关键词，分别指定了alpha和beta轨道的占据情况。甲酰胺分子基态是单重态S0，这里指定的alpha和beta占据情况相同。 ``10 2`` 分别指定不可约表示A‘与A“的轨道分别有10个和2个占据。SCF模块将根据构造原理，按照轨道能量由低到高填充电子到轨道上。
+* 第二次SCF，利用UKS与mom方法计算甲酰胺分子的S1态。这里的关键点有：1 利用guess=readmo指定读入上一步UKS的收敛轨道；2 利用alpha、beta关键词设置了每个对称性轨道的占据数；3 设置了变量ifpair，需要和hpalpha，hpbeta联用，用于指定空穴-粒子（hole-particle - HP）轨道对的电子激发情况；4 设置了hpalpha变量，指定激发的HP轨道对。数字1表示激发一对HP轨道，下面指定两行指定轨道激发情况，第一列表示从第一个不可约表示的把第10个alpha轨道的电子激发到第11个alpha轨道，第二列元素都为零，表示第二个不可约表示的轨道不做激发； 5 iaufbau变量设置为2，指定要进行mom计算。
+* 第三次SCF，利用UKS与mom方法计算甲酰胺分子的T1态。输入中，我们利用alpha和beta关键词指定轨道占据情况，其中alpha轨道的占据数为 ``11 2`` ，表示对称性为A‘和A“的alpha轨道上分别有11和2个电子占据， beta轨道的占据情况为 ``9 2`` 。 iaufbau=0表示轨道占据按照构造原理由低到高排列。
 
 这里，第一次SCF计算收敛结果为，
 
@@ -453,30 +434,68 @@ MOM(maximum overlap method)是一种Delta SCF的方法，可以用以计算激�
        E_xc  =               -17.75524454
       Virial Theorem      2.003102
 
-可以看出，第一次SCF计算使用了atom猜测，计算得到S0的能量为 -169.8658334023 a.u. 。第二次SCF计算读入了第一次SCF的收敛轨道，
-并使用MOM方法做SCF计算，输出文件先提示读入了分子轨道，并给出占据情况，
+可以看出，第一次SCF计算使用了原子猜测，计算得到S0的能量为 -169.8658334023 a.u. , 轨道占据情况如下，
+
+.. code-block::
+
+      [Final occupation pattern: ]
+
+   Irreps:        A'      A'' 
+  
+   detailed occupation for iden/irep:      1   1
+      1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00
+      0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00 0.00 0.00 0.00 0.00 0.00
+   detailed occupation for iden/irep:      1   2
+      1.00 1.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00
+   Alpha      10.00    2.00
+
+这里， ``A‘`` 表示的第10个alpha轨道是占据轨道，第11个轨道是空轨道。第二次SCF计算读入了第一次SCF的收敛轨道，并使用mom方法做SCF计算，输入中要求将 ``A‘`` 表示的第10个轨道的电子激发到第11个轨道上。输出文件先提示读入了分子轨道，并给出占据情况，
 
 .. code-block:: 
 
-     Read initial orbitals from user specified file.
-
-     /tmp/23242/mom_formamide.inporb
-     File /tmp/23242/mom_formamide.inporb does not exist
-    
-     /tmp/23242/inporb
-     /tmp/23242/inporb
-     Read guess orb:  nden=2  nreps= 2  norb=   87  lenmo=   4797
-     Read orbital title:  TITLE - SCF Canonical Orbital
-    
-     Initial occupation pattern: iden=1  irep= 1  norb(irep)=   66
-        1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00 0.00
-        1.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
-        0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
-        0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
-        0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
-        0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
-        0.00 0.00 0.00 0.00 0.00 0.00
-    .....    
+   Read initial orbitals from user specified file.
+  
+   /tmp/20117/mom_formamide.inporb
+   Read guess orb:  nden=2  nreps= 2  norb=   87  lenmo=   4797
+   Read orbital title:  TITLE - SCF Canonical Orbital
+  
+   Initial occupation pattern: iden=1  irep= 1  norb(irep)=   66
+      1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00 0.00
+      1.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00 0.00 0.00 0.00 0.00 0.00
+  
+  
+   Initial occupation pattern: iden=1  irep= 2  norb(irep)=   21
+      1.00 1.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00
+  
+  
+   Initial occupation pattern: iden=2  irep= 1  norb(irep)=   66
+      1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00
+      0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00 0.00 0.00 0.00 0.00 0.00
+  
+  
+   Initial occupation pattern: iden=2  irep= 2  norb(irep)=   21
+      1.00 1.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+      0.00
     
 这里，iden=1为alpha轨道，irep=1指第一个不可约表示，总共有norb=66个轨道，其中，第10个轨道的占据数为0.00，第11个轨道占据数为1.00。经14次SCF迭代，收敛的S1态能量为 -169.6222628003 a.u.,如下所示：
 
@@ -530,9 +549,9 @@ MOM(maximum overlap method)是一种Delta SCF的方法，可以用以计算激�
         0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
         0.00 0.00 0.00 0.00 0.00 0.00
     
-SCF收敛后，轨道占据情况也被打印，可以看到alpah轨道中第一个不可约表示的第10个轨道没有电子占据，第11个轨道有一个电子占据。
+SCF收敛后，轨道占据情况被再一次打印，可以看到 **alpah** 轨道中 ``À'``  不可约表示的第10个轨道没有电子占据，第11个轨道有一个电子占据。
 
-第三个SCF计算给出了T1态能量，为-169.6248370697 a.u., 输出如下：
+第三个SCF计算给出了 **T1** 态能量，为 -169.6248370697 a.u., 输出如下：
 
 .. code-block:: 
 

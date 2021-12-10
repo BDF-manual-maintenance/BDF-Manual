@@ -21,24 +21,26 @@ BDF目前支持基态溶剂化效应计算，包括HF和DFT方法。以下是甲
     H    0.00000000    0.93500000   -1.08200000
     H    0.00000000    -0.9350000  -1.08200000
   END geometry
-   skeleton
-   Check
-   nosym
-   unit
-     ang
+  skeleton
+  Check
+  nosym
+  unit
+   ang
   $END
+
   $xuanyuan
-    direct
-    schwarz
+  direct
+  schwarz
   $END
+
   $SCF
-    rks
-    dft
+  rks
+  dft
     b3lyp
-   solvent   #溶剂化计算开关
+  solvent   #溶剂化计算开关
     water    #指定溶剂
-    grid
-       medium
+  grid
+    medium
   $END
 
 其中，在 ``SCF`` 中加 ``solvent`` 关键字，表示要进行溶剂化效应计算，紧跟一行可以输入溶剂类型，这里是 ``water`` 。BDF中
