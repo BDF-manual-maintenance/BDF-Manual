@@ -15,6 +15,8 @@
 
 .. include:: guide/SCFTech.rst
 
+.. include:: guide/FLMOMethod.rst
+
 .. include:: guide/TD.rst
 
 .. include:: guide/NMR.rst
