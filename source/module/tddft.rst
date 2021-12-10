@@ -203,7 +203,7 @@ nfiles是包含n+1个整数的多行参数，第一行输入为n，表示要读�
      1           #第一个TDDFT完成激发态计算，并存储TDDFT波函数，已备后续使用
      $End
 
-     $TDDFF
+     $TDDFT
      Ntoanalyze
      2           #指定对两个态做NTO分析
      1 3         #指定对第1和第3个激发态做NTO分析
