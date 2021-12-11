@@ -5,6 +5,8 @@
    :width: 600
    :align: center
 
+.. include:: module/autofrag.rst
+
 .. include:: module/compass.rst
 
 .. include:: module/xuanyuan.rst
@@ -26,3 +28,7 @@
 .. include:: module/expandmo.rst
 
 .. include:: module/mp2.rst
+
+.. include:: module/nmr.rst
+
+

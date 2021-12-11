@@ -1,4 +1,4 @@
-DFT/TDDFT梯度、Hessian及响应性质 - resp模块
+DFT/TDDFT梯度、Hessian及响应性质 - RESP模块
 ================================================
 resp模块用于计算DFT/TDDFT的梯度，TDDFT的基态-激发态，激发态-激发态之间的非绝热耦合。
 

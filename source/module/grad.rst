@@ -1,6 +1,6 @@
-Hartree-Fock梯度 - grad模块
+Hartree-Fock梯度 - GRAD模块
 ================================================
-grad模块用于计算HF/MCSCF的解析梯度。
+GRAD模块用于计算HF/MCSCF的解析梯度。
    
 **基本关键词**   
 
