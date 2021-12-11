@@ -25,60 +25,10 @@ BDF程序主要完成量子化学计算部分，其余部分由课题组修改�
 
 .. note::
   
-  pdynamo 程序的安装见程序包中相关说明。有关程序包的详细功能见程序包中的帮助文件。pdynamo 程序包同时也支持使用ORCA进行QM/MM计算。
-  本手册只提供BDF相关计算说明和算例。
+  pdynamo 程序的安装见程序包中相关说明。有关程序包的详细功能见程序包中的帮助文件。
+  本手册只提供使用BDF进行QM/MM计算的相关说明和算例。
 
-
-计算环境配置
--------------------------------------------------
-推荐使用Anaconda管理和配置QM/MM计算环境（ `详见官网 <https://www.anaconda.com>`_ ）。
-
-*  在anaconda中配置运行环境
-
-.. code-block:: shell
-
-  conda create –name yourEnvname python=2.7
-  conda activate yourEnvname
-  #配置Cython和PyYAML
-  conda install pyyaml #或者 pip install pyyaml
-  conda install cython 
-
-*  pDynamo-2的安装与配置
-
-BDF中pDynamo-2已经内置于安装目录的sbin目录下，在sbin目录下依次运行如下命令进行安装和配置：
-
-.. code-block:: shell
-
-  cd pDynamo_2.0.0
-  cd installation
-  python ./intall.py
-
-安装脚本运行后，会生成 environment_bash.com，environment_cshell.com两个环境配置文件。用户可以在自己的 ``.bashrc`` source 这个
-环境文件，设置运行环境。
-
-.. note::
-
-  编译过程会自动选择C编译器，对于MAC系统，建议使用 ``homebrew`` 安装GCC编译器，并添加 **CC=gcc-8(or 7 6)** 
-
-pDynamo-2运行时，默认调用sbin目录下的 ``qmmmrun.sh`` 文件进行QM计算.环境配置时，需要确保sbin目录在系统PATH中。
-可以用如下命令添加。
-
-.. code-block:: shell
-
-  export PATH=/BDFPATH/sbin:$PATH
-
-*  最后一步，指定BDF程序临时文件存储文件夹，可以运行如下命令指定，也可以将该变量设置在环境变量中。
-
-.. code-block:: shell
-  
-  PDYNAMO_BDFTMP=YourBDF_tmpPATH;   export PDYNAMO_BDFTMP
-
-若要检测pDynamo是否正确安装，可以运行软件自带的算例进行检测，算例文件位于 **pDynamo_2.0.0/book/examples** 目录中，
-可以运行一下命令测试：
-
-.. code-block:: shell
-
-  python RunExamples.py
+  QM/MM计算环境安装和配置参考：:ref:`QM/MM计算环境配置<qmmmsetup>`
 
 
 输入文件准备
@@ -91,7 +41,7 @@ pDynamo-2目前支持 ``Amber、CHARMM、Gromacs`` 等力场，同时支持 ``PD
   当采用PDB、MOL2、和xyz文件作为输入时，pDynamo 程序仅支持OPLS力场，对于小分子和非标准氨基酸力场参数不全，不推荐使用。建议优先采用Amber程序，
   通过拓扑文件输入力场参数。如果只做QM计算，各种输入方法都可以。
 
-以Amber为例，从动力学模拟轨迹提取感兴趣的结构存储于 ``crd`` 文件中，与对应的拓扑文件 ``\.prmtop`` 一起可以作为QM/MM计算的
+以Amber为例，从动力学模拟轨迹提取感兴趣的结构存储于 ``crd`` 文件中，与对应的拓扑文件 ``.prmtop`` 一起可以作为QM/MM计算的
 起始点。python 脚本如下：
 
 .. code-block:: python

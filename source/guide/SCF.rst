@@ -298,6 +298,19 @@ CAM-B3LYP等RS杂化泛函，将库伦相互作用分为长短程，
 杂化泛函Hartree-Fock交换项成分的自定义
 -------------------------------------------------
 
+【注：该方法目前git上的BDF版本还不支持，过几天我再push上来】
+
+对于某些计算，可能需要用户手动调节泛函的Hartree-Fock交换项成分，才能获得满意的精度。此时可在 ``$scf`` 模块里加入 ``facex`` 关键字，例如若要将B3LYP泛函的Hartree-Fock交换项成分由默认的20%改为15%，可以写
+
+.. code-block:: bdf
+
+   $scf
+   uks # unrestricted Kohn-Sham. Of course, the facex keyword can also be applied to RKS and ROKS
+   dft
+    b3lyp
+   facex
+    0.15
+   $end
 
 对弱相互作用的色散矫正
 -------------------------------------------------
@@ -447,4 +460,95 @@ BDF在Kohn-Sham计算的开始几步采用 ``Ultra coarse`` 积分格点，如�
 
 这里，H和O原子的积分格点都为100*1202, 其中，100是径向格点的数目，1202是角向格点的数目。
 
+大体系的SCF计算：片段局域分子轨道（FLMO）方法和迭代轨道相互作用（iOI）方法
+-----------------------------------------------------------------
 
+对于大体系（例如原子数大于300的体系），以上介绍的传统SCF计算方法常常不再适用，原因除了每步Fock矩阵构建时间变长以外，还包括以下因素：
+
+ * Fock矩阵对角化时间占计算总时间的比例增加。当体系足够大时，每步Fock矩阵的构建时间与体系大小的平方成正比，但Fock矩阵对角化时间和体系大小的三次方成正比，因此对于特别大（如上千个原子）的体系，Fock矩阵对角化占总计算时间的比例将相当可观。
+ * 大体系的局部稳定波函数更多，导致大体系SCF计算收敛到用户期望的态的概率降低。换言之，SCF可能收敛到很多个不同的解，其中只有一个是用户想要的，因此增加了用户判断SCF解是否是自己期望的解，以及（如果收敛到非期望的解时）重新提交计算等时间开销。
+ * 大体系的SCF收敛比小体系更加困难，需要更多的迭代步数，甚至完全不能收敛。这除了是因为上述的局部稳定解变多以外，也有一部分原因是因为一般的基于原子密度的SCF初猜的质量随着体系增大而变差。
+ 
+针对以上问题，一种解决方案是将体系分为若干片段（该过程称为分片；这些片段彼此之间可以重叠），对每个片段分别做SCF，再把所有片段的收敛的波函数汇总，作为总体系SCF计算的初猜。BDF的FLMO方法即属于一种基于分片的方法，其中每个片段的SCF收敛后，程序对每个片段的波函数进行局域化，再用所得的局域轨道产生总体系计算的初猜。相比不依赖局域轨道的分片方法，这样做会带来一些额外的好处：
+
+ * SCF迭代可以在局域轨道基上进行，在局域轨道基下Fock矩阵无需进行全对角化，而只需进行块对角化，即转动轨道使得占据-空块为零即可，该步骤的计算量较全对角化小。
+ * 局域轨道基下的Fock矩阵的占据-空块非常稀疏，可以利用这种稀疏性进一步减小块对角化的计算量。
+ * 用户可以在进行全局SCF计算之前就指定某个局域轨道的占据数，从而选择性地得到该局域轨道占据或未占据的电子态，例如计算由一个Fe(II)和一个Fe(III)组成的金属团簇，可以通过指定Fe 3d轨道的占据数来控制哪个Fe收敛到二价组态，哪个Fe收敛到三价组态。在当前的BDF版本里实际还支持另外一种做法，即直接指定原子的形式氧化态和自旋态（见下）。出于便捷性考虑，一般建议用户直接通过原子的形式氧化态和自旋态来指定收敛到哪个电子态。
+ * SCF计算直接得到收敛的局域轨道，而不是像一般的SCF计算那样只得到正则轨道。如果用户需要得到收敛的局域轨道来进行波函数分析等，那么FLMO方法相比传统的先得到正则轨道再进行局域化的做法而言，可以节省很多计算时间，也可以规避大体系局域化迭代次数多、容易不收敛的问题。
+
+例如，下述算例采用FLMO方法计算一个含有Cu(II)和氮氧稳定自由基的体系的自旋破缺基态：
+
+.. code-block:: bdf
+
+    $autofrag
+    method
+     flmo
+    nprocs # parallelize the subsystem calculations across 4 processes
+     4
+    spin
+    # Set +1 spin population on atom 9 (O), set -1 spin population on atom 16 (Cu)
+     9 +1 16 -1
+    # Add no buffer atoms, except for those necessary for saturating dangling bonds.
+    # Minimizing the buffer radius helps keeping the spin centers in different fragments
+    radbuff
+     0
+    # Use the PHO method to treat the subsystem boundaries. This is more stable than
+    # hydrogen link atoms for systems with small or no buffer
+    PHO
+    $end
+
+    $compass
+    Title
+     antiferromagnetically coupled nitroxide-Cu complex
+    Basis
+     LANL2DZ
+    Geometry
+     C                 -0.16158257   -0.34669203    1.16605797
+     C                  0.02573099   -0.67120566   -1.13886544
+     H                  0.90280854   -0.26733412    1.24138440
+     H                 -0.26508467   -1.69387001   -1.01851639
+     C                 -0.81912799    0.50687422    2.26635740
+     H                 -0.52831123    1.52953831    2.14600864
+     H                 -1.88351904    0.42751668    2.19103081
+     N                 -0.38402395    0.02569744    3.58546820
+     O                  0.96884699    0.12656182    3.68120994
+     C                 -1.01167974    0.84046608    4.63575398
+     H                 -0.69497152    0.49022160    5.59592309
+     H                 -0.72086191    1.86312982    4.51540490
+     H                 -2.07607087    0.76110974    4.56042769
+     N                 -0.40937388   -0.19002965   -2.45797639
+     C                 -0.74875417    0.18529223   -3.48688305
+     Cu                -1.32292113    0.82043400   -5.22772307
+     F                 -1.43762557   -0.29443417   -6.57175160
+     F                 -1.72615042    2.50823941   -5.45404079
+     H                 -0.45239892   -1.36935628    1.28640692
+     H                  1.09012199   -0.59184704   -1.06353906
+     O                 -0.58484750    0.12139125   -0.11715881
+    End geometry
+    Skeleton
+    Check
+    $end
+
+    $xuanyuan
+    Direct
+    Schwarz
+    $end
+
+    $scf
+    uks
+    dft
+     PBE1PBE
+    spin
+     1
+    D3
+    # The Semiempirical Model Hamiltonian SCF converger. Generally recommended
+    # for open-shell metal complexes, although not mandatory for FLMO
+    SMH
+    $end
+
+    $localmo
+    FLMO
+    Pipek # Selects Pipek-Mezey localization (recommended when the molecule contains pi systems) instead of the default Boys localization (recommended otherwise)
+    $end
+
+To be done
