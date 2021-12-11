@@ -252,7 +252,7 @@ pDynamo-2运行时，默认调用sbin目录下的 ``qmmmrun.sh`` 文件进行QM�
   PDYNAMO_BDFTMP=YourBDF_tmpPATH;   export PDYNAMO_BDFTMP
 
 若要检测pDynamo是否正确安装，可以运行软件自带的算例进行检测，算例文件位于 **pDynamo_2.0.0/book/examples** 目录中，
-可以运行一下命令测试：
+可以运行以下命令测试：
 
 .. code-block:: shell
 
