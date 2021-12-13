@@ -202,3 +202,58 @@ PBS提交BDF的作业脚本示例如下：
     1. stacksize的问题。intel Fortran编译器对程序运行的堆区(stack)内存要求较大，Linux系统默认的stacksize的大小通常太小，需要通过ulimit -s unlimited指定堆区内存大小。
     2. OpenMP并行的线程数。OMP_NUM_THREAS用于设定OpenMP的并行线程数。BDF依赖于OpenMP并行提高计算效率。如果用户使用了Bash Shell，可以用命令 ``export OMP_NUM_THREADS=N`` 指定使用N个OpenMP线程加速计算。
     3. OpenMP可用堆区内存，用户可以用 ``export OMP_STACKSIZE=1024M`` 指定OpenMP可用的堆区内存大小。
+
+
+
+QM/MM计算环境配置
+-------------------------------------------------
+.. _qmmmsetup:
+推荐使用Anaconda管理和配置QM/MM计算环境（ `详见官网 <https://www.anaconda.com>`_ ）。
+
+*  在anaconda中配置运行环境
+
+.. code-block:: shell
+
+  conda create –name yourEnvname python=2.7
+  conda activate yourEnvname
+  #配置Cython和PyYAML
+  conda install pyyaml #或者 pip install pyyaml
+  conda install cython 
+
+*  pDynamo-2的安装与配置
+
+BDF中pDynamo-2已经内置于安装目录的sbin目录下，在sbin目录下依次运行如下命令进行安装和配置：
+
+.. code-block:: shell
+
+  cd pDynamo_2.0.0
+  cd installation
+  python ./intall.py
+
+安装脚本运行后，会生成 environment_bash.com，environment_cshell.com两个环境配置文件。用户可以在自己的 ``.bashrc`` source 这个
+环境文件，设置运行环境。
+
+.. note::
+
+  编译过程会自动选择C编译器，对于MAC系统，建议使用 ``homebrew`` 安装GCC编译器，并添加 CC=gcc-8。其它版本的gcc编译器分别对应 gcc-6 或者 gcc-7等。
+  高于gcc-8版本目前没有测试。 
+
+pDynamo-2运行时，默认调用sbin目录下的 ``qmmmrun.sh`` 文件进行QM计算.环境配置时，需要确保sbin目录在系统PATH中。
+可以用如下命令添加。
+
+.. code-block:: shell
+
+  export PATH=/BDFPATH/sbin:$PATH
+
+*  最后一步，指定BDF程序临时文件存储文件夹，可以运行如下命令指定，也可以将该变量设置在环境变量中。
+
+.. code-block:: shell
+  
+  PDYNAMO_BDFTMP=YourBDF_tmpPATH;   export PDYNAMO_BDFTMP
+
+若要检测pDynamo是否正确安装，可以运行软件自带的算例进行检测，算例文件位于 **pDynamo_2.0.0/book/examples** 目录中，
+可以运行以下命令测试：
+
+.. code-block:: shell
+
+  python RunExamples.py

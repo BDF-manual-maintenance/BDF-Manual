@@ -912,7 +912,7 @@ BDF不仅支持TDDFT单点能（即给定分子结构下的激发能）的计算
 ----------------------------------------------------------
 
 相对论效应包括标量相对论和自旋轨道耦合 (spin-orbit coupling -- SOC)。相对论计算需要使用 **针对相对论效应优化的基组，
-选择合适的哈密顿** 。BDF支持全电子的sf-X2C-TDDFT-SOC计算，这里sf-X2C指用spin-free的精确二分量方法 (exact two component -- X2C)哈密顿考虑标量相对论效应，TDDFT-SOC指基于TDDFT计算自旋轨道耦合。注意虽然TDDFT是激发态方法，但TDDFT-SOC不仅可以用来计算SOC对激发态能量、性质的贡献，也可以用来计算SOC对基态能量、性质的贡献。
+选择合适的哈密顿** 。BDF支持全电子的sf-X2C-TDDFT-SOC计算，这里sf-X2C指用spin-free的精确二分量方法 (eXact Two-Component -- X2C)哈密顿考虑标量相对论效应，TDDFT-SOC指基于TDDFT计算自旋轨道耦合。注意虽然TDDFT是激发态方法，但TDDFT-SOC不仅可以用来计算SOC对激发态能量、性质的贡献，也可以用来计算SOC对基态能量、性质的贡献。
 
 以基态为单重态的分子为例，完成sf-X2C-TDDFT-SOC计算需要按顺序调用三次TDDFT计算模块。其中，第一次执行利用R-TDDFT，计算单重态，
 第二次利用SF-TDDFT计算三重态，最后一次读入前两个TDDFT的计算波函数，用态相互作用 (State interaction -- SI)的方法

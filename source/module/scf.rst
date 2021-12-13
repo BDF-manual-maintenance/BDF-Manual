@@ -1,4 +1,4 @@
-Hartree-Fock及Kohn-Sham自洽场计算 - scf模块
+Hartree-Fock及Kohn-Sham自洽场计算 - SCF模块
 ================================================
 SCF模块是BDF的核心计算模块之一，进行Hartree-Fock和DFT计算。
 

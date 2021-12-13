@@ -424,16 +424,9 @@ BDF目前支持基态溶剂化效应计算，包括HF和DFT方法。以下是甲
   $SCF
   rks
   dft
-  b3lyp
-   #svwn5
+   b3lyp   
   solvent
    water 
-  ddcosmongrid
-   110
-  ddcosmolmax
-   6
-  ddcosmoeta
-   0.1
   grid
    medium
   $END
