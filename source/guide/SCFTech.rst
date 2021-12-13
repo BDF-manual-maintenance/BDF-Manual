@@ -305,7 +305,7 @@ expandmo模块的输出为，
 
 分子轨道最大占据数(mom)方法计算激发态
 ------------------------------------------------
-mom(maximum occupation method)是一种 :math:`\{Delta}SCF` 的方法，可用于计算激发态。
+mom(maximum occupation method)是一种ΔSCF方法，可用于计算激发态。
                                     
 .. code-block:: bdf
 

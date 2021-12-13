@@ -1089,7 +1089,6 @@
      
      $XUANYUAN
      Direct      # ask for direct SCF
-     Schwarz
      $END
      
      $SCF
@@ -1246,7 +1245,6 @@
      
      $XUANYUAN
      direct
-     schwarz
      $END
      
      % echo "SVWN SCF "
@@ -1338,7 +1336,6 @@
      
      $XUANYUAN
      direct
-     schwarz
      rs
       0.33
      $END
@@ -1450,7 +1447,6 @@
 
      $xuanyuan
      Direct
-     Schwarz
      rs # the range separation parameter omega (or mu) of wB97X
       0.3
      $end

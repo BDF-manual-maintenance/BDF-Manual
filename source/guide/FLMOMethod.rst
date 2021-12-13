@@ -422,7 +422,6 @@ SCF收敛后，系统会再一次打印分子轨道的Mos信息，
   
   $xuanyuan
   Direct
-  Schwarz
   $end
   
   $scf
@@ -630,7 +629,6 @@ iOI方法，基于用 **分子片合成分子** 的思想，先计算分子片�
   
   $xuanyuan
   Direct
-  Schwarz
   rs # the range separation parameter omega (or mu) of wB97X
    0.3
   $end

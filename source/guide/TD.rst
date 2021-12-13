@@ -648,7 +648,6 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
 
   $XUANYUAN
   Direct
-  Schwarz
   rs
    0.3 # rs for wB97X
   $END
