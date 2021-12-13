@@ -30,7 +30,6 @@ BDF目前支持基态溶剂化效应计算，包括HF和DFT方法。以下是甲
 
   $xuanyuan
   direct
-  schwarz
   $END
 
   $SCF
@@ -420,7 +419,6 @@ BDF目前支持基态溶剂化效应计算，包括HF和DFT方法。以下是甲
   
   $xuanyuan
   direct
-  schwarz
   $end
   
   $SCF
