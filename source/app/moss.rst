@@ -18,7 +18,7 @@
     \delta^{IS} &= \alpha(\rho_{A}-\rho_{R}) \\
     &= \alpha(\rho_{A}-C)+\beta
 
-以上公式称为 *校准方程* （calibration equation），其中 :math:`\delta^{IS}` 是测试体系A相对于参照系R的同质异能位移实验值，
+以上两个公式称为 *校准方程* （calibration equation），其中 :math:`\delta^{IS}` 是测试体系A相对于参照系R的同质异能位移实验值，
 ECD（或CD）值 :math:`\rho_{A}` 和 :math:`\rho_{R}` 可以通过理论计算获得，
 :math:`\alpha` 和 :math:`\beta` 是待拟合的参数，其中 :math:`\alpha` 也称为核标定常数（nuclear calibration constant），
 :math:`C` 是任意量，一般取ECD（或CD）的整数部分。考虑到 :math:`\rho_{R}` 理论值存在误差，一般用后一个公式进行拟合。
@@ -56,7 +56,53 @@ ECD（或CD）值 :math:`\rho_{A}` 和 :math:`\rho_{R}` 可以通过理论计算
 除了铁以外的轻元素全部用def2-TZVPP基组，它在Kr元素之前属于全电子基组，虽然是非相对论的，但用于前18号元素的相对论计算是允许的。
 自旋多重度和分子坐标来自文献 :cite:`neese2009` 。以 :math:`FeF_6^{4-}` 为例，输入如下：
 
+.. code-block:: bdf
+
+  $compass
+  title
+    FeF_6^4-
+  basis-multi
+    def2-tzvpp
+    Fe = ANO-R2-ECD
+  end basis
+  geometry  # 分子直角坐标，单位：埃
+    Fe -0.000035  0.000012  0.000014
+    F   2.116808 -0.003546  0.032360
+    F  -2.116824  0.001611 -0.030945
+    F  -0.003602  2.164955  0.001902
+    F   0.001648 -2.165219 -0.003295
+    F   0.032586  0.003638  2.109790
+    F  -0.030580 -0.001452 -2.109825
+  end geometry
+  skeleton  # 计算骨架Fock矩阵
+  $end
+  
+  $xuanyuan
+  direct    # direct SCF
+  scalar
+  heff      # sf-X2C-AU；ECD必须
+    23
+  nuclear   # 高斯有限核模型；ECD必须
+    1
+  $end
+  
+  $scf
+   charge
+     -4
+   spin
+      5
+   roks
+   dft functional
+     pbe0
+   grid             # DFT计算ECD需要用精密格点
+     sg1
+   coulpot+cosx     # MPEC+COSX
+   relprp relcd 26  # 只计算Fe的ECD
+  $end
+
 （结果）
+
+预测新的铁化合物的IS及其氧化态
 
 强关联
 
