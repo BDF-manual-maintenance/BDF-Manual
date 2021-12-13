@@ -23,7 +23,6 @@ BDF支持将MM区原子电荷作为点电荷输入进行计算。点电荷以与
   
   $XUANYUAN
    direct
-   schwarz
   $END
 
   $SCF
