@@ -16,11 +16,11 @@
 
 FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR等方法，还可以计算开壳层的单重态，用于研究单分子磁体等问题。
 
-计算分片定域分子轨道FLMO
+计算分片定域分子轨道FLMO（手动分片）
 --------------------------------------------
 
-为了使用户对FLMO有个直观的了解，我们给出一个FLMO的计算示例。这里，我们要通过FLMO方法计算 :math:`C_4H_{10}` 分子的定域化轨道。
-我们先进行计算4个分子片，每个分子片是由中心原子、缓冲区原子和链接H原子组成。分子片SCF计算收敛后，通过Boys定域化方法得到分子片定域轨道。所有分子片计算完成后，再用四个分子片的定域轨道合成整体分子的pFLMO (primitive Fragment Local Molecule Orbital)。利用pFLMO做初始猜测，计算整个C4H8分子，并得到定域化的FLMO。输入示例如下：
+为了使用户对FLMO有个直观的了解，我们给出一个FLMO的计算示例。这里，我们要通过FLMO方法计算1,3,5,7-辛四烯 :math:`C_8H_{10}` 分子的定域化轨道。
+我们先计算4个分子片，每个分子片是由中心原子、缓冲区原子和链接H原子组成。因分子结构较简单，这里的分子片是通过手动分片得到的，即每个分子片的中心原子为一个C=C双键及与其相连的所有氢原子，缓冲区原子为和该C=C双键直接相连的C=C双键及其所带的氢原子，也即分子片1和分子片4为1,3-丁二烯，分子片2和分子片3为1,3,5-己三烯。分子片SCF计算收敛后，通过Boys定域化方法得到分子片定域轨道。所有分子片计算完成后，再用四个分子片的定域轨道合成整体分子的pFLMO (primitive Fragment Local Molecule Orbital)。利用pFLMO做初始猜测，计算整个 :math:`C_8H_{10}` 分子，并得到定域化的FLMO。输入示例如下：
 
 .. code-block:: bdf
 
@@ -251,7 +251,7 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
   iprtmo
    2
   sylv
-  threshconverg
+  threshconv
    1.d-8 1.d-6
   $END
   
@@ -266,9 +266,9 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
    10 11 12 13 14 15 16 17 18 
   &END
 
-在输入中，我们给出了注释。每个分子片的计算由 ``compass``、 ``xuanyuan`` 、 ``scf`` 及 ``localmo`` 四个模块构成。分别做预处理、积分计算、SCF计算和分子轨道定域化四个步骤，最后，通过插入Shell命令 ``cp $BDF_WORKDIR/$BDFTASK.flmo $BDF_TMPDIR/fragment*`` 将存储定域轨道的文件 **$BDFTASK.flmo** 拷贝到 **$BDF_TMPDIR** 所在的目录备用。最后是整体分子计算，输入从 **# Whole Molecule calculation** 开始。在 ``compass`` 中，有关键词 ``Nfragment 4`` ，提示要读入4个分子片，分子片信息在 ``&DATABSE`` 域中定义。
+在输入中，我们给出了注释。每个分子片的计算由 ``compass``、 ``xuanyuan`` 、 ``scf`` 及 ``localmo`` 四个模块构成。分别做预处理、积分计算、SCF计算和分子轨道定域化四个步骤，最后，通过插入Shell命令 ``cp $BDF_WORKDIR/$BDFTASK.flmo $BDF_TMPDIR/fragment*`` 将存储定域轨道的文件 **$BDFTASK.flmo** 拷贝到 **$BDF_TMPDIR** 所在的目录备用。最后是整体分子计算，输入从 **# Whole Molecule calculation** 开始。在 ``compass`` 中，有关键词 ``Nfragment 4`` ，提示要读入4个分子片，分子片信息在 ``&DATABASE`` 域中定义。
 
-整体分子的SCF计算，首先会读入4个分子片的定域轨道，构建pFLMO，并给出轨道伸展系数 Mos (molecular orbital spread)，如下：
+整体分子的SCF计算，首先会读入4个分子片的定域轨道，构建pFLMO，并给出轨道伸展系数 Mos (molecular orbital spread，某个定域轨道的Mos越大代表该定域轨道越离域，反之则代表该定域轨道越局域)，如下：
 
 .. code-block:: bdf
 
@@ -363,11 +363,12 @@ SCF收敛后，系统会再一次打印分子轨道的Mos信息，
 
 可以看出，最终的FLMO的Mos与pFLMO相比变化不大，保持了很好的定域性。
 
+以上的手动分片方法对于结构较复杂的分子来说比较繁琐，因为不仅需要手动给出每个分子片的定义，还需要在 ``&DATABASE`` 域中给出每个分子片和总体系的原子序号的对应关系。相比之下一个更加方便的方法是使用以下的自动分片方法。
 
-利用FLMO计算开壳层单重态
+利用FLMO计算开壳层单重态（自动分片）
 --------------------------------------------
 
-研究单分子磁体，常遇到所谓反铁磁耦合的态，又称开壳层的单重态。开壳层的单重态，两个自旋相反的电子以开壳层的形式占据在不同的原子中心。BDF可以结合FLMO方法计算开壳层的单重态。例如，下述算例采用FLMO方法计算一个含有Cu(II)和氮氧稳定自由基的体系的自旋破缺基态：
+研究单分子磁体以及某些催化体系等，常遇到所谓反铁磁耦合的态，又称开壳层单重态。开壳层单重态，两个自旋相反的电子以开壳层的形式占据在不同的原子中心。BDF可以结合FLMO方法计算开壳层单重态。例如，下述算例采用FLMO方法计算一个含有Cu(II)和氮氧稳定自由基的体系的自旋破缺基态：
 
 .. code-block::
 
@@ -376,7 +377,7 @@ SCF收敛后，系统会再一次打印分子轨道的Mos信息，
    flmo
   nprocs
    4  # ask for 4 processes to perform FLMO calculation
-  spin
+  spinocc
   # Set +1 spin population on atom 9 (O), set -1 spin population on atom 16 (Cu)
    9 +1 16 -1
   # Add no buffer atoms, except for those necessary for saturating dangling bonds.
@@ -417,7 +418,6 @@ SCF收敛后，系统会再一次打印分子轨道的Mos信息，
    O                 -0.58484750    0.12139125   -0.11715881
   End geometry
   Skeleton
-  Check
   $end
   
   $xuanyuan
@@ -439,10 +439,10 @@ SCF收敛后，系统会再一次打印分子轨道的Mos信息，
   
   $localmo
   FLMO
-  Pipek
+  Pipek # Pipek-Mezey localization, used when the user requests pure sigma/pure pi LMOs. Otherwise Boys is better
   $end
 
-FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用于对分子自动分片，并产生FLMO计算的基本输入。BDF先根据 ``compass`` 模块中的分子结构与 ``autofrag`` 的参数定义信息产生分子片段，分子片段定域化轨道计算的输入。然后用分子片段的定域轨道组装整体分子的pFLMO (primitive Fragment Local Molecular Orbital) 做为SCF计算的初始猜测轨道，再通过SCF计算在保持每一迭代步轨道都保持定域的下，得到整体分子的开壳层单重态。在计算中，为了输出简洁，分子片段计算输出保存为 ``${BDFTASK}.framgmentN.out`` , **N** 为片段编号，标准输出只打印整体分子计算的输出。
+FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用于对分子自动分片，并产生FLMO计算的基本输入。BDF先根据 ``compass`` 模块中的分子结构与 ``autofrag`` 的参数定义信息产生分子片段，以及分子片段定域化轨道计算的输入文件。然后用分子片段的定域轨道组装整体分子的pFLMO (primitive Fragment Local Molecular Orbital) 作为全局SCF计算的初始猜测轨道，再通过全局SCF计算，在保持每一迭代步轨道都保持定域的前提下，得到整体分子的开壳层单重态。在计算中，为了输出简洁，分子片段计算输出保存为 ``${BDFTASK}.framgmentN.out`` , **N** 为片段编号，标准输出只打印整体分子计算的输出。
 
 输出会给出分子分片的信息，
 
@@ -460,7 +460,7 @@ FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用�
    
     Generate BDF input file ....
 
-这里可以看出，我们产生了两个分子片段，指定了分子片 **1** 的编号为17号原子 (17是原子在整体分子中的编号) 自旋多重度指认为2 (Alpha占据)，分子片 **2** 编号为17号原子的自旋多重度设置为-2 （Beta占据）。随后会分别计算2个分子片，提示信息如下：
+这里可以看出，我们产生了两个分子片段，指定了分子片 **1** 由17个原子组成，自旋多重度指认为2，分子片 **2** 由9个原子组成，自旋多重度也指认为2，但自旋方向和分子片 **1** 相反，也即beta电子比alpha电子多一个，而不是alpha电子比beta电子多一个。随后会分别计算2个分子片，提示信息如下：
 
 .. code-block:: bdf
 
@@ -476,7 +476,7 @@ FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用�
   
   Starting global calculation ...
 
-这要注意计算资源的设置。总的计算资源是 **processes*threads** ，即进程数与线程数的乘积。整体计算输出类似普通的SCF计算，但采用了分块对角化Fock矩阵的方法以保持轨道的定域性。
+这要注意计算资源的设置。总的计算资源是进程数（Number of parallel processes）与每个进程的线程数（Number of OpenMP threads per process）的乘积，其中进程数是通过 ``autofrag`` 模块的 ``nprocs`` 关键字设定的，而总的计算资源是通过环境变量 ``OMP_NUM_THREADS`` 设定的，每个进程的线程数由程序自动由总的计算资源除以进程数来计算得到。整体计算输出类似普通的SCF计算，但采用了分块对角化Fock矩阵的方法以保持轨道的定域性。
 
 .. code-block:: bdf
 
@@ -548,14 +548,15 @@ FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用�
     21O      -0.3125    0.0002
      Sum:     0.0000   -0.0000
 
-可看出，Cu原子的自旋密度为 **-0.5878**， O原子的自旋密度为 **0.6564** ，接近理论的自旋密度为 -0.5和0.5, 计算结果为开壳层单重态。 
+可看出，Cu原子的自旋密度为 **-0.5878**， O原子的自旋密度为 **0.6564** ，其符号与预先指定的自旋相符，表明计算确实收敛到了所需要的开壳层单重态。注意此处自旋密度的绝对值小于1，说明Cu和O上的自旋密度并不是严格定域在这两个原子上的，而是有一部分离域到了旁边的原子上。
 
 .. _iOI-Example:
 
 iOI-SCF方法
 ----------------------------------------------------------
 
-iOI方法，基于用 **分子片合成分子** 的思想，先计算分子片段，再迭代扩大分子片以逼近整体分子。iOI能降低大分子的计算标度，加速SCF收敛。示例如下：
+iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采用自动分片，用户仍然需要用 ``radcent`` 、 ``radbuff`` 等关键字指定分子片的大小，尽管这两个关键词都有默认值（分别是3.0和2.0），但无论是默认值还是用户指定的值，都不能保证对于当前体系是最优的。如果分子片太小，得到的定域轨道质量太差；如果分子片太大，又会导致计算量太大，以及定域化迭代不收敛。而iOI方法则是从比较小的分子片出发，不断增大、融合分子片，直至分子片刚好达到所需的大小为止，然后进行全局计算。
+示例如下：
 
 .. code-block:: bdf
 
@@ -648,4 +649,4 @@ iOI方法，基于用 **分子片合成分子** 的思想，先计算分子片�
   FLMO
   $end
 
-
+To be done
