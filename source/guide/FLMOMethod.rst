@@ -555,7 +555,7 @@ FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用�
 iOI-SCF方法
 ----------------------------------------------------------
 
-iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采用自动分片，用户仍然需要用 ``radcent`` 、 ``radbuff`` 等关键字指定分子片的大小，尽管这两个关键词都有默认值（分别是3.0和2.0），但无论是默认值还是用户指定的值，都不能保证对于当前体系是最优的。如果分子片太小，得到的定域轨道质量太差；如果分子片太大，又会导致计算量太大，以及定域化迭代不收敛。而iOI方法则是从比较小的分子片出发，不断增大、融合分子片，直至分子片刚好达到所需的大小为止，然后进行全局计算。
+iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采用自动分片，用户仍然需要用 ``radcent`` 、 ``radbuff`` 等关键字指定分子片的大小，尽管这两个关键词都有默认值（分别是3.0和2.0），但无论是默认值还是用户指定的值，都不能保证对于当前体系是最优的。如果分子片太小，得到的定域轨道质量太差；如果分子片太大，又会导致计算量太大，以及定域化迭代不收敛。而iOI方法则是从比较小的分子片出发，不断增大、融合分子片，直至分子片刚好达到所需的大小为止，然后进行全局计算。其中每次增大、融合分子片称为一次宏迭代（Macro-iteration）。
 示例如下：
 
 .. code-block:: bdf
@@ -638,15 +638,140 @@ iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采
   rks
   dft
    wB97X
-  iprt
+  iprt # Increase print level for more verbose output. Not mandatory
    2
   charge
    2
-  coulpot+cosx
+  coulpot+cosx # Accelerate the SCF iterations using Coulpot+COSX. Not mandatory
   $end
   
   $localmo
   FLMO
   $end
 
-To be done
+程序一开始将该分子分为5个分子片：
+
+.. code-block:: bdf
+
+ -----------------------------------------
+ Automatically assigned charges and spins:
+ Fragment  Natom  Charge  Spin
+        1     26       1     1
+        2     22       1     1
+        3     18       1     1
+        4     27       1     1
+        5     14       1     1
+ -----------------------------------------
+
+之后开始进行子体系计算，
+
+.. code-block:: bdf
+
+ Starting subsystem calculations ...
+ Number of parallel processes:  2
+ Number of OpenMP threads per process:  2
+ Please refer to test106.fragment*.out for detailed output
+
+ Macro-iter 1:
+ Total number of not yet converged subsystems:  5
+ List of not yet converged subsystems:  [4, 1, 2, 3, 5]
+ Finished calculating subsystem   4 (  1 of   5)
+ Finished calculating subsystem   2 (  2 of   5)
+ Finished calculating subsystem   1 (  3 of   5)
+ Finished calculating subsystem   5 (  4 of   5)
+ Finished calculating subsystem   3 (  5 of   5)
+ Maximum population of LMO tail: 110.00000
+ ======================================
+ Elapsed time of post-processing: 0.10 s
+ Total elapsed time of this iteration: 34.28 s
+
+此后程序将这5个分子片进行两两融合，并扩大缓冲区，得到3个较大的子体系。这3个较大的子体系的定义可是在 ``${BDFTASK}.ioienlarge.out`` 里给出的：
+
+.. code-block:: bdf
+
+ Finding the optimum iOI merge plan...
+ Initial guess merge plan...
+ Iter 0 Number of permutations done: 1
+ New center fragments (in terms of old center fragments):
+ Fragment 1: 5 3
+ NBas: 164 184
+ Fragment 2: 2 4
+ NBas: 164 174
+ Fragment 3: 1
+ NBas: 236
+ Center fragment construction done, total elapsed time 0.01 s
+ Subsystem construction done, total elapsed time 0.01 s
+
+也即新的子体系1是由旧的子体系5、3融合（并扩大缓冲区）得到的，新的子体系2是由旧的子体系2、4融合（并扩大缓冲区）得到的，而新的子体系3则直接由旧的子体系1扩大缓冲区而得到。然后以原来5个小的子体系的收敛的定域轨道作为初猜，进行这些较大的子体系的SCF计算：
+
+.. code-block:: bdf
+
+ Macro-iter 2:
+ Total number of not yet converged subsystems:  3
+ List of not yet converged subsystems:  [2, 3, 1]
+ Finished calculating subsystem   3 (  1 of   3)
+ Finished calculating subsystem   1 (  2 of   3)
+ Finished calculating subsystem   2 (  3 of   3)
+ Fragment 1 has converged
+ Fragment 2 has converged
+ Fragment 3 has converged
+ Maximum population of LMO tail: 0.04804
+ ======================================
+
+ *** iOI macro-iteration converged! ***
+
+ Elapsed time of post-processing: 0.04 s
+ Total elapsed time of this iteration: 33.71 s
+
+此时程序自动判断这些子体系的大小已经足以将体系的LMO收敛到所需精度，因而iOI宏迭代收敛，进行iOI全局计算。iOI全局计算的输出与FLMO全局计算类似，但为了进一步加快Fock矩阵的块对角化，在iOI全局计算里，某些已经收敛的LMO会被冻结，从而降低需要块对角化的Fock矩阵的维度，但也引入了少许误差（一般在 :math:``10^{-6} \sim 10^{-5} \textrm{Hartree}`` 数量级）。以最后一步SCF迭代为例：
+
+.. code-block:: bdf
+
+   DNR !!
+      47 of     90 occupied and    201 of    292 virtual orbitals frozen
+  SDNR. Preparation:         0.01      0.00      0.00
+   norm and abs(maximum value) of Febru  0.35816E-03 0.11420E-03 gap =    1.14531
+  Survived/total Fia =        472      3913
+   norm and abs(maximum value) of Febru  0.36495E-03 0.11420E-03 gap =    1.14531
+  Survived/total Fia =        443      3913
+   norm and abs(maximum value) of Febru  0.16908E-03 0.92361E-04 gap =    1.14531
+  Survived/total Fia =        615      3913
+   norm and abs(maximum value) of Febru  0.11957E-03 0.21708E-04 gap =    1.14531
+  Survived/total Fia =        824      3913
+   norm and abs(maximum value) of Febru  0.68940E-04 0.15155E-04 gap =    1.14531
+  Survived/total Fia =        965      3913
+   norm and abs(maximum value) of Febru  0.56539E-04 0.15506E-04 gap =    1.14531
+  Survived/total Fia =        737      3913
+   norm and abs(maximum value) of Febru  0.30450E-04 0.62094E-05 gap =    1.14531
+  Survived/total Fia =       1050      3913
+   norm and abs(maximum value) of Febru  0.36500E-04 0.82498E-05 gap =    1.14531
+  Survived/total Fia =        499      3913
+   norm and abs(maximum value) of Febru  0.14018E-04 0.38171E-05 gap =    1.14531
+  Survived/total Fia =       1324      3913
+   norm and abs(maximum value) of Febru  0.43467E-04 0.15621E-04 gap =    1.14531
+  Survived/total Fia =        303      3913
+   norm and abs(maximum value) of Febru  0.12151E-04 0.26221E-05 gap =    1.14531
+  Survived/total Fia =        837      3913
+   norm and abs(maximum value) of Febru  0.15880E-04 0.82575E-05 gap =    1.14531
+  Survived/total Fia =        185      3913
+   norm and abs(maximum value) of Febru  0.52265E-05 0.71076E-06 gap =    1.14531
+  Survived/total Fia =       1407      3913
+   norm and abs(maximum value) of Febru  0.31827E-04 0.12985E-04 gap =    1.14531
+  Survived/total Fia =        253      3913
+   norm and abs(maximum value) of Febru  0.77674E-05 0.24860E-05 gap =    1.14531
+  Survived/total Fia =        650      3913
+   norm and abs(maximum value) of Febru  0.56782E-05 0.38053E-05 gap =    1.14531
+  Survived/total Fia =        264      3913
+  SDNR. Iter:         0.01      0.00      0.00
+  Final iter :   16 Norm of Febru  0.25948E-05
+  X --> U time:       0.000      0.000      0.000
+  SDNR. XcontrU:       0.00      0.00      0.00
+  block diag       0.020      0.000      0.000
+   block norm :   2.321380955939448E-004
+
+  Predicted total energy change:      -0.0000000659
+    9      0    0.000   -1401.6261867529      -0.0011407955       0.0000016329       0.0000904023    0.0000     16.97
+
+即冻结了47个占据轨道和201个虚轨道。
+
+iOI全局计算SCF收敛后，可以仿照一般SCF计算的输出文件读取能量、布居分析等信息，此处不再赘述。
