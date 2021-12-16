@@ -703,7 +703,7 @@ BDF还支持在结构优化中限制一个或多个内坐标的值，方法是�
     RKS
     charge
      0
-    spin
+    spinmulti
      1
     atomorb
     DFT
@@ -833,7 +833,7 @@ BDF还支持在结构优化中限制一个或多个内坐标的值，方法是�
     RKS
     charge
      0
-    spin
+    spinmulti
      1
     atomorb
     DFT
@@ -852,7 +852,7 @@ BDF还支持在结构优化中限制一个或多个内坐标的值，方法是�
     UKS
     charge
      0
-    spin
+    spinmulti
      3
     atomorb
     DFT
