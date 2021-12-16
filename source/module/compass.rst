@@ -17,15 +17,15 @@ COMPASS模块主要完成计算任务的初始化工作，包括读入用户定�
      End Geometry
      $End
 
-:guilabel:`basis-multi` 参数类型：字符串
+:guilabel:`basis-block` 参数类型：字符串
 ----------------------------------------------
-对不同元素指定不同的基组，第一行是默认基组，之后的行对不同元素或原子指定其它基组，
+同义词： ``basis-multi`` 。对不同元素指定不同的基组，第一行是默认基组，之后的行对不同元素或原子指定其它基组，
 格式为 **元素=基组名** 或者 **元素1,元素2, ...,元素n=基组名** 。
 
 .. code-block:: bdf
 
   $Compass
-  Basis-multi
+  Basis-block
     3-21g
     C,N = 6-31g
     Xe = cc-pvdz-pp

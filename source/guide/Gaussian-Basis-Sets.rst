@@ -632,17 +632,18 @@ BDF可以使用非内置基组，此时要把基组数据保存在文本格式�
 其中 ``lanl2dz`` 调用内置的LanL2DZ基组（已在 ``basisname`` 文件中注册），不区分大小写。如果用未注册的用户自制基组文件（如上面的 ``MyBAS-1`` ），
 要保持基组文件名的大小写一致。
 
-**为不同元素指定不同基组** 如果对不同元素指定不同名称的基组，需要放在 ``basis-multi`` ... ``end basis`` 块中，
+**为不同元素指定不同基组** 如果对不同元素指定不同名称的基组，需要放在 ``basis-block`` ... ``end basis`` 块中
+（ ``basis-multi`` 是 ``basis-block`` 的同义词），
 其中第一行是默认基组，之后的行对不同元素指定其它基组，格式为 *元素=基组名* 或者 *元素1,元素2, ...,元素n=基组名* 。
 例如，
 
 .. code-block:: bdf
 
   $compass
-  basis-multi
+  Basis-block
    lanl2dz
    H = 3-21g
-  end basis
+  End Basis
   geometry
     H   0.000   0.000    0.000
     Cl  0.000   0.000    1.400
@@ -657,7 +658,7 @@ BDF可以使用非内置基组，此时要把基组数据保存在文本格式�
 .. code-block:: bdf
 
   $compass
-  basis-multi
+  basis-block
    6-31g
    H0= cc-pvdz
    H = 3-21g
