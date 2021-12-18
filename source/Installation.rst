@@ -20,6 +20,7 @@
  * C 编译器
  * BLAS/LAPACK 数学库，接口需为64位整数
  * CMake 3.15版本及以上（使用cmake进行编译）
+ * python2.7及以上版本。python2与python3不兼容，python3目前还未完全适配
  
 通常使用GCC 4.6及以上的版本即可正常编译。
 

@@ -206,8 +206,6 @@ RKS/UKS和ROKS计算
 
     $xuanyuan
     direct # ask for direct SCF
-    maxmem
-      512mw
     $end
 
     $scf
@@ -333,6 +331,11 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
     $scf
     D3   # Gremme's dispersion correction
     $end
+
+.. Tips::
+
+    * 这里使用了BDF混合模式的输入方式，在简洁输入基础上，通过添加SCF模块关键词精确控制SCF计算。
+
 
 在Kohn-Sham计算结束后加入色散矫正，计算输出如下，
 

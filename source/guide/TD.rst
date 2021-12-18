@@ -1397,3 +1397,146 @@ SOC计算结果为，
       15        0.1407516324        0.1432264573       -0.1655701318
       16       -0.1407399684       -0.1429881941       -0.1657943551
       17       -0.0000034197        0.0004577563       -0.0833951446
+
+
+激发态的定域化
+----------------------------------------------
+
+.. code-block:: bdf
+
+   $COMPASS
+   Basis
+    cc-pvdz
+   Geometry
+     C      0.000000    0.000000  0.000000
+     C      1.332000    0.000000  0.000000
+     H     -0.574301   -0.928785  0.000000
+     H     -0.574301    0.928785  0.000000
+     H      1.906301    0.928785  0.000000
+     H      1.906301   -0.928785  0.000000
+     C     -0.000000    0.000000  3.5000
+     C      1.332000   -0.000000  3.5000
+     H     -0.574301    0.928785  3.50000
+     H     -0.574301   -0.928785  3.50000
+     H      1.906301   -0.928785  3.50000
+     H      1.906301    0.928785  3.50000
+   End geometry
+   Group
+    C(1)
+   Skeleton
+   Nfragment # must input: number of fragment, should be 1
+    1
+   $END
+   
+   $xuanyuan
+   Direct
+   $end
+   
+   $scf
+   rks
+   dft 
+    B3lyp
+   $end
+   
+   $TDDFT
+   ITDA
+    1
+   IDIAG
+    1
+   istore
+    1
+   iexit
+     4
+   crit_e # set a small threshhold for TDDFT energy convergence
+     1.d-8
+   $END
+   
+   # calculate local excited states (LOCALES) 
+   $elecoup
+   locales
+     1
+   $END
+   
+   &database
+   fragment 1  12 # first fragment with 12 atoms, next line gives the atom list 
+    1 2 3 4 5 6 7 8 9 10 11 12
+   &end
+
+TDA计算了4个激发态，输出如下,
+
+.. code-block:: bdf
+
+   No. Pair   ExSym   ExEnergies  Wavelengths      f     D<S^2>          Dominant Excitations             IPA   Ova     En-E1
+
+    1   A    2   A    7.4870 eV    165.60 nm   0.0000   0.0000  82.6%  CV(0):   A(  16 )->   A(  17 )  13.476 0.820    0.0000
+    2   A    3   A    8.6807 eV    142.83 nm   0.0673   0.0000  79.6%  CV(0):   A(  16 )->   A(  18 )  14.553 0.375    1.1937
+    3   A    4   A    9.0292 eV    137.31 nm   0.0000   0.0000  62.4%  CV(0):   A(  16 )->   A(  20 )  15.353 0.398    1.5422
+    4   A    5   A    9.0663 eV    136.75 nm   0.0000   0.0000  50.4%  CV(0):   A(  15 )->   A(  18 )  15.688 0.390    1.5793
+
+定域化的过程及定域的激发态为,
+
+.. code-block:: bdf
+
+      No.  8 iteration
+    Pair States :    1   2
+    aij,bij,abij -.25659893E-01 -.48045653E-11 0.25659893E-01
+    cos4a,sin4a 0.10000000E+01 -.18724027E-09
+    cosa,sina 0.10000000E+01 0.00000000E+00
+    Pair States :    1   3
+    aij,bij,abij -.40325646E-02 0.35638586E-11 0.40325646E-02
+    cos4a,sin4a 0.10000000E+01 0.88376974E-09
+    cosa,sina 0.10000000E+01 0.00000000E+00
+    Pair States :    1   4
+    aij,bij,abij -.25679319E-01 -.28753641E-08 0.25679319E-01
+    cos4a,sin4a 0.10000000E+01 -.11197197E-06
+    cosa,sina 0.10000000E+01 0.27877520E-07
+    Pair States :    2   3
+    aij,bij,abij -.39851115E-02 -.27118892E-05 0.39851124E-02
+    cos4a,sin4a 0.99999977E+00 -.68050506E-03
+    cosa,sina 0.99999999E+00 0.17012628E-03
+    Pair States :    2   4
+    aij,bij,abij -.42686102E-02 -.95914926E-06 0.42686103E-02
+    cos4a,sin4a 0.99999997E+00 -.22469825E-03
+    cosa,sina 0.10000000E+01 0.56174562E-04
+    Pair States :    3   4
+    aij,bij,abij -.67873307E-01 -.47952471E-02 0.68042488E-01
+    cos4a,sin4a 0.99751360E+00 -.70474305E-01
+    cosa,sina 0.99984454E+00 0.17632279E-01
+    Sum=      0.13608498 Max Delta=      0.00531009
+    
+      No.  9 iteration
+    Pair States :    1   2
+    aij,bij,abij -.40325638E-02 0.35621782E-11 0.40325638E-02
+    cos4a,sin4a 0.10000000E+01 0.88335323E-09
+    cosa,sina 0.10000000E+01 0.00000000E+00
+    Pair States :    1   3
+    aij,bij,abij -.25690755E-01 -.11200070E-08 0.25690755E-01
+    cos4a,sin4a 0.10000000E+01 -.43595721E-07
+    cosa,sina 0.10000000E+01 0.10536712E-07
+    Pair States :    1   4
+    aij,bij,abij -.25690755E-01 -.10900573E-11 0.25690755E-01
+    cos4a,sin4a 0.10000000E+01 -.42429944E-10
+    cosa,sina 0.10000000E+01 0.00000000E+00
+    Pair States :    2   3
+    aij,bij,abij -.41480079E-02 -.83549288E-06 0.41480080E-02
+    cos4a,sin4a 0.99999998E+00 -.20142027E-03
+    cosa,sina 0.10000000E+01 0.50355067E-04
+    Pair States :    2   4
+    aij,bij,abij -.41480100E-02 0.17462423E-06 0.41480100E-02
+    cos4a,sin4a 0.10000000E+01 0.42098314E-04
+    cosa,sina 0.10000000E+01 0.10524580E-04
+    Pair States :    3   4
+    aij,bij,abij -.68042492E-01 0.19389042E-08 0.68042492E-01
+    cos4a,sin4a 0.10000000E+01 0.28495490E-07
+    cosa,sina 0.10000000E+01 0.74505806E-08
+    Sum=      0.13608498 Max Delta=      0.00000000
+
+    ***************** Diabatic Hamiltonian matrix ****************
+                  State1      State2      State3     State4  
+       State1    7.486977    0.000000    0.000000    0.000000
+       State2    0.000000    9.029214   -0.000020    0.000021
+       State3    0.000000   -0.000020    8.873501    0.192803
+       State4    0.000000    0.000021    0.192803    8.873501
+    **************************************************************
+
+其中，对角元为定域激发态的能量，非对角元为两个定域态之间的耦合，这里的能量单位是 ``eV`` .
