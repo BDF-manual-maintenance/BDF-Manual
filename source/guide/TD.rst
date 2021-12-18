@@ -418,8 +418,6 @@ Davidson迭代开始计算输出信息如下，
   $end
    
   $tddft
-  imethod  # ask for U-TDDFT. This keyword can be neglected. It can be determined from SCF
-   2
   iroot
    4
   $end
@@ -428,7 +426,7 @@ Davidson迭代开始计算输出信息如下，
 
 * ``compass`` 模块中利用关键词 ``group`` 强制计算使用点群 ``C(1)`` ;
 * ``scf`` 模块设置 ``UKS`` 计算， ``charge`` 为 ``1`` ， ``spinmulti`` (自旋多重度,2S+1)=2;   
-* ``tddft`` 模块设置 ``imethod`` 为 ``2`` ， ``iroot`` 设定每个不可约表示算4个根，由于用了C1对称性，计算给出水的阳离子的前四个激发态。
+* ``tddft`` 模块设置  ``iroot`` 设定每个不可约表示算4个根，由于用了C1对称性，计算给出水的阳离子的前四个激发态。
 
 从输出
 
@@ -494,8 +492,6 @@ X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系，开壳�
     $end
      
     $tddft
-    imethod # ask for U-TDDFT method
-     2
     icorrect # spin-adapted correction to U-TDDFT, must be specified in X-TDDFT
      1
     itest  # must be specified in X-TDDFT
@@ -508,7 +504,6 @@ X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系，开壳�
 
 这里， ``scf`` 模块要求是用 ``ROKS`` 方法计算基态，在 ``tddft`` 输入中，
 
-* ``imethod`` 设置为2，使用U-TDDFT方法计算；
 * ``icorrect`` 设置为1，对U-TDDFT波函数做自旋匹配修正；
 * ``itest`` 必须设置为1；
 * ``itrans`` 设置为1，U-TDDFT波函数被变换回自旋匹配波函数做分析，该关键词只有 ``scf`` 计算使用ROKS/ROHF才有效。如果不需要在自旋匹配波函数基下做分析，则无需设置该关键词。
@@ -564,8 +559,6 @@ X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系，开壳�
   $end
    
   $tddft
-  imethod  # ask for R-TDDFT. This keyword can be neglected. It can be determined from SCF
-   1
   isf      # ask for spin-flip up TDDFT calculation
    1 
   iroot
@@ -663,8 +656,6 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
 
   $tddft
   iprt # print level
-   2
-  imethod
    2
   itda
    0
@@ -839,8 +830,6 @@ BDF不仅支持TDDFT单点能（即给定分子结构下的激发能）的计算
   $END
 
   $TDDFT
-  imethod
-   1
   nroot
   # The ordering of irreps of the C(2h) group is: Ag, Au, Bg, Bu
   # Thus the following line specifies the calculation of the 1Bu state, which
@@ -952,8 +941,6 @@ BDF不仅支持TDDFT单点能（即给定分子结构下的激发能）的计算
 
    #1st: R-TDDFT, calculate singlets 
    $tddft
-   imethod
-    1
    isf
     0
    idiag
@@ -968,9 +955,7 @@ BDF不仅支持TDDFT单点能（即给定分子结构下的激发能）的计算
    
    #2nd: spin-flip tddft, use close-shell determinant as reference to calculate triplets 
    $tddft
-   imethod
-    1
-   isf # notice here： ask for spin-flip up calculation
+   isf # notice here: ask for spin-flip up calculation
     1
    itda
     0
@@ -1217,15 +1202,11 @@ SOC计算结果为，
   UKS
   dft
    GB3LYP
-  charge
-   0
   spinmulti
    2
   $END
 
   $tddft
-  imethod
-   2
   iexit
    1 # One root for every irrep
   istore
@@ -1339,8 +1320,6 @@ SOC计算结果为，
   $END
 
   $tddft
-  imethod
-   1
   isf # request for triplets (spin flip up)
    1
   ialda # use collinear kernel (NAC only supports collinear kernel)
