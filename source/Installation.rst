@@ -6,34 +6,38 @@
 
 硬件环境
 -------------------------------------------------
-一般来说，BDF可以在任何unix操作系统上进行编译安装，我们也已经在一些常见的软硬件环境下进行了编译测试。对于其他硬件平台，由于操作系统和编译器版本的问题，用户可能会遇到一些问题。绝大多数况下，根据自己的硬件环境，设置正确的编译器标志和系统软件路径等，最终可以成功编译安装BDF软件。
+原则上说，BDF可以在任何Unix和类Unix操作系统上进行编译安装。我们已经在一些常见的软硬件环境下进行了编译测试，
+对于其他硬件平台，由于操作系统和编译器版本的限制和缺陷，用户可能会遇到一些问题。
+绝大多数况下，用户根据自己的硬件环境，设置正确的编译器标志和系统软件路径等，最终可以成功编译安装BDF软件。
 
-要编译BDF软件，至少需要 2 GB 的可用磁盘空间，具体取决于您的安装方式（例如，CMake 保留目标文件），编译后的实际大小约为 1.3 GB。要运行BDF的测试例，应该提供至少 1 GB 的磁盘空间用于缓存计算的中间数据，具体需要的缓存空间取决于计算体系大小和使用的积分方式（采用积分直接算法需要的磁盘空间远小于传统的存储双电子积分的模式）。通常来说，对于采用积分直接算法的计算，应当提供4 GB以上的磁盘空间用于数据缓存。
+要编译BDF软件，至少需要 2 GB 的可用磁盘空间，具体取决于您的安装方式（例如，CMake 保留目标文件），
+编译后的实际大小约为 1.3 GB。要运行BDF的测试算例，应该提供至少 1 GB 的磁盘空间用于缓存计算的中间数据，
+具体需要的缓存空间取决于计算体系大小和使用的积分方式（采用积分直接算法需要的磁盘空间远小于传统的存储双电子积分的模式）。通常来说，对于采用积分直接算法的计算，应当提供4 GB以上的磁盘空间用于数据缓存。
 
 软件环境配置
 ------------------------------------------------------------------------
 
 从BDF的源代码直接编译安装，对于编译器和数学库的最低要求是：
 
- * Fortran编译器（支持fortran95及更新版本的语法）
- * C++ 编译器（支持C++03及更新版本的语法）
+ * Fortran编译器（支持Fortran 95及以上版本的语法）
+ * C++ 编译器（支持C++03及以上版本的语法）
  * C 编译器
  * BLAS/LAPACK 数学库，接口需为64位整数
  * CMake 3.15版本及以上（使用cmake进行编译）
- * python2.7及以上版本。python2与python3不兼容，python3目前还未完全适配
+ * Python 2.7及以上版本。Python 2与Python 3不兼容，Python 3目前还未完全适配
  
 通常使用GCC 4.6及以上的版本即可正常编译。
 
 可选配置：
- * Intel Parallel Studio XE Cluster版C/C++ Fortran编译器
+ * Intel Parallel Studio XE Cluster版C/C++、Fortran编译器
  * 优化的BLAS/LAPACK 库（如Intel的MKL，AMD的ACML，OpenBLAS等）
- * openmpi 1.4.1版本及以上（编译并行版本的BDF）
- * OpenCL 1.5级以上版本，AMD的Rocm或Nvidia 的Cuda(编译GPU版的BDF)
+ * 编译并行版本的BDF，需要Openmpi 1.4.1或以上版本
+ * 编译GPU版的BDF，需要OpenCL 1.5或以上版本，以及AMD的Rocm或Nvidia的Cuda
 
 cmake编译BDF
 ==========================================================================
 
-1. Intel Fortran编译器，gcc/g++编译器混合使用，链接MKL数学库，支持OpenMP并行
+1. Intel Fortran编译器、GNU gcc/g++编译器混合使用，链接MKL数学库，支持OpenMP并行
 --------------------------------------------------------------------------------
 
 .. code-block:: shell
@@ -55,7 +59,7 @@ cmake编译BDF
     #运行命令
     $$BDFHOME/sbin/bdfdrv.py -r **.inp
 
-2. GNU编译器，gfortran、gcc/g++，链接MKL数学库，支持OpenMP并行
+2. GNU编译器gfortran/gcc/g++，链接MKL数学库，支持OpenMP并行
 -------------------------------------------------------------------
 
 .. code-block:: shell
@@ -77,7 +81,7 @@ cmake编译BDF
     #运行命令
     $$BDFHOME/sbin/bdfdrv.py -r **.inp
 
-3. Intel编译器，ifort、icc/icpc，链接MKL数学库，支持OpenMP并行
+3. Intel编译器ifort/icc/icpc，链接MKL数学库，支持OpenMP并行
 -------------------------------------------------------------------
 
 .. code-block:: shell
@@ -100,14 +104,15 @@ cmake编译BDF
     $$BDFHOME/sbin/bdfdrv.py -r **.inp
 
 .. Warning::
-   1. gcc编译器9.0及以上版本，与Intel Fortran编译器混合使用，链接程序出错，原因是Intel Fortran编译器的OpenMP版本落后于GNU编译器。因而，GNU 9.0及以上编译器目前不支持GNU及Intel编译器混合编译。
-   2. Intel Fortran 2018版编译器Bug较多，请避免使用。
+   1. gcc编译器9.0及以上版本，与Intel Fortran编译器混合使用，链接程序出错，原因是Intel Fortran编译器的OpenMP版本落后于GNU编译器。因而，GNU 9.0及以上版本编译器目前不支持GNU与Intel编译器混合编译。
+   2. Intel Fortran 2018版编译器Bug较多，应避免使用。
 
 
 程序运行
 ==========================================================================
 
-BDF需在Linux终端下运行。运行BDF，需要先准备输入文件，输入文件的具体格式在手册后几节详述。BDF的安装装目录中的tests/input目录包含了BDF的一些输入算例。这里我们利用BDF自带的测试算例作为例子，先简述如何运行BDF。
+BDF需在Linux终端下运行。运行BDF，需要先准备输入文件，输入文件的具体格式在手册后几节详述。
+在BDF安装目录的tests/input下包含了一些BDF输入算例。这里我们利用BDF自带的测试算例作为例子，先简述如何运行BDF。
 
 运行BDF会使用一些环境变量：
 
@@ -125,7 +130,7 @@ BDF需在Linux终端下运行。运行BDF，需要先准备输入文件，输入
 
 单机运行BDF，用Shell脚本执行作业
 ---------------------------------------------
-假设用户目录为 /home/user, BDF被安装在 /home/user/bdf-pkg-pro中。准备好输入文件 ``ch2-hf.inp`` 之后，需要在准备一个shell脚本，输入如下内容
+假设用户目录为 /home/user，BDF被安装在 /home/user/bdf-pkg-pro中。准备好输入文件 ``ch2-hf.inp`` 之后，需要再准备一个shell脚本，输入如下内容
 
 .. code-block:: shell
 
@@ -161,7 +166,7 @@ BDF需在Linux终端下运行。运行BDF，需要先准备输入文件，输入
 利用PBS作业管理系统提交BDF作业
 ------------------------------------------------
 
-PBS提交BDF的作业脚本示例如下：
+PBS提交BDF作业的脚本示例如下：
 
 .. code-block:: shell
 
@@ -200,7 +205,7 @@ PBS提交BDF的作业脚本示例如下：
 
 
 .. important::
-    1. stacksize的问题。intel Fortran编译器对程序运行的堆区(stack)内存要求较大，Linux系统默认的stacksize的大小通常太小，需要通过ulimit -s unlimited指定堆区内存大小。
+    1. stacksize的问题。Intel Fortran编译器对程序运行的堆区（stack）内存要求较大，Linux系统默认的stacksize的大小通常太小，需要通过ulimit -s unlimited指定堆区内存大小。
     2. OpenMP并行的线程数。OMP_NUM_THREAS用于设定OpenMP的并行线程数。BDF依赖于OpenMP并行提高计算效率。如果用户使用了Bash Shell，可以用命令 ``export OMP_NUM_THREADS=N`` 指定使用N个OpenMP线程加速计算。
     3. OpenMP可用堆区内存，用户可以用 ``export OMP_STACKSIZE=1024M`` 指定OpenMP可用的堆区内存大小。
 
@@ -231,7 +236,7 @@ BDF中pDynamo-2已经内置于安装目录的sbin目录下，在sbin目录下依
   cd installation
   python ./intall.py
 
-安装脚本运行后，会生成 environment_bash.com，environment_cshell.com两个环境配置文件。用户可以在自己的 ``.bashrc`` source 这个
+安装脚本运行后，会生成 environment_bash.com，environment_cshell.com两个环境配置文件。用户可以在自己的 ``.bashrc`` 通过source加载这个
 环境文件，设置运行环境。
 
 .. note::
@@ -239,7 +244,7 @@ BDF中pDynamo-2已经内置于安装目录的sbin目录下，在sbin目录下依
   编译过程会自动选择C编译器，对于MAC系统，建议使用 ``homebrew`` 安装GCC编译器，并添加 CC=gcc-8。其它版本的gcc编译器分别对应 gcc-6 或者 gcc-7等。
   高于gcc-8版本目前没有测试。 
 
-pDynamo-2运行时，默认调用sbin目录下的 ``qmmmrun.sh`` 文件进行QM计算.环境配置时，需要确保sbin目录在系统PATH中。
+pDynamo-2运行时，默认调用sbin目录下的 ``qmmmrun.sh`` 文件进行QM计算。环境配置时，需要确保sbin目录在系统PATH中。
 可以用如下命令添加。
 
 .. code-block:: shell
