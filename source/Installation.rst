@@ -141,7 +141,7 @@ BDF需在Linux终端下运行。运行BDF，需要先准备输入文件，输入
     export OMP_NUM_THREADS=4
     export OMP_STACKSIZE=512M 
 
-    $BDFHOME/bdfdrv.py -r $1
+    $BDFHOME/sbin/bdfdrv.py -r $1
 
 并命名为run.sh，利用 "chmod +x run.sh"赋予脚本执行权限，然后按照如下方法执行。 
 

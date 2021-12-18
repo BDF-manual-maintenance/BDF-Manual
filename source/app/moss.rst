@@ -49,7 +49,7 @@ ED/CD值 :math:`\rho_{A}` 和 :math:`\rho_{R}` 可以通过理论计算获得，
 建议采用cc-pVnZ型或ANO型全电子相对论基组，并把其中的 *s* 函数（ *p* 区元素还有 *p* 函数）进行非收缩处理。
 在以下的全电子相对论计算中，铁采用ANO-R2基组（具有三ζ精度），
 并把 *s* 函数做非收缩处理，也就是删除 *s* 函数的收缩因子部分，并把收缩度从6改为0，然后存为其它文件名（如ANO-R2-ED）。
-由于铁没有 4*p* 价电子， *p* 函数不需要修改。
+由于铁没有4 *p* 价电子， *p* 函数不需要修改。
 把ANO-R2-ED放到执行计算的目录下，供后面的计算调用（下载链接 :download:`ano-r2-ed.zip <files/ano-r2-ed.zip>` ）。
 
 我们对于铁的一系列模型体系化合物进行相对论密度泛函理论计算，泛函选取PBE0，相对论哈密顿用sf-X2C-AU。
@@ -59,45 +59,46 @@ ED/CD值 :math:`\rho_{A}` 和 :math:`\rho_{R}` 可以通过理论计算获得，
 .. code-block:: bdf
 
   $compass
-  title
-    FeF_6^4-
-  basis-multi
-    def2-tzvpp
-    Fe = ANO-R2-ED
-  end basis
-  geometry  # 分子直角坐标，单位：埃
-    Fe -0.000035  0.000012  0.000014
-    F   2.116808 -0.003546  0.032360
-    F  -2.116824  0.001611 -0.030945
-    F  -0.003602  2.164955  0.001902
-    F   0.001648 -2.165219 -0.003295
-    F   0.032586  0.003638  2.109790
-    F  -0.030580 -0.001452 -2.109825
-  end geometry
-  skeleton  # 计算骨架Fock矩阵
+   title
+     FeF_6^4-
+   basis-multi
+     def2-tzvpp
+     Fe = ANO-R2-ED
+   end basis
+   geometry  # 分子直角坐标，单位：埃
+     Fe -0.000035  0.000012  0.000014
+     F   2.116808 -0.003546  0.032360
+     F  -2.116824  0.001611 -0.030945
+     F  -0.003602  2.164955  0.001902
+     F   0.001648 -2.165219 -0.003295
+     F   0.032586  0.003638  2.109790
+     F  -0.030580 -0.001452 -2.109825
+   end geometry
+   skeleton  # 计算骨架Fock矩阵
   $end
   
   $xuanyuan
-  direct    # direct SCF
-  scalar
-  heff      # sf-X2C-AU；ED必须
-    23
-  nuclear   # 高斯有限核模型；ED必须
-    1
+   direct    # direct SCF
+   scalar
+   heff      # sf-X2C-AU；ED必须
+     23
+   nuclear   # 高斯有限核模型；ED必须
+     1
   $end
   
   $scf
    charge
      -4
    spin
-      5
+     5
    uks
    dft functional
      pbe0
    grid             # DFT计算ED需要用精密格点
      sg1
    coulpot+cosx     # 使用MPEC+COSX加速
-   reled 26         # 只计算Fe的ED
+   reled
+     26             # 只计算Fe的ED（对于本例，10至26的整数等价）
   $end
 
 计算完成后，在SCF布居分析信息之后可以找到ED结果：

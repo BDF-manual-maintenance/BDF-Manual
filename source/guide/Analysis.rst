@@ -34,10 +34,10 @@ BDF支持的单电子性质有：
 .. code-block:: bdf
 
   $xuanyuan
-  scalar
-  heff
-   23
-  nuclear
+   scalar
+   heff
+    23
+   nuclear
     1
   $end
 
@@ -47,7 +47,8 @@ BDF支持的单电子性质有：
     b3lyp
    grid
     sg1
-   reled 20
+   reled
+    20
   $end
 
 其中，``reled`` 调用相对论性质ED的计算，``20`` 表示对原子序数小于20的轻元素不计算ED，从而节省计算时间。

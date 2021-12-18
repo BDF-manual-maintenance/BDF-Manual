@@ -11,7 +11,7 @@ BDF支持多种激发态计算方法，其中以基于Kohn-Sham参考态的线�
 3. 支持芯激发态（core excited state）相关的计算，如计算X射线吸收谱（XAS）。一般的TDDFT算法为了计算一个激发态，常需同时把比该激发态激发能更低的所有态均计算出来，而芯激发态的能量通常很高，这样计算效率太低。而BDF所用的iVI方法则可在不计算更低的激发态的情况下，直接计算某个较高的能量区间内的所有激发态，从而节省计算资源；
 4. 支持一阶非绝热耦合矩阵元（first-order non-adiabatic coupling matrix element, fo-NACME，或简称NACME）的计算，尤其是激发态和激发态之间的NACME。NACME主要用于研究非辐射跃迁过程，如用费米黄金规则计算内转换速率常数，或用非绝热动力学研究内转换、光化学反应的过程等等。很多量子化学程序支持基态和激发态之间的NACME，但支持激发态和激发态之间的NACME的程序较少，因此对于激发态到激发态的内转换以及多态光化学反应等过程，BDF相比现有大部分量子化学程序有独特的优势。
 
-除此之外，BDF还支持在pp-TDA水平下计算激发态，以及利用 :ref:`mom方法<momMethod>` 在SCF水平下计算激发态等。
+除此之外，BDF还支持利用 :ref:`mom方法<momMethod>` 在SCF水平下计算激发态。
 
 
 闭壳层体系计算：R-TDDFT
@@ -460,9 +460,9 @@ Davidson迭代开始计算输出信息如下，
 其中第3激发态的 ``D<S^2>`` 值较大，表明存在自旋污染问题。
 
 
-开壳层体系：SA-TDDFT（或称X-TDDFT）
+开壳层体系：X-TDDFT
 ----------------------------------------------------------
-SA-TDDFT，即spin-adapted TDDFT用于计算开壳层体系，开壳层体系的三重态耦合的双占据到虚轨道激发态(在BDF中标记为CV(1))存在自旋污染问题，因而其激发能常被高估。SA-TDDFT可以用于解决这一问题，考虑 :math:`N_{2}^{+}` 分子，SA-TDDFT的计算输入为,
+X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系，开壳层体系的三重态耦合的双占据到虚轨道激发态(在BDF中标记为CV(1))存在自旋污染问题，因而其激发能常被高估。X-TDDFT可以用于解决这一问题，考虑 :math:`N_{2}^{+}` 分子，X-TDDFT的计算输入为,
 
 .. code-block:: bdf
 
@@ -496,9 +496,9 @@ SA-TDDFT，即spin-adapted TDDFT用于计算开壳层体系，开壳层体系的
     $tddft
     imethod # ask for U-TDDFT method
      2
-    icorrect # spin-adapted correction to U-TDDFT, must be specified in SA-TDDFT
+    icorrect # spin-adapted correction to U-TDDFT, must be specified in X-TDDFT
      1
-    itest  # must be specified in SA-TDDFT
+    itest  # must be specified in X-TDDFT
      1
     itrans # transform the final eigenvector in U-TDDFT from the spin-orbital based representation to spin-adapted basis
      1
@@ -616,7 +616,7 @@ TDDFT计算快结束时有输出信息如下，
 
 BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，用户可以指定感兴趣的激发能范围（比如整个可见区，或者碳的K-edge区域），而无需估计该范围内有多少个激发态；程序可以计算出激发能处于该范围内的所有激发态，一方面无需像Davidson方法那样计算比该范围的能量更低的激发态，另一方面可以确保得到该能量范围内的所有激发态，没有遗漏。以下举两个算例：
 
-（1）计算DDQ自由基阴离子在400-700 nm范围内的吸收光谱（SA-TDDFT，wB97X/LANL2DZ）
+（1）计算DDQ自由基阴离子在400-700 nm范围内的吸收光谱（X-TDDFT，wB97X/LANL2DZ）
 
 .. code-block:: bdf
 
@@ -658,7 +658,7 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
    wB97X
   charge
    -1
-  coulpot+cosx # accelerate the calculation using Coulpot+COSX (a.k.a. MPEC+COSX)
+  mpec+cosx # accelerate the calculation using MPEC+COSX
   $END
 
   $tddft
@@ -678,7 +678,7 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
    1
   memjkop
    2048
-  coulpot+cosx # accelerate the calculation using Coulpot+COSX (a.k.a. MPEC+COSX)
+  mpec+cosx # accelerate the calculation using MPEC+COSX
   $end
 
 因该分子属于 :math:`C_{2v}` 点群，共有4个不可约表示（A1，A2，B1，B2），程序分别在4个不可约表示下求解TDDFT问题。以A1不可约表示为例，iVI迭代收敛后，程序输出如下信息：

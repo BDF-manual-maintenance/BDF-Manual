@@ -384,7 +384,7 @@
      ROHF            #Restricted Open-shell Hartree-Fock
      charge          #电荷数1
       1
-     spin            #自旋多重度2
+     spinmulti            #自旋多重度2
       2
      $END
 
@@ -414,7 +414,7 @@
      ROHF             #Restricted Open-shell Hartree-Fock
      charge
        1
-     spin
+     spinmulti
        2
      $END
 
@@ -443,7 +443,7 @@
      ROHF
      charge
        1
-     spin
+     spinmulti
        2
      $END
 
@@ -472,7 +472,7 @@
 
      $SCF
      UHF                #Unrestricted Hartree-Fock
-     spin
+     spinmulti
      3                  #自旋多重度3
      Alpha
      3 0 1 1 0 2 1 1    #指定alpha或beta轨道每种不可约表示占据轨道数目
@@ -960,7 +960,7 @@
      B3LYP
      charge
      1
-     spin          #指定计算电子态的自旋多重度，值为2S+1=2
+     spinmulti          #指定计算电子态的自旋多重度，值为2S+1=2
      2
      $END
      
@@ -1181,7 +1181,7 @@
      roks         #Restricted Open-shell Kohn-Sham
      dft
       b3lyp
-     spin         
+     spinmulti         
       2
      $end
      
@@ -1254,7 +1254,7 @@
      svwn5
      charge 
       1
-     SPIN
+     spinmulti
      2
      $END
      
@@ -1283,7 +1283,7 @@
      blyp
      charge 
       1
-     SPIN
+     spinmulti
      2
      $END
      
@@ -1312,7 +1312,7 @@
      b3lyp
      charge 
       1
-     SPIN
+     spinmulti  
      2
      $END
      
@@ -1347,7 +1347,7 @@
      cam-b3lyp
      charge 
       1
-     SPIN
+     spinmulti
      2
      $END
      
