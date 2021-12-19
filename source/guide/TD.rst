@@ -462,6 +462,20 @@ Davidson迭代开始计算输出信息如下，
 ----------------------------------------------------------
 X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系，开壳层体系的三重态耦合的双占据到虚轨道激发态(在BDF中标记为CV(1))存在自旋污染问题，因而其激发能常被高估。X-TDDFT可以用于解决这一问题，考虑 :math:`N_{2}^{+}` 分子，X-TDDFT的计算输入为,
 
+简洁输入：
+
+.. code-block:: bdf
+
+   #! N2+.sh
+   X-TDDFT/b3lyp/aug-cc-pvtz group=D(2h) charge=1 spinmulti=2 iroot=5
+
+   geometry
+     N 0.00  0.00  0.00
+     N 0.00  0.00  1.1164 
+   end geometry
+
+高级输入：
+
 .. code-block:: bdf
 
     $compass
@@ -492,21 +506,11 @@ X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系，开壳�
     $end
      
     $tddft
-    icorrect # spin-adapted correction to U-TDDFT, must be specified in X-TDDFT
-     1
-    itest  # must be specified in X-TDDFT
-     1
-    itrans # transform the final eigenvector in U-TDDFT from the spin-orbital based representation to spin-adapted basis
-     1
     iroot
      5
     $end
 
-这里， ``scf`` 模块要求是用 ``ROKS`` 方法计算基态，在 ``tddft`` 输入中，
-
-* ``icorrect`` 设置为1，对U-TDDFT波函数做自旋匹配修正；
-* ``itest`` 必须设置为1；
-* ``itrans`` 设置为1，U-TDDFT波函数被变换回自旋匹配波函数做分析，该关键词只有 ``scf`` 计算使用ROKS/ROHF才有效。如果不需要在自旋匹配波函数基下做分析，则无需设置该关键词。
+这里， **SCF** 模块要求是用 ``ROKS`` 方法计算基态， **TDDFT** 模块将默认采用 **X-TDDFT** 计算。
 
 激发态输出为，
 
@@ -528,7 +532,22 @@ X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系，开壳�
 计算自旋翻转 (spin-flip)的TDDFT
 ----------------------------------------------------------
 
-从 :math:`H_{2}O` 分子闭壳层的基态出发，可以通过自旋翻转的TDDFT (spin-flip TDDFT -- SF-TDDFT)计算三重激发态，输入为：
+从 :math:`H_{2}O` 分子闭壳层的基态出发，可以通过自旋翻转的TDDFT (spin-flip TDDFT -- SF-TDDFT)计算三重激发态，简洁输入为：
+
+.. code-block:: bdf
+
+  #! bdf.sh
+  tdft/b3lyp/cc-pvdz iroot=4 spinflip=1
+  
+  geometry
+  O
+  H  1  R1
+  H  1  R1  2 109.
+  
+  R1=1.0     # OH bond length in angstrom
+  end geometry
+
+对应的高级输入为：
 
 .. code-block:: bdf
 
@@ -597,10 +616,90 @@ TDDFT计算快结束时有输出信息如下，
 
 其中， ``Spin change: isf=  1`` 提示自旋做了翻转，由于基态是单重态，基态到激发态跃迁是自旋禁阻的，所以振子强度和跃迁矩都是0.
 
-.. hint::
+.. warning::
 
-  * SF-TDDFT不仅能从单重态出发，向上翻转自旋计算三重态；还可以从自旋多重度更高的2S+1重态（S = 1/2, 1, 3/2, ...）出发，向上翻转自旋计算2S+3重态。
-  * SF-TDDFT还可以从三重态出发，向下翻转自旋计算单重态，这时需要设置 ``isf`` 为 ``-1``。同样地，也可以从自旋多重度更高的态向下翻转计算自旋多重度少2的态。
+  * SF-TDDFT不仅能从单重态出发，向上翻转自旋计算三重态；还可以从自旋多重度更高的 **2S+1** 重态（S = 1/2, 1, 3/2, ...）出发，向上翻转自旋计算 **2S+3** 重态；自旋上翻的 **TDDFT/TDA** 给出的是双占据轨道的alpha电子到未占据的beta轨道跃迁态,标记为 ``CV(1)`` 激发。自旋向上翻转常用于从闭壳层的单重参考态出发，计算三重态，所得到的三重态是自旋匹配的。
+  * SF-TDDFT还可以从三重态出发，向下翻转自旋计算单重态，这时需要设置 ``isf`` 为 ``-1``。当然，也可以从自旋多重度更高的态向下翻转计算自旋多重度少2的态。要注意的是，自旋下翻的 **TDDFT/TDA** 只能正确描述从开壳层占据的alpha轨道到开壳层占据的beta轨道跃迁的电子态，标记为 **OO(ab)** 跃迁，其它跃迁类型的态都有自旋污染问题。
+
+TDDFT **默认只计算与参考态自旋相同的激发态**， 例如，:math:`H_2O` 分子的基态是单重态，TDDFT值计算单重激发态，如果要同时计算单重态与三重态，输入为：
+
+.. code-block::
+
+   #! H2OTDDFT.sh
+   TDDFT/b3lyp/cc-pVDZ iroot=4 spinflip=0,1
+
+   geometry
+   O
+   H   1  0.9
+   H   1  0.9   2 109.0
+   end geometry    
+
+系统会运行两次TDDFT，分别计算单重态和三重态，其中单重态的输出为：
+
+.. code-block::
+
+     No. Pair   ExSym   ExEnergies     Wavelengths      f     D<S^2>          Dominant Excitations             IPA   Ova     En-E1
+
+    1  B2    1  B2    8.0968 eV        153.13 nm   0.0292   0.0000  99.9%  CV(0):  B2(   1 )->  A1(   4 )   9.705 0.415    0.0000
+    2  A2    1  A2    9.9625 eV        124.45 nm   0.0000   0.0000  99.9%  CV(0):  B2(   1 )->  B1(   2 )  11.745 0.329    1.8656
+    3  A1    2  A1   10.1059 eV        122.69 nm   0.0711   0.0000  99.1%  CV(0):  A1(   3 )->  A1(   4 )  11.578 0.442    2.0090
+    4  B1    1  B1   12.0826 eV        102.61 nm   0.0421   0.0000  99.5%  CV(0):  A1(   3 )->  B1(   2 )  13.618 0.392    3.9857
+    5  B1    2  B1   15.1845 eV         81.65 nm   0.2475   0.0000  99.5%  CV(0):  B1(   1 )->  A1(   4 )  16.602 0.519    7.0877
+    6  A1    3  A1   17.9209 eV         69.18 nm   0.0843   0.0000  95.4%  CV(0):  B1(   1 )->  B1(   2 )  18.643 0.585    9.8240
+    7  A2    2  A2   22.3252 eV         55.54 nm   0.0000   0.0000  99.8%  CV(0):  B2(   1 )->  B1(   3 )  24.716 0.418   14.2284
+    ...
+
+三重态的输出为：
+
+.. code-block::
+
+    No. Pair   ExSym   ExEnergies     Wavelengths      f     D<S^2>          Dominant Excitations             IPA   Ova     En-E1
+
+    1  B2    1  B2    7.4183 eV        167.13 nm   0.0000   2.0000  99.4%  CV(1):  B2(   1 )->  A1(   4 )   9.705 0.415    0.0000
+    2  A1    1  A1    9.3311 eV        132.87 nm   0.0000   2.0000  98.9%  CV(1):  A1(   3 )->  A1(   4 )  11.578 0.441    1.9128
+    3  A2    1  A2    9.5545 eV        129.76 nm   0.0000   2.0000  99.2%  CV(1):  B2(   1 )->  B1(   2 )  11.745 0.330    2.1363
+    4  B1    1  B1   11.3278 eV        109.45 nm   0.0000   2.0000  97.5%  CV(1):  A1(   3 )->  B1(   2 )  13.618 0.395    3.9095
+    5  B1    2  B1   14.0894 eV         88.00 nm   0.0000   2.0000  97.8%  CV(1):  B1(   1 )->  A1(   4 )  16.602 0.520    6.6711
+    6  A1    2  A1   15.8648 eV         78.15 nm   0.0000   2.0000  96.8%  CV(1):  B1(   1 )->  B1(   2 )  18.643 0.582    8.4465
+    7  A2    2  A2   21.8438 eV         56.76 nm   0.0000   2.0000  99.5%  CV(1):  B2(   1 )->  B1(   3 )  24.716 0.418   14.4255
+    ...
+
+由于单重态到三重态跃迁是偶极禁阻的，所以振子强度 ``f=0.0000``。
+
+
+从三重态出发，向下反转自旋计算单重态，输入为：
+
+.. code-block::
+
+   #! H2OTDDFT.sh
+   TDA/b3lyp/cc-pVDZ spinmulti=3 iroot=-4 isf=-1
+
+   geometry
+   O
+   H   1  0.9
+   H   1  0.9   2 109.0
+   end geometry 
+
+输出为：
+
+.. code-block::
+
+      Imaginary/complex excitation energies :   0 states
+
+  No. Pair   ExSym   ExEnergies     Wavelengths      f     D<S^2>          Dominant Excitations             IPA   Ova     En-E1
+
+    1   A    1   A   -8.6059 eV       -144.07 nm   0.0000  -1.9933  99.3% OO(ab):   A(   6 )->   A(   5 )  -6.123 0.408    0.0000
+    2   A    2   A   -0.0311 eV     -39809.08 nm   0.0000  -0.0034  54.1% OO(ab):   A(   5 )->   A(   5 )   7.331 1.000    8.5747
+    3   A    3   A    0.5166 eV       2399.85 nm   0.0000  -1.9935  54.0% OO(ab):   A(   6 )->   A(   6 )   2.712 0.999    9.1225
+    4   A    4   A    2.3121 eV        536.24 nm   0.0000  -0.9994  99.9% OV(ab):   A(   6 )->   A(   7 )   4.671 0.872   10.9180
+
+这里，前三个态都是 **OO(ab)** 类型的激发态，第四三个态是 **OV(ab)** 类型的激发态，第4个态会有自旋污染问题，激发能不可靠。
+
+
+.. warning::
+
+   * 一般的，由于S0态比T1态能量低，如果用TDDFT计算会出现 **imaginary freqeuncy** 的问题，这时候需用TDA而不是TDDFT。 
+
 
 用iVI方法计算UV-Vis和XAS光谱
 -------------------------------------------------------

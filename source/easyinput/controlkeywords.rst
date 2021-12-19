@@ -1,38 +1,55 @@
 简洁输入关键词
 ===============================
 
-:guilabel: `方法/泛函/基组` 或 `泛函/基组` 参数类型: Bool，必选参数
-----------------------------------------------------
-设定计算方法、DFT/TDDFT计算的泛函和基组
+:guilabel:`方法/泛函/基组` :guilabel:`泛函/基组` :guilabel:`方法/基组` 必选参数
+--------------------------------------------------------------------------------
+简洁输入模式的必选参数，设定计算方法、DFT/TDDFT计算的泛函和基组等，当前支持的计算方法有:
 
-计算方法列表
-
-+---------------------+-----------------------------------------------------------------+
-| 方法                | 功能             |
-+---------------------+-----------------------------------------------------------------+
-| HF                 | Hatree-Fock      |
-| RHF                | restricted Hatree-Fock |
-| UHF                | Unrestricted Hartree-Fock |
-| ROHF               | Restricted open-shell Hatree-Fock |
-| KS                 | Kohn-Sham |
-| RKS                | Restricted Kohn-Sham |
-| UKS                | Unrestricted Kohn-Sham |
-| TDDFT              | Time dependent density functional theory |
-| TDA                | Tamm-Dancoff Approximation |
-| X-TDDFT            | Extended spin-adapted TDDFT |
-| X-TDA              | Extended spin-adapted TDA   |
-| TDDFT-SOC          | TDDFT with spin-orbit coupling |
-| TDA-SOC            | TDA with spin-orbit coupling    |
-| X-TDDFT-SOC        | Extended spin-adapted TDDFT with spin-orbit coupling |
-| X-TDA-SOC          | Extended TDA with SOC |
-| TDDFT-NAC          | TDDFT with non-adabatic coupling |
-| TDA-NAC            | TDA with non-adabatic coupling |
-| X-TDDFT-NAC        | X-TDDFT with non-adabatic coupling |
-| X-TDA-NAC          | X-TDA with non-adabatic coupling |
-| MP2                | Mollor-Plesset second order perturbation theory |
-| RI-MP2             | MP2 using Resolution of Identity |
-+--------------------+------------------------------------------------------------------+
-
++-------------------+------------------------------------------------------------------+
+|计算方法            | 功能                                                            |
++-------------------+------------------------------------------------------------------+
+|HF                 | Hatree-Fock                                                      |
++-------------------+------------------------------------------------------------------+
+|RHF                | Restricted Hatree-Fock                                           |
++-------------------+------------------------------------------------------------------+
+|UHF                | Unrestricted Hartree-Fock                                        |
++-------------------+------------------------------------------------------------------+
+|ROHF               | Restricted open-shell Hatree-Fock                                |
++-------------------+------------------------------------------------------------------+
+|KS                 | Kohn-Sham                                                        |
++-------------------+------------------------------------------------------------------+
+|RKS                | Restricted Kohn-Sham                                             |
++-------------------+------------------------------------------------------------------+
+|UKS                | Unrestricted Kohn-Sham                                           |
++-------------------+------------------------------------------------------------------+
+|TDDFT              | Time-dependent density functional theory                         |
++-------------------+------------------------------------------------------------------+
+|TDA                | Tamm-Dancoff Approximation                                       |
++-------------------+------------------------------------------------------------------+
+|X-TDDFT            | Extended spin-adapted TDDFT                                      |
++-------------------+------------------------------------------------------------------+
+|X-TDA              | Extended spin-adapted TDA                                        |
++-------------------+------------------------------------------------------------------+
+|TDDFT-SOC          | TDDFT with spin-orbit coupling                                   |
++-------------------+------------------------------------------------------------------+
+|TDA-SOC            | TDA with spin-orbit coupling                                     |
++-------------------+------------------------------------------------------------------+
+|X-TDDFT-SOC        | Extended spin-adapted TDDFT with spin-orbit coupling             |
++-------------------+------------------------------------------------------------------+
+|X-TDA-SOC          | Extended TDA with SOC                                            |
++-------------------+------------------------------------------------------------------+
+|TDDFT-NAC          | TDDFT with non-adabatic coupling                                 |
++-------------------+------------------------------------------------------------------+
+|TDA-NAC            | TDA with non-adabatic coupling                                   |
++-------------------+------------------------------------------------------------------+
+|X-TDDFT-NAC        | X-TDDFT with non-adabatic coupling                               |
++-------------------+------------------------------------------------------------------+
+|X-TDA-NAC          | X-TDA with non-adabatic coupling                                 |
++-------------------+------------------------------------------------------------------+
+|MP2                | Mollor-Plesset second order perturbation theory                  |
++-------------------+------------------------------------------------------------------+
+|RI-MP2             | MP2 using Resolution of Identity                                 |
++-------------------+------------------------------------------------------------------+
 
 **哈密顿和自旋轨道耦合**
 
@@ -69,7 +86,7 @@
 
 可选值: angstrom, Bohr
 
-:guilabel:`spinmult` 参数类型: 整数，可选参数
+:guilabel:`spinmulti` 参数类型: 整数，可选参数
 ------------------------------------------------
 自旋多重度， `2S+1`
 
@@ -153,6 +170,6 @@
 
 默认值: False
 
-.. Tips::
+.. tip::
   * RI在BDF中主要用于加速MP2计算，SCF和TDDFT均可用 MPEC+COSX方法，该方法是BDF特有的加速算法，即不需要冗余基组，和RI算法的精度类似。
 
