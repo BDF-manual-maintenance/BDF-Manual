@@ -642,7 +642,7 @@ iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采
    2
   charge
    2
-  coulpot+cosx # Accelerate the SCF iterations using Coulpot+COSX. Not mandatory
+  MPEC+cosx   # Accelerate the SCF iterations using MPEC+COSX. Not mandatory
   $end
   
   $localmo
