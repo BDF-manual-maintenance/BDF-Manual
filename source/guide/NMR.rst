@@ -31,10 +31,9 @@ NMR算例
   H -1.196   1.196   -1.196
   H  1.196  -1.196   -1.196
   END geometry
-  nosymm                        # NMR模块咱不支持对称性
+  nosymm                        # NMR模块暂不支持对称性
   UNIT
-  BOHR                          # input molecule geometry in bohr
-  skeleton                      # ask for skeleton Fock calculation for treating symmetry
+    BOHR                        # input molecule geometry in bohr
   $END
 
   $xuanyuan # 单双电子积分相关设定和计算
@@ -44,7 +43,7 @@ NMR算例
   $SCF      # 自洽场计算模块
   RKS       # Restrict Kohn-Sham
   DFT
-    b3lyp   # 
+    b3lyp
   $END
 
   $NMR      # 核磁共振屏蔽常数计算模块
