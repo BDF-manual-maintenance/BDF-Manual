@@ -96,7 +96,7 @@ ED/CD值 :math:`\rho_{A}` 和 :math:`\rho_{R}` 可以通过理论计算获得，
      pbe0
    grid             # DFT计算ED需要用精密格点
      sg1
-   coulpot+cosx     # 使用MPEC+COSX加速
+   MPEC+cosx        # 使用MPEC+COSX加速
    reled
      26             # 只计算Fe的ED（对于本例，10至26的整数等价）
   $end

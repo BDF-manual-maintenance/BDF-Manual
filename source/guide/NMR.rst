@@ -90,6 +90,7 @@ COMMON GAUGE
   $END
 
 当输入中同时存在igatom和cgcoord时，以后输入的为准，上面例子，最终规范原点设定在空间坐标为（1.0，0.0，0.0）（单位埃）的位置上。
+如两个参数igatom和cgcoord都未输入，计算COMMON GAUGE的NMR值时，规范原点设在坐标原点上，即设在（0.0，0.0，0.0）的位置上。
 
 输出文件中Common gauge计算从 ``[nmr_nr_cg]`` 开始，如下：
 

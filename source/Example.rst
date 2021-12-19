@@ -1459,7 +1459,7 @@
       2
      charge
       2
-     coulpot+cosx
+     MPEC+cosx
      $end
 
      $localmo
@@ -1501,7 +1501,7 @@
      dft
       B2PLYP
      D3
-     coulpot+cosx
+     MPEC+cosx
      $end
 
      $mp2
