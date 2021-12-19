@@ -332,7 +332,7 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
     D3   # Gremme's dispersion correction
     $end
 
-.. Tips::
+.. tip::
 
     * 这里使用了BDF混合模式的输入方式，在简洁输入基础上，通过添加SCF模块关键词精确控制SCF计算。
 

@@ -68,24 +68,20 @@ LOCALMO模快用于产生定域化的分子轨道，包含了Boys，Pipek-Maye�
 ------------------------------------------------
 指定定域化ROHF/ROKS轨道。
 
-:guilabel:`Mcscffloc` 参数类型：Bool型
+:guilabel:`orbital` 参数类型：字符串
 ------------------------------------------------
-指定定域化MCSCF轨道。
-
-:guilabel:`Orbital` 参数类型：字符串
-------------------------------------------------
-指定在MCSCF定域化中从那个文件读入轨道。
+指定文件读入分子轨道。
 
 .. code-block:: bdf
 
      $LocalMO
      Orbital
-     mcorb       # 指定从MCSCF计算存储的mcorb读入轨道
+     hforb       # 指定从SCF计算存储的hforb读入轨道
      $End
 
 :guilabel:`Orbread` 参数类型：Bool型
 ------------------------------------------------
-指定从BDF_TMPDIR中的文本文件inporb读入分子轨道。
+指定从 **BDF_TMPDIR** 中的文本文件inporb读入分子轨道。
 
 :guilabel:`Flmo` 参数类型：Bool型
 ------------------------------------------------
@@ -103,21 +99,6 @@ LOCALMO模快用于产生定域化的分子轨道，包含了Boys，Pipek-Maye�
 ------------------------------------------------
 指定分析用户给定的定域轨道，计算占据-空轨道对的数目和MOS（Molecular Orbital Spread）。分析定域轨道需要从BDF_TMPDIR读入名为bdftask.testorb的文件，并进行轨道分析。这一轨道文件与SCF的bdftask.scforb格式相同，均为文本文件。
 
-:guilabel:`Momatch` 参数类型：Bool型
-------------------------------------------------
-指定分析两组分子轨道的相似，两组轨道分别存储在$BDFTASK.testorb与$BDFTASK.checkorb中。如果是UHF/UKS轨道，默认将分析alpha 与beta轨道的相似性。如果$BDFTASK.checkorb不存在，该关键词将被忽略。
-
-.. code-block:: bdf
-
-     %cp $BDF_WORKDIR/$BDFTASK.flmoorb $BDF_WORKDIR/$BDFTASK.testorb
-     %cp $BDF_WORKDIR/$BDFTASK.canorb $BDF_WORKDIR/$BDFTASK.checkorb
-     $localmo
-     mcscfloc
-     analyze
-     8 4
-     momatch
-     $end
-
 :guilabel:`Lapair` 参数类型：浮点型
 ------------------------------------------------
 指定统计占据-空轨道对大的阈值，默认占据-空轨道对的绝对重叠>1.D-4。
@@ -128,12 +109,8 @@ LOCALMO模快用于产生定域化的分子轨道，包含了Boys，Pipek-Maye�
 
 :guilabel:`Nolmocls` 参数类型：整型
 ------------------------------------------------
-指定不定域化SCF的占据轨道或MCSCF的双占据轨道。
-
-:guilabel:`Nolmoact` 参数类型：整型
-------------------------------------------------
-指定不定域化MCSCF的活性轨道。
+指定不定域化SCF的占据轨道。
 
 :guilabel:`Nolmovir` 参数类型：整型
 ------------------------------------------------
-指定不定域化SCF的空轨道或MCSCF的空轨道。
+指定不定域化SCF的空轨道。
