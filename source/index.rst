@@ -26,6 +26,7 @@ BDF用户手册
    :caption: 用户指导
 
    User Guide
+   Easyinput Guide
    Input Library
    Example
    Application

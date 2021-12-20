@@ -115,6 +115,7 @@ class BDFLexer(RegexLexer):
             include('comment'),
             (r'\b(geometry)([^\$]*)?(end geometry)\b',bygroups(Keyword.Namespace, Text, Keyword.Namespace)),
             (r'\b(basis-multi)([\s\S]*)?(end basis)\b',bygroups(Keyword.Namespace, Text, Keyword.Namespace)),
+            (r'\b(basis-block)([\s\S]*)?(end basis)\b',bygroups(Keyword.Namespace, Text, Keyword.Namespace)),
             (r'\b(title)(\s*\n[^\n]*\n)',bygroups(Name.Builtin,Name.Constant)),
             include('modules'),
             include('keywords'),
@@ -141,7 +142,7 @@ class BDFLexer(RegexLexer):
         ],
         "bool": [
             (words((
-                'Nosymm', 'norotate', 'skeleton', 'extcharge', 'uncontract', 'primitive', 'direct', 'scalar','direct','soint','NuclearInuc', 'RHF','UHF','ROHF','RKS','UKS','ROKS','D3','NosymGrid','DirectGrid','NoDirectGrid','NoGridSwitch','COSX','Coulpot+COSX','NoDiis','Noscforb','Pyscforb','Molden','Checklin','Aokxc','Lefteig','Geom','Line','Quad','Fnac','Single','Double','Noresp','Fdif','Reduced','GSApr','Boys','Pipek','Mulliken','Lowdin','Jacobi','Trust','Rohfloc','Mcscffloc','Orbread','Flmo','Anaylze','Momatch','Directgrid','Overlap','UTDDFT','TDDFT','FCIDUMP','Nature','Dryrun','PHO'), suffix=r'\b'),
+                'Nosymm', 'norotate', 'skeleton', 'extcharge', 'uncontract', 'primitive', 'direct', 'scalar','direct','soint','NuclearInuc', 'RHF','UHF','ROHF','RKS','UKS','ROKS','D3','NosymGrid','DirectGrid','NoDirectGrid','NoGridSwitch','COSX','MPEC+COSX','NoDiis','Noscforb','Pyscforb','Molden','Checklin','Aokxc','Lefteig','Geom','Line','Quad','Fnac','Single','Double','Noresp','Fdif','Reduced','GSApr','Boys','Pipek','Mulliken','Lowdin','Jacobi','Trust','Rohfloc','Mcscffloc','Orbread','Flmo','Anaylze','Momatch','Directgrid','Overlap','UTDDFT','TDDFT','FCIDUMP','Nature','Dryrun','PHO'), suffix=r'\b'),
             Name.Attribute),
         ],
         "values": [

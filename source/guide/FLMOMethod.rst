@@ -266,7 +266,7 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
    10 11 12 13 14 15 16 17 18 
   &END
 
-在输入中，我们给出了注释。每个分子片的计算由 ``compass``、 ``xuanyuan`` 、 ``scf`` 及 ``localmo`` 四个模块构成。分别做预处理、积分计算、SCF计算和分子轨道定域化四个步骤，最后，通过插入Shell命令 ``cp $BDF_WORKDIR/$BDFTASK.flmo $BDF_TMPDIR/fragment*`` 将存储定域轨道的文件 **$BDFTASK.flmo** 拷贝到 **$BDF_TMPDIR** 所在的目录备用。最后是整体分子计算，输入从 **# Whole Molecule calculation** 开始。在 ``compass`` 中，有关键词 ``Nfragment 4`` ，提示要读入4个分子片，分子片信息在 ``&DATABASE`` 域中定义。
+在输入中，我们给出了注释。每个分子片的计算由 ``compass``、 ``xuanyuan`` 、 ``scf`` 及 ``localmo`` 四个模块构成。分别做预处理、积分计算、SCF计算和分子轨道定域化四个步骤，并通过在localmo模块后插入Shell命令 ``cp $BDF_WORKDIR/$BDFTASK.flmo $BDF_TMPDIR/fragment*`` 将存储定域轨道的文件 **$BDFTASK.flmo** 拷贝到 **$BDF_TMPDIR** 所在的目录备用。4个分子片段算完后是整体分子的计算，输入从 **# Whole Molecule calculation** 开始。在 ``compass`` 中，有关键词 ``Nfragment 4`` ，提示要读入4个分子片，分子片信息在 ``&DATABASE`` 域中定义。
 
 整体分子的SCF计算，首先会读入4个分子片的定域轨道，构建pFLMO，并给出轨道伸展系数 Mos (molecular orbital spread，某个定域轨道的Mos越大代表该定域轨道越离域，反之则代表该定域轨道越局域)，如下：
 
@@ -452,8 +452,8 @@ FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用�
    BMolefrag    1:   [[1, 3, 19, 2, 4, 20, 5, 6, 7, 8, 9, 10, 11, 12, 13, 21], [], [14], [14, 15], 0.0, 1.4700001016690913]
    BMolefrag    2:   [[14, 15, 16, 17, 18], [2, 4, 20], [21], [21], 0.0, 1.4700001016690913]
    -----------------------------------------
-   Automatically assigned charges and spins:
-   Fragment  Natom  Charge  Spin
+   Automatically assigned charges and spin multiplicities:
+   Fragment  Natom  Charge  Spinmulti 
           1     17       0     2
           2      9       0    -2
    -----------------------------------------
@@ -642,7 +642,7 @@ iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采
    2
   charge
    2
-  coulpot+cosx # Accelerate the SCF iterations using Coulpot+COSX. Not mandatory
+  MPEC+cosx   # Accelerate the SCF iterations using MPEC+COSX. Not mandatory
   $end
   
   $localmo

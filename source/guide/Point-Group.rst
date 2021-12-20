@@ -8,6 +8,27 @@ BDF支持在计算中考虑分子点群对称性。除某些计算任务（如�
 
 .. code-block:: bdf
 
+    #! NH3.sh
+    HF/cc-pVDZ 
+
+    geometry
+     N                 -0.00000000   -0.00000000   -0.10000001
+     H                  0.00000000   -0.94280900    0.23333324
+     H                 -0.81649655    0.47140450    0.23333324
+     H                  0.81649655    0.47140450    0.23333324
+    end geometry
+
+    $compass
+    Title
+      NH3
+    thresh
+      medium
+    $end
+
+对应的高级输入模式，**COMPASS** 中的内容为
+
+.. code-block:: bdf
+
   $COMPASS
   Title
    NH3
@@ -45,7 +66,7 @@ BDF支持在计算中考虑分子点群对称性。除某些计算任务（如�
     Total number of basis functions:      29      29
 
     Number of irreps:   3
-    Irrep :   A1        A2        E1
+    Irrep :     A1        A2        E1
     Norb  :     10         1        18
   |--------------------------------------------------|
   
@@ -94,14 +115,26 @@ BDF支持在计算中考虑分子点群对称性。除某些计算任务（如�
 
 .. code-block:: bdf
 
+  #! N2.sh
+  HF/def2-TZVP group=D(2h) 
+
+  geometry
+    N  0.00 0.00 0.00
+    N  0.00 0.00 1.10
+  end geometry
+
+或者
+
+.. code-block:: bdf
+
   $COMPASS
   Title
    N2
   Basis
    def2-TZVP
   Geometry
-   N 0. 0. 0.
-   N 0. 0. 1.1
+   N 0.00 0.00 0.00
+   N 0.00 0.00 1.10
   End geometry
   Skeleton
   Group

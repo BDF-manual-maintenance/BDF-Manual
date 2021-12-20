@@ -143,7 +143,7 @@ BDF的SCF计算默认采用原子计算密度矩阵构建分子密度矩阵的�
 
 .. code-block:: bdf
 
-    # First SCF calcualtion using small basis set cc-pvdz
+    # First SCF calculation using small basis set cc-pvdz
     $compass
     geometry
     C       0.1727682300       -0.0000045651       -0.8301598059
@@ -600,5 +600,27 @@ SCF收敛后，轨道占据情况被再一次打印，可以看到 **alpah** 轨
 
 自洽场计算的加速算法
 ------------------------------------------------
+BDF的一个重要特色是利用 **MPEC+COSX** 方法加速SCF、TDDFT的能量及梯度计算。设置MPEC+COSX计算，输入如下：
 
+.. code-block:: bdf
 
+    #! bdfaccelerate.sh
+    HF/cc-pvtz  MPEC+COSX
+
+    geometry
+
+    end geometry
+
+如果是高级输入模式下，只需在COMPASS模块输入中加入关键词 ``MPEC+COSX``，如：
+
+.. code-block:: bdf
+
+    $Compass
+    geometry
+
+    end geometry
+    basis
+      cc-pvdz
+    end basis
+    MPEC+COSX # ask for the MPEC+COSX method
+    $end
