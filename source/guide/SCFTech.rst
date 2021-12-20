@@ -130,7 +130,7 @@ BDF的SCF计算默认采用原子计算密度矩阵构建分子密度矩阵的�
     %cp $BDF_WORKDIR/h2o.scforb $BDF_TMPDIR/${BDFTASK}.inporb
 
 
-这里，使用了关键词 ``guess=read`` ，指定要读入初始猜测轨道。初始猜测轨道是用 ``%`` 引导的拷贝命令从
+这里，使用了关键词 ``guess=readmo`` ，指定要读入初始猜测轨道。初始猜测轨道是用 ``%`` 引导的拷贝命令从
 环境变量 ``BDF_WORKDIR`` 定义的文件夹中的h2o.scforb复制为 ``BDF_TMPDIR`` 中的 ``${BDFTASK}.inporb`` 文件。
 这里， ``BDF_WORKDIR`` 是执行计算任务的目录， ``BDF_TMPDIR`` 是BDF存储临时文件的目录。
 
