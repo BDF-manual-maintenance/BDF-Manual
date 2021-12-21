@@ -488,7 +488,7 @@ X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系，开壳�
     basis
      aug-cc-pvtz
     group
-     D(2h)  # Force to use C1 symmetry
+     D(2h)  # Force to use D2h symmetry
     $end
      
     $xuanyuan
