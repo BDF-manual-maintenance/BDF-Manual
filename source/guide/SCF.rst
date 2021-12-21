@@ -293,22 +293,22 @@ CAM-B3LYP等RS杂化泛函，将库伦相互作用分为长短程，
    $end
 
 
-杂化泛函Hartree-Fock交换项成分的自定义
+杂化泛函Hartree-Fock交换项和相关项成分的自定义
 -------------------------------------------------
-
-【注：该方法目前git上的BDF版本还不支持，过几天我再push上来】
 
 对于某些计算，可能需要用户手动调节泛函的Hartree-Fock交换项成分，才能获得满意的精度。此时可在 ``$scf`` 模块里加入 ``facex`` 关键字，例如若要将B3LYP泛函的Hartree-Fock交换项成分由默认的20%改为15%，可以写
 
 .. code-block:: bdf
 
    $scf
-   uks # unrestricted Kohn-Sham. Of course, the facex keyword can also be applied to RKS and ROKS
+   ...
    dft
     b3lyp
    facex
     0.15
    $end
+
+类似地，可以用 ``facco`` 关键字自定义双杂化泛函的MP2相关项成分。注意并不是所有泛函都支持自定义facex和facco（参见 :ref:`SCF模块的关键词列表<scf>` ）。
 
 对弱相互作用的色散矫正
 -------------------------------------------------
@@ -329,7 +329,7 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
     end geometry
     
     $scf
-    D3   # Gremme's dispersion correction
+    D3   # Grimme's dispersion correction
     $end
 
 .. tip::
