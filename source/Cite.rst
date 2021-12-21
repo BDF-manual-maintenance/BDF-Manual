@@ -12,7 +12,7 @@
 
 .. bibliography::
     :list: enumerated
-    :filter: key in {"doi:10.1021/acs.jctc.9b01120"}
+    :filter: key in {"doi:10.1063/5.0025428"}
 
 
 **如果涉及采用sf-X2C-SA-TDDFT/SOC方法计算激发态之间的自旋轨道耦合，请额外引用下面的相关文献**

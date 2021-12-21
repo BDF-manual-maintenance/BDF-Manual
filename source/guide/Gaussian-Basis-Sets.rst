@@ -23,12 +23,12 @@ BDF软件采用的是高斯型基函数。
 一种写为笛卡尔函数（也称直角函数）形式：
 
 .. math::
-   N x^{lx} y^{ly} z^{lz} exp(-\alpha r^2),  \qquad L=lx+ly+lz
+   N x^{lx} y^{ly} z^{lz} {\rm exp}(-\alpha r^2),  \qquad L=lx+ly+lz
 
 它有 :math:`(L+1)(L+2)/2` 个分量，例如 *d* 函数包含xx，yy，zz，xy，xz，yz。另一种写为球函数（也称球谐函数、纯函数）形式：
 
 .. math::
-   N Y^L_m r^L exp(-\alpha r^2)
+   N Y^L_m r^L {\rm exp}(-\alpha r^2)
 
 它有 :math:`2L+1` 个分量，例如 *d* 函数包含-2，-1，0，+1，+2。
 
@@ -745,7 +745,7 @@ BDF可以使用非内置基组，此时要把基组数据保存在文本格式�
   End Geometry
   $End
 
-上例中，使用 ``def2-SVP`` 基组计算 :math:`CH_{4}` 甲烷分子，同时用de2-SVP标配的库伦拟合基组进行加速计算。
+上例中，使用 ``def2-SVP`` 基组计算 :math:`\rm CH_{4}` 甲烷分子，同时用de2-SVP标配的库伦拟合基组进行加速计算。
 
 .. hint::
     BDF的RI计算功能，用于加速mcscf、mp2等波函数计算方法，不推荐用户在scf、tddft等计算中使用，用户可以用多级展开库伦势 (MPEC) 方法，MPEC方法不依赖于冗余函数，计算速度和精度都与RI方法相当。

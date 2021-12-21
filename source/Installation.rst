@@ -214,6 +214,7 @@ PBS提交BDF作业的脚本示例如下：
 QM/MM计算环境配置
 -------------------------------------------------
 .. _qmmmsetup:
+
 推荐使用Anaconda管理和配置QM/MM计算环境（ `详见官网 <https://www.anaconda.com>`_ ）。
 
 *  在anaconda中配置运行环境
