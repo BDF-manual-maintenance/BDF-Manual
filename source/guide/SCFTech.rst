@@ -32,7 +32,7 @@ BDF默认的是Atom猜测。改变BDF的初始猜测，简洁输入模式下可�
 
 .. code-block:: 
 
-  Iter. idiis vshift  SCF Energy  DeltaE  RMSDeltaD  MaxDeltaD   Damping Times(S) 
+  Iter. idiis vshift  SCF Energy    DeltaE     RMSDeltaD    MaxDeltaD   Damping Times(S) 
    1    0   0.000 -130.488739529 174.680929376  0.401531162  5.325668770  0.0000   0.03
    2    1   0.000 -115.595786784  14.892952744  0.407402695  5.323804678  0.0000   0.02
    3    2   0.000 -126.823748834 -11.227962049  0.115300517  1.591646800  0.0000   0.03
@@ -51,7 +51,7 @@ BDF默认的是Atom猜测。改变BDF的初始猜测，简洁输入模式下可�
   16    8   0.000 -152.841819505  -0.000000325  0.000004796  0.000031694  0.0000   0.02
   17    2   0.000 -152.841819522  -0.000000016  0.000000698  0.000005497  0.0000   0.03
   18    3   0.000 -152.841819522  -0.000000000  0.000000236  0.000002276  0.0000   0.02
- diis/vshift is closed at iter =  18
+  diis/vshift is closed at iter =  18
   19    0   0.000 -152.8418195227 -0.000000000  0.000000078  0.000000848  0.0000   0.03
 
 .. warning:: 
@@ -279,7 +279,7 @@ expandmo模块的输出为，
     Orbitals initialization is completed.
  
     ........
-  Iter. idiis vshift  SCF Energy  DeltaE  RMSDeltaD  MaxDeltaD   Damping Times(S) 
+  Iter. idiis vshift  SCF Energy    DeltaE     RMSDeltaD    MaxDeltaD   Damping Times(S)
    1    0   0.000 -152.952976892 122.547522034  0.002218985  0.246735859  0.0000  16.30
    2    1   0.000 -152.983462881  -0.030485988  0.000367245  0.026196100  0.0000  16.83
    3    2   0.000 -152.983976045  -0.000513164  0.000086429  0.006856831  0.0000  17.18
@@ -289,7 +289,7 @@ expandmo模块的输出为，
    7    6   0.000 -152.984022197  -0.000000423  0.000001082  0.000075914  0.0000  17.40
    8    7   0.000 -152.984022242  -0.000000044  0.000000154  0.000008645  0.0000  17.28
    9    8   0.000 -152.984022243  -0.000000001  0.000000066  0.000005087  0.0000  19.38
-    diis/vshift is closed at iter =   9
+  diis/vshift is closed at iter =   9
   10    0   0.000 -152.984022243  -0.000000000  0.000000007  0.000000584  0.0000  18.95
     
       Label              CPU Time        SYS Time        Wall Time
@@ -401,7 +401,7 @@ mom(maximum occupation method)是一种ΔSCF方法，可用于计算激发态。
     
      Start SCF iteration......
     
-    Iter. idiis vshift  SCF Energy  DeltaE  RMSDeltaD  MaxDeltaD   Damping Times(S) 
+    Iter. idiis vshift  SCF Energy    DeltaE     RMSDeltaD    MaxDeltaD   Damping Times(S)
      1    0   0.000 -169.411739263  -0.158785195  0.005700928  0.163822560  0.0000   0.20
     Turn on DFT calculation ...
      2    1   0.000 -169.743175119  -0.331435856  0.008905349  0.340815886  0.0000   0.42
@@ -500,7 +500,7 @@ mom(maximum occupation method)是一种ΔSCF方法，可用于计算激发态。
 
 .. code-block:: 
 
-    Iter. idiis vshift  SCF Energy  DeltaE  RMSDeltaD  MaxDeltaD   Damping Times(S)  
+    Iter. idiis vshift  SCF Energy    DeltaE     RMSDeltaD    MaxDeltaD   Damping Times(S)
      1    0   0.000 -169.505632070 125.031578610  0.020428031  1.463174456  0.0000   0.45
      2    1   0.000 -169.034645773   0.470986296  0.036913522  1.562284831  0.0000   0.43
      3    2   0.000 -165.750862892   3.283782881  0.032162782  1.516480990  0.0000   0.43
@@ -553,7 +553,7 @@ SCF收敛后，轨道占据情况被再一次打印，可以看到 **alpha** 轨
 第三个SCF计算给出了 **T1** 态能量，为 -169.6248370697 a.u., 输出如下：
 
 .. code-block:: 
-    Iter. idiis vshift  SCF Energy  DeltaE  RMSDeltaD  MaxDeltaD   Damping Times(S) 
+    Iter. idiis vshift  SCF Energy    DeltaE     RMSDeltaD    MaxDeltaD   Damping Times(S)
      1    0   0.000 -169.411739263  -0.158785195  0.083821477  9.141182225  0.0000   0.17
      Turn on DFT calculation ...
      2    1   0.000 -169.480549474  -0.068810211  0.066700318  6.978728919  0.0000   0.40
