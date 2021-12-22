@@ -48,71 +48,69 @@ BDF目前支持基态溶剂化效应计算，包括HF和DFT方法。以下是甲
 .. table:: BDF中支持的溶剂模型
     :widths: auto
  
-    ================           ================              ================ 
-          溶剂                       溶剂                          溶剂          
-    ================           ================              ================ 
-     Water                      2-Heptanone                  |  IodoBenzene
-     Acetonitrile               2-Hexanone                   |  IodoEthane
-     Methanol                   2-MethoxyEthanol             |  IodoMethane
-     Ethanol                    2-Methyl-1-Propanol          |  IsoPropylBenzene
-     IsoQuinoline               2-Methyl-2-Propanol          |  m-Cresol
-     Quinoline                  2-MethylPentane              |  Mesitylene
-     Chloroform                 2-MethylPyridine             |  MethylBenzoate
-     DiethylEther               2-NitroPropane               |  MethylButanoate
-     Dichloromethane            2-Octanone                   |  MethylCycloHexane
-     DiChloroEthane             2-Pentanone                  |  MethylEthanoate
-     CarbonTetraChloride        2-Propanol                   |  MethylMethanoate
-     Benzene                    2-Propen-1-ol                |  MethylPropanoate
-     Toluene                    3-MethylPyridine             |  m-Xylene
-     ChloroBenzene              3-Pentanone                  |  n-ButylBenzene
-     NitroMethane               4-Heptanone                  |  n-Decane
-     Heptane                    4-Methyl-2-Pentanone         |  n-Dodecane       
-     CycloHexane                4-MethylPyridine             |  n-Hexadecane    
-     Aniline                    5-Nonanone                   |  n-Hexane  
-     Acetone                    AceticAcid                   |  NitroBenzene        
-     TetraHydroFuran            AcetoPhenone                 |  NitroEthane       
-     DiMethylSulfoxide          a-ChloroToluene              |  n-MethylAniline        
-     Argon                      Anisole                      |  n-MethylFormamide-mixture
-     Krypton                    Benzaldehyde                 |  n,n-DiMethylAcetamide    
-     Xenon                      BenzoNitrile                 |  n,n-DiMethylFormamide    
-     n-Octanol                  BenzylAlcohol                |  n-Nonane     
-     1,1,1-TriChloroEthane      BromoBenzene                 |  n-Octane        
-     1,1,2-TriChloroEthane      BromoEthane                  |  n-Pentadecane        
-     1,2,4-TriMethylBenzene     Bromoform                    |  n-Pentane        
-     1,2-DiBromoEthane          Butanal                      |  n-Undecane    
-     1,2-EthaneDiol             ButanoicAcid                 |  o-ChloroToluene      
-     1,4-Dioxane                Butanone                     |  o-Cresol  
-     1-Bromo-2-MethylPropane    ButanoNitrile                |  o-DiChloroBenzene          
-     1-BromoOctane              ButylAmine                   |  o-NitroToluene
-     1-BromoPentane             ButylEthanoate               |  o-Xylene 
-     1-BromoPropane             CarbonDiSulfide              |  Pentanal 
-     1-Butanol                  Cis-1,2-DiMethylCycloHexane  |  PentanoicAcid
-     1-ChloroHexane             Cis-Decalin                  |  PentylAmine      
-     1-ChloroPentane            CycloHexanone                |  PentylEthanoate    
-     1-ChloroPropane            CycloPentane                 |  PerFluoroBenzene    
-     1-Decanol                  CycloPentanol                |  p-IsoPropylToluene    
-     1-FluoroOctane             CycloPentanone               |  Propanal    
-     1-Heptanol                 Decalin-mixture              |  PropanoicAcid    
-     1-Hexanol                  DiBromomEthane               |  PropanoNitrile    
-     1-Hexene                   DiButylEther                 |  PropylAmine 
-     1-Hexyne                   DiEthylAmine                 |  PropylEthanoate 
-     1-IodoButane               DiEthylSulfide               |  p-Xylene    
-     1-IodoHexaDecane           DiIodoMethane                |  Pyridine    
-     1-IodoPentane              DiIsoPropylEther             |  sec-ButylBenzene     
-     1-IodoPropane              DiMethylDiSulfide            |  tert-ButylBenzene      
-     1-NitroPropane             DiPhenylEther                |  TetraChloroEthene    
-     1-Nonanol                  DiPropylAmine                |  TetraHydroThiophene-s,s-dioxide      
-     1-Pentanol                 e-1,2-DiChloroEthene         |  Tetralin            
-     1-Pentene                  e-2-Pentene                  |  Thiophene  
-     1-Propanol                 EthaneThiol                  |  Thiophenol  
-     2,2,2-TriFluoroEthanol     EthylBenzene                 |  trans-Decalin              
-     2,2,4-TriMethylPentane     EthylEthanoate               |  TriButylPhosphate             
-     2,4-DiMethylPentane        EthylMethanoate              |  TriChloroEthene            
-     2,4-DiMethylPyridine       EthylPhenylEther             |  TriEthylAmine             
-     2,6-DiMethylPyridine       FluoroBenzene                |  Xylene-mixture            
-     2-BromoPropane             Formamide                    |  z-1,2-DiChloroEthene
-     2-Butanol                  FormicAcid                   |   
-     2-ChloroButane             HexanoicAcid                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+    ================           ================              ================  
+     Water                      2-Heptanone                   IodoBenzene
+     Acetonitrile               2-Hexanone                    IodoEthane
+     Methanol                   2-MethoxyEthanol              IodoMethane
+     Ethanol                    2-Methyl-1-Propanol           IsoPropylBenzene
+     IsoQuinoline               2-Methyl-2-Propanol           m-Cresol
+     Quinoline                  2-MethylPentane               Mesitylene
+     Chloroform                 2-MethylPyridine              MethylBenzoate
+     DiethylEther               2-NitroPropane                MethylButanoate
+     Dichloromethane            2-Octanone                    MethylCycloHexane
+     DiChloroEthane             2-Pentanone                   MethylEthanoate
+     CarbonTetraChloride        2-Propanol                    MethylMethanoate
+     Benzene                    2-Propen-1-ol                 MethylPropanoate
+     Toluene                    3-MethylPyridine              m-Xylene
+     ChloroBenzene              3-Pentanone                   n-ButylBenzene
+     NitroMethane               4-Heptanone                   n-Decane
+     Heptane                    4-Methyl-2-Pentanone          n-Dodecane       
+     CycloHexane                4-MethylPyridine              n-Hexadecane    
+     Aniline                    5-Nonanone                    n-Hexane  
+     Acetone                    AceticAcid                    NitroBenzene        
+     TetraHydroFuran            AcetoPhenone                  NitroEthane       
+     DiMethylSulfoxide          a-ChloroToluene               n-MethylAniline        
+     Argon                      Anisole                       n-MethylFormamide-mixture
+     Krypton                    Benzaldehyde                  n,n-DiMethylAcetamide    
+     Xenon                      BenzoNitrile                  n,n-DiMethylFormamide    
+     n-Octanol                  BenzylAlcohol                 n-Nonane     
+     1,1,1-TriChloroEthane      BromoBenzene                  n-Octane        
+     1,1,2-TriChloroEthane      BromoEthane                   n-Pentadecane        
+     1,2,4-TriMethylBenzene     Bromoform                     n-Pentane        
+     1,2-DiBromoEthane          Butanal                       n-Undecane    
+     1,2-EthaneDiol             ButanoicAcid                  o-ChloroToluene      
+     1,4-Dioxane                Butanone                      o-Cresol  
+     1-Bromo-2-MethylPropane    ButanoNitrile                 o-DiChloroBenzene          
+     1-BromoOctane              ButylAmine                    o-NitroToluene
+     1-BromoPentane             ButylEthanoate                o-Xylene 
+     1-BromoPropane             CarbonDiSulfide               Pentanal 
+     1-Butanol                  Cis-1,2-DiMethylCycloHexane   PentanoicAcid
+     1-ChloroHexane             Cis-Decalin                   PentylAmine      
+     1-ChloroPentane            CycloHexanone                 PentylEthanoate    
+     1-ChloroPropane            CycloPentane                  PerFluoroBenzene    
+     1-Decanol                  CycloPentanol                 p-IsoPropylToluene    
+     1-FluoroOctane             CycloPentanone                Propanal    
+     1-Heptanol                 Decalin-mixture               PropanoicAcid    
+     1-Hexanol                  DiBromomEthane                PropanoNitrile    
+     1-Hexene                   DiButylEther                  PropylAmine 
+     1-Hexyne                   DiEthylAmine                  PropylEthanoate 
+     1-IodoButane               DiEthylSulfide                p-Xylene    
+     1-IodoHexaDecane           DiIodoMethane                 Pyridine    
+     1-IodoPentane              DiIsoPropylEther              sec-ButylBenzene     
+     1-IodoPropane              DiMethylDiSulfide             tert-ButylBenzene      
+     1-NitroPropane             DiPhenylEther                 TetraChloroEthene    
+     1-Nonanol                  DiPropylAmine                 TetraHydroThiophene-s,s-dioxide      
+     1-Pentanol                 e-1,2-DiChloroEthene          Tetralin            
+     1-Pentene                  e-2-Pentene                   Thiophene  
+     1-Propanol                 EthaneThiol                   Thiophenol  
+     2,2,2-TriFluoroEthanol     EthylBenzene                  trans-Decalin              
+     2,2,4-TriMethylPentane     EthylEthanoate                TriButylPhosphate             
+     2,4-DiMethylPentane        EthylMethanoate               TriChloroEthene            
+     2,4-DiMethylPyridine       EthylPhenylEther              TriEthylAmine             
+     2,6-DiMethylPyridine       FluoroBenzene                 Xylene-mixture            
+     2-BromoPropane             Formamide                     z-1,2-DiChloroEthene
+     2-Butanol                  FormicAcid                     
+     2-ChloroButane             HexanoicAcid                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
     ================           ================              ================
 
 输入介电常数
