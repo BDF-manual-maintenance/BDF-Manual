@@ -48,133 +48,133 @@ BDF目前支持基态溶剂化效应计算，包括HF和DFT方法。以下是甲
 .. table:: BDF中支持的溶剂模型
     :widths: auto
  
-    ================ ================
-     序号               溶剂
-    ================ ================
-     1                 Water
-     2                 Acetonitrile
-     3                 Methanol
-     4               Ethanol
-     5               IsoQuinoline
-     6               Quinoline
-     7               Chloroform
-     8               DiethylEther
-     9               Dichloromethane
-     10               DiChloroEthane
-     11               CarbonTetraChloride
-     12               Benzene
-     13               Toluene
-     14               ChloroBenzene
-     15               NitroMethane
-     16               Heptane
-     17               CycloHexane
-     18               Aniline
-     19               Acetone
-     20               TetraHydroFuran
-     21               DiMethylSulfoxide
-     22               Argon
-     23               Krypton
-     24               Xenon
-     25               n-Octanol
-     26               1,1,1-TriChloroEthane
-     27               1,1,2-TriChloroEthane
-     28               1,2,4-TriMethylBenzene
-     29               1,2-DiBromoEthane
-     30               1,2-EthaneDiol
-     31               1,4-Dioxane
-     32               1-Bromo-2-MethylPropane
-     33               1-BromoOctane
-     34               1-BromoPentane
-     35               1-BromoPropane
-     36               1-Butanol
-     37               1-ChloroHexane
-     38               1-ChloroPentane
-     39               1-ChloroPropane
-     40               1-Decanol
-     41               1-FluoroOctane
-     42               1-Heptanol
-     43               1-Hexanol
-     44               1-Hexene
-     45               1-Hexyne
-     46               1-IodoButane
-     47               1-IodoHexaDecane
-     48               1-IodoPentane
-     49               1-IodoPropane
-     50               1-NitroPropane
-     51               1-Nonanol
-     52               1-Pentanol
-     53               1-Pentene
-     54               1-Propanol
-     55               2,2,2-TriFluoroEthanol
-     56               2,2,4-TriMethylPentane
-     57               2,4-DiMethylPentane
-     58               2,4-DiMethylPyridine
-     59               2,6-DiMethylPyridine
-     60               2-BromoPropane
-     61               2-Butanol
-     62               2-ChloroButane
-     63               2-Heptanone
-     64               2-Hexanone
-     65               2-MethoxyEthanol
-     66               2-Methyl-1-Propanol
-     67               2-Methyl-2-Propanol
-     68               2-MethylPentane
-     69               2-MethylPyridine
-     70               2-NitroPropane
-     71               2-Octanone
-     72               2-Pentanone
-     73               2-Propanol
-     74               2-Propen-1-ol
-     75               3-MethylPyridine
-     76               3-Pentanone
-     77               4-Heptanone
-     78               4-Methyl-2-Pentanone
-     79               4-MethylPyridine
-     80               5-Nonanone
-     81               AceticAcid
-     82               AcetoPhenone
-     83               a-ChloroToluene
-     84               Anisole
-     85               Benzaldehyde
-     86               BenzoNitrile
-     87               BenzylAlcohol
-     88               BromoBenzene
-     89               BromoEthane
-     90               Bromoform
-     91               Butanal
-     92               ButanoicAcid
-     93               Butanone
-     94               ButanoNitrile
-     95               ButylAmine
-     96               ButylEthanoate
-     97               CarbonDiSulfide
-     98               Cis-1,2-DiMethylCycloHexane
-     99               Cis-Decalin
-     100               CycloHexanone
-     101               CycloPentane
-     102               CycloPentanol
-     103               CycloPentanone
-     104               Decalin-mixture
-     105               DiBromomEthane
-     106               DiButylEther
-     107               DiEthylAmine
-     108               DiEthylSulfide
-     109               DiIodoMethane
-     110               DiIsoPropylEther
-     111               DiMethylDiSulfide
-     112               DiPhenylEther
-     113               DiPropylAmine
-     114               e-1,2-DiChloroEthene
-     115               e-2-Pentene
-     116               EthaneThiol
-     117               EthylBenzene
-     118               EthylEthanoate
-     119               EthylMethanoate
-     120               EthylPhenylEther
-     121               FluoroBenzene
-     122               Formamide
-     123               FormicAcid
-     124               HexanoicAcid
+    ================             ================              ================ 
+          溶剂               |        溶剂                           溶剂          
+    ================         |   ================              ================ 
+     Water                   | 2-Heptanone
+     Acetonitrile            | 2-Hexanone
+     Methanol                | 2-MethoxyEthanol
+     Ethanol                 | 2-Methyl-1-Propanol
+     IsoQuinoline            | 2-Methyl-2-Propanol
+     Quinoline               | 2-MethylPentane
+     Chloroform              | 2-MethylPyridine
+     DiethylEther            | 2-NitroPropane
+     Dichloromethane         | 2-Octanone 
+     DiChloroEthane          | 2-Pentanone 
+     CarbonTetraChloride     | 2-Propanol  
+     Benzene                 | 2-Propen-1-ol
+     Toluene                 | 3-MethylPyridine
+     ChloroBenzene           | 3-Pentanone 
+     NitroMethane            | 4-Heptanone
+     Heptane                 | 4-Methyl-2-Pentanone
+     CycloHexane             | 4-MethylPyridine
+     Aniline                 | 5-Nonanone
+     Acetone                 | AceticAcid
+     TetraHydroFuran         | AcetoPhenone   
+     DiMethylSulfoxide       | a-ChloroToluene     
+     Argon                   | Anisole
+     Krypton                 | Benzaldehyde
+     Xenon                   | BenzoNitrile
+     n-Octanol               | BenzylAlcohol
+     1,1,1-TriChloroEthane   | BromoBenzene         
+     1,1,2-TriChloroEthane   | BromoEthane         
+     1,2,4-TriMethylBenzene  | Bromoform          
+     1,2-DiBromoEthane       | Butanal     
+     1,2-EthaneDiol          | ButanoicAcid  
+     1,4-Dioxane             | Butanone
+     1-Bromo-2-MethylPropane | ButanoNitrile           
+     1-BromoOctane           | ButylAmine
+     1-BromoPentane          | ButylEthanoate
+     1-BromoPropane          | CarbonDiSulfide
+     1-Butanol               | Cis-1,2-DiMethylCycloHexane
+     1-ChloroHexane          | Cis-Decalin
+     1-ChloroPentane         | CycloHexanone 
+     1-ChloroPropane         | CycloPentane 
+     1-Decanol               | CycloPentanol
+     1-FluoroOctane          | CycloPentanone
+     1-Heptanol              | Decalin-mixture
+     1-Hexanol               | DiBromomEthane
+     1-Hexene                | DiButylEther
+     1-Hexyne                | DiEthylAmine
+     1-IodoButane            | DiEthylSulfide
+     1-IodoHexaDecane        | DiIodoMethane  
+     1-IodoPentane           | DiIsoPropylEther
+     1-IodoPropane           | DiMethylDiSulfide
+     1-NitroPropane          | DiPhenylEther
+     1-Nonanol               | DiPropylAmine
+     1-Pentanol              | e-1,2-DiChloroEthene
+     1-Pentene               | e-2-Pentene
+     1-Propanol              | EthaneThiol
+     2,2,2-TriFluoroEthanol  | EthylBenzene        
+     2,2,4-TriMethylPentane  | EthylEthanoate        
+     2,4-DiMethylPentane     | EthylMethanoate     
+     2,4-DiMethylPyridine    | EthylPhenylEther      
+     2,6-DiMethylPyridine    | FluoroBenzene      
+     2-BromoPropane          | Formamide
+     2-Butanol               | FormicAcid
+     2-ChloroButane          | HexanoicAcid
+     63               
+     64               
+     65               
+     66               
+     67               
+     68               
+     69               
+     70               
+     71               
+     72               
+     73               
+     74               
+     75               
+     76               
+     77               
+     78               
+     79               
+     80               
+     81               
+     82               
+     83               
+     84               
+     85               
+     86               
+     87               
+     88               
+     89               
+     90               
+     91               
+     92               
+     93               
+     94               
+     95               
+     96               
+     97               
+     98               
+     99               
+     100               
+     101               
+     102               
+     103               
+     104               
+     105               
+     106               
+     107               
+     108               
+     109               
+     110               
+     111               
+     112               
+     113               
+     114               
+     115               
+     116               
+     117               
+     118               
+     119               
+     120               
+     121               
+     122               
+     123               
+     124               
      125               IodoBenzene
      126               IodoEthane
      127               IodoMethane
