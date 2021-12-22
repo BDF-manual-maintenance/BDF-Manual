@@ -1,6 +1,6 @@
 分子轨道定域化 - LOCALMO模块
 ================================================
-LOCALMO模快用于产生定域化的分子轨道，包含了Boys，Pipek-Maye，改进的Boys定域化等方法。localmo还用于为FLMO和Local MCSCF方法产生初始的分子片定域轨道。
+LOCALMO模块用于产生定域化的分子轨道，包含了Boys，Pipek-Mezey，以及改进的Boys定域化等方法。localmo还用于为FLMO方法产生初始的分子片定域轨道。
 
 **基本控制参数**
 
@@ -14,7 +14,7 @@ LOCALMO模快用于产生定域化的分子轨道，包含了Boys，Pipek-Maye�
 
 :guilabel:`Pipek` 参数类型：Bool型
 ------------------------------------------------
-指定使用Pipek-mezey定域化方法。默认用Mulliken电荷，如果设置了Lowdin参数，Pipek-Mezey方法用Lowdin电荷。本方法默认用雅可比旋转定域化轨道，如果用于指定用Trust-Region方法 ，需要使用关键词Trust。
+指定使用Pipek-Mezey定域化方法。默认用Mulliken电荷，如果设置了Lowdin参数，则Pipek-Mezey方法用Lowdin电荷而非默认的Mulliken电荷。本方法默认用雅可比旋转定域化轨道，如果需要指定用Trust-Region方法 ，需要使用关键词Trust。
 
 :guilabel:`Mulliken` 参数类型：Bool型
 ------------------------------------------------
@@ -50,13 +50,13 @@ LOCALMO模快用于产生定域化的分子轨道，包含了Boys，Pipek-Maye�
 
 :guilabel:`Tailcut` 参数类型：浮点型
 ------------------------------------------------
-默认值：1.D-2
+ * 默认值：1.D-2
 
 指定忽略FLMO尾巴的阈值。
 
 :guilabel:`Threshpop` 参数类型：浮点型
 ------------------------------------------------
-默认值：1.D-1
+ * 默认值：1.D-1
 
 指定Lowdin布居的阈值。
 
@@ -95,7 +95,7 @@ LOCALMO模快用于产生定域化的分子轨道，包含了Boys，Pipek-Maye�
 ------------------------------------------------
 指定不定域化的虚轨道数目。
 
-:guilabel:`Anaylze` 参数类型：Bool型
+:guilabel:`Analyze` 参数类型：Bool型
 ------------------------------------------------
 指定分析用户给定的定域轨道，计算占据-空轨道对的数目和MOS（Molecular Orbital Spread）。分析定域轨道需要从BDF_TMPDIR读入名为bdftask.testorb的文件，并进行轨道分析。这一轨道文件与SCF的bdftask.scforb格式相同，均为文本文件。
 

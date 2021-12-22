@@ -12,7 +12,7 @@ BDF的自洽场包括Hartree-Fock和Kohn-Sham方法。
 -----------------------------------------------------------------
 
 对于有不成对电子的体系，需要用 ``UHF`` 或者限制性开壳层Hartree-Fock （restricted open-shell Hartree-Fock）方法。
-对于奇数电子体系，BDF默认自旋多重度为2，且利用UHF计算。例如计算 :math:`\rm C_3H_5` 分子，
+对于奇数电子体系，BDF默认自旋多重度为2，且利用UHF计算。例如计算 :math:`\ce{C3H5}` 分子，
 
 .. code-block:: bdf
 
@@ -105,7 +105,7 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
 限制性开壳层Hartree-Fock方法
 ------------------------------------------------------------------------------------------
 
-限制性开壳层Hartree-Fock (Restricted open-shell Hartree-Fock - ROHF)可以计算开壳层分子体系。这里给出一个 :math:`\rm CH_2` 三重态的ROHF算例，
+限制性开壳层Hartree-Fock (Restricted open-shell Hartree-Fock - ROHF)可以计算开壳层分子体系。这里给出一个 :math:`\ce{CH2}` 三重态的ROHF算例，
 
 .. code-block:: bdf
 
@@ -174,7 +174,7 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
 
 RKS/UKS和ROKS计算
 -------------------------------------------------
-限制性Kohn-Sham (Restricted Kohn-Sham -- RKS)方法，这里以简洁输入的模式给出一个 :math:`\rm H_{2}O`  分子的DFT计算算例，使用了B3lyp泛函。
+限制性Kohn-Sham (Restricted Kohn-Sham -- RKS)方法，这里以简洁输入的模式给出一个 :math:`\ce{H2O}`  分子的DFT计算算例，使用了B3lyp泛函。
 
 .. code-block:: bdf
 
@@ -229,7 +229,7 @@ RKS/UKS和ROKS计算
      E_xc  =                -7.50177140
     Virial Theorem      2.006909
 
-:math:`\rm H_{2}O^{+}` 离子的ROKS计算，简洁输入如下，
+:math:`\ce{H2O+}` 离子的ROKS计算，简洁输入如下，
 
 .. code-block:: bdf
 
@@ -293,22 +293,22 @@ CAM-B3LYP等RS杂化泛函，将库伦相互作用分为长短程，
    $end
 
 
-杂化泛函Hartree-Fock交换项成分的自定义
+杂化泛函Hartree-Fock交换项和相关项成分的自定义
 -------------------------------------------------
-
-【注：该方法目前git上的BDF版本还不支持，过几天我再push上来】
 
 对于某些计算，可能需要用户手动调节泛函的Hartree-Fock交换项成分，才能获得满意的精度。此时可在 ``$scf`` 模块里加入 ``facex`` 关键字，例如若要将B3LYP泛函的Hartree-Fock交换项成分由默认的20%改为15%，可以写
 
 .. code-block:: bdf
 
    $scf
-   uks # unrestricted Kohn-Sham. Of course, the facex keyword can also be applied to RKS and ROKS
+   ...
    dft
     b3lyp
    facex
     0.15
    $end
+
+类似地，可以用 ``facco`` 关键字自定义双杂化泛函的MP2相关项成分。注意并不是所有泛函都支持自定义facex和facco（参见 :ref:`SCF模块的关键词列表<scf>` ）。
 
 对弱相互作用的色散矫正
 -------------------------------------------------
@@ -329,7 +329,7 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
     end geometry
     
     $scf
-    D3   # Gremme's dispersion correction
+    D3   # Grimme's dispersion correction
     $end
 
 .. tip::
@@ -372,7 +372,7 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
 用户可能还希望能对积分格点进行调节。Kohn-Sham泛函的积分格点可以在SCF模块的输入中通过Grid等关键词定义，Grid的有效值为 ``Ultra coarse`` ,
 ``Coarse`` , ``medium`` , ``fine``, ``Ultra fine``, ``sg1`` 等6个，从 ``Ultra coarse`` 到 ``sg1`` 积分格点依次增加，数值积分精度依次提高。
 
-例如， :math:`\rm H_{2}O` 分子计算采用了M062X泛函，属于Hybrid Meta-GGA泛函，要求密集的积分格点，需要采用BDF的高级输入和简洁输入混合模式，如下所示：
+例如， :math:`\ce{H2O}` 分子计算采用了M062X泛函，属于Hybrid Meta-GGA泛函，要求密集的积分格点，需要采用BDF的高级输入和简洁输入混合模式，如下所示：
 
 .. code-block:: bdf
 
