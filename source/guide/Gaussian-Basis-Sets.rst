@@ -59,7 +59,7 @@ BDF内置的高斯基组主要来自以下基组库网站，各种基组的原�
 * 赝势基组CRENBS中的 Am - Og :cite:`ermler1997,ermler1999` （注意：Basis Set Exchange上的Am - Og基组是错的！）
 * 赝势基组Stuttgart-ECPMDFSO-QZVP中的 Ac, Th, Pa :cite:`dolg2014` ，U :cite:`dolg2009`
 
-BDF用户既可以使用BDF基组库中的标准基组，也可以使用自制基组。
+BDF用户既可以使用BDF基组库中的标准基组，也可以使用自定义基组。
 
 
 .. _all-e-bas:
@@ -509,7 +509,7 @@ BDF用户既可以使用BDF基组库中的标准基组，也可以使用自制�
     |                        | | Stuttgart-ECPMDFSO-QZVP   | 19- 20, 37- 38, 55- 56, 87- 92         | SOECP                  |
     +------------------------+-----------------------------+----------------------------------------+------------------------+
 
-自制基组文件
+自定义基组文件
 ------------------------------------------------
 BDF可以使用非内置基组，此时要把基组数据保存在文本格式的基组文件中，放在计算目录下，文件名就是BDF中要引用的基组名（需大小写一致）。
 例如，在计算目录下创建一个文本文件MyBAS-1，内容为：
@@ -613,6 +613,21 @@ BDF可以使用非内置基组，此时要把基组数据保存在文本格式�
 
 把以上数据保存后，就可以在BDF输入文件中调用 ``MyBAS-1`` 基组。
 
+简洁输入，按如下方式使用自定义基组：
+
+.. code-block:: bdf
+
+    #!bdfbasis.sh
+    HF/genbas 
+
+    Geometry
+     .....
+    End geometry
+
+    $Compass
+    Basis
+       MyBAS-1         # 给出当前目录下基组文件的名字
+    $End
 
 基组的指定
 ------------------------------------------------
@@ -625,32 +640,32 @@ BDF可以使用非内置基组，此时要把基组数据保存在文本格式�
    #! basisexample.sh
    HF/3-21G 
 
-   geometry
+   Geometry
    H   0.000   0.000    0.000
    Cl  0.000   0.000    1.400
-   end geometry
+   End geometry
 
 .. code-block:: bdf
 
    #! basisexample.sh
    TDDFT/PBE0/3-21g
 
-   geometry
+   Geometry
    H   0.000   0.000    0.000
    Cl  0.000   0.000    1.400
-   end geometry
+   End geometry
 
 如果是高级输入模式，计算采用的基组在 ``compass`` 模块中指定，利用关键词 ``basis`` 。例如
 
 .. code-block:: bdf
 
   $compass
-  basis
+  Basis
    lanl2dz
-  geometry
+  Geometry
     H   0.000   0.000    0.000
     Cl  0.000   0.000    1.400
-  end geometry
+  End geometry
   $end
 
 其中 ``lanl2dz`` 调用内置的LanL2DZ基组（已在 ``basisname`` 文件中注册），不区分大小写。如果用未注册的用户自制基组文件（如上面的 ``MyBAS-1`` ），
@@ -667,10 +682,10 @@ BDF可以使用非内置基组，此时要把基组数据保存在文本格式�
   #! multibasis.sh
   HF/genbas 
 
-  geometry
+  Geometry
   H   0.000   0.000    0.000
   Cl  0.000   0.000    1.400
-  end geometry
+  End geometry
 
   $compass
   Basis-block
@@ -690,10 +705,10 @@ BDF可以使用非内置基组，此时要把基组数据保存在文本格式�
    lanl2dz
    H = 3-21g
   End Basis
-  geometry
+  Geometry
     H   0.000   0.000    0.000
     Cl  0.000   0.000    1.400
-  end geometry
+  End geometry
   $end
 
 **为同种元素的不同原子指定不同基组** BDF也可以为同一元素中的不同原子指定不同名称的基组，这些原子需要在元素符号后加上任意的数字以示区分。例如，
@@ -704,20 +719,20 @@ BDF可以使用非内置基组，此时要把基组数据保存在文本格式�
   #! CH4.sh
   RKS/B3lyp/genbas
 
-  geometry
+  Geometry
     C       0.000   -0.000    0.000
     H1     -0.000   -1.009   -0.357
     H2     -0.874    0.504   -0.457
     H1       0.874    0.504   -0.357
     H2      0.000    0.000    1.200
-  end geometry
+  End geometry
 
   $compass
-  basis-block
+  Basis-block
    6-31g
    H1= cc-pvdz
    H2= 3-21g
-  end basis
+  End basis
   $end
 
 上例中， ``H2`` 类型的两个氢原子用cc-pVDZ基组， ``H2`` 氢原子用3-21G基组，碳原子用6-31G基组。需要注意的是，对称等价原子必须使用相同基组，程序将对此进行检查；
@@ -748,4 +763,4 @@ BDF可以使用非内置基组，此时要把基组数据保存在文本格式�
 上例中，使用 ``def2-SVP`` 基组计算 :math:`CH_{4}` 甲烷分子，同时用de2-SVP标配的库伦拟合基组进行加速计算。
 
 .. hint::
-    BDF的RI计算功能，用于加速mcscf、mp2等波函数计算方法，不推荐用户在scf、tddft等计算中使用，用户可以用多级展开库伦势 (MPEC) 方法，MPEC方法不依赖于冗余函数，计算速度和精度都与RI方法相当。
+    BDF的RI计算功能，用于加速 **MCSCF**、 **mp2** 等波函数计算方法，不推荐用户在 **SCF** 、 **TDDFT** 等计算中使用，用户可以用多级展开库伦势 (MPEC) 方法，MPEC方法不依赖于冗余函数，计算速度和精度都与RI方法相当。

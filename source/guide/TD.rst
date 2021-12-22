@@ -42,13 +42,12 @@ R-TDDFT用于计算闭壳层体系。如果基态计算从RHF出发，TDDFT模�
 .. code-block:: bdf
 
   $compass
-  geometry
+  Geometry
     O
     H 1 1.0
     H 1 1.0 2 109.
-  end geometry
-  skeleton
-  basis
+  End geometry
+  Basis
     cc-pvdz
   $end
    
@@ -59,33 +58,25 @@ R-TDDFT用于计算闭壳层体系。如果基态计算从RHF出发，TDDFT模�
   $end
    
   $scf
-  rks      # Restricted Kohn-sham
-  dft      # DFT exchange-correlation functional B3lyp
+  RKS      # Restricted Kohn-sham
+  DFT      # DFT exchange-correlation functional B3lyp
     b3lyp
-  charge   # charge = 0
+  Charge   # charge = 0
     0
-  spinmulti     # 2S+1=1， singlet
+  Spinmulti     # 2S+1=1， singlet
     1
   $end
   
   # input for tddft
   $tddft
-  imethod   # imethod=1, starts from rhf/rks
-    1
-  isf       # isf=0, no spin-flip
-    0
-  itda     # itda=0, full TDDFT. Change to itda=1 for a TDA calculation
-    0
-  idiag    # Davidson diagonalization for solving Casida equation
-    1
   iroot    # For each irrep, calculate 1 root. on default, 10 roots are calculated for each irreps
     1
   memjkop  #maximum memory for Coulomb and Exchange operator. 512MW(Mega Words).
     512
   $end
 
-完成计算将顺序调用 ``compass`` , ``xuanyuan`` , ``scf`` 及 ``tddft`` 四个模块。其中 ``scf`` 模块执行 ``RKS`` 计算。
-基于RKS的计算结果，进行后续的 ``TDDFT`` 计算，注意 ``TDDFT`` 中的 ``imethod`` 关键词值设定为 ``1`` 。
+完成计算将顺序调用 **COMPASS** , **XUANYUAN** , **SCF** 及 **TDDFT** 四个模块。其中 **SCF** 模块执行RKS计算。
+基于RKS的计算结果，进行后续的 **TDDFT** 计算。
 
 注意因为水分子属于 :math:`C_{2v}` 点群，共有4个不可约表示，而不同不可约表示的激发态是分别求解的，因此视用户需求而定，有以下若干种指定激发态数目的方法，例如：
 
@@ -120,7 +111,7 @@ R-TDDFT用于计算闭壳层体系。如果基态计算从RHF出发，TDDFT模�
 
 此时程序通过初始猜测的激发能来判断各个不可约表示应当求解多少个激发态，但因为初始猜测的激发能排列顺序可能和完全收敛的激发能有一定差异，程序不能严格保证求得的4个激发态一定是能量最低的4个激发态。如用户要求严格保证得到的4个激发态为最低的4个激发态，用户应当令程序计算多于4个激发态，如8个激发态，然后取能量最低的4个。
 
-Kohn-Sham计算的输出前面已经介绍过，这里我们只关注 ``TDDFT`` 计算的结果。程序输出会先给出TDDFT计算的设置信息方便用户检查是否计算的设置，如下：
+Kohn-Sham计算的输出前面已经介绍过，这里我们只关注 **TDDFT** 计算的结果。程序输出会先给出TDDFT计算的设置信息方便用户检查是否计算的设置，如下：
 
 .. code-block:: 
 
@@ -529,7 +520,7 @@ X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系，开壳�
 这里，第3、6、7激发态都是CV(1)态。注意SA-TDDFT计算的 ``D<S^2>`` 值是按U-TDDFT的公式计算出来的，可以近似地表明假如用U-TDDFT计算这些态的话，结果的自旋污染程度，但并不代表这些态实际的自旋污染程度，因为SA-TDDFT可以保证所有激发态都严格不存在自旋污染。因此如果SA-TDDFT算得的某个态的 ``D<S^2>`` 值很大，并不能表明该态的结果不可靠，相反表示对于该态而言SA-TDDFT相比U-TDDFT的改进比较大。
 
 
-计算自旋翻转 (spin-flip)的TDDFT
+自旋翻转 (spin-flip)TDDFT计算
 ----------------------------------------------------------
 
 从 :math:`H_{2}O` 分子闭壳层的基态出发，可以通过自旋翻转的TDDFT (spin-flip TDDFT -- SF-TDDFT)计算三重激发态，简洁输入为：
