@@ -48,7 +48,7 @@ BDF目前支持基态溶剂化效应计算，包括HF和DFT方法。以下是甲
 .. table::
 
    ======================================================= ====================================================== =============================================================
-    Water :math:`{\epsilon}`=78.3553                        2-Heptanone :math:`{\epsilon}`=11.658                  IodoBenzene :math:`{\epsilon}`=4.5470              
+    Water :math:`{\epsilon}` =78.3553                        2-Heptanone :math:`{\epsilon}`=11.658                  IodoBenzene :math:`{\epsilon}`=4.5470              
     Acetonitrile :math:`{\epsilon}`=35.688                  2-Hexanone :math:`{\epsilon}`=14.136                   IodoEthane :math:`{\epsilon}`=7.6177
     Methanol :math:`{\epsilon}`=32.613                      2-MethoxyEthanol :math:`{\epsilon}`=17.2               IodoMethane :math:`{\epsilon}`=6.8650
     Ethanol :math:`{\epsilon}`=24.852                       2-Methyl-1-Propanol :math:`{\epsilon}`=16.777          IsoPropylBenzene :math:`{\epsilon}`=2.3712
