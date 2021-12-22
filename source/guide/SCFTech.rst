@@ -553,6 +553,7 @@ SCF收敛后，轨道占据情况被再一次打印，可以看到 **alpha** 轨
 第三个SCF计算给出了 **T1** 态能量，为 -169.6248370697 a.u., 输出如下：
 
 .. code-block:: 
+
     Iter. idiis vshift  SCF Energy    DeltaE     RMSDeltaD    MaxDeltaD   Damping Times(S)
      1    0   0.000 -169.411739263  -0.158785195  0.083821477  9.141182225  0.0000   0.17
      Turn on DFT calculation ...
