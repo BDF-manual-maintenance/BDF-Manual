@@ -69,9 +69,17 @@ latex_elements = {
 \usepackage[version=4]{mhchem}
 \hypersetup{unicode=true}
 \usepackage{ctex}
+\parindent 2em
+\definecolor{VerbatimColor}{rgb}{0.95,0.95,0.95}
+\renewcommand\familydefault{\ttdefault}
+\renewcommand\CJKfamilydefault{\CJKrmdefault}
 \addto\captionsenglish{\renewcommand{\chaptername}{}}
 '''
 }
+
+pdf_documents = [
+    ('index', u'Introduction', u'Installation', u'Input and Output', u'User Guide', u'Easyinput Guide', u'Input Library', u'Example', u'Application', u'FQA', u'Cite'),
+]
 
 
 # -- Options for HTML output -------------------------------------------------

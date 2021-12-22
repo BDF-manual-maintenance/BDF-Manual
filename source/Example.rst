@@ -1,7 +1,6 @@
 算例说明
 ************************************
 
-
 示例1：计算SCF能量梯度、结构优化。算例下载链接 :download:`test003.zip <files/test003.zip>`
 
 .. code-block:: bdf
@@ -10,14 +9,12 @@
      Title
       H2O Molecule test run, cc-pvdz
      Basis
-     #3-21G
      cc-pvdz
      Geometry
      O  0.000000000   0.000000000    0.369372944
      H  0.000000000  -0.783975899   -0.184686472 
      H  0.000000000   0.783975899   -0.184686472 
      End geometry
-     Check
      $END
 
      $XUANYUAN
@@ -27,12 +24,13 @@
      RHF              #Restricted Hartree-Fock
      Occupied         
      3 0 1 1          #对应每个不可约表示分子轨道中双电子占据的轨道数分别为3、0、1、1
+                      #注：如果只需要指定总电子数，而不关心每个不可约表示分别的占据数，则建议用Charge、SpinMulti而非Occupied来指定，见后续示例4等
      $END
 
-     $GRAD            
+     $GRAD            #计算HF梯度。注意DFT梯度需要用$RESP而非$GRAD，具体见示例11
      $END
 
-     $BDFOPT
+     $BDFOPT          #结构优化。$BDFOPT模块既可以写在最后，也可以写在$COMPASS块和$XUANYUAN块之间
      $END
 
 示例2：自动识别对称性&指认对称性。算例下载链接 :download:`test006.zip <files/test006.zip>`
@@ -59,9 +57,7 @@
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
      Skeleton         #不产生对称匹配的积分 
-     Check
-     #Group
-     #  D(6h)
+     # 默认用最高点群计算，即D(6h)
      $END
 
      $xuanyuan
@@ -91,7 +87,6 @@
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
      Skeleton          #不产生对称匹配的积分 
-     Check
      Group
        D(6h)           #指定D6h点群
      $END
@@ -123,7 +118,6 @@
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
      Skeleton          
-     Check
      Group
        D(3h)          #指定D3h点群
      $END
@@ -155,7 +149,6 @@
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
      Skeleton          
-     Check
      Group
        C(6v)          #指定C6v点群
      $END
@@ -187,7 +180,6 @@
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
      Skeleton          
-     Check
      Group
        D(3d)          #指定D3d点群
      $END
@@ -219,7 +211,6 @@
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
      Skeleton          
-     Check
      Group
        D(2h)          #指定D2h点群
      $END
@@ -251,7 +242,6 @@
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
      Skeleton          
-     Check
      Group
        C(2v)          #指定C2v点群
      $END
@@ -283,7 +273,6 @@
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
      Skeleton          
-     Check
      Group
        C(1)          #指定C1点群
      $END
@@ -309,12 +298,11 @@
      H  0.000000000  -0.783975899   -0.184686472 
      H  0.000000000   0.783975899   -0.184686472 
      End geometry
-     Check
      $END
 
      $XUANYUAN
      RS
-     0.33d0          #指定Range-Speration泛函的系数
+     0.33d0          #指定Range-Seperated泛函的系数
      $END
 
      $SCF
@@ -323,8 +311,6 @@
      3 0 1 1         #对应每个不可约表示分子轨道中双电子占据的轨道数分别为3、0、1、1
      DFT
        CAM-B3lyp     #指定DFT计算的交换相关泛函
-     numinttype      
-      1              #指定数值积分计算方法
      $END
 
      $COMPASS 
@@ -337,7 +323,6 @@
      H  0.000000000  -0.783975899   -0.184686472 
      H  0.000000000   0.783975899   -0.184686472 
      End geometry
-     Check
      Skeleton        #不产生对称匹配的积分
      $END
 
@@ -351,9 +336,7 @@
      Occupied
      3 0 1 1
      DFT
-       CAM-B3lyp      #杂化泛函
-     numinttype       
-      1
+       CAM-B3lyp      #Range-Seperated泛函
      $END     
 
 示例4：检验非阿贝尔群和骨架矩阵法。算例下载链接 :download:`test029.zip <files/test029.zip>`  
@@ -370,7 +353,6 @@
      N   0.0000    0.000000    1.05445
      N   0.0000    0.000000   -1.05445
      End geometry
-     Check
      Unit
        Bohr          #指定坐标长度单位
      Group
@@ -384,7 +366,7 @@
      ROHF            #Restricted Open-shell Hartree-Fock
      charge          #电荷数1
       1
-     spinmulti            #自旋多重度2
+     spinmulti       #自旋多重度2
       2
      $END
 
@@ -399,7 +381,6 @@
      N   0.0000    0.000000    1.05445
      N   0.0000    0.000000   -1.05445
      End geometry
-     Check
      Unit
      Bohr
      skeleton
@@ -430,7 +411,6 @@
      N   0.0000    0.000000    1.05445
      N   0.0000    0.000000   -1.05445
      End geometry
-     Check
      Unit
      Bohr
      skeleton
@@ -447,7 +427,7 @@
        2
      $END
 
-示例5：自旋体系。算例下载链接 :download:`test031.zip <files/test031.zip>`  
+示例5：开壳层体系。算例下载链接 :download:`test031.zip <files/test031.zip>`  
 
 .. code-block:: bdf
 
@@ -464,7 +444,6 @@
      H                  1.14678878   -0.96210996    0.00000000
      H                  1.14678878    0.96210996   -0.00000000
      End geometry
-     Check
      $END
 
      $XUANYUAN
@@ -495,19 +474,14 @@
      R1 0.8 0.05 4
      end geometry
 
-     $compass
-     check
-     $end
-
-示例7：Cholesky分解。算例下载链接 :download:`test033.zip <files/test033.zip>`
+示例7：基于双电子积分Cholesky分解的SCF计算。算例下载链接 :download:`test033.zip <files/test033.zip>`
 
 .. code-block:: bdf
 
      $COMPASS 
      Title
-       CH2 Molecule test run, cc-pvqz 
+       CH2 Molecule test run, cc-pvdz 
      Basis
-     # 3-21G
      cc-pvdz
      Geometry
      C     0.000000        0.00000        0.31399
@@ -516,7 +490,6 @@
      End geometry
      UNIT                #指定坐标长度单位
      Bohr
-     Check
      skeleton            #不产生对称匹配的积分
      Group
        C(1)              #指定C1点群
@@ -599,14 +572,14 @@
      $end
 
 
-示例8：辅助基组的DFT计算。算例下载链接 :download:`test041.zip <files/test041.zip>`
+示例8：基于RI-J的DFT计算。算例下载链接 :download:`test041.zip <files/test041.zip>`
 
 .. code-block:: bdf
 
      ######### C(2v) group is used
      $COMPASS 
      Title
-      H2O Molecule test run, cc-pvdz
+      H2O Molecule test run, DEF2-SV(P)
      Basis
      DEF2-SV(P)
      Geometry
@@ -614,8 +587,7 @@
      H  0.000000000  -0.783975899   -0.184686472 
      H  0.000000000   0.783975899   -0.184686472 
      End geometry
-     Check
-     RI-J                 #库伦拟合基组加速计算
+     RI-J                 #库伦拟合加速计算
      DEF2-SV(P)           #密度拟合基组
      Skeleton
      Group
@@ -660,7 +632,7 @@
      ############## C(1) group is used
      $COMPASS 
      Title
-      H2O Molecule test run, cc-pvdz
+      H2O Molecule test run, DEF2-SV(P)
      Basis
      DEF2-SV(P)
      Geometry
@@ -717,7 +689,7 @@
 
      $COMPASS 
      Title
-       CH2 Molecule test run, cc-pvqz 
+       Elecoup test run
      Basis
      cc-pvdz
      Geometry
@@ -731,22 +703,18 @@
      Group
        C(1)
      Skeleton                      #不产生对称匹配的积分
-     check
      $END
 
      $xuanyuan
      Direct                        #积分直接的SCF计算
-     Schwartz                      #Schwartz不等式
      $end
 
      $scf
      RKS                           #Restricted Kohn-Sham
      dft functional
        PBE0
-     threshconverg                 #指定SCF收敛的能量和密度矩阵阈值
+     threshconv                    #指定SCF收敛的能量和密度矩阵阈值
        1.d-10 1.d-8
-     optscreen                     #为直接积分设定阈值
-       1
      $end
   
      %cp $BDFTASK.scforb $BDF_WORKDIR/$BDFTASK.scforb1
@@ -754,7 +722,7 @@
      
      $COMPASS 
      Title
-       CH2 Molecule test run, cc-pvqz 
+       Elecoup test run
      Basis
        cc-pvdz
      Geometry
@@ -776,17 +744,15 @@
      Skeleton
      Nfragment
       2
-     check
      $END
      
      $xuanyuan
      Direct
-     Schwartz
      $end
      
      # calculate Electron and hole transfer integrals
-     # Hole transfer: Donnar HOMO to Accepter HOMO
-     # Electraon transfer: Donner LUMO to Accepter LUMO
+     # Hole transfer: Donor HOMO to Acceptor HOMO
+     # Electron transfer: Donor LUMO to Acceptor LUMO
      $elecoup
      electrans
       2                          #计算2对轨道间的迁移积分
@@ -797,7 +763,7 @@
      $END
 
      # calculate excitation energy transfer integrals
-     # S-S and T-T coupling: Donnar HOMO->LUMO Excitation to Accepter HOMO->LUMO excitation
+     # S-S and T-T coupling: Donor HOMO->LUMO Excitation to Acceptor HOMO->LUMO excitation
      $elecoup
      enertrans 
       2
@@ -821,11 +787,9 @@
       1
      $END
      
-     # wzk20210502: add test for range-separated functionals
      $xuanyuan
      Direct
-     Schwartz
-     rs                             #指定Range-Speration泛函
+     rs                             #指定Range-Seperated泛函
      0.33
      $end
 
@@ -876,13 +840,12 @@
      Title
       H2O Molecule test run, cc-pvdz
      Basis
-     cc-pvdz
+      cc-pvdz
      Geometry
       O  0.000000000   0.000000000    0.369372944
       H  0.000000000  -0.783975899   -0.184686472 
       H  0.000000000   0.783975899   -0.184686472 
      End geometry
-     Check
      Skeleton
      $END
      
@@ -898,37 +861,26 @@
      
      #Full TDDFT
      $TDDFT
-     imethod        # 指定基于哪种基态计算方法进行TDDFT计算，imethod=1为R-TDFDT, 基态为RHF/RKS方法
-      1
-     isf            # isf=0, no spin-flip
-      0
-     itda           #完全TDDDFT计算，使用TDA
-      0
-     idiag          #指定TDDFT的对角化方法，idiag=1为基于Davidson方法的迭代对角化
-      1
      iprint
       3
-     iexit          #每一次重复计算1个激发态，calculate 1 excitation state for every irrep
+     iexit          #每一个不可约表示计算1个激发态
       1
-     istore         # 指定波函数存储，save TDDFT wave function in 1st scratch file
-     1 
-     lefteig        #指定TDDFT计算，X-Y向量也保存到文件中
+     istore         #指定将TDDFT计算结果存储在第1个TDDFT结果文件里，以备后续TDDFT梯度计算使用
+      1 
      crit_vec       #指定TDDFT计算波函数收敛阈值
-     1.d-8 
+      1.d-8 
      crit_e         #指定TDDFT计算能量收敛阈值
-     1.d-14
+      1.d-14
      $END
      
      $resp
      geom
-     norder         #解析梯度
-     1
      method         #指定TD-DFT激发态计算
-     2
-     iroot          # 指定计算$tddft模块计算的第一个态的梯度，select the lowest state from all irreps, in this case the B2 state 
-     1              # this is particularly useful if the user don't know which irrep to follow
-     nfiles
-     1
+      2
+     iroot          #指定计算$tddft模块计算的能量最低的态（即第1个态）的梯度（在本算例里为1B2态）
+      1
+     nfiles         #此处的值（1）需要和以上$TDDFT模块设置的istore值一致
+      1
      $end
 
 示例11：DFT基态梯度计算。算例下载链接 :download:`test065.zip <files/test065.zip>`
@@ -948,10 +900,9 @@
      skeleton
      group          #指定分子的对称点群
      c(2v)
-     check
      $END
      
-     $XUANYUAN
+     $XUANYUAN      #积分非直接计算。对于不是特别小的分子（例如10个原子以上的分子），应在$XUANYUAN里添加direct关键词
      $END
      
      $SCF
@@ -966,10 +917,6 @@
      
      $resp
      geom 
-     norder        #解析梯度
-     1
-     method        #指定DFT基态计算
-     1
      $end
 
 示例12：非阿贝尔群对称性的条件下进行TD-DFT梯度的计算。算例下载链接 :download:`test068.zip <files/test068.zip>`
@@ -995,7 +942,6 @@
       H                  0.00000000   -2.49460097   -0.00000000
       H                  2.16038781   -1.24730049   -0.00000000
      End geometry
-     Check
      thresh        #判断分子对称性的阈值
      medium
      skeleton
@@ -1015,23 +961,16 @@
      $END
      
      $TDDFT
-     imethod      # imethod=1, starts from rhf/rks
-      1
      isf          # isf=1, spin flip up
       1
-     itda         # itda=0, TDDFT
-      0
-     idiag        # Davidson diagonalization for solving Casida equation
-      1 
      iprint
       3
-     iexit        #每一次重复计算1个激发态，calculate 1 excitation state for every irrep
+     iexit        #每一个不可约表示计算1个激发态
       1
      istore       # save TDDFT wave function in 1st scratch file
       1
      ialda
-      4 # collinear kernel
-     lefteig     #指定TDDFT计算，X-Y向量也保存到文件中
+      4          # collinear kernel
      crit_vec    #指定TDDFT计算波函数收敛阈值
       1.d-6
      crit_e      #指定TDDFT计算能量收敛阈值
@@ -1040,8 +979,6 @@
      
      $resp
      geom
-     norder      #解析梯度
-      1
      method      #指定TD-DFT激发态计算
       2
      iroot
@@ -1084,7 +1021,6 @@
      unit        # Set unit of length as Bohr
       bohr
      nosymm
-     check
      $end
      
      $XUANYUAN
@@ -1098,27 +1034,18 @@
      $END
      
      $tddft
-     imethod     # 指定基于哪种基态计算方法进行TDDFT计算，imethod=1为R-TDFDT, 基态为RHF/RKS方法
-      1
      isf         # request for triplets (spin flip up)
       1
-     itda
-      0
      ialda       # use collinear kernel (NAC only supports collinear kernel)
       4
-     iexit       #每一次重复计算2个激发态，calculate 2 excitation state for every irrep
+     iexit       #每一个不可约表示计算2个激发态
       2
      crit_vec    #指定TDDFT计算波函数收敛阈值
       1.d-6
      crit_e      #指定TDDFT计算能量收敛阈值
       1.d-8
-     partitiontype       #SSF分割
-      1
-     lefteig     #X-Y向量也保存到文件中
      istore      # 指定波函数存储，save TDDFT wave function in 1st scratch file
       1
-     iguess      # use sTDDFT guess (and also sTDDFT preconditioner)
-      20 
      iprt        #指定输出信息的详略程度
       2
      $end
@@ -1127,16 +1054,14 @@
      $resp 
      iprt 
       1 
-     QUAD        #指定resp进行二次响应计算
+     QUAD        #指定resp进行二阶响应计算
      FNAC        #指定resp计算一阶非绝热耦合向量
      double      #double为激发态-激发态非绝热耦合向量
-     norder      #1为解析梯度
-      1
      method      #指定TD-DFT激发态计算
       2
      nfiles
       1
-     pairs       #指定计算那两组激发态之间的非绝热耦合向量
+     pairs       #指定计算哪两组激发态之间的非绝热耦合向量
       1
       1 1 1 1 1 2
      noresp      #指定在Double和FNAC计算中忽略跃迁密度矩阵的响应项
@@ -1159,7 +1084,6 @@
      skeleton
      thresh
       medium
-     check
      $end
      
      $bdfopt
@@ -1200,9 +1124,6 @@
       2
      istore       # save TDDFT wave function in 1st scratch file, must be specified
       1
-     iguess       #控制TDDFT初始猜测波函数
-      20          #紧束缚近似猜测,不存储Davidson迭代中间过程向量
-     lefteig      #指定TDDFT计算，X-Y向量也保存到文件中
      crit_vec     #指定TDDFT计算波函数收敛阈值
       1.d-6
      crit_e       #指定TDDFT计算能量收敛阈值
@@ -1213,8 +1134,6 @@
      
      $resp
      geom
-     norder       #解析梯度
-      1
      method       #指定TD-DFT激发态计算
       2
      nfiles
@@ -1238,7 +1157,6 @@
       N     0.00000        0.00000      -0.5582 
      End geometry
      skeleton
-     check
      group
       d(2h)
      $END
@@ -1255,7 +1173,7 @@
      charge 
       1
      spinmulti
-     2
+      2
      $END
      
      % echo "SVWN spin-flip TDA "
@@ -1266,12 +1184,10 @@
       1
      ITDA            #ask for TDA
       1
-     IDIAG          #基于Davidson方法的迭代对角化
-      1
      ialda
       2
      iexit
-     20
+      20
      MemJKOP
       2048
      $END
@@ -1284,7 +1200,7 @@
      charge 
       1
      spinmulti
-     2
+      2
      $END
      
      % echo "BLYP spin-flip TDA "
@@ -1295,12 +1211,10 @@
       1
      ITDA          #TDA
       1
-     IDIAG
-      1
      ialda
       2
      iexit
-     20
+      20
      MemJKOP
       2048
      $END
@@ -1313,7 +1227,7 @@
      charge 
       1
      spinmulti  
-     2
+      2
      $END
      
      % echo "B3LYP spin-flip TDA "
@@ -1324,12 +1238,10 @@
       1
      ITDA
       1
-     IDIAG
-      1
      ialda
       2
      iexit
-     20
+      20
      MemJKOP
       2048
      $END
@@ -1348,7 +1260,7 @@
      charge 
       1
      spinmulti
-     2
+      2
      $END
      
      % echo "cam-B3LYP spin-flip TDA "
@@ -1364,7 +1276,7 @@
      ialda
       2
      iexit
-     20
+      20
      MemJKOP
       2048
      $END
@@ -1442,12 +1354,11 @@
      H    -6.1262    5.5024    1.0605 
      End geometry
      Skeleton
-     Check
      $end
 
      $xuanyuan
      Direct
-     rs # the range separation parameter omega (or mu) of wB97X
+     rs # the range separation parameter omega (a.k.a. mu) of wB97X
       0.3
      $end
 
@@ -1487,7 +1398,6 @@
              H              2.3916890605         2.8947369696        -0.0002005778
      end geometry
      skeleton
-     check
      unit
       bohr
      $end
