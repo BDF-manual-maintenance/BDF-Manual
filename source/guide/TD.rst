@@ -314,10 +314,10 @@ Davidson迭代开始计算输出信息如下，
 
 .. code-block:: 
 
-   No.     1    w=      9.3784 eV      -76.0358398606 a.u.  f= 0.0767   D<Pab>= 0.0000   Ova= 0.5201
-        CV(0):   A1(   3 )->  A1(   4 )  c_i:  0.9883  Per: 97.7%  IPA:    10.736 eV  Oai: 0.5163
-        CV(0):   B1(   1 )->  B1(   2 )  c_i: -0.1265  Per:  1.6%  IPA:    16.941 eV  Oai: 0.6563
-   Estimate memory in tddft_init mem:           0.001 M
+  No. 1  w=9.3784 eV  -76.0358398606 a.u.  f= 0.0767   D<Pab>= 0.0000   Ova= 0.5201
+  CV(0):   A1( 3 )->  A1( 4 )  c_i:  0.9883  Per: 97.7%  IPA: 10.736 eV  Oai: 0.5163
+  CV(0):   B1( 1 )->  B1( 2 )  c_i: -0.1265  Per:  1.6%  IPA: 16.941 eV  Oai: 0.6563
+  Estimate memory in tddft_init mem:           0.001 M
 
 其中第1行的信息，
 
