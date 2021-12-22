@@ -273,16 +273,16 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
    Survived FLMO dims of frag( 15):       8      16       0      66      12
    Survived FLMO dims of frag( 15):       8      16       0      66      12
    Survived FLMO dims of frag( 11):       8      17       0      46       9
-   Input Nr. of FLMOs (total, occ., soc., vir.) :       98       32        0       66
+   Input Nr. of FLMOs (total, occ., soc., vir.) :   98   32   0   66
     nmo != nbas 
                      98                   92
     Local Occupied Orbitals Mos and Moc 
    Max_Mos:    1.89136758 Min_Mos:    0.31699600 Aver_Mos:    1.32004368
     Local Virtual Orbitals Mos and Moc 
    Max_Mos:    2.46745638 Min_Mos:    1.46248295 Aver_Mos:    2.14404812
-   The prepared  Nr. of pFLMOs (total, occ., vir.) :       98       32        0       66
+   The prepared  Nr. of pFLMOs (total, occ., vir.) :   98   32   0   66
   
-   Input Nr. of FLMOs (total, double-occ., single-occ, vir.) :       98       32        0       66
+   Input Nr. of FLMOs (total, double-occ., single-occ, vir.) :   98   32   0   66
    No. double-occ orbitals:        29
    No. single-occ orbitals:         0
    No. virtual    orbitals:        63
@@ -296,16 +296,16 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
    Max_Mos:    1.89136758 Min_Mos:    0.31699600 Aver_Mos:    1.32004368
         3 linear dependent orbitals removed by preliminary scan
    Initial MO/AO dimension are :      29     92
-    Finally                    29  orbitals left. Number of cutted MO                    0
+    Finally                    29  orbitals left. Number of cutted MO    0
    Max_Mos:    1.89136758 Min_Mos:    0.31699600 Aver_Mos:    1.29690971
    Perform Lowdin orthonormalization to occ pFLMOs
    Project pFLMO occupied components out of virtual FLMOs
    Max_Mos:    2.46467150 Min_Mos:    1.46222542 Aver_Mos:    2.14111949
         3 linear dependent orbitals removed by preliminary scan
    Initial NO, NV, AO dimension are :     29     63     92
-    Finally                    92  orbitals left. Number of cutted MO                    0
+    Finally                    92  orbitals left. Number of cutted MO    0
    Max_Mos:    2.46467150 Min_Mos:    1.46222542 Aver_Mos:    2.15946681
-   Perform Lowdin orthonormalization to virtual pFLMOs                   63
+   Perform Lowdin orthonormalization to virtual pFLMOs                  63
     Local Occupied Orbitals Mos and Moc 
    Max_Mos:    1.88724854 Min_Mos:    0.31689707 Aver_Mos:    1.29604628
     Local Virtual Orbitals Mos and Moc 
