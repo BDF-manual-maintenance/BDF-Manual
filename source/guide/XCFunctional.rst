@@ -21,7 +21,7 @@ BDF的Kohn-Sham密度泛函计算方法，支持限制性(restricted)、非限�
 
 .. note::
     1. 这里的B3LYP的LDA相关项用的是VWN5, 而GB3LYP对应的是高斯程序中的B3LYP，LDA相关项用的是VWN3;
-    2. 对于范围分离泛函计算，必须手动在$xuanyuan模块里设定rs值（参见 :doc:`xuanyuan模块的关键词列表<xuanyuan>` ）。wB97, wB97X, CAM-B3LYP, LC-BLYP的rs值分别为0.40, 0.30, 0.33和0.33；
+    2. 对于范围分离泛函计算，必须手动在$xuanyuan模块里设定rs值（参见 :ref:`xuanyuan模块的关键词列表<xuanyuan>` ）。wB97, wB97X, CAM-B3LYP, LC-BLYP的rs值分别为0.40, 0.30, 0.33和0.33；
     3. 对于双杂化泛函计算，必须在$scf模块后面添加一个$mp2模块（参见 :doc:`算例说明<Example>` 里的算例test116），并从$mp2模块的输出读取最终结果。
     4. 可以在$scf模块里用facex和facco关键字调整泛函的HF交换项比例和MP2相关项比例，从而实现用户自定义泛函（参见 :doc:`SCF模块的关键词列表<scf>` ）。
     5. BDF使用了libxc，原则上支持libxc所支持的所有泛函，但需要时间来完善与补充。用户可以向我们反馈需要的泛函，以便我们按照需求来补充。
