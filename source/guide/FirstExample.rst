@@ -59,16 +59,16 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
     $end
 
 从高级输入可以看出，BDF将按顺序执行模块 ``compass`` ， ``xuanyuan`` 和 ``scf`` 完成水分子的单点能量计算。
-``compass`` 用于读入分子结构，基函数等基本信息，判断分子的对称性，将分子转动到标准取向(Standard orientation，详见 :ref:`BDF对群论的使用小节<Point-Group>`)，产生对称匹配轨道等，
+``compass`` 用于读入分子结构，基函数等基本信息，判断分子的对称性，将分子转动到标准取向(Standard orientation，详见 :doc:`BDF对群论的使用小节<Point-Group>`)，产生对称匹配轨道等，
 并将这些信息存入BDF的执行目录下的文件 ``h2o.chkfil`` 。 ``compass`` 中的关键词
 
  * ``geommetry`` 到 ``end geometry`` 之间定义的分子结构;
  * ``basis`` 定义基组为 ``3-21G``;
- * ``Skeleton`` 指定只计算对称独立的单、双电子积分，构造骨架Fock矩阵并对称化(详见 :ref:`BDF对群论的使用小节<Point-Group>` )。 
+ * ``Skeleton`` 指定只计算对称独立的单、双电子积分，构造骨架Fock矩阵并对称化(详见 :doc:`BDF对群论的使用小节<Point-Group>` )。 
 
 执行完 ``compass`` 模块后，BDF利用 ``xuanyuan`` 模块计算单、双电子积分。
 
- * ``direct`` 关键词指定后续的自洽场计算采用积分直接的计算方法(详见 :ref:`BDF的积分计算方法小节<xuanyuan>`);
+ * ``direct`` 关键词指定后续的自洽场计算采用积分直接的计算方法(详见 :doc:`BDF的积分计算方法小节<xuanyuan>`);
 
 最后，BDF执行 ``scf`` 模块，完成基于Hartree-Fock的自洽场计算。
 
