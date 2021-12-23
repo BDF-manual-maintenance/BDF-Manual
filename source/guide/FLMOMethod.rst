@@ -19,8 +19,8 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
 计算分片定域分子轨道FLMO（手动分片）
 --------------------------------------------
 
-为了使用户对FLMO有个直观的了解，我们给出一个FLMO的计算示例。这里，我们要通过FLMO方法计算1,3,5,7-辛四烯 :math:`C_8H_{10}` 分子的定域化轨道。
-我们先计算4个分子片，每个分子片是由中心原子、缓冲区原子和链接H原子组成。因分子结构较简单，这里的分子片是通过手动分片得到的，即每个分子片的中心原子为一个C=C双键及与其相连的所有氢原子，缓冲区原子为和该C=C双键直接相连的C=C双键及其所带的氢原子，也即分子片1和分子片4为1,3-丁二烯，分子片2和分子片3为1,3,5-己三烯。分子片SCF计算收敛后，通过Boys定域化方法得到分子片定域轨道。所有分子片计算完成后，再用四个分子片的定域轨道合成整体分子的pFLMO (primitive Fragment Local Molecule Orbital)。利用pFLMO做初始猜测，计算整个 :math:`C_8H_{10}` 分子，并得到定域化的FLMO。输入示例如下：
+为了使用户对FLMO有个直观的了解，我们给出一个FLMO的计算示例。这里，我们要通过FLMO方法计算1,3,5,7-辛四烯 :math:`\ce{C8H10}` 分子的定域化轨道。
+我们先计算4个分子片，每个分子片是由中心原子、缓冲区原子和链接H原子组成。因分子结构较简单，这里的分子片是通过手动分片得到的，即每个分子片的中心原子为一个C=C双键及与其相连的所有氢原子，缓冲区原子为和该C=C双键直接相连的C=C双键及其所带的氢原子，也即分子片1和分子片4为1,3-丁二烯，分子片2和分子片3为1,3,5-己三烯。分子片SCF计算收敛后，通过Boys定域化方法得到分子片定域轨道。所有分子片计算完成后，再用四个分子片的定域轨道合成整体分子的pFLMO (primitive Fragment Local Molecule Orbital)。利用pFLMO做初始猜测，计算整个 :math:`\ce{C8H10}` 分子，并得到定域化的FLMO。输入示例如下：
 
 .. code-block:: bdf
 
@@ -273,16 +273,16 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
    Survived FLMO dims of frag( 15):       8      16       0      66      12
    Survived FLMO dims of frag( 15):       8      16       0      66      12
    Survived FLMO dims of frag( 11):       8      17       0      46       9
-   Input Nr. of FLMOs (total, occ., soc., vir.) :       98       32        0       66
+   Input Nr. of FLMOs (total, occ., soc., vir.) :   98   32   0   66
     nmo != nbas 
                      98                   92
     Local Occupied Orbitals Mos and Moc 
    Max_Mos:    1.89136758 Min_Mos:    0.31699600 Aver_Mos:    1.32004368
     Local Virtual Orbitals Mos and Moc 
    Max_Mos:    2.46745638 Min_Mos:    1.46248295 Aver_Mos:    2.14404812
-   The prepared  Nr. of pFLMOs (total, occ., vir.) :       98       32        0       66
+   The prepared  Nr. of pFLMOs (total, occ., vir.) :   98   32   0   66
   
-   Input Nr. of FLMOs (total, double-occ., single-occ, vir.) :       98       32        0       66
+   Input Nr. of FLMOs (total, double-occ., single-occ, vir.) :   98   32   0   66
    No. double-occ orbitals:        29
    No. single-occ orbitals:         0
    No. virtual    orbitals:        63
@@ -296,16 +296,16 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
    Max_Mos:    1.89136758 Min_Mos:    0.31699600 Aver_Mos:    1.32004368
         3 linear dependent orbitals removed by preliminary scan
    Initial MO/AO dimension are :      29     92
-    Finally                    29  orbitals left. Number of cutted MO                    0
+    Finally                    29  orbitals left. Number of cutted MO    0
    Max_Mos:    1.89136758 Min_Mos:    0.31699600 Aver_Mos:    1.29690971
    Perform Lowdin orthonormalization to occ pFLMOs
    Project pFLMO occupied components out of virtual FLMOs
    Max_Mos:    2.46467150 Min_Mos:    1.46222542 Aver_Mos:    2.14111949
         3 linear dependent orbitals removed by preliminary scan
    Initial NO, NV, AO dimension are :     29     63     92
-    Finally                    92  orbitals left. Number of cutted MO                    0
+    Finally                    92  orbitals left. Number of cutted MO    0
    Max_Mos:    2.46467150 Min_Mos:    1.46222542 Aver_Mos:    2.15946681
-   Perform Lowdin orthonormalization to virtual pFLMOs                   63
+   Perform Lowdin orthonormalization to virtual pFLMOs                  63
     Local Occupied Orbitals Mos and Moc 
    Max_Mos:    1.88724854 Min_Mos:    0.31689707 Aver_Mos:    1.29604628
     Local Virtual Orbitals Mos and Moc 
@@ -317,7 +317,6 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
 
 .. code-block:: bdf
 
-   Iter.   idiis  vshift       SCF Energy            DeltaE          RMSDeltaD          MaxDeltaD      Damping    Times(S) 
    Check initial pFLMO orbital MOS
     Local Occupied Orbitals Mos and Moc 
    Max_Mos:    1.88724854 Min_Mos:    0.31689707 Aver_Mos:    1.29604628
@@ -328,15 +327,15 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
    X --> U time:       0.000      0.000      0.000
    block diag       0.017      0.000      0.017
     block norm :    2.3273112079137773E-004
-  
-     1      0    0.000    -308.5629490672     397.3667689027       0.0021008410       0.0272282919    0.0000      0.53
+
+    1    0   0.000 -308.562949067 397.366768902  0.002100841  0.027228292  0.0000   0.53
     DNR !! 
    Final iter :   57 Norm of Febru  0.48415E-06
    X --> U time:       0.000      0.000      0.017
    block diag       0.000      0.000      0.017
     block norm :    1.3067586006786384E-004
 
-     2      1    0.000    -308.5710099304      -0.0080608632       0.0002638070       0.0032306300    0.0000      0.52
+    2    1   0.000 -308.571009930  -0.008060863  0.000263807  0.003230630  0.0000   0.52
     DNR !! 
    Final iter :   43 Norm of Febru  0.64098E-06
    X --> U time:       0.000      0.000      0.000
@@ -487,7 +486,7 @@ FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用�
 
  ...
 
-    1      0    0.000    -849.6423427763    1158.1711700646       0.0468539481       4.8406196817    0.5000      3.54
+    1    0   0.000 -849.642342776 1158.171170064 0.046853948  4.840619682  0.5000   3.54
    DNR !!
   SDNR: warning: rotation angle too large, aborting
   Final iter :    5 Norm of Febru  0.20133E+00
