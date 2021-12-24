@@ -33,6 +33,7 @@ Hartree-Fock是量子化学最基本算法。本小节，我们将通过一个�
 
 .. code-block:: bdf 
 
+<<<<<<< HEAD
   $compass
   Geometry
     O
@@ -42,6 +43,20 @@ Hartree-Fock是量子化学最基本算法。本小节，我们将通过一个�
   Basis
     3-21g  # set basis set as 3-21g
   $end
+=======
+    $compass
+    geometry
+    O
+    H  1  R1 
+    H  1  R1  2 109.
+  
+    R1=1.0
+    end geometry
+    skeleton # 利用对称独立积分计算骨架Fock矩阵方法。积分直接SCF必须使用这个关键词
+    basis
+      3-21g  # set basis set as 3-21g
+    $end
+>>>>>>> 7155e6f1d1c37b2357b32b21f9d4e780226b0dbb
   
   $xuanyuan
   $end
@@ -54,9 +69,15 @@ Hartree-Fock是量子化学最基本算法。本小节，我们将通过一个�
     1    
   $end
 
+<<<<<<< HEAD
 从高级输入可以看出，BDF将按顺序执行模块 **COMPASS** ， **XUANYUAN** 和 **SCF** 完成水分子的单点能量计算。
 **COMPASS** 用于读入分子结构，基函数等基本信息，判断分子的对称性，将分子转动到标准取向(Standard orientation，详见 :ref:`BDF对群论的使用小节<Point-Group>`)，产生对称匹配轨道等，
 并将这些信息存入BDF的执行目录下的文件 ``h2o.chkfil`` 。 **COMPASS** 中的关键词
+=======
+ * ``geommetry`` 到 ``end geometry`` 之间定义分子结构;
+ * ``basis`` 定义基组为 ``3-21G``;
+ * ``Skeleton`` 指定只计算对称独立的单、双电子积分，构造骨架Fock矩阵并对称化(详见 :ref:`BDF对群论的使用小节<Point-Group>` )。 
+>>>>>>> 7155e6f1d1c37b2357b32b21f9d4e780226b0dbb
 
  * ``Geommetry`` 到 ``End geometry`` 之间定义的分子结构;
  * ``Basis`` 定义基组为 ``3-21G``;
@@ -65,11 +86,19 @@ Hartree-Fock是量子化学最基本算法。本小节，我们将通过一个�
 
 最后，BDF执行 **SCF** 模块，完成基于Hartree-Fock的自洽场计算。
 
+<<<<<<< HEAD
  * ``RHF`` 指定使用限制性Hartree-Fock方法;
  * ``Charge`` 指定体系的电荷为0;
  * ``Spinmulti`` 指定体系的自旋多重度为1。
 
 这里 ``RHF`` 是必须输入的关键词， ``charge`` 和 ``spinmulti`` 在本算例可以忽略。
+=======
+ * ``rhf`` 指定使用限制性Hartree-Fock方法;
+ * ``charge`` 指定体系的电荷为0;
+ * ``spinmulti`` 指定体系的自旋多重度为1。
+
+这里 ``rhf`` 是必须输入的关键词， ``charge`` 和 ``spinmulti`` 对于限制性方法可以忽略。
+>>>>>>> 7155e6f1d1c37b2357b32b21f9d4e780226b0dbb
 
 执行计算
 -------------------------------------------------------
@@ -97,7 +126,7 @@ Hartree-Fock是量子化学最基本算法。本小节，我们将通过一个�
     # 执行BDF计算，注意，默认输出会打印至标准输出
     $BDFHOME/sbin/bdfdrv.py -r h2o.inp 
 
-我们准备了一个 ``Bash Shell`` 脚本，定义了一些基本的环境变量，并利用 ``$BDFHOME/sbin/bdfdrv.py`` 执行计算。脚本里的定义的环境变量有：
+以上是 ``Bash Shell`` 脚本，定义了一些基本的环境变量，并利用 ``$BDFHOME/sbin/bdfdrv.py`` 执行计算。脚本中定义的环境变量有：
 
  * ``BDFHOME`` 变量指定BDF的安装目录；
  * ``BDF_TMPDIR`` 变量指定BDF运行时临时文件存放目录；
@@ -120,7 +149,7 @@ Hartree-Fock是量子化学最基本算法。本小节，我们将通过一个�
  
  * ``h2o.out`` 是文本文件，用户可读，存储BDF输出打印信息；
  * ``h2o.chkfil`` 是二进制文件，用户不可读，用于在BDF不同模块间传递数据；
- * ``h2o.scforb`` 是文本文件，用户可读，存储了 ``scf`` 自洽迭代的分子轨道、轨道能等信息，主要用于重启动或作为其他scf计算的初始猜测轨道。
+ * ``h2o.scforb`` 是文本文件，用户可读，存储了 ``scf`` 自洽迭代的分子轨道因子、轨道能等信息，主要用于重启动或作为其他scf计算的初始猜测轨道。
 
 如果输入文件采用的是BDF简洁输入模式， ``h2o.out`` 中首先会给出一些基本的用户设置信息,
 
@@ -145,7 +174,7 @@ Hartree-Fock是量子化学最基本算法。本小节，我们将通过一个�
      6: Acceleration method
         ERI
     
-     7: Potential energy sufface method
+     7: Potential energy surface method
         energy
     |============================================================|
 
@@ -156,7 +185,7 @@ Hartree-Fock是量子化学最基本算法。本小节，我们将通过一个�
  * ``Wavefunction, Charges and spinmulti`` 给出了体系电荷、总的核电荷数和自旋多重度(2S+1)；
  * ``Energy method`` 给出能量计算方法；
  * ``Accleration method`` 给出双电子积分计算加速方法；
- * ``Potential energy sufface method`` 给出势能面计算方法，这里是单点能量计算。
+ * ``Potential energy surface method`` 给出势能面计算方法，这里是单点能量计算。
 
 随后，系统执行 **COMPASS** 模块，会给出如下提示：
 
@@ -311,7 +340,13 @@ Hartree-Fock是量子化学最基本算法。本小节，我们将通过一个�
     BDF的每个模块执行，都会有开始执行和执行结束后打印时间信息，方便用户具体定位哪个计算模块出错。
 
 
+<<<<<<< HEAD
 本算例计算执行的第二个模块是 **XUANYUAN** ， 该模块主要用于计算单、双电子积分。如果不特别指定，BDF默认采用直接计算双电子积分构造Fock矩阵的算法。这里， **XUANYUAN** 模块只计算和保存单电子积分及需要做积分预筛选的特殊双电子积分。如果用户指定了 ``Nodirect`` 关键词，双电子积分将被计算并保存到硬盘。 **XUANYUAN** 模块的输出比较简单，一般不需要特别关注。这里，我们给出最关键的输出：
+=======
+一般地，在单点能量计算中第二个被执行的模块是 ``xuanyuan`` ，用于计算单、双电子积分。BDF简洁输入模式默认采用积分直接算法，
+只计算和保存单电子积分及需要做积分预筛选的特殊双电子积分。如果用户指定了 ``nodirect`` 关键词，双电子积分
+将被计算并保存到硬盘。 ``xuanyuan`` 模块的输出比较简单，一般不需要特别关注。这里，我们给出最关键的输出：
+>>>>>>> 7155e6f1d1c37b2357b32b21f9d4e780226b0dbb
 
 .. code-block:: 
 
@@ -350,7 +385,7 @@ Hartree-Fock是量子化学最基本算法。本小节，我们将通过一个�
      Num. of alpha electrons :       5
      Num. of beta  electrons :       5
 
-这里给出了核电荷数、总电子数、有效势计算的核电子数、自旋多重度、alpha及beta电子数等信息，用户应当检查电子态是否正确。
+这里给出了核电荷数、总电子数、赝势计算的芯电子数、自旋多重度、alpha及beta电子数等信息，用户应当检查电子态是否正确。
 然后， ``scf`` 模块先计算原子，并产生分子计算的初始猜测密度矩阵，
 
 .. code-block:: 
@@ -406,12 +441,12 @@ Hartree-Fock是量子化学最基本算法。本小节，我们将通过一个�
 
 根据维里定律(Virial Theorem)，对于非相对论系统，系统的总势能的绝对值是电子的动能的2倍，这里的维里比是 ``2.003738`` 。 系统的能量为：
 
- * ``E_tot`` 是系统总能量;
- * ``E_ele`` 是电子能量;
+ * ``E_tot`` 是系统总能量，即 ``E_ele`` + ``E_nn`` ;
+ * ``E_ele`` 是电子能量，即 ``E_1e`` + ``E_ee`` + ``E_xc`` ;
  * ``E_nn``  是原子核排斥能;
- * ``E_1e``  是单电子能量;
+ * ``E_1e``  是单电子能量，即 ``E_ne`` + ``E_kin`` ;
  * ``E_ne``  是原子核对电子的吸引能;
- * ``E_kin``  是电子动能;
+ * ``E_kin`` 是电子动能;
  * ``E_ee`` 是双电子能，包括库伦排斥和交换能；
  * ``E_xc`` 是交换相关能，DFT计算时不为0.
 
@@ -455,11 +490,17 @@ Hartree-Fock是量子化学最基本算法。本小节，我们将通过一个�
 
 这里
 
- * ``[Final occupation pattern: ]`` 给出的是轨道占据情况。由于我们进行的是限制性Hartree-Fock计算，占据情况只给出了Alpha轨道的信息，按照不可约表示分别给出。从这个例子可以看出，A1轨道的前3个、B1和B2轨道的第1个分别有1个电子占据。由于本算例是RHF，alpha与beta轨道是一样的，所以A1表示有3个双占据轨道，B1和B2表示分别有1个占据轨道。
+ * ``[Final occupation pattern: ]`` 给出的是轨道占据情况。由于我们进行的是限制性Hartree-Fock计算，占据情况只给出了Alpha轨道的信息，按照不可约表示分别给出。从这个例子可以看出，A1轨道的前3个、B1和B2轨道的第1个分别有1个电子占据。由于本算例是RHF，alpha与beta轨道是一样的，所以A1表示有3个双占据轨道，B1和B2表示分别有1个双占据轨道。
  * ``[Orbital energies:]`` 按照不可约表示分别给出轨道能；
+<<<<<<< HEAD
  * ``Alpha   HOMO energy:`` 按照单位 au 和 eV 给出了HOMO轨道能；该轨道所属的不可约表示，这里是B2；
  * ``Alpha   LUMO energy:`` 按照单位 au 和 eV 给出了LUMO轨道能；该轨道所属的不可约表示，这里是A1；
  * ``HOMO-LUMO gap:`` 给出HOMO和LUMO轨道的能差。
+=======
+ * ``Alpha   HOMO energy:`` 给出了HOMO能量，单位为au及eV，属于B2表示；
+ * ``Alpha   LUMO energy:`` 给出了LUMO能量，单位为au及eV，属于A1表示；
+ * ``HOMO-LUMO gap:`` 给出HOMO和LUMO的能差。
+>>>>>>> 7155e6f1d1c37b2357b32b21f9d4e780226b0dbb
 
 为了减少输出行数，BDF默认不打印轨道成分及分子轨道系数，只按照不可约表示分类给出部分轨道占据数和轨道能信息，如下：
 
@@ -488,7 +529,11 @@ Hartree-Fock是量子化学最基本算法。本小节，我们将通过一个�
         Energy      -0.47504    1.78424
         Occ No.      2.00000    0.00000
              
+<<<<<<< HEAD
 **SCF** 模块最后打印的是Mulliken和Lowdin布居分析的结果，分子的偶极矩信息。
+=======
+``scf`` 模块最后打印的是Mulliken和Lowdin布居分析的结果，以及分子的偶极矩信息。
+>>>>>>> 7155e6f1d1c37b2357b32b21f9d4e780226b0dbb
 
 .. code-block:: 
 

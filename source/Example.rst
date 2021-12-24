@@ -24,7 +24,8 @@
      RHF              #Restricted Hartree-Fock
      Occupied         
      3 0 1 1          #对应每个不可约表示分子轨道中双电子占据的轨道数分别为3、0、1、1
-                      #注：如果只需要指定总电子数，而不关心每个不可约表示分别的占据数，则建议用Charge、SpinMulti而非Occupied来指定，见后续示例4等
+                      #注：如果只需要指定总电子数，而不关心每个不可约表示分别的占据数，则建议用
+                      #Charge、SpinMulti而非Occupied来指定，见后续示例4等
      $END
 
      $GRAD            #计算HF梯度。注意DFT梯度需要用$RESP而非$GRAD，具体见示例11
@@ -902,7 +903,9 @@
      c(2v)
      $END
      
-     $XUANYUAN      #积分非直接计算。对于不是特别小的分子（例如10个原子以上的分子），应在$XUANYUAN里添加direct关键词
+     #积分非直接计算。对于不是特别小的分子（例如10个原子以上的分子），
+     #应在$XUANYUAN里添加direct关键词
+     $XUANYUAN
      $END
      
      $SCF
@@ -919,7 +922,7 @@
      geom 
      $end
 
-示例12：非阿贝尔群对称性的条件下进行TD-DFT梯度的计算。算例下载链接 :download:`test068.zip <files/test068.zip>`
+示例12：非阿贝尔群对称性下进行TD-DFT梯度的计算。算例下载链接 :download:`test068.zip <files/test068.zip>`
 
 .. code-block:: bdf
 
@@ -982,7 +985,7 @@
      method      #指定TD-DFT激发态计算
       2
      iroot
-      1 2        # lowest and second lowest root
+      1 2        # the first and the second lowest roots
      nfiles
       1
      jahnteller  
@@ -1114,7 +1117,7 @@
       2
      itest        # must specified in SA-TDDFT
       1
-     icorrect     # spin-adapted correction to U-TDDFT,must specified in SA-TDDFT
+     icorrect     # spin-adapted correction to U-TDDFT, must be specified in SA-TDDFT
       1
      iprt
       3
@@ -1138,7 +1141,7 @@
       2
      nfiles
       1
-     iroot        #指定计算$tddft模块计算的第一个态的梯度
+     iroot        #指定计算tddft模块计算的第一个态的梯度
       1
      $end
 

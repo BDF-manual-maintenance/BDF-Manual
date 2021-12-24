@@ -19,9 +19,9 @@
     &= \alpha(\rho_{A}-C)+\beta
 
 以上两个公式称为 *校准方程* （calibration equation），其中 :math:`\delta^{IS}` 是测试体系A相对于参照系R的同质异能位移实验值，
-ED/CD值 :math:`\rho_{A}` 和 :math:`\rho_{R}` 可以通过理论计算获得，
+ED或CD值 :math:`\rho_{A}` 和 :math:`\rho_{R}` 可以通过理论计算获得，
 :math:`\alpha` 和 :math:`\beta` 是待拟合的参数，其中 :math:`\alpha` 也称为核标定常数（nuclear calibration constant），
-:math:`C` 是任意量，一般取ED/CD的整数部分。考虑到 :math:`\rho_{R}` 理论值存在误差，一般用后一个公式进行拟合。
+:math:`C` 是任意量，一般取ED或CD的整数部分。考虑到 :math:`\rho_{R}` 理论值存在误差，一般用后一个公式进行拟合。
 
 .. note::
 
@@ -79,17 +79,16 @@ ED/CD值 :math:`\rho_{A}` 和 :math:`\rho_{R}` 可以通过理论计算获得，
   
   $xuanyuan
    direct    # direct SCF
-   scalar
-   heff      # sf-X2C-AU；ED必须
+   heff      # sf-X2C-AU；计算ED必须选21-23中的一个
      23
-   nuclear   # 高斯有限核模型；ED必须
+   nuclear   # 高斯有限核模型；ED必须设为1
      1
   $end
   
   $scf
    charge
      -4
-   spin
+   spinmulti
      5
    uks
    dft functional
@@ -141,7 +140,7 @@ ED结果以及 :math:`\delta^{IS}` 实验值 :cite:`neese2009` 列于下表：
 
 #. 样本太少
 #. 穆斯堡尔谱是对固态的真实体系测量的，与计算所用的气态离子模型不一致。用团簇模型、溶剂化模型 :cite:`papai2013` 、嵌入模型 :cite:`autschbach2021` 可能更合适。
-#. 某些体系存在强关联，需要测试其它泛函，或者换成适合描述强关联体系的方法
+#. 铁的某些化合物存在强关联，需要测试其它泛函，或者换成适合描述强关联体系的方法
 
 有了校准方程后，就可以对一些铁的体系预测 :math:`\delta^{IS}` 。例如交错状的二环戊二烯基铁 :cite:`holland2017` ，
 通过以上密度泛函理论计算得到ED为14554.25 a.u.，代入校准方程得到 :math:`\delta^{IS}` 为0.37 mm/s，
@@ -157,5 +156,5 @@ ED结果以及 :math:`\delta^{IS}` 实验值 :cite:`neese2009` 列于下表：
     \ln\alpha_i = A + i\,B, \qquad i = 1, 2, \ldots
 
 通过线性拟合得到参数A、B，再通过外推（i的间隔取-0.5或-1），即可得到更陡峭的高斯指数。
-一般加入2-5个更陡峭的 *s* 函数、1-3个更陡峭的 *p* 函数即可满足要求，但是要避免用1.0E+11以上的高斯指数，
+一般加入2-5个更陡峭的 *s* 函数、1-3个更陡峭的 *p* 函数即可满足要求，但是要避免用10 :sup:`11` 以上的高斯指数，
 因为这可能会造成数值不稳定。

@@ -6,12 +6,12 @@ BDF的自洽场包括Hartree-Fock和Kohn-Sham方法。
 限制性Hartree-Fock方法
 -----------------------------------------------------------------
 
-对于所有电子均成对的偶数电子体系，应使用 ``RHF`` 方法进行Hartree-Fock计算，相关内容已在 :ref:`第一个算例章节<FirstExample>` 提及，这里不再赘述。
+限制性Hatree-Fock方法(RHF)的示例已在 :ref:`第一个算例一节<FirstExample>` 提及，这里不再赘述。
 
 非限制性Hartree-Fock方法
 -----------------------------------------------------------------
 
-对于有不成对电子的体系，需要用 ``UHF`` 或者限制性开壳层Hartree-Fock （restricted open-shell Hartree-Fock）方法。
+如果分子体系有不配对电子，需要用非限制性Hatree-Fock (Unrestricted Hatree-Fock, UHF) 或者限制性开壳层Hartree-Fock （Restricted open-shell Hartree-Fock, ROHF）方法。
 对于奇数电子体系，BDF默认自旋多重度为2，且利用UHF计算。例如计算 :math:`\ce{C3H5}` 分子，
 
 .. code-block:: bdf

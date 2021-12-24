@@ -370,17 +370,14 @@ SCF收敛后，系统会再一次打印分子轨道的Mos信息，
   method
    flmo
   nprocs
-   4  # ask for 4 processes to perform FLMO calculation
+   2  # ask for 4 processes to perform FLMO calculation
   spinocc
   # Set +1 spin population on atom 9 (O), set -1 spin population on atom 16 (Cu)
    9 +1 16 -1
   # Add no buffer atoms, except for those necessary for saturating dangling bonds.
-  # Minimizing the buffer radius helps keeping the spin centers in different fragments
+  # Minimizing the buffer radius helps keeping the spin centers localized in different fragments
   radbuff
    0
-  # Use the PHO method to treat the subsystem boundaries. This is more stable than
-  # hydrogen link atoms for systems with small or no buffer
-  PHO
   $end
   
   $compass
@@ -531,6 +528,41 @@ FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用�
       Sum:    -0.0000    0.0000
 
 可看出，Cu原子的自旋密度为 **-0.5701**， 9O原子的自旋密度为 **0.6562** ，其符号与预先指定的自旋相符，表明计算确实收敛到了所需要的开壳层单重态。注意此处自旋密度的绝对值小于1，说明Cu和9O上的自旋密度并不是严格定域在这两个原子上的，而是有一部分离域到了旁边的原子上。
+
+以上算例 ``autofrag`` 模块输入的写法看似复杂，但是其中的 ``spinocc`` 和 ``radbuff`` 关键字对于FLMO方法而言不是必需的，也即以下写法的输入文件仍能成功运行，只不过不能确保Cu和O的自旋取向是用户指定的取向：
+
+.. code-block::
+
+  $autofrag
+  method
+   flmo
+  nprocs
+   4
+  $end
+
+而 ``nprocs`` 表示对各个子体系的SCF计算进行并行化，即允许同时计算多个子体系，且任何时刻同时计算的子体系不超过4个。为讨论方便起见，假设环境变量 ``OMP_NUM_THREADS`` 设定为8。则
+
+.. code-block::
+
+  nprocs
+   4
+
+表示：
+
+ 1. 程序开始进行子体系计算时，会同时调用4个并发的BDF进程，每个进程计算一个子体系。如果子体系总数N小于4个，则只调用N个并发的BDF进程。
+ 2. 每个BDF进程使用2个OpenMP线程。当子体系总数小于4个时，有的子体系计算可能使用3个或4个OpenMP线程，但整个计算任务同时并发的OpenMP线程数始终不超过8个。
+ 3. 在计算刚开始时，整个计算恰好使用8个OpenMP线程，但随着计算接近结束，当只剩余不到4个子体系尚未计算完成时，整个计算所用的OpenMP线程数可能小于8个。
+
+一般而言， ``nprocs`` 过小或过大都有可能影响计算效率，但 ``nprocs`` 不会影响计算结果。决定 ``nprocs`` 的最优值的因素主要有两个：
+
+ 1. 因OpenMP的并行效率一般低于100%，所以例如同时运行4个用时相同的任务，每个任务使用2个OpenMP线程，所用时间一般小于每个任务依次运行，且每个任务使用8个OpenMP线程所用的时间。
+ 2. 各个子体系的计算时间并不完全相同，甚至可能存在数倍的差别。仍以同时运行4个任务为例，如某些任务所用时间明显较其他任务长，则同时计算这4个子体系、每个子体系使用2个线程，可能反倒比依次计算、每个子体系使用8个线程更慢，因为当同时计算这4个子体系时，在计算后期一部分计算资源会闲置。这也就是所谓的负载均衡问题。
+ 
+To be done
+
+因此， ``nprocs`` 太小或太大，均有可能导致计算效率降低。一般 ``nprocs`` 设为子体系总数的1/5~1/3左右比较适宜，例外情况是如果已知该计算的各个子体系计算量相仿的话， ``nprocs`` 可以设得大一些。
+
+如果省略 ``nprocs`` 关键词，等价于将 ``nprocs`` 设为1，程序会依次计算所有子体系，每个子体系占用8个OpenMP线程，且每次待一个子体系计算结束后再计算下一个子体系。计算结果相比使用 ``nprocs`` 不会有任何区别，只是计算效率可能会有所降低。
 
 .. _iOI-Example:
 
@@ -714,7 +746,7 @@ iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采
  Elapsed time of post-processing: 0.04 s
  Total elapsed time of this iteration: 33.71 s
 
-此时程序自动判断这些子体系的大小已经足以将体系的LMO收敛到所需精度，因而iOI宏迭代收敛，进行iOI全局计算。iOI全局计算的输出与FLMO全局计算类似，但为了进一步加快Fock矩阵的块对角化，在iOI全局计算里，某些已经收敛的LMO会被冻结，从而降低需要块对角化的Fock矩阵的维度，但也引入了少许误差（一般在 :math:``10^{-6} \sim 10^{-5} \textrm{Hartree}`` 数量级）。以最后一步SCF迭代为例：
+此时程序自动判断这些子体系的大小已经足以将体系的LMO收敛到所需精度，因而iOI宏迭代收敛，进行iOI全局计算。iOI全局计算的输出与FLMO全局计算类似，但为了进一步加快Fock矩阵的块对角化，在iOI全局计算里，某些已经收敛的LMO会被冻结，从而降低需要块对角化的Fock矩阵的维度，但也引入了少许误差（一般在 :math:`10^{-6} \sim 10^{-5} \textrm{Hartree}`数量级）。以最后一步SCF迭代为例：
 
 .. code-block:: bdf
 
