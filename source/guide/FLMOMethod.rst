@@ -362,7 +362,7 @@ SCF收敛后，系统会再一次打印分子轨道的Mos信息，
 利用FLMO计算开壳层单重态（自动分片）
 --------------------------------------------
 
-研究单分子磁体以及某些催化体系等，常遇到所谓反铁磁耦合的态，又称开壳层单重态。开壳层单重态，两个自旋相反的电子以开壳层的形式占据在不同的原子中心。BDF可以结合FLMO方法计算开壳层单重态。例如，下述算例采用FLMO方法计算一个含有Cu(II)和氮氧稳定自由基的体系的自旋破缺基态：
+研究单分子磁体以及某些催化体系等，常遇到所谓反铁磁耦合的态，又称开壳层单重态。开壳层单重态一般由两个自旋相反的电子以开壳层的形式占据在不同的原子中心，但也可能涉及多个单电子。BDF可以结合FLMO方法计算开壳层单重态。例如，下述算例采用FLMO方法计算一个含有Cu(II)和氮氧稳定自由基的体系的自旋破缺基态：
 
 .. code-block::
 
@@ -370,7 +370,7 @@ SCF收敛后，系统会再一次打印分子轨道的Mos信息，
   method
    flmo
   nprocs
-   2  # ask for 4 processes to perform FLMO calculation
+   2  # ask for 2 processes to perform FLMO calculation
   spinocc
   # Set +1 spin population on atom 9 (O), set -1 spin population on atom 16 (Cu)
    9 +1 16 -1
@@ -449,13 +449,13 @@ FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用�
    
     Generate BDF input file ....
 
-这里可以看出，我们产生了两个分子片段，指定了分子片 **1** 由17个原子组成，自旋多重度指认为2，分子片 **2** 由9个原子组成，自旋多重度也指认为2，但自旋方向和分子片 **1** 相反，也即beta电子比alpha电子多一个，而不是alpha电子比beta电子多一个。随后会分别计算2个分子片，提示信息如下：
+这里可以看出，我们产生了两个分子片段，指定了分子片 **1** 由17个原子组成，自旋多重度指认为2，分子片 **2** 由9个原子组成，自旋多重度也指认为2，但自旋方向和分子片 **1** 相反，也即beta电子比alpha电子多一个，而不是alpha电子比beta电子多一个。随后会分别计算2个分子片，提示信息如下（假设环境变量 ``OMP_NUM_THREADS`` 设为4）：
 
 .. code-block:: bdf
 
   Starting subsystem calculations ...
-  Number of parallel processes:  4
-  Number of OpenMP threads per process:  1
+  Number of parallel processes:  2
+  Number of OpenMP threads per process:  2
   Please refer to test117.fragment*.out for detailed output
   
   Total number of not yet converged subsystems:  2
@@ -537,10 +537,19 @@ FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用�
   method
    flmo
   nprocs
-   4
+   2
   $end
 
-而 ``nprocs`` 表示对各个子体系的SCF计算进行并行化，即允许同时计算多个子体系，且任何时刻同时计算的子体系不超过4个。为讨论方便起见，假设环境变量 ``OMP_NUM_THREADS`` 设定为8。则
+而 ``nprocs`` 表示对各个子体系的SCF计算进行并行化，以上述算例为例，即允许同时计算多个子体系，且任何时刻同时计算的子体系不超过2个。如果省略 ``nprocs`` 关键词，等价于将 ``nprocs`` 设为1，程序会依次计算所有子体系，每个子体系占用8个OpenMP线程，且每次待一个子体系计算结束后再计算下一个子体系。计算结果相比使用 ``nprocs`` 不会有任何区别，只是计算效率可能会有所降低。因此 ``nprocs`` 只影响FLMO计算的效率，而不影响其计算结果，也即以下写法同样可以成功运行，但计算时间可能相比不写 ``nprocs`` 略长：
+
+.. code-block::
+
+  $autofrag
+  method
+   flmo
+  $end
+
+需要注意的是 ``nprocs`` 设置过大或过小，均可能导致计算时间增加。为讨论方便起见，假设在某较大分子的FLMO计算中，环境变量 ``OMP_NUM_THREADS`` 设定为8。则
 
 .. code-block::
 
@@ -553,16 +562,12 @@ FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用�
  2. 每个BDF进程使用2个OpenMP线程。当子体系总数小于4个时，有的子体系计算可能使用3个或4个OpenMP线程，但整个计算任务同时并发的OpenMP线程数始终不超过8个。
  3. 在计算刚开始时，整个计算恰好使用8个OpenMP线程，但随着计算接近结束，当只剩余不到4个子体系尚未计算完成时，整个计算所用的OpenMP线程数可能小于8个。
 
-一般而言， ``nprocs`` 过小或过大都有可能影响计算效率，但 ``nprocs`` 不会影响计算结果。决定 ``nprocs`` 的最优值的因素主要有两个：
+决定 ``nprocs`` 的最优值的因素主要有两个：
 
  1. 因OpenMP的并行效率一般低于100%，所以例如同时运行4个用时相同的任务，每个任务使用2个OpenMP线程，所用时间一般小于每个任务依次运行，且每个任务使用8个OpenMP线程所用的时间。
  2. 各个子体系的计算时间并不完全相同，甚至可能存在数倍的差别。仍以同时运行4个任务为例，如某些任务所用时间明显较其他任务长，则同时计算这4个子体系、每个子体系使用2个线程，可能反倒比依次计算、每个子体系使用8个线程更慢，因为当同时计算这4个子体系时，在计算后期一部分计算资源会闲置。这也就是所谓的负载均衡问题。
- 
-To be done
 
-因此， ``nprocs`` 太小或太大，均有可能导致计算效率降低。一般 ``nprocs`` 设为子体系总数的1/5~1/3左右比较适宜，例外情况是如果已知该计算的各个子体系计算量相仿的话， ``nprocs`` 可以设得大一些。
-
-如果省略 ``nprocs`` 关键词，等价于将 ``nprocs`` 设为1，程序会依次计算所有子体系，每个子体系占用8个OpenMP线程，且每次待一个子体系计算结束后再计算下一个子体系。计算结果相比使用 ``nprocs`` 不会有任何区别，只是计算效率可能会有所降低。
+因此， ``nprocs`` 太小或太大，均有可能导致计算效率降低。一般 ``nprocs`` 设为子体系总数的1/5~1/3左右比较适宜，例外情况是如果已知该计算的各个子体系计算量相仿的话， ``nprocs`` 可以设得大一些，例如在本小节开头的算例中，虽然只有两个子体系，但是其中较小的子体系含有过渡金属原子Cu，而较大的子体系是纯有机体系，因此两个子体系的计算时间相仿，可以同时计算。
 
 .. _iOI-Example:
 
@@ -663,6 +668,8 @@ iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采
   FLMO
   $end
 
+注意在iOI计算中， ``nprocs`` 关键字的含义和FLMO计算相同，也需要根据分子的大小来选择合适的值，且 ``nprocs`` 的不同取值仍然只是影响计算速度而不影响计算结果。和FLMO计算的区别在于，iOI计算涉及多步宏迭代（见下），每步宏迭代的子体系数目是逐步减小的，因此 ``nprocs`` 的最优取值应当保守一些，例如取为第0步宏迭代子体系数目的1/10~1/5。
+
 程序一开始将该分子分为5个分子片：
 
 .. code-block:: bdf
@@ -695,7 +702,7 @@ iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采
  Number of OpenMP threads per process:  2
  Please refer to test106.fragment*.out for detailed output
 
- Macro-iter 1:
+ Macro-iter 0:
  Total number of not yet converged subsystems:  5
  List of not yet converged subsystems:  [4, 1, 2, 3, 5]
  Finished calculating subsystem   4 (  1 of   5)
@@ -729,7 +736,7 @@ iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采
 
 .. code-block:: bdf
 
- Macro-iter 2:
+ Macro-iter 1:
  Total number of not yet converged subsystems:  3
  List of not yet converged subsystems:  [2, 3, 1]
  Finished calculating subsystem   3 (  1 of   3)
