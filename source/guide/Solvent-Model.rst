@@ -1,8 +1,8 @@
 溶剂化模型
 ================================================
 
-溶剂化模型用于计算溶质和溶剂之间的相互作用，一般分为隐式溶剂模型（连续介质模型）和显式模型两种。 在BDF中，对于连续溶剂模型，我们采用
-ddCOSMO(domain-decomposition COSMO solvation model)，对于显示溶剂模型我们采用QM/MM方法，结合pDymamo2.0程序包进行计算。
+溶剂化模型用于计算溶质和溶剂之间的相互作用，一般分为隐式溶剂模型（连续介质模型）和显式溶剂模型两种。 在BDF中，对于连续溶剂模型，我们采用
+ddCOSMO（domain-decomposition COSMO solvation model），对于显示溶剂模型我们采用QM/MM方法，结合pDymamo2.0程序包进行计算。
 
 溶剂化效应计算
 ------------------------------------------------
@@ -42,105 +42,105 @@ BDF目前支持基态溶剂化效应计算，包括HF和DFT方法。以下是甲
     medium
   $END
 
-其中，在 ``SCF`` 中加 ``solvent`` 关键字，表示要进行溶剂化效应计算，紧跟一行可以输入溶剂类型，这里是 ``water`` 。BDF中
-支持的溶剂类型列表如下：
+其中，在 ``SCF`` 中加入 ``solvent`` 关键词，表示要进行溶剂化效应计算，紧跟一行可以输入溶剂类型，这里是 ``water`` 。
+BDF中支持的溶剂类型列表如下：
 
 .. table::
 
-   ======================================================= ============================================================ 
-    Water :math:`{\epsilon}` =78.3553                       Butanone :math:`{\epsilon}` =18.246                  
-    Acetonitrile :math:`{\epsilon}` =35.688                 ButanoNitrile :math:`{\epsilon}` =24.291             
-    Methanol :math:`{\epsilon}` =32.613                     ButylAmine :math:`{\epsilon}` =4.6178                
-    Ethanol :math:`{\epsilon}` =24.852                      ButylEthanoate :math:`{\epsilon}` =4.9941            
-    IsoQuinoline :math:`{\epsilon}` =11.00                  CarbonDiSulfide :math:`{\epsilon}` =2.6105           
-    Quinoline :math:`{\epsilon}` =9.16                      Cis-1,2-DiMethylCycloHexane :math:`{\epsilon}` =2.06 
-    Chloroform :math:`{\epsilon}` =4.7113                   Cis-Decalin :math:`{\epsilon}` =2.2139               
-    DiethylEther :math:`{\epsilon}` =4.24                   CycloHexanone :math:`{\epsilon}` =15.619             
-    Dichloromethane :math:`{\epsilon}` =8.93                CycloPentane :math:`{\epsilon}` =1.9608              
-    DiChloroEthane :math:`{\epsilon}` =10.125               CycloPentanol :math:`{\epsilon}` =16.989             
-    CarbonTetraChloride :math:`{\epsilon}` =2.2280          CycloPentanone :math:`{\epsilon}` =13.58             
-    Benzene :math:`{\epsilon}` =2.2706                      Decalin-mixture :math:`{\epsilon}` =2.196            
-    Toluene :math:`{\epsilon}` =2.3741                      DiBromomEthane :math:`{\epsilon}` =7.2273            
-    ChloroBenzene :math:`{\epsilon}` =5.6968                DiButylEther :math:`{\epsilon}` =3.0473              
-    NitroMethane :math:`{\epsilon}` =36.562                 DiEthylAmine :math:`{\epsilon}` =3.5766              
-    Heptane :math:`{\epsilon}` =1.9113                      DiEthylSulfide :math:`{\epsilon}` =5.723             
-    CycloHexane :math:`{\epsilon}` =2.0165                  DiIodoMethane :math:`{\epsilon}` =5.32               
-    Aniline :math:`{\epsilon}` =6.8882                      DiIsoPropylEther :math:`{\epsilon}` =3.38            
-    Acetone :math:`{\epsilon}` =20.493                      DiMethylDiSulfide :math:`{\epsilon}` =9.6            
-    TetraHydroFuran :math:`{\epsilon}` =7.4257              DiPhenylEther :math:`{\epsilon}` =3.73               
-    DiMethylSulfoxide :math:`{\epsilon}` =46.826            DiPropylAmine :math:`{\epsilon}` =2.9112             
-    Argon :math:`{\epsilon}` =1.430                         e-1,2-DiChloroEthene :math:`{\epsilon}` =2.14        
-    Krypton :math:`{\epsilon}` =1.519                       e-2-Pentene :math:`{\epsilon}` =2.051                
-    Xenon :math:`{\epsilon}` =1.706                         EthaneThiol :math:`{\epsilon}` =6.667                
-    n-Octanol :math:`{\epsilon}` =9.8629                    EthylBenzene :math:`{\epsilon}` =2.4339              
-    1,1,1-TriChloroEthane :math:`{\epsilon}` =7.0826        EthylEthanoate :math:`{\epsilon}` =5.9867            
-    1,1,2-TriChloroEthane :math:`{\epsilon}` =7.1937        EthylMethanoate :math:`{\epsilon}` =8.3310           
-    1,2,4-TriMethylBenzene :math:`{\epsilon}` =2.3653       EthylPhenylEther :math:`{\epsilon}` =4.1797          
-    1,2-DiBromoEthane :math:`{\epsilon}` =4.9313            FluoroBenzene :math:`{\epsilon}` =5.42               
-    1,2-EthaneDiol :math:`{\epsilon}` =40.245               Formamide :math:`{\epsilon}` =108.94                 
-    1,4-Dioxane :math:`{\epsilon}` =2.2099                  FormicAcid :math:`{\epsilon}` =51.1                  
-    1-Bromo-2-MethylPropane :math:`{\epsilon}` =7.7792      HexanoicAcid :math:`{\epsilon}` =2.6
-    1-BromoOctane :math:`{\epsilon}` =5.0244                IodoBenzene :math:`{\epsilon}` =4.5470              
-    1-BromoPentane :math:`{\epsilon}` =6.269                IodoEthane :math:`{\epsilon}` =7.6177
-    1-BromoPropane :math:`{\epsilon}` =8.0496               IodoMethane :math:`{\epsilon}` =6.8650
-    1-Butanol :math:`{\epsilon}` =17.332                    IsoPropylBenzene :math:`{\epsilon}` =2.3712
-    1-ChloroHexane :math:`{\epsilon}` =5.9491               m-Cresol :math:`{\epsilon}` =12.44
-    1-ChloroPentane :math:`{\epsilon}` =6.5022              Mesitylene :math:`{\epsilon}` =2.2650
-    1-ChloroPropane :math:`{\epsilon}` =8.3548              MethylBenzoate :math:`{\epsilon}` =6.7367
-    1-Decanol :math:`{\epsilon}` =7.5305                    MethylButanoate :math:`{\epsilon}` =5.5607
-    1-FluoroOctane :math:`{\epsilon}` =3.89                 MethylCycloHexane :math:`{\epsilon}` =2.024
-    1-Heptanol :math:`{\epsilon}` =11.321                   MethylEthanoate :math:`{\epsilon}` =6.8615
-    1-Hexanol :math:`{\epsilon}` =12.51                     MethylMethanoate :math:`{\epsilon}` =8.8377
-    1-Hexene :math:`{\epsilon}` =2.0717                     MethylPropanoate :math:`{\epsilon}` =6.0777
-    1-Hexyne :math:`{\epsilon}` =2.615                      m-Xylene :math:`{\epsilon}` =2.3478
-    1-IodoButane :math:`{\epsilon}` =6.173                  n-ButylBenzene :math:`{\epsilon}` =2.36
-    1-IodoHexaDecane :math:`{\epsilon}` =3.5338             n-Decane :math:`{\epsilon}` =1.9846
-    1-IodoPentane :math:`{\epsilon}` =5.6973                n-Dodecane :math:`{\epsilon}` =2.0060      
-    1-IodoPropane :math:`{\epsilon}` =6.9626                n-Hexadecane :math:`{\epsilon}` =2.0402   
-    1-NitroPropane :math:`{\epsilon}` =23.73                n-Hexane :math:`{\epsilon}` =1.8819 
-    1-Nonanol :math:`{\epsilon}` =8.5991                    NitroBenzene :math:`{\epsilon}` =34.809       
-    1-Pentanol :math:`{\epsilon}` =15.13                    NitroEthane :math:`{\epsilon}` =28.29      
-    1-Pentene :math:`{\epsilon}` =1.9905                    n-MethylAniline :math:`{\epsilon}` =5.96       
-    1-Propanol :math:`{\epsilon}` =20.524                   n-MethylFormamide-mixture :math:`{\epsilon}` =181.56
-    2,2,2-TriFluoroEthanol :math:`{\epsilon}` =26.726       n,n-DiMethylAcetamide :math:`{\epsilon}` =37.781   
-    2,2,4-TriMethylPentane :math:`{\epsilon}` =1.9358       n,n-DiMethylFormamide :math:`{\epsilon}` =37.219   
-    2,4-DiMethylPentane :math:`{\epsilon}` =1.8939          n-Nonane :math:`{\epsilon}` =1.9605    
-    2,4-DiMethylPyridine :math:`{\epsilon}` =9.4176         n-Octane :math:`{\epsilon}` =1.9406       
-    2,6-DiMethylPyridine :math:`{\epsilon}` =7.1735         n-Pentadecane :math:`{\epsilon}` =2.0333       
-    2-BromoPropane :math:`{\epsilon}` =9.3610               n-Pentane :math:`{\epsilon}` =1.8371       
-    2-Butanol :math:`{\epsilon}` =15.944                    n-Undecane :math:`{\epsilon}` =1.9910   
-    2-ChloroButane :math:`{\epsilon}` =8.3930               o-ChloroToluene :math:`{\epsilon}` =4.6331     
-    2-Heptanone :math:`{\epsilon}` =11.658                  o-Cresol :math:`{\epsilon}` =6.76 
-    2-Hexanone :math:`{\epsilon}` =14.136                   o-DiChloroBenzene :math:`{\epsilon}` =9.9949         
-    2-MethoxyEthanol :math:`{\epsilon}` =17.2               o-NitroToluene :math:`{\epsilon}` =25.669
-    2-Methyl-1-Propanol :math:`{\epsilon}` =16.777          o-Xylene :math:`{\epsilon}` =2.5454
-    2-Methyl-2-Propanol :math:`{\epsilon}` =12.47           Pentanal :math:`{\epsilon}` =10.0
-    2-MethylPentane :math:`{\epsilon}` =1.89                PentanoicAcid :math:`{\epsilon}` =2.6924
-    2-MethylPyridine :math:`{\epsilon}` =9.9533             PentylAmine :math:`{\epsilon}` =4.2010     
-    2-NitroPropane :math:`{\epsilon}` =25.654               PentylEthanoate :math:`{\epsilon}` =4.7297   
-    2-Octanone :math:`{\epsilon}` =9.4678                   PerFluoroBenzene :math:`{\epsilon}` =2.029   
-    2-Pentanone :math:`{\epsilon}` =15.2                    p-IsoPropylToluene :math:`{\epsilon}` =2.2322   
-    2-Propanol :math:`{\epsilon}` =19.264                   Propanal :math:`{\epsilon}` =18.5   
-    2-Propen-1-ol :math:`{\epsilon}` =19.011                PropanoicAcid :math:`{\epsilon}` =3.44   
-    3-MethylPyridine :math:`{\epsilon}` =11.645             PropanoNitrile :math:`{\epsilon}` =29.324   
-    3-Pentanone :math:`{\epsilon}` =16.78                   PropylAmine :math:`{\epsilon}` =4.9912
-    4-Heptanone :math:`{\epsilon}` =12.257                  PropylEthanoate :math:`{\epsilon}` =5.5205
-    4-Methyl-2-Pentanone :math:`{\epsilon}` =12.887         p-Xylene :math:`{\epsilon}` =2.2705   
-    4-MethylPyridine :math:`{\epsilon}` =11.957             Pyridine :math:`{\epsilon}` =12.978   
-    5-Nonanone :math:`{\epsilon}` =10.6                     sec-ButylBenzene :math:`{\epsilon}` =2.3446    
-    AceticAcid :math:`{\epsilon}` =6.2528                   tert-ButylBenzene :math:`{\epsilon}` =2.3447     
-    AcetoPhenone :math:`{\epsilon}` =17.44                  TetraChloroEthene :math:`{\epsilon}` =2.268   
-    a-ChloroToluene :math:`{\epsilon}` =6.7175              TetraHydroThiophene-s,s-dioxide :math:`{\epsilon}` =43.962 
-    Anisole :math:`{\epsilon}` =4.2247                      Tetralin :math:`{\epsilon}` =2.771           
-    Benzaldehyde :math:`{\epsilon}` =18.220                 Thiophene :math:`{\epsilon}` =2.7270 
-    BenzoNitrile :math:`{\epsilon}` =25.592                 Thiophenol :math:`{\epsilon}` =4.2728 
-    BenzylAlcohol :math:`{\epsilon}` =12.457                trans-Decalin :math:`{\epsilon}` =2.1781             
-    BromoBenzene :math:`{\epsilon}` =5.3954                 TriButylPhosphate :math:`{\epsilon}` =8.1781            
-    BromoEthane :math:`{\epsilon}` =9.01                    TriChloroEthene :math:`{\epsilon}` =3.422           
-    Bromoform :math:`{\epsilon}` =4.2488                    TriEthylAmine :math:`{\epsilon}` =2.3832            
-    Butanal :math:`{\epsilon}` =13.45                       Xylene-mixture :math:`{\epsilon}` =2.3879           
-    ButanoicAcid :math:`{\epsilon}` =2.9931                 z-1,2-DiChloroEthene :math:`{\epsilon}` =9.2
-   ======================================================= ============================================================ 
+   ========================== ============================= ================================== =============================
+    Water                      :math:`{\epsilon}` =78.3553   Butanone                           :math:`{\epsilon}` =18.246
+    Acetonitrile               :math:`{\epsilon}` =35.688    ButanoNitrile                      :math:`{\epsilon}` =24.291
+    Methanol                   :math:`{\epsilon}` =32.613    ButylAmine                         :math:`{\epsilon}` =4.6178
+    Ethanol                    :math:`{\epsilon}` =24.852    ButylEthanoate                     :math:`{\epsilon}` =4.9941
+    IsoQuinoline               :math:`{\epsilon}` =11.00     CarbonDiSulfide                    :math:`{\epsilon}` =2.6105
+    Quinoline                  :math:`{\epsilon}` =9.16      Cis-1,2-DiMethylCycloHexane        :math:`{\epsilon}` =2.06
+    Chloroform                 :math:`{\epsilon}` =4.7113    Cis-Decalin                        :math:`{\epsilon}` =2.2139
+    DiethylEther               :math:`{\epsilon}` =4.24      CycloHexanone                      :math:`{\epsilon}` =15.619
+    Dichloromethane            :math:`{\epsilon}` =8.93      CycloPentane                       :math:`{\epsilon}` =1.9608
+    DiChloroEthane             :math:`{\epsilon}` =10.125    CycloPentanol                      :math:`{\epsilon}` =16.989
+    CarbonTetraChloride        :math:`{\epsilon}` =2.2280    CycloPentanone                     :math:`{\epsilon}` =13.58
+    Benzene                    :math:`{\epsilon}` =2.2706    Decalin-mixture                    :math:`{\epsilon}` =2.196
+    Toluene                    :math:`{\epsilon}` =2.3741    DiBromomEthane                     :math:`{\epsilon}` =7.2273
+    ChloroBenzene              :math:`{\epsilon}` =5.6968    DiButylEther                       :math:`{\epsilon}` =3.0473
+    NitroMethane               :math:`{\epsilon}` =36.562    DiEthylAmine                       :math:`{\epsilon}` =3.5766
+    Heptane                    :math:`{\epsilon}` =1.9113    DiEthylSulfide                     :math:`{\epsilon}` =5.723
+    CycloHexane                :math:`{\epsilon}` =2.0165    DiIodoMethane                      :math:`{\epsilon}` =5.32
+    Aniline                    :math:`{\epsilon}` =6.8882    DiIsoPropylEther                   :math:`{\epsilon}` =3.38
+    Acetone                    :math:`{\epsilon}` =20.493    DiMethylDiSulfide                  :math:`{\epsilon}` =9.6
+    TetraHydroFuran            :math:`{\epsilon}` =7.4257    DiPhenylEther                      :math:`{\epsilon}` =3.73
+    DiMethylSulfoxide          :math:`{\epsilon}` =46.826    DiPropylAmine                      :math:`{\epsilon}` =2.9112
+    Argon                      :math:`{\epsilon}` =1.430     e-1,2-DiChloroEthene               :math:`{\epsilon}` =2.14
+    Krypton                    :math:`{\epsilon}` =1.519     e-2-Pentene                        :math:`{\epsilon}` =2.051
+    Xenon                      :math:`{\epsilon}` =1.706     EthaneThiol                        :math:`{\epsilon}` =6.667
+    n-Octanol                  :math:`{\epsilon}` =9.8629    EthylBenzene                       :math:`{\epsilon}` =2.4339
+    1,1,1-TriChloroEthane      :math:`{\epsilon}` =7.0826    EthylEthanoate                     :math:`{\epsilon}` =5.9867
+    1,1,2-TriChloroEthane      :math:`{\epsilon}` =7.1937    EthylMethanoate                    :math:`{\epsilon}` =8.3310
+    1,2,4-TriMethylBenzene     :math:`{\epsilon}` =2.3653    EthylPhenylEther                   :math:`{\epsilon}` =4.1797
+    1,2-DiBromoEthane          :math:`{\epsilon}` =4.9313    FluoroBenzene                      :math:`{\epsilon}` =5.42
+    1,2-EthaneDiol             :math:`{\epsilon}` =40.245    Formamide                          :math:`{\epsilon}` =108.94
+    1,4-Dioxane                :math:`{\epsilon}` =2.2099    FormicAcid                         :math:`{\epsilon}` =51.1
+    1-Bromo-2-MethylPropane    :math:`{\epsilon}` =7.7792    HexanoicAcid                       :math:`{\epsilon}` =2.6
+    1-BromoOctane              :math:`{\epsilon}` =5.0244    IodoBenzene                        :math:`{\epsilon}` =4.5470
+    1-BromoPentane             :math:`{\epsilon}` =6.269     IodoEthane                         :math:`{\epsilon}` =7.6177
+    1-BromoPropane             :math:`{\epsilon}` =8.0496    IodoMethane                        :math:`{\epsilon}` =6.8650
+    1-Butanol                  :math:`{\epsilon}` =17.332    IsoPropylBenzene                   :math:`{\epsilon}` =2.3712
+    1-ChloroHexane             :math:`{\epsilon}` =5.9491    m-Cresol                           :math:`{\epsilon}` =12.44
+    1-ChloroPentane            :math:`{\epsilon}` =6.5022    Mesitylene                         :math:`{\epsilon}` =2.2650
+    1-ChloroPropane            :math:`{\epsilon}` =8.3548    MethylBenzoate                     :math:`{\epsilon}` =6.7367
+    1-Decanol                  :math:`{\epsilon}` =7.5305    MethylButanoate                    :math:`{\epsilon}` =5.5607
+    1-FluoroOctane             :math:`{\epsilon}` =3.89      MethylCycloHexane                  :math:`{\epsilon}` =2.024
+    1-Heptanol                 :math:`{\epsilon}` =11.321    MethylEthanoate                    :math:`{\epsilon}` =6.8615
+    1-Hexanol                  :math:`{\epsilon}` =12.51     MethylMethanoate                   :math:`{\epsilon}` =8.8377
+    1-Hexene                   :math:`{\epsilon}` =2.0717    MethylPropanoate                   :math:`{\epsilon}` =6.0777
+    1-Hexyne                   :math:`{\epsilon}` =2.615     m-Xylene                           :math:`{\epsilon}` =2.3478
+    1-IodoButane               :math:`{\epsilon}` =6.173     n-ButylBenzene                     :math:`{\epsilon}` =2.36
+    1-IodoHexaDecane           :math:`{\epsilon}` =3.5338    n-Decane                           :math:`{\epsilon}` =1.9846
+    1-IodoPentane              :math:`{\epsilon}` =5.6973    n-Dodecane                         :math:`{\epsilon}` =2.0060
+    1-IodoPropane              :math:`{\epsilon}` =6.9626    n-Hexadecane                       :math:`{\epsilon}` =2.0402
+    1-NitroPropane             :math:`{\epsilon}` =23.73     n-Hexane                           :math:`{\epsilon}` =1.8819
+    1-Nonanol                  :math:`{\epsilon}` =8.5991    NitroBenzene                       :math:`{\epsilon}` =34.809
+    1-Pentanol                 :math:`{\epsilon}` =15.13     NitroEthane                        :math:`{\epsilon}` =28.29
+    1-Pentene                  :math:`{\epsilon}` =1.9905    n-MethylAniline                    :math:`{\epsilon}` =5.96
+    1-Propanol                 :math:`{\epsilon}` =20.524    n-MethylFormamide-mixture          :math:`{\epsilon}` =181.56
+    2,2,2-TriFluoroEthanol     :math:`{\epsilon}` =26.726    n,n-DiMethylAcetamide              :math:`{\epsilon}` =37.781
+    2,2,4-TriMethylPentane     :math:`{\epsilon}` =1.9358    n,n-DiMethylFormamide              :math:`{\epsilon}` =37.219
+    2,4-DiMethylPentane        :math:`{\epsilon}` =1.8939    n-Nonane                           :math:`{\epsilon}` =1.9605
+    2,4-DiMethylPyridine       :math:`{\epsilon}` =9.4176    n-Octane                           :math:`{\epsilon}` =1.9406
+    2,6-DiMethylPyridine       :math:`{\epsilon}` =7.1735    n-Pentadecane                      :math:`{\epsilon}` =2.0333
+    2-BromoPropane             :math:`{\epsilon}` =9.3610    n-Pentane                          :math:`{\epsilon}` =1.8371
+    2-Butanol                  :math:`{\epsilon}` =15.944    n-Undecane                         :math:`{\epsilon}` =1.9910
+    2-ChloroButane             :math:`{\epsilon}` =8.3930    o-ChloroToluene                    :math:`{\epsilon}` =4.6331
+    2-Heptanone                :math:`{\epsilon}` =11.658    o-Cresol                           :math:`{\epsilon}` =6.76
+    2-Hexanone                 :math:`{\epsilon}` =14.136    o-DiChloroBenzene                  :math:`{\epsilon}` =9.9949
+    2-MethoxyEthanol           :math:`{\epsilon}` =17.2      o-NitroToluene                     :math:`{\epsilon}` =25.669
+    2-Methyl-1-Propanol        :math:`{\epsilon}` =16.777    o-Xylene                           :math:`{\epsilon}` =2.5454
+    2-Methyl-2-Propanol        :math:`{\epsilon}` =12.47     Pentanal                           :math:`{\epsilon}` =10.0
+    2-MethylPentane            :math:`{\epsilon}` =1.89      PentanoicAcid                      :math:`{\epsilon}` =2.6924
+    2-MethylPyridine           :math:`{\epsilon}` =9.9533    PentylAmine                        :math:`{\epsilon}` =4.2010
+    2-NitroPropane             :math:`{\epsilon}` =25.654    PentylEthanoate                    :math:`{\epsilon}` =4.7297
+    2-Octanone                 :math:`{\epsilon}` =9.4678    PerFluoroBenzene                   :math:`{\epsilon}` =2.029
+    2-Pentanone                :math:`{\epsilon}` =15.2      p-IsoPropylToluene                 :math:`{\epsilon}` =2.2322
+    2-Propanol                 :math:`{\epsilon}` =19.264    Propanal                           :math:`{\epsilon}` =18.5
+    2-Propen-1-ol              :math:`{\epsilon}` =19.011    PropanoicAcid                      :math:`{\epsilon}` =3.44
+    3-MethylPyridine           :math:`{\epsilon}` =11.645    PropanoNitrile                     :math:`{\epsilon}` =29.324
+    3-Pentanone                :math:`{\epsilon}` =16.78     PropylAmine                        :math:`{\epsilon}` =4.9912
+    4-Heptanone                :math:`{\epsilon}` =12.257    PropylEthanoate                    :math:`{\epsilon}` =5.5205
+    4-Methyl-2-Pentanone       :math:`{\epsilon}` =12.887    p-Xylene                           :math:`{\epsilon}` =2.2705
+    4-MethylPyridine           :math:`{\epsilon}` =11.957    Pyridine                           :math:`{\epsilon}` =12.978
+    5-Nonanone                 :math:`{\epsilon}` =10.6      sec-ButylBenzene                   :math:`{\epsilon}` =2.3446
+    AceticAcid                 :math:`{\epsilon}` =6.2528    tert-ButylBenzene                  :math:`{\epsilon}` =2.3447
+    AcetoPhenone               :math:`{\epsilon}` =17.44     TetraChloroEthene                  :math:`{\epsilon}` =2.268
+    a-ChloroToluene            :math:`{\epsilon}` =6.7175    TetraHydroThiophene-s,s-dioxide    :math:`{\epsilon}` =43.962
+    Anisole                    :math:`{\epsilon}` =4.2247    Tetralin                           :math:`{\epsilon}` =2.771
+    Benzaldehyde               :math:`{\epsilon}` =18.220    Thiophene                          :math:`{\epsilon}` =2.7270
+    BenzoNitrile               :math:`{\epsilon}` =25.592    Thiophenol                         :math:`{\epsilon}` =4.2728
+    BenzylAlcohol              :math:`{\epsilon}` =12.457    trans-Decalin                      :math:`{\epsilon}` =2.1781
+    BromoBenzene               :math:`{\epsilon}` =5.3954    TriButylPhosphate                  :math:`{\epsilon}` =8.1781
+    BromoEthane                :math:`{\epsilon}` =9.01      TriChloroEthene                    :math:`{\epsilon}` =3.422
+    Bromoform                  :math:`{\epsilon}` =4.2488    TriEthylAmine                      :math:`{\epsilon}` =2.3832
+    Butanal                    :math:`{\epsilon}` =13.45     Xylene-mixture                     :math:`{\epsilon}` =2.3879
+    ButanoicAcid               :math:`{\epsilon}` =2.9931    z-1,2-DiChloroEthene               :math:`{\epsilon}` =9.2
+   ========================== ============================= ================================== =============================
 
 输入介电常数
 --------------------------------------------------------
@@ -169,18 +169,18 @@ BDF目前支持基态溶剂化效应计算，包括HF和DFT方法。以下是甲
 以芥子酸（sinapic acid）为例。为了确定溶质分子的第一水合层，可以采用Amber程序将芥子酸分子置于小的水盒子中进行分子动力学模拟。
 待体系平衡后，可分析溶质分子周围水分子分布情况，从而确定第一水合层。当然，也可以选取多帧结构进行计算，然后取平均。
 
-水合层分子选取可以采用VMD程序完成。假设输入为PDB文件，在命令行中可以选择第一水合层分子，并保存为PDB文件。命令如下：
+水合层分子选取可以采用VMD程序完成。假设输入为pdb文件，在命令行中可以选择第一水合层分子，并保存为pdb文件。命令如下：
 
 .. code-block:: bdf 
 
   atomselect top  "same resid as (within 3.5  of not water)"   # 选择第一水合层
-  atomselect0 writepdb sa.pdb                                  #溶质分子和第一水合层保存于pdb文件
+  atomselect0 writepdb sa.pdb                     #溶质分子和第一水合层保存于pdb文件
 
-上例中选取了距离溶质分子距离3.5埃范围内的所有水分子，并且水分子的三个原子中只要有一个在截断范围内，就选择整个分子。选取结果如图所示：
+上例中选取了与溶质分子相距3.5埃范围内的所有水分子，并且水分子的三个原子中只要有一个在截断范围内，就选择整个分子。选取结果如图所示：
 
 .. figure:: /images/SAtddft.jpg
 
-依据sa.pdb文件中的坐标信息，可以进行TDDFT计算，输入文件如下：
+依据sa.pdb文件中的坐标信息，进行TDDFT计算，输入文件如下：
 
 .. code-block:: bdf
 
@@ -337,17 +337,17 @@ BDF目前支持基态溶剂化效应计算，包括HF和DFT方法。以下是甲
   $END
   # input for tddft
   $tddft
-  imethod   # imethod=1, starts from rhf/rks
+  imethod  # imethod=1, starts from rhf/rks
     1
-  isf       # isf=0, no spin-flip
+  isf      # isf=0, no spin-flip
     0
   itda     # itda=0, TDDFT
     0
   idiag    # Davidson diagonalization for solving Casida equation
     1
-  iroot    # Each irreps, calculate 1 root. on default, 10 roots are calculated for each irreps
-    1
-  memjkop  #maxium memeory for Coulomb and Exchange operator. 1024MW(Mega Words).
+  iroot    # Calculate 1 root for each irrep. By default, 10 roots are calculated
+    1      # for each irrep
+  memjkop  # maxium memeory for Coulomb and Exchange operator. 1024 MW (Mega Words)
     1024 
   $end
 
