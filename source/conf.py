@@ -145,7 +145,7 @@ class BDFLexer(RegexLexer):
         "keywords": [
             (words((
                 'basis', 'charge', 'spin', 'title', 'RI-J','RI-K','RI-C', 'Geometry', 'Group', 'Unit', 'Thresh', 'RS','Heff','Hsoc','Nuclear','Reled', 'Cholesky','Occupy','Alpha','Beta','DFT','NPTRAD','NPTANG','COSXNGRID','Grid','Gridtype','Partitiontype','Numinttype','ThreshRho','ThreshBSS','Coulpot','Coulpotmax','Coulpottol','Maxitter','Vshift','Damp','ThrEne','ThrDen', 'ThreshConverg', 'MaxDiis','Iaufbau','Smeartemp','Blkiop','Iviop','Print','IprtMo','Tollin','IfPair','hpalpha','hpbeta','Pinalpha','Pinbeta','Imethod','Isf','Itda','Ialda','Itest','icorrect','iact','elw','eup','Idiag','Iguess','Crit_e','Cirt_vec','Iroot','Nroot','Istore','Nprt','Cdthrd','Nfiles','Isoc','Ifgs','Imatsoc','Imatrsf','Imatrso','Ntoanalyze','Memjkop','Imemshrink','Solver','Maxcycle','TolGrad','TolEne', 'TolStep','IOpt','Update','ICoord','ILine','Constrain','Hess','ReCalcHess','NumHessStep','Nrootgrad','Maxiter','IntCre','Ishell','Cutcpm','Printgrad','Iprt', 'NOrder', 'NFiles','Imethod','Method','Nrootgrad','Cthrd','Ignore','IRepIRoot','JahnTeller','Pola','States','Pairs','Step','Iprt','Nexcit','Electrans','Dft','Mboys','Hybridboys','Hybridthre','Thresh','Tailcut','Threshpop','Maxcycle','Orbital','Frozocc','Frozvir','Iapair','Nolmocls','Nolmoact','Nolmovir','AVAS','Scri','Iprtmo','Frozen','Symmetry','Nelectron','Core','Delete','Close','Active','Actel','Roots','Guess','Mixorb','Maxmem',
-                'Spinmulti'), suffix=r'\b'),
+                'Spinmulti','icg','igiao','igatom','cgcoord','cgunit'), suffix=r'\b'),
              Name.Builtin),
         ],
         "bool": [
