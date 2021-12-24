@@ -746,7 +746,7 @@ iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采
  Elapsed time of post-processing: 0.04 s
  Total elapsed time of this iteration: 33.71 s
 
-此时程序自动判断这些子体系的大小已经足以将体系的LMO收敛到所需精度，因而iOI宏迭代收敛，进行iOI全局计算。iOI全局计算的输出与FLMO全局计算类似，但为了进一步加快Fock矩阵的块对角化，在iOI全局计算里，某些已经收敛的LMO会被冻结，从而降低需要块对角化的Fock矩阵的维度，但也引入了少许误差（一般在 :math:``10^{-6} \sim 10^{-5} \textrm{Hartree}`` 数量级）。以最后一步SCF迭代为例：
+此时程序自动判断这些子体系的大小已经足以将体系的LMO收敛到所需精度，因而iOI宏迭代收敛，进行iOI全局计算。iOI全局计算的输出与FLMO全局计算类似，但为了进一步加快Fock矩阵的块对角化，在iOI全局计算里，某些已经收敛的LMO会被冻结，从而降低需要块对角化的Fock矩阵的维度，但也引入了少许误差（一般在 :math:`10^{-6} \sim 10^{-5} \textrm{Hartree}`数量级）。以最后一步SCF迭代为例：
 
 .. code-block:: bdf
 
