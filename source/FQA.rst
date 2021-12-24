@@ -12,3 +12,15 @@
 
 **TDDFT的J、K算符可用内存与计算效率**
    memjkop
+
+**内存**
+  xxxxxxxxxx
+
+**2018编译器**
+  xxxxxxxxxx
+
+**Openmp并行**
+  xxxxxxxxxx
+
+**SCF不收敛**
+  xxxxxxxxxx
