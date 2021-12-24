@@ -157,14 +157,14 @@
 
 **加速算法**
 
-:guilabel:`MPEC+COSX`, 参数类型: Bool，可选参数 
+:guilabel:`MPEC+COSX` 参数类型: Bool，可选参数 
 ------------------------------------------------
 利用 `Multipole expansion of Coulomb potential` （MPEC）及 `Chain-Of-Sphere Exchange` （COSX）加速 `SCF`、 `TDDFT` 能量及梯度计算。
 
 默认值: False
 
 
-:guilabel:`RI`, 参数类型: Bool，可选参数 
+:guilabel:`RI` 参数类型: Bool，可选参数 
 ------------------------------------------------
 利用RI加速 `SCF`、 `TDDFT` 或 `MP2` 计算，需要配合RI基组使用。
 
