@@ -46,7 +46,7 @@ COMPASS模块主要完成计算任务的初始化工作，包括读入用户定�
  * RI-K：交换拟合基组
  * RI-C：相关拟合基组
 
- .. code-block:: bdf
+.. code-block:: bdf
 
      $Compass
      Basis
@@ -65,7 +65,7 @@ COMPASS模块主要完成计算任务的初始化工作，包括读入用户定�
 
 ``直角坐标`` 模式
 
- .. code-block:: bdf
+.. code-block:: bdf
 
      $Compass
      Basis
@@ -78,7 +78,7 @@ COMPASS模块主要完成计算任务的初始化工作，包括读入用户定�
 
 ``内坐标`` 模式
 
- .. code-block:: bdf
+.. code-block:: bdf
 
      $Compass
      Basis
@@ -90,6 +90,78 @@ COMPASS模块主要完成计算任务的初始化工作，包括读入用户定�
      End Geometry
      $End
 
+:guilabel:`Restart` 参数类型：Bool型
+-------------------------------------------------------
+使用$BDFTASK.optgeom文件里的坐标，而非Geometry关键词下给定的坐标来进行计算，其中$BDFTASK是输入文件名称去掉后缀.inp后剩余的字符串。注意虽然此时计算不会使用Geometry关键词后的坐标数值，但是Geometry关键词后的坐标并不能省略，而且原子的种类、个数和顺序必须正确，只不过坐标数值可以是任意的而已。例如假设输入文件名为1.inp，而1.optgeom文件的内容为
+
+.. code-block:: bdf
+
+ GEOM
+ O 0. 0. 0.
+ H 0. 0. 2.
+ H 0. 2. 0.
+
+则当1.inp的$compass模块为以下形式时，程序可以正常运行：
+
+.. code-block:: bdf
+
+ $compass
+ ...
+ geometry
+ O 0. 0. 0.
+ H 0. 0. 2.1
+ H 0.1 2.0 0.
+ end geometry
+ restart
+ ...
+ $end
+
+该写法等价于以下输入（即便在以上写法中指定坐标单位为埃也是如此）：
+
+.. code-block:: bdf
+
+ $compass
+ ...
+ geometry
+ O 0. 0. 0.
+ H 0. 0. 2.
+ H 0. 2. 0.
+ end geometry
+ unit
+  bohr
+ ...
+ $end
+
+但1.inp的$compass模块不能按以下的形式写，因为原子数目和.optgeom文件不符：
+
+.. code-block:: bdf
+
+ $compass
+ ...
+ geometry
+ O 0. 0. 0.
+ H 0. 2.1 0.
+ end geometry
+ restart
+ ...
+ $end
+
+也不能写成以下的形式，因为原子的顺序和.optgeom文件不符：
+
+.. code-block:: bdf
+
+ $compass
+ ...
+ geometry
+ H 0. 2.1 0.
+ O 0. 0. 0.
+ H 0. 0. 2.1
+ end geometry
+ restart
+ ...
+ $end
+
+``restart`` 主要用于结构优化的断点续算。仍以1.inp为例，假设1.inp是一个结构优化任务的输入文件，但因优化不收敛、其他程序报错或用户中止计算而非正常结束，则结构优化最后一步的结构保存在1.optgeom内，此时在1.inp的$compass模块内添加restart关键字，然后重新运行1.inp，即可起到从之前结构优化的最后一帧开始继续进行结构优化的作用，而无需手动将1.optgeom的内容拷贝至1.inp内。
 
 :guilabel:`Group` 参数类型：字符串
 --------------------------------------
