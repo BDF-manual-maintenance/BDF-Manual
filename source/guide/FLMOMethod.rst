@@ -423,7 +423,7 @@ SCF收敛后，系统会再一次打印分子轨道的Mos信息，
   $scf
   uks
   dft
-   PBE1PBE
+   PBE0
   spinmulti
    1
   D3
