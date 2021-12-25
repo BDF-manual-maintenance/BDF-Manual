@@ -645,17 +645,18 @@ BDF可以使用非内置基组，此时要把基组数据保存在文本格式�
 .. code-block:: bdf
 
    #! basisexample.sh
-   HF/3-21G 
+   TDDFT/PBE0/3-21g
 
    Geometry
    H   0.000   0.000    0.000
    Cl  0.000   0.000    1.400
    End geometry
 
+
 .. code-block:: bdf
 
    #! basisexample.sh
-   TDDFT/PBE0/3-21g
+   HF/lanl2dz 
 
    Geometry
    H   0.000   0.000    0.000
@@ -679,9 +680,12 @@ BDF可以使用非内置基组，此时要把基组数据保存在文本格式�
 
 **为不同元素指定不同基组** 
 
-如果对不同元素指定不同名称的基组，需要放在 ``basis-block`` ... ``end basis`` 块中，
+简洁输入不支持自定义或者混合基组，必须采用混合输入模式，即在 ``方法/泛函/基组`` 中设置 ``基组`` 为 ``genbas`` , 并添加 **COMPASS** 模块输入，使用 ``basis-block`` ... ``end basis`` 关键词指定基组。
+
+如果对不同元素指定不同名称的基组，需要放在 **COMPASS** 模块的 ``basis-block`` ... ``end basis`` 块中，
 其中第一行是默认基组，之后的行对不同元素指定其它基组，格式为 *元素=基组名* 或者 *元素1,元素2, ...,元素n=基组名* 。
-对于简洁输入，需要在 ``方法/泛函/基组`` 中设置 ``基组`` 为 ``genbas`` , 并添加 **COMPASS** 模块输入，使用 ``basis-block`` 关键词指定基组，例如，
+
+例如，混合输入模式下，对不同原子使用不同基组的如下例：
 
 .. code-block:: bdf
 

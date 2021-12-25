@@ -37,7 +37,6 @@ NMR算例
   $END
 
   $xuanyuan # 单双电子积分相关设定和计算
-  Direct                        # Direct SCF calculation
   $end
 
   $SCF      # 自洽场计算模块

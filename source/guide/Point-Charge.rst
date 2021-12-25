@@ -16,13 +16,10 @@ BDF支持将MM区原子电荷作为点电荷输入进行计算。点电荷以与
   H   0.000000  -0.785178  -0.427319
   End Geometry
   Extcharge  #表示需要输入点电荷
-  point      #表示输入电荷类型为点电荷                                                                                                                                        
-  Check
-  Skeleton
+    point      #表示输入电荷类型为点电荷
   $END
   
   $XUANYUAN
-   direct
   $END
 
   $SCF

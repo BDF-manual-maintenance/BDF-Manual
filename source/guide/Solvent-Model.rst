@@ -21,15 +21,12 @@ BDF目前支持基态溶剂化效应计算，包括HF和DFT方法。以下是甲
     H    0.00000000    0.93500000   -1.08200000
     H    0.00000000    -0.9350000  -1.08200000
   END geometry
-  skeleton
-  Check
   nosym
   unit
    ang
   $END
 
   $xuanyuan
-  direct
   $END
 
   $SCF
@@ -315,15 +312,11 @@ BDF中支持的溶剂类型列表如下：
   H          16.281  12.594   1.885
   H          17.062  11.978   3.013
   END geometry
-  skeleton
-  Check
   nosym
-  unit
-  ang
+  mpec+cosx
   $END
   
   $xuanyuan
-  direct
   $end
   
   $SCF
@@ -335,16 +328,9 @@ BDF中支持的溶剂类型列表如下：
   grid
    medium
   $END
+  
   # input for tddft
   $tddft
-  imethod  # imethod=1, starts from rhf/rks
-    1
-  isf      # isf=0, no spin-flip
-    0
-  itda     # itda=0, TDDFT
-    0
-  idiag    # Davidson diagonalization for solving Casida equation
-    1
   iroot    # Calculate 1 root for each irrep. By default, 10 roots are calculated
     1      # for each irrep
   memjkop  # maxium memeory for Coulomb and Exchange operator. 1024 MW (Mega Words)
