@@ -11,7 +11,7 @@ BDF的自洽场包括Hartree-Fock和Kohn-Sham方法。
 非限制性Hartree-Fock方法
 -----------------------------------------------------------------
 
-对于有不成对电子的体系，需要用 ``UHF`` 或者限制性开壳层Hartree-Fock （restricted open-shell Hartree-Fock）方法。
+对于有不成对电子的体系，需要用 ``UHF`` 方法，此外也可以用限制性开壳层Hartree-Fock （restricted open-shell Hartree-Fock）方法，见后。
 对于奇数电子体系，BDF默认自旋多重度为2，且利用UHF计算。例如计算 :math:`\ce{C3H5}` 分子，
 
 .. code-block:: bdf
@@ -105,7 +105,7 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
 限制性开壳层Hartree-Fock方法
 ------------------------------------------------------------------------------------------
 
-限制性开壳层Hartree-Fock (Restricted open-shell Hartree-Fock - ROHF)可以计算开壳层分子体系。这里给出一个 :math:`\ce{CH2}` 三重态的ROHF算例，
+限制性开壳层Hartree-Fock（Restricted open-shell Hartree-Fock - ROHF）也可以计算开壳层分子体系。这里给出一个 :math:`\ce{CH2}` 三重态的ROHF算例，
 
 .. code-block:: bdf
 
@@ -172,9 +172,9 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
     HOMO-LUMO gap:      -0.06306010 au      -1.71595329 eV
 
 
-RKS/UKS和ROKS计算
+RKS，UKS，和ROKS计算
 -------------------------------------------------
-限制性Kohn-Sham (Restricted Kohn-Sham -- RKS)方法，这里以简洁输入的模式给出一个 :math:`\ce{H2O}`  分子的DFT计算算例，使用了B3lyp泛函。
+对于限制性Kohn-Sham（Restricted Kohn-Sham, RKS）方法，这里以简洁输入的模式给出一个 :math:`\ce{H2O}`  分子的RKS计算算例，使用了B3lyp泛函。
 
 .. code-block:: bdf
 
@@ -245,7 +245,7 @@ RKS/UKS和ROKS计算
     end geometry
 
 .. hint::
-    相比于Hartree-Fock，Kohn-Sham需要在高级输入使用dft关键词执行交换相关泛函。如果是简洁输入，只需指定交换相关泛函和基组。系统会根据自旋态选择使用RKS或UKS，如果要使用ROKS，必须明确输入。
+    相比于Hartree-Fock，Kohn-Sham需要在高级输入使用dft关键词指定交换相关泛函。如果是简洁输入，只需指定交换相关泛函和基组。系统会根据自旋态选择使用RKS或UKS，如果要使用ROKS，必须明确输入。
 
 
 基于RS杂化泛函的Kohn-Sham计算
@@ -257,8 +257,8 @@ CAM-B3LYP等RS杂化泛函，将库伦相互作用分为长短程，
 
     \frac{1}{r_{12}} = \frac{1-[\alpha + \beta \cdot erf(\mu r_{12})]}{r_{12}}+\frac{\alpha + \beta \cdot erf(\mu r_{12})}{r_{12}}
 
-采用BDF高级输入时，可以通过xuanyuan模块中的关键字RS，调整 :math:`\mu` 参数。CAM-B3lyp默认的 :math:`\mu` 参数为0.33。例如 1,3-Butadiene
-分子，利用CAM-B3lyp的RKS计算高级模式输入为，
+采用BDF高级输入时，可以通过xuanyuan模块中的关键词RS，调整 :math:`\mu` 参数。CAM-B3lyp默认的 :math:`\mu` 参数为0.33。例如 1,3-Butadiene
+分子，利用CAM-B3lyp的RKS高级模式输入为，
 
 .. code-block:: bdf
 
@@ -293,10 +293,10 @@ CAM-B3LYP等RS杂化泛函，将库伦相互作用分为长短程，
    $end
 
 
-杂化泛函Hartree-Fock交换项和相关项成分的自定义
--------------------------------------------------
+自定义杂化泛函、双杂化泛函的精确交换项和相关项成分
+-----------------------------------------------------------
 
-对于某些计算，可能需要用户手动调节泛函的Hartree-Fock交换项成分，才能获得满意的精度。此时可在 ``$scf`` 模块里加入 ``facex`` 关键字，例如若要将B3LYP泛函的Hartree-Fock交换项成分由默认的20%改为15%，可以写
+对于某些计算，可能需要用户手动调节泛函的精确交换项成分，才能获得满意的精度。此时可在 ``$scf`` 模块里加入 ``facex`` 关键词，例如若要将B3LYP泛函的精确交换项成分由默认的20%改为15%，可以写
 
 .. code-block:: bdf
 
@@ -308,11 +308,11 @@ CAM-B3LYP等RS杂化泛函，将库伦相互作用分为长短程，
     0.15
    $end
 
-类似地，可以用 ``facco`` 关键字自定义双杂化泛函的MP2相关项成分。注意并不是所有泛函都支持自定义facex和facco（参见 :ref:`SCF模块的关键词列表<scf>` ）。
+类似地，可以用 ``facco`` 关键词自定义双杂化泛函的MP2相关项成分。注意并不是所有泛函都支持自定义facex和facco（参见 :ref:`SCF模块的关键词列表<scf>` ）。
 
 对弱相互作用的色散矫正
 -------------------------------------------------
-常见的交换相关泛函如B3lyp对弱相互作用不能很好的描述，这时，在计算能量或者做分子结构优化时，需要加入色散矫正。BDF采用了Stefan Grimme开发的
+常见的交换相关泛函如B3lyp不能很好地描述弱相互作用，需要在计算能量或者做分子结构优化时，加入色散矫正。BDF采用了Stefan Grimme开发的
 D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入如下，
 
 .. code-block:: bdf
@@ -368,11 +368,11 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
 提高Kohn-Sham计算的积分格点精度
 -------------------------------------------------
 
-虽然BDF默认对不同的泛函，按照精度要求自定义了积分格点，例如Meta-GGA类泛函对积分格点要求很高，BDF默认对Meta-GGA使用Fine类型的格点，
-用户可能还希望能对积分格点进行调节。Kohn-Sham泛函的积分格点可以在SCF模块的输入中通过Grid等关键词定义，Grid的有效值为 ``Ultra coarse`` ,
-``Coarse`` , ``medium`` , ``fine``, ``Ultra fine``, ``sg1`` 等6个，从 ``Ultra coarse`` 到 ``sg1`` 积分格点依次增加，数值积分精度依次提高。
+虽然BDF对不同的泛函按照精度要求定义了默认积分格点（例如Meta-GGA类泛函对积分格点要求很高，BDF默认使用Fine格点），
+用户可能还希望对积分格点进行调节。Kohn-Sham泛函的积分格点可以在SCF模块的输入中通过Grid关键词定义，Grid的有效值为 ``Ultra coarse`` ，
+``Coarse`` ， ``medium`` ， ``fine`` ， ``Ultra fine`` ， ``sg1`` 等6个，从 ``Ultra coarse`` 到 ``sg1`` 积分格点依次增加，数值积分精度依次提高。
 
-例如， :math:`\ce{H2O}` 分子计算采用了M062X泛函，属于Hybrid Meta-GGA泛函，要求密集的积分格点，需要采用BDF的高级输入和简洁输入混合模式，如下所示：
+示例： :math:`\ce{H2O}` 分子的M062X计算。该泛函属于杂化Meta-GGA类型泛函，要求密集的积分格点，因此输入用到了高级输入和简洁输入混合模式，如下所示：
 
 .. code-block:: bdf
 
@@ -427,7 +427,7 @@ BDF在Kohn-Sham计算的开始几步采用 ``Ultra coarse`` 积分格点，如�
      Numerical Grid Generated SUCCESSFULLY! 
     Total and symmetry independent Grid Number:      4352      1181
 
-当能量收敛到0.01 Hartree之内时，会切换积分格点到 ``Ultra fine`` ，输出如下所示：
+当能量收敛到0.01 Hartree之内时，会切换到 ``Ultra fine`` 积分格点，输出如下所示：
 
 .. code-block:: 
 
@@ -462,5 +462,5 @@ BDF在Kohn-Sham计算的开始几步采用 ``Ultra coarse`` 积分格点，如�
       Numerical Grid Generated SUCCESSFULLY! 
      Total and symmetry independent Grid Number:     94208     24827
 
-这里，H和O原子的积分格点都为100*1202, 其中，100是径向格点的数目，1202是角向格点的数目。
+这里，H和O原子的积分格点都为100*1202，其中，100是径向格点的数目，1202是角向格点的数目。
 
