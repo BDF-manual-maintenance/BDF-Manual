@@ -257,7 +257,11 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
    10 11 12 13 14 15 16 17 18 
   &END
 
-在输入中，我们给出了注释。每个分子片的计算由 ``compass``、 ``xuanyuan`` 、 ``scf`` 及 ``localmo`` 四个模块构成。分别做预处理、积分计算、SCF计算和分子轨道定域化四个步骤，并通过在localmo模块后插入Shell命令 ``cp $BDF_WORKDIR/$BDFTASK.flmo $BDF_TMPDIR/fragment*`` 将存储定域轨道的文件 **$BDFTASK.flmo** 拷贝到 **$BDF_TMPDIR** 所在的目录备用。4个分子片段算完后是整体分子的计算，输入从 **# Whole Molecule calculation** 开始。在 ``compass`` 中，有关键词 ``Nfragment 4`` ，提示要读入4个分子片，分子片信息在 ``&DATABASE`` 域中定义。
+在输入中，我们给出了注释。每个分子片的计算由 ``compass``、 ``xuanyuan`` 、 ``scf`` 及 ``localmo`` 四个模块构成。分别做预处理、积分计算、SCF计算和分子轨道定域化四个步骤，并通过在localmo模块后插入Shell命令
+``cp $BDF_WORKDIR/$BDFTASK.flmo $BDF_TMPDIR/fragment*``
+将存储定域轨道的文件 **$BDFTASK.flmo** 拷贝到 **$BDF_TMPDIR** 所在的目录备用。4个分子片段算完后是整体分子的计算，输入从
+``# Whole Molecule calculation``
+开始。在 ``compass`` 中，有关键词 ``Nfragment 4`` ，提示要读入4个分子片，分子片信息在 ``&DATABASE`` 域中定义。
 
 整体分子的SCF计算，首先会读入4个分子片的定域轨道，构建pFLMO，并给出轨道伸展系数 Mos (molecular orbital spread，某个定域轨道的Mos越大代表该定域轨道越离域，反之则代表该定域轨道越局域)，如下：
 
@@ -351,14 +355,14 @@ SCF收敛后，系统会再一次打印分子轨道的Mos信息，
     Write FLMO coef into scratch file ...               214296
     Reorder orbital via orbital energy ...                    1                    1
 
-可以看出，最终的FLMO的Mos与pFLMO相比变化不大，保持了很好的定域性。
+可以看出，最终FLMO的Mos与pFLMO相比变化不大，保持了很好的定域性。
 
-以上的手动分片方法对于结构较复杂的分子来说比较繁琐，因为不仅需要手动给出每个分子片的定义，还需要在 ``&DATABASE`` 域中给出每个分子片和总体系的原子序号的对应关系。相比之下一个更加方便的方法是使用以下的自动分片方法。
+以上的手动分片方法对于结构较复杂的分子来说比较繁琐，因为不仅需要手动给出每个分子片的定义，还需要在 ``&DATABASE`` 域中给出每个分子片和总体系的原子序号的对应关系。相比之下，更加方便的方法是使用以下的自动分片方法。
 
 利用FLMO计算开壳层单重态（自动分片）
 --------------------------------------------
 
-研究单分子磁体以及某些催化体系等，常遇到所谓反铁磁耦合的态，又称开壳层单重态。开壳层单重态，两个自旋相反的电子以开壳层的形式占据在不同的原子中心。BDF可以结合FLMO方法计算开壳层单重态。例如，下述算例采用FLMO方法计算一个含有Cu(II)和氮氧稳定自由基的体系的自旋破缺基态：
+研究单分子磁体以及某些催化体系等，常遇到所谓反铁磁耦合的态，又称开壳层单重态，一般由两个自旋相反的电子以开壳层的形式占据在不同的原子中心，但也可能涉及多个单电子。BDF可以结合FLMO方法计算开壳层单重态。例如，下述算例采用FLMO方法计算一个含有Cu(II)和氮氧稳定自由基的体系的自旋破缺基态：
 
 .. code-block::
 
@@ -366,12 +370,13 @@ SCF收敛后，系统会再一次打印分子轨道的Mos信息，
   method
    flmo
   nprocs
-   2  # ask for 4 processes to perform FLMO calculation
+   2  # ask for 2 processes to perform FLMO calculation
   spinocc
   # Set +1 spin population on atom 9 (O), set -1 spin population on atom 16 (Cu)
    9 +1 16 -1
   # Add no buffer atoms, except for those necessary for saturating dangling bonds.
-  # Minimizing the buffer radius helps keeping the spin centers localized in different fragments
+  # Minimizing the buffer radius helps keeping the spin centers localized in
+  # different fragments
   radbuff
    0
   $end
@@ -412,7 +417,7 @@ SCF收敛后，系统会再一次打印分子轨道的Mos信息，
   $scf
   uks
   dft
-   PBE1PBE
+   PBE0
   spinmulti
    1
   D3
@@ -421,10 +426,11 @@ SCF收敛后，系统会再一次打印分子轨道的Mos信息，
   
   $localmo
   FLMO
-  Pipek # Pipek-Mezey localization, used when the user requests pure sigma/pure pi LMOs. Otherwise Boys is better
+  Pipek # Pipek-Mezey localization, requered by pure sigma/pure pi LMOs.
+        # Otherwise Boys is better
   $end
 
-FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用于对分子自动分片，并产生FLMO计算的基本输入。BDF先根据 ``compass`` 模块中的分子结构与 ``autofrag`` 的参数定义信息产生分子片段，以及分子片段定域化轨道计算的输入文件。然后用分子片段的定域轨道组装整体分子的pFLMO (primitive Fragment Local Molecular Orbital) 作为全局SCF计算的初始猜测轨道，再通过全局SCF计算，在保持每一迭代步轨道都保持定域的前提下，得到整体分子的开壳层单重态。在计算中，为了输出简洁，分子片段计算输出保存为 ``${BDFTASK}.framgmentN.out`` , **N** 为片段编号，标准输出只打印整体分子计算的输出。
+FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用于对分子自动分片，并产生FLMO计算的基本输入。BDF先根据 ``compass`` 模块中的分子结构与 ``autofrag`` 的参数定义信息产生分子片段，以及分子片段定域化轨道计算的输入文件。然后用分子片段的定域轨道组装整体分子的pFLMO (primitive Fragment Local Molecular Orbital) 作为全局SCF计算的初始猜测轨道，再通过全局SCF计算，在保持每一步迭代轨道都保持定域的前提下，得到整体分子的开壳层单重态。在计算中，为了输出简洁，分子片段计算输出保存为 ``${BDFTASK}.framgmentN.out`` , **N** 为片段编号，标准输出只打印整体分子计算的输出。
 
 输出会给出分子分片的信息，
 
@@ -443,13 +449,13 @@ FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用�
    
     Generate BDF input file ....
 
-这里可以看出，我们产生了两个分子片段，指定了分子片 **1** 由17个原子组成，自旋多重度指认为2，分子片 **2** 由9个原子组成，自旋多重度也指认为2，但自旋方向和分子片 **1** 相反，也即beta电子比alpha电子多一个，而不是alpha电子比beta电子多一个。随后会分别计算2个分子片，提示信息如下：
+这里可以看出，我们产生了两个分子片段，指定了分子片 **1** 由17个原子组成，自旋多重度指认为2，分子片 **2** 由9个原子组成，自旋多重度也指认为2，但自旋方向和分子片 **1** 相反，也即beta电子比alpha电子多一个，而不是alpha电子比beta电子多一个。随后会分别计算2个分子片，提示信息如下（假设环境变量 ``OMP_NUM_THREADS`` 设为4）：
 
 .. code-block:: bdf
 
   Starting subsystem calculations ...
-  Number of parallel processes:  4
-  Number of OpenMP threads per process:  1
+  Number of parallel processes:  2
+  Number of OpenMP threads per process:  2
   Please refer to test117.fragment*.out for detailed output
   
   Total number of not yet converged subsystems:  2
@@ -459,7 +465,7 @@ FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用�
   
   Starting global calculation ...
 
-这要注意计算资源的设置。总的计算资源是进程数（Number of parallel processes）与每个进程的线程数（Number of OpenMP threads per process）的乘积，其中进程数是通过 ``autofrag`` 模块的 ``nprocs`` 关键字设定的，而总的计算资源是通过环境变量 ``OMP_NUM_THREADS`` 设定的，每个进程的线程数由程序自动由总的计算资源除以进程数来计算得到。整体计算输出类似普通的SCF计算，但采用了分块对角化Fock矩阵的方法以保持轨道的定域性。
+这要注意计算资源的设置。总的计算资源是进程数（Number of parallel processes）与每个进程的线程数（Number of OpenMP threads per process）的乘积，其中进程数是通过 ``autofrag`` 模块的 ``nprocs`` 关键词设定的，而总的计算资源是通过环境变量 ``OMP_NUM_THREADS`` 设定的，每个进程的线程数由程序自动通过总的计算资源除以进程数来得到。整体计算输出类似普通的SCF计算，但采用了分块对角化Fock矩阵的方法以保持轨道的定域性。
 
 .. code-block:: bdf
 
@@ -523,7 +529,7 @@ FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用�
 
 可看出，Cu原子的自旋密度为 **-0.5701**， 9O原子的自旋密度为 **0.6562** ，其符号与预先指定的自旋相符，表明计算确实收敛到了所需要的开壳层单重态。注意此处自旋密度的绝对值小于1，说明Cu和9O上的自旋密度并不是严格定域在这两个原子上的，而是有一部分离域到了旁边的原子上。
 
-以上算例 ``autofrag`` 模块输入的写法看似复杂，但是其中的 ``spinocc`` 和 ``radbuff`` 关键字对于FLMO方法而言不是必需的，也即以下写法的输入文件仍能成功运行，只不过不能确保Cu和O的自旋取向是用户指定的取向：
+在以上算例中， ``autofrag`` 模块输入的写法看似复杂，但是其中的 ``spinocc`` 和 ``radbuff`` 关键词对于FLMO方法而言不是必需的，也即以下写法的输入文件仍能成功运行，只不过不能确保Cu和O的自旋取向是用户指定的取向：
 
 .. code-block::
 
@@ -531,10 +537,19 @@ FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用�
   method
    flmo
   nprocs
-   4
+   2
   $end
 
-而 ``nprocs`` 表示对各个子体系的SCF计算进行并行化，即允许同时计算多个子体系，且任何时刻同时计算的子体系不超过4个。为讨论方便起见，假设环境变量 ``OMP_NUM_THREADS`` 设定为8。则
+而 ``nprocs`` 表示对各个子体系的SCF计算进行并行化，以上述算例为例，即允许同时计算多个子体系，且任何时刻同时计算的子体系不超过2个。如果省略 ``nprocs`` 关键词，等价于将 ``nprocs`` 设为1，程序会依次计算所有子体系，每个子体系占用8个OpenMP线程，且每次待一个子体系计算结束后再计算下一个子体系。计算结果相比使用 ``nprocs`` 不会有任何区别，只是计算效率可能会有所降低。因此 ``nprocs`` 只影响FLMO计算的效率，而不影响其计算结果，也即以下写法同样可以成功运行，但计算时间可能相比不写 ``nprocs`` 略长：
+
+.. code-block::
+
+  $autofrag
+  method
+   flmo
+  $end
+
+需要注意的是 ``nprocs`` 设置过大或过小，均可能导致计算时间增加。为讨论方便起见，假设在某较大分子的FLMO计算中，环境变量 ``OMP_NUM_THREADS`` 设定为8。则
 
 .. code-block::
 
@@ -547,23 +562,19 @@ FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用�
  2. 每个BDF进程使用2个OpenMP线程。当子体系总数小于4个时，有的子体系计算可能使用3个或4个OpenMP线程，但整个计算任务同时并发的OpenMP线程数始终不超过8个。
  3. 在计算刚开始时，整个计算恰好使用8个OpenMP线程，但随着计算接近结束，当只剩余不到4个子体系尚未计算完成时，整个计算所用的OpenMP线程数可能小于8个。
 
-一般而言， ``nprocs`` 过小或过大都有可能影响计算效率，但 ``nprocs`` 不会影响计算结果。决定 ``nprocs`` 的最优值的因素主要有两个：
+决定 ``nprocs`` 的最优值的因素主要有两个：
 
- 1. 因OpenMP的并行效率一般低于100%，所以例如同时运行4个用时相同的任务，每个任务使用2个OpenMP线程，所用时间一般小于每个任务依次运行，且每个任务使用8个OpenMP线程所用的时间。
+ 1. 因OpenMP的并行效率一般低于100%，所以如果同时运行4个用时相同的任务，每个任务使用2个OpenMP线程，所用时间一般小于每个任务依次运行，且每个任务使用8个OpenMP线程所用的时间。
  2. 各个子体系的计算时间并不完全相同，甚至可能存在数倍的差别。仍以同时运行4个任务为例，如某些任务所用时间明显较其他任务长，则同时计算这4个子体系、每个子体系使用2个线程，可能反倒比依次计算、每个子体系使用8个线程更慢，因为当同时计算这4个子体系时，在计算后期一部分计算资源会闲置。这也就是所谓的负载均衡问题。
- 
-To be done
 
-因此， ``nprocs`` 太小或太大，均有可能导致计算效率降低。一般 ``nprocs`` 设为子体系总数的1/5~1/3左右比较适宜，例外情况是如果已知该计算的各个子体系计算量相仿的话， ``nprocs`` 可以设得大一些。
-
-如果省略 ``nprocs`` 关键词，等价于将 ``nprocs`` 设为1，程序会依次计算所有子体系，每个子体系占用8个OpenMP线程，且每次待一个子体系计算结束后再计算下一个子体系。计算结果相比使用 ``nprocs`` 不会有任何区别，只是计算效率可能会有所降低。
+因此， ``nprocs`` 太小或太大，均有可能导致计算效率降低。一般 ``nprocs`` 设为子体系总数的1/5~1/3左右比较适宜，例外情况是如果已知该计算的各个子体系计算量相仿的话， ``nprocs`` 可以设得大一些，例如在本小节开头的算例中，虽然只有两个子体系，但是其中较小的子体系含有过渡金属原子Cu，而较大的子体系是纯有机体系，因此两个子体系的计算时间相仿，可以同时计算。
 
 .. _iOI-Example:
 
 iOI-SCF方法
 ----------------------------------------------------------
 
-iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采用自动分片，用户仍然需要用 ``radcent`` 、 ``radbuff`` 等关键字指定分子片的大小，尽管这两个关键词都有默认值（分别是3.0和2.0），但无论是默认值还是用户指定的值，都不能保证对于当前体系是最优的。如果分子片太小，得到的定域轨道质量太差；如果分子片太大，又会导致计算量太大，以及定域化迭代不收敛。而iOI方法则是从比较小的分子片出发，不断增大、融合分子片，直至分子片刚好达到所需的大小为止，然后进行全局计算。其中每次增大、融合分子片称为一次宏迭代（Macro-iteration）。
+iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采用自动分片，用户仍然需要用 ``radcent`` 、 ``radbuff`` 等关键词指定分子片的大小，尽管这两个关键词都有默认值（分别是3.0和2.0），但无论是默认值还是用户指定的值，都不能保证对于当前体系是最优的。如果分子片太小，得到的定域轨道质量太差；如果分子片太大，又会导致计算量太大，以及定域化迭代不收敛。而iOI方法则是从比较小的分子片出发，不断增大、融合分子片，直至分子片刚好达到所需的大小为止，然后进行全局计算。其中每次增大、融合分子片称为一次宏迭代（Macro-iteration）。
 示例如下：
 
 .. code-block:: bdf
@@ -655,6 +666,8 @@ iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采
   FLMO
   $end
 
+注意在iOI计算中， ``nprocs`` 关键词的含义和FLMO计算相同，也需要根据分子的大小来选择合适的值，且 ``nprocs`` 的不同取值仍然只是影响计算速度而不影响计算结果。和FLMO计算的区别在于，iOI计算涉及多步宏迭代（见下），每步宏迭代的子体系数目是逐步减小的，因此 ``nprocs`` 的最优取值应当保守一些，例如取为第0步宏迭代子体系数目的1/10~1/5。
+
 程序一开始将该分子分为5个分子片：
 
 .. code-block:: bdf
@@ -687,7 +700,7 @@ iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采
  Number of OpenMP threads per process:  2
  Please refer to test106.fragment*.out for detailed output
 
- Macro-iter 1:
+ Macro-iter 0:
  Total number of not yet converged subsystems:  5
  List of not yet converged subsystems:  [4, 1, 2, 3, 5]
  Finished calculating subsystem   4 (  1 of   5)
@@ -700,7 +713,7 @@ iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采
  Elapsed time of post-processing: 0.10 s
  Total elapsed time of this iteration: 34.28 s
 
-此后程序将这5个分子片进行两两融合，并扩大缓冲区，得到3个较大的子体系。这3个较大的子体系的定义可是在 ``${BDFTASK}.ioienlarge.out`` 里给出的：
+此后程序将这5个分子片进行两两融合，并扩大缓冲区，得到3个较大的子体系。这3个较大的子体系的定义在 ``${BDFTASK}.ioienlarge.out`` 里给出：
 
 .. code-block:: bdf
 
@@ -717,11 +730,11 @@ iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采
  Center fragment construction done, total elapsed time 0.01 s
  Subsystem construction done, total elapsed time 0.01 s
 
-也即新的子体系1是由旧的子体系5、3融合（并扩大缓冲区）得到的，新的子体系2是由旧的子体系2、4融合（并扩大缓冲区）得到的，而新的子体系3则直接由旧的子体系1扩大缓冲区而得到。然后以原来5个小的子体系的收敛的定域轨道作为初猜，进行这些较大的子体系的SCF计算：
+也即新的子体系1是由旧的子体系5、3融合（并扩大缓冲区）得到的，新的子体系2是由旧的子体系2、4融合（并扩大缓冲区）得到的，而新的子体系3则直接由旧的子体系1扩大缓冲区而得到。然后以原来5个较小子体系的收敛的定域轨道作为初猜，进行这些较大子体系的SCF计算：
 
 .. code-block:: bdf
 
- Macro-iter 2:
+ Macro-iter 1:
  Total number of not yet converged subsystems:  3
  List of not yet converged subsystems:  [2, 3, 1]
  Finished calculating subsystem   3 (  1 of   3)
