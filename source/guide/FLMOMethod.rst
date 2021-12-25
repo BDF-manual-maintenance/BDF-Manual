@@ -44,7 +44,6 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
    h   2.1218540000  0.0   2.2542280000    B 
    h   4.5588130000  0.0   0.3490440000    B
   End geometry
-  Skeleton
   $END
   
   $XUANYUAN
@@ -88,7 +87,6 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
    h   6.6473130000  0.0   1.6506800000    B
    h   6.8488330000  0.0   3.9049090000    L
   End geometry
-  Skeleton
   $END
   
   $XUANYUAN
@@ -135,7 +133,6 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
     h   8.7441260000  0.0   4.8527010000  L
     h   8.7441050000  0.0   2.9571520000  B
   End geometry
-  Skeleton
   $END
   
   $XUANYUAN
@@ -179,7 +176,6 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
     h   8.7441260000  0.0   4.8527010000
     h   8.7441050000  0.0   2.9571520000
   End geometry
-  Skeleton
   $END
   
   $XUANYUAN
@@ -408,11 +404,9 @@ SCF收敛后，系统会再一次打印分子轨道的Mos信息，
    H                  1.09012199   -0.59184704   -1.06353906
    O                 -0.58484750    0.12139125   -0.11715881
   End geometry
-  Skeleton
   $end
   
   $xuanyuan
-  Direct
   $end
   
   $scf
@@ -639,11 +633,9 @@ iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采
   H    -5.9086    4.3451    2.3469
   H    -6.1262    5.5024    1.0605
   End geometry
-  Skeleton
   $end
   
   $xuanyuan
-  Direct
   rs # the range separation parameter omega (or mu) of wB97X
    0.3
   $end

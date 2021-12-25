@@ -23,7 +23,7 @@ R-TDDFT用于计算闭壳层体系。如果基态计算从RHF出发，TDDFT模�
 .. code-block:: bdf
 
   #!bdf.sh
-  TDDFT/B3lyp/cc-pvdz     
+  TDDFT/B3lyp/cc-pvdz iroot=1   
   
   geometry
   O
@@ -52,27 +52,18 @@ R-TDDFT用于计算闭壳层体系。如果基态计算从RHF出发，TDDFT模�
   $end
    
   $xuanyuan
-  direct
-  maxmem
-    512MW
   $end
    
   $scf
   RKS      # Restricted Kohn-sham
   DFT      # DFT exchange-correlation functional B3lyp
-    b3lyp
-  Charge   # charge = 0
-    0
-  Spinmulti     # 2S+1=1， singlet
-    1
+    b3lyp 
   $end
   
   # input for tddft
   $tddft
-  iroot    # For each irrep, calculate 1 root. on default, 10 roots are calculated for each irreps
-    1
-  memjkop  #maximum memory for Coulomb and Exchange operator. 512MW(Mega Words).
-    512
+  iroot    # For each irrep, calculate 1 root. 
+    1       #on default, 10 roots are calculated for each irreps if advanced input used
   $end
 
 完成计算将顺序调用 **COMPASS** , **XUANYUAN** , **SCF** 及 **TDDFT** 四个模块。其中 **SCF** 模块执行RKS计算。
@@ -92,15 +83,37 @@ R-TDDFT用于计算闭壳层体系。如果基态计算从RHF出发，TDDFT模�
 （2）只计算一个B1激发态和一个B2激发态，不计算其他不可约表示下的激发态：
 
 .. code-block:: bdf
+
+  #! tdtest.sh
+  TDDFT/B3lyp/3-21G nroot=0,0,1,1
+ 
+   Geometry
+   ...
+   End geometry
+
+或者
+
+.. code-block:: bdf
   
   $TDDFT
   nroot
-   0 0 1 1
+   0 0 1 1  # 也可输入为 0,0,1,1
   $END
 
 其中nroot关键字表明用户分别对每个不可约表示指定激发态的数目。因程序内部将 :math:`\rm C_{2v}` 点群的不可约表示以A1、A2、B1、B2的顺序排列（见点群相关章节关于各个不可约表示的排序的介绍），因此以上输入表明只计算B1、B2激发态各一个。
 
 （3）计算最低的4个激发态，而不限定这些激发态的不可约表示
+
+.. code-block:: bdf
+
+  #! tdtest.sh
+  TDDFT/B3lyp/3-21G iroot=-4
+ 
+   Geometry
+   ...
+   End geometry
+
+或者
 
 .. code-block:: bdf
   
@@ -379,23 +392,19 @@ Davidson迭代开始计算输出信息如下，
 .. code-block:: bdf
 
   $compass
-  #Notice: length unit for geometry is angstrom
+  #Notice: The unit of molecular coordinate is angstrom
   geometry
    O
    H 1 1.0
    H 1 1.0 2 109.
   end geometry
-   skeleton
   basis
-   cc-pvdz
+    cc-pVDZ 
   group
    C(1)  # Force to use C1 symmetry
   $end
    
   $xuanyuan
-  direct
-  maxmem
-   512MW
   $end
    
   $scf
@@ -439,12 +448,12 @@ Davidson迭代开始计算输出信息如下，
 
 .. code-block:: 
 
-      No. Pair   ExSym   ExEnergies  Wavelengths      f     D<S^2>          Dominant Excitations             IPA   Ova     En-E1
-
-        1   A    2   A    2.1958 eV    564.65 nm   0.0009   0.0023  99.4% CO(bb):   A(   4 )->   A(   5 )   5.954 0.626    0.0000
-        2   A    3   A    6.3479 eV    195.32 nm   0.0000   0.0030  99.3% CO(bb):   A(   3 )->   A(   5 )   9.983 0.578    4.1521
-        3   A    4   A   12.0990 eV    102.47 nm   0.0028   1.9312  65.8% CV(bb):   A(   4 )->   A(   6 )  14.636 0.493    9.9033
-        4   A    5   A   13.3619 eV     92.79 nm   0.0174   0.0004  97.6% CV(aa):   A(   4 )->   A(   6 )  15.624 0.419   11.1661
+  No. Pair   ExSym   ExEnergies     Wavelengths      f     D<S^2>          Dominant Excitations             IPA   Ova     En-E1
+ 
+    1   A    2   A    2.1960 eV        564.60 nm   0.0009   0.0024  99.4% CO(bb):   A(   4 )->   A(   5 )   5.955 0.626    0.0000
+    2   A    3   A    6.3479 eV        195.31 nm   0.0000   0.0030  99.3% CO(bb):   A(   3 )->   A(   5 )   9.983 0.578    4.1520
+    3   A    4   A   12.0991 eV        102.47 nm   0.0028   1.9312  65.8% CV(bb):   A(   4 )->   A(   6 )  14.637 0.493    9.9032
+    4   A    5   A   13.3618 eV         92.79 nm   0.0174   0.0004  97.6% CV(aa):   A(   4 )->   A(   6 )  15.624 0.419   11.1659
 
 其中第3激发态的 ``D<S^2>`` 值较大，表明存在自旋污染问题。
 
@@ -460,22 +469,21 @@ X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系，开壳�
    #! N2+.sh
    X-TDDFT/b3lyp/aug-cc-pvtz group=D(2h) charge=1 spinmulti=2 iroot=5
 
-   geometry
+   Geometry
      N 0.00  0.00  0.00
      N 0.00  0.00  1.1164 
-   end geometry
+   End geometry
 
 高级输入：
 
 .. code-block:: bdf
 
     $compass
-    #Notice: length unit for geometry is angstrom
-    geometry
+    #Notice: The unit of molecular coordinate is angstrom
+    Geometry
      N 0.00  0.00  0.00
      N 0.00  0.00  1.1164 
-    end geometry
-    skeleton
+    End geometry
     basis
      aug-cc-pvtz
     group
@@ -483,7 +491,6 @@ X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系，开壳�
     $end
      
     $xuanyuan
-    direct
     $end
      
     $scf
@@ -507,17 +514,50 @@ X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系，开壳�
 
 .. code-block:: 
 
-  No. Pair   ExSym   ExEnergies  Wavelengths      f     D<S^2>          Dominant Excitations             IPA   Ova     En-E1
+  No. Pair   ExSym   ExEnergies     Wavelengths      f     D<S^2>          Dominant Excitations             IPA   Ova     En-E1
+ 
+    1 B2u    1 B2u    0.7902 eV       1569.00 nm   0.0017   0.0195  98.6%  CO(0): B2u(   1 )->  Ag(   3 )   3.812 0.605    0.0000
+    2 B3u    1 B3u    0.7902 eV       1569.00 nm   0.0017   0.0195  98.6%  CO(0): B3u(   1 )->  Ag(   3 )   3.812 0.605    0.0000
+    3 B1u    1 B1u    3.2165 eV        385.46 nm   0.0378   0.3137  82.6%  CO(0): B1u(   2 )->  Ag(   3 )   5.487 0.897    2.4263
+    4 B1u    2 B1u    8.2479 eV        150.32 nm   0.0008   0.9514  48.9%  CV(1): B2u(   1 )-> B3g(   1 )  12.415 0.903    7.4577
+    5  Au    1  Au    8.9450 eV        138.61 nm   0.0000   1.2618  49.1%  CV(0): B2u(   1 )-> B2g(   1 )  12.903 0.574    8.1548
+    6  Au    2  Au    9.0519 eV        136.97 nm   0.0000   1.7806  40.1%  CV(1): B3u(   1 )-> B3g(   1 )  12.415 0.573    8.2617
+    7 B1u    3 B1u    9.0519 eV        136.97 nm   0.0000   1.7806  40.1%  CV(1): B3u(   1 )-> B2g(   1 )  12.415 0.906    8.2617
+    8 B2g    1 B2g    9.4442 eV        131.28 nm   0.0000   0.0061  99.0%  OV(0):  Ag(   3 )-> B2g(   1 )  12.174 0.683    8.6540
+    9 B3g    1 B3g    9.4442 eV        131.28 nm   0.0000   0.0061  99.0%  OV(0):  Ag(   3 )-> B3g(   1 )  12.174 0.683    8.6540
+   10  Au    3  Au    9.5281 eV        130.12 nm   0.0000   0.1268  37.0%  CV(0): B3u(   1 )-> B3g(   1 )  12.903 0.574    8.7379
+   11 B1u    4 B1u    9.5281 eV        130.12 nm   0.0000   0.1267  37.0%  CV(0): B2u(   1 )-> B3g(   1 )  12.903 0.909    8.7379
+   12  Au    4  Au   10.7557 eV        115.27 nm   0.0000   0.7378  49.1%  CV(1): B3u(   1 )-> B3g(   1 )  12.415 0.575    9.9655
+   13 B3u    2 B3u   12.4087 eV         99.92 nm   0.0983   0.1371  70.4%  CV(0): B1u(   2 )-> B2g(   1 )  15.288 0.793   11.6185
+   14 B2u    2 B2u   12.4087 eV         99.92 nm   0.0983   0.1371  70.4%  CV(0): B1u(   2 )-> B3g(   1 )  15.288 0.793   11.6185
+   15 B1u    5 B1u   15.9005 eV         77.98 nm   0.7766   0.7768  32.1%  CV(0): B3u(   1 )-> B2g(   1 )  12.903 0.742   15.1103
+   16 B2u    3 B2u   17.6494 eV         70.25 nm   0.1101   0.4841  92.0%  CV(0): B2u(   1 )->  Ag(   4 )  19.343 0.343   16.8592
+   17 B3u    3 B3u   17.6494 eV         70.25 nm   0.1101   0.4841  92.0%  CV(0): B3u(   1 )->  Ag(   4 )  19.343 0.343   16.8592
+   18  Ag    2  Ag   18.2820 eV         67.82 nm   0.0000   0.0132  85.2%  OV(0):  Ag(   3 )->  Ag(   4 )  19.677 0.382   17.4918
+   19 B2u    4 B2u   18.5465 eV         66.85 nm   0.0021   1.5661  77.8%  CV(1): B2u(   1 )->  Ag(   4 )  19.825 0.401   17.7562
+   20 B3u    4 B3u   18.5465 eV         66.85 nm   0.0021   1.5661  77.8%  CV(1): B3u(   1 )->  Ag(   4 )  19.825 0.401   17.7562
+   21  Ag    3  Ag   18.7805 eV         66.02 nm   0.0000   0.2156  40.4%  CV(0): B3u(   1 )-> B3u(   2 )  20.243 0.337   17.9903
+   22 B1g    1 B1g   18.7892 eV         65.99 nm   0.0000   0.2191  40.5%  CV(0): B2u(   1 )-> B3u(   2 )  20.243 0.213   17.9990
+   23 B1g    2 B1g   18.8704 eV         65.70 nm   0.0000   0.2625  41.8%  CV(0): B3u(   1 )-> B2u(   2 )  20.243 0.213   18.0802
+   24 B3g    2 B3g   18.9955 eV         65.27 nm   0.0000   0.2673  83.4%  CV(0): B2u(   1 )-> B1u(   3 )  20.290 0.230   18.2053
+   25 B2g    2 B2g   18.9955 eV         65.27 nm   0.0000   0.2673  83.4%  CV(0): B3u(   1 )-> B1u(   3 )  20.290 0.230   18.2053
+   26 B3u    5 B3u   19.0339 eV         65.14 nm   0.0168   1.6012  66.7%  CV(1): B1u(   2 )-> B2g(   1 )  20.612 0.715   18.2437
+   27 B2u    5 B2u   19.0339 eV         65.14 nm   0.0168   1.6012  66.7%  CV(1): B1u(   2 )-> B3g(   1 )  20.612 0.715   18.2437
+   28  Ag    4  Ag   19.0387 eV         65.12 nm   0.0000   0.0693  35.9%  CO(0):  Ag(   2 )->  Ag(   3 )  21.933 0.437   18.2484
+   29  Ag    5  Ag   19.3341 eV         64.13 nm   0.0000   0.1694  44.7%  CO(0):  Ag(   2 )->  Ag(   3 )  21.933 0.457   18.5439
+   30  Ag    6  Ag   19.8685 eV         62.40 nm   0.0000   1.7807  40.4%  CV(1): B3u(   1 )-> B3u(   2 )  21.084 0.338   19.0783
+   31 B1g    3 B1g   19.8695 eV         62.40 nm   0.0000   1.7774  40.5%  CV(1): B2u(   1 )-> B3u(   2 )  21.084 0.213   19.0792
+   32 B3g    3 B3g   19.9858 eV         62.04 nm   0.0000   1.6935  80.7%  CV(1): B2u(   1 )-> B1u(   3 )  21.038 0.231   19.1956
+   33 B2g    3 B2g   19.9858 eV         62.04 nm   0.0000   1.6935  80.7%  CV(1): B3u(   1 )-> B1u(   3 )  21.038 0.231   19.1956
+   34 B1g    4 B1g   19.9988 eV         62.00 nm   0.0000   1.7373  41.8%  CV(1): B3u(   1 )-> B2u(   2 )  21.084 0.213   19.2086
+   35 B2g    4 B2g   20.2417 eV         61.25 nm   0.0000   0.2901  81.4%  CV(0): B1u(   2 )-> B3u(   2 )  22.628 0.228   19.4515
+   36 B3g    4 B3g   20.2417 eV         61.25 nm   0.0000   0.2901  81.4%  CV(0): B1u(   2 )-> B2u(   2 )  22.628 0.228   19.4515
+   37  Au    5  Au   21.2302 eV         58.40 nm   0.0000   0.2173  40.4%  CV(0): B2u(   1 )-> B2g(   2 )  22.471 0.157   20.4400
+   38 B2g    5 B2g   22.1001 eV         56.10 nm   0.0000   0.0031  99.2%  OV(0):  Ag(   3 )-> B2g(   2 )  23.220 0.204   21.3099
+   39 B3g    5 B3g   22.1001 eV         56.10 nm   0.0000   0.0031  99.2%  OV(0):  Ag(   3 )-> B3g(   2 )  23.220 0.204   21.3099
+   40 B1g    5 B1g   23.4663 eV         52.84 nm   0.0000   0.0027  99.8%  OV(0):  Ag(   3 )-> B1g(   1 )  25.135 0.283   22.6761
 
-    1 B3u    1 B3u    0.7902 eV   1568.99 nm   0.0017   0.0195  98.6%  CO(0): B3u(   1 )->  Ag(   3 )   3.812 0.605    0.0000
-    2 B2u    1 B2u    0.7902 eV   1568.99 nm   0.0017   0.0195  98.6%  CO(0): B2u(   1 )->  Ag(   3 )   3.812 0.605    0.0000
-    3 B1u    1 B1u    3.2165 eV    385.46 nm   0.0378   0.3137  82.6%  CO(0): B1u(   2 )->  Ag(   3 )   5.487 0.897    2.4263
-    4 B1u    2 B1u    8.2479 eV    150.32 nm   0.0008   0.9514  48.9%  CV(1): B3u(   1 )-> B2g(   1 )  12.415 0.903    7.4577
-    5  Au    1  Au    8.9450 eV    138.61 nm   0.0000   1.2618  49.1%  CV(0): B3u(   1 )-> B3g(   1 )  12.903 0.574    8.1548
-    6  Au    2  Au    9.0519 eV    136.97 nm   0.0000   1.7806  40.1%  CV(1): B2u(   1 )-> B2g(   1 )  12.415 0.573    8.2617
-    7 B1u    3 B1u    9.0519 eV    136.97 nm   0.0000   1.7806  40.1%  CV(1): B2u(   1 )-> B3g(   1 )  12.415 0.906    8.2617
-
-这里，第3、6、7激发态都是CV(1)态。注意SA-TDDFT计算的 ``D<S^2>`` 值是按U-TDDFT的公式计算出来的，可以近似地表明假如用U-TDDFT计算这些态的话，结果的自旋污染程度，但并不代表这些态实际的自旋污染程度，因为SA-TDDFT可以保证所有激发态都严格不存在自旋污染。因此如果SA-TDDFT算得的某个态的 ``D<S^2>`` 值很大，并不能表明该态的结果不可靠，相反表示对于该态而言SA-TDDFT相比U-TDDFT的改进比较大。
+这里，第4、6、7激发态都是CV(1)态。注意SA-TDDFT计算的 ``D<S^2>`` 值是按U-TDDFT的公式计算出来的，可以近似地表明假如用U-TDDFT计算这些态的话，结果的自旋污染程度，但并不代表这些态实际的自旋污染程度，因为SA-TDDFT可以保证所有激发态都严格不存在自旋污染。因此如果SA-TDDFT算得的某个态的 ``D<S^2>`` 值很大，并不能表明该态的结果不可靠，相反表示对于该态而言SA-TDDFT相比U-TDDFT的改进比较大。
 
 
 自旋翻转 (spin-flip)TDDFT计算
@@ -543,13 +583,12 @@ X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系，开壳�
 .. code-block:: bdf
 
   $compass
-  #Notice: length unit for geometry is angstrom
+  #Notice: Coordinate unit is angstrom
   geometry
    O
    H 1 1.0
    H 1 1.0 2 109.
   end geometry
-   skeleton
   basis
    cc-pvdz
   group
@@ -557,9 +596,6 @@ X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系，开壳�
   $end
    
   $xuanyuan
-  direct
-  maxmem
-   512MW
   $end
    
   $scf
@@ -663,7 +699,7 @@ TDDFT **默认只计算与参考态自旋相同的激发态**， 例如，:math:
 .. code-block::
 
    #! H2OTDDFT.sh
-   TDA/b3lyp/cc-pVDZ spinmulti=3 iroot=-4 isf=-1
+   TDA/b3lyp/cc-pVDZ spinmulti=3 iroot=-4 spinflip=-1
 
    geometry
    O
@@ -724,13 +760,12 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
    O                  0.00000000   -5.15052650   -0.22779097
    O                 -0.00000000    5.15052650   -0.22779097
   End geometry
-  skeleton
   units
    bohr
+  mpec+cosx # accelerate the calculation using MPEC+COSX
   $end
 
   $XUANYUAN
-  Direct
   rs
    0.3 # rs for wB97X
   $END
@@ -741,7 +776,6 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
    wB97X
   charge
    -1
-  mpec+cosx # accelerate the calculation using MPEC+COSX
   $END
 
   $tddft
@@ -759,7 +793,6 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
    1
   memjkop
    2048
-  mpec+cosx # accelerate the calculation using MPEC+COSX
   $end
 
 因该分子属于 :math:`\rm C_{2v}` 点群，共有4个不可约表示（A1，A2，B1，B2），程序分别在4个不可约表示下求解TDDFT问题。以A1不可约表示为例，iVI迭代收敛后，程序输出如下信息：
@@ -825,12 +858,10 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
   End geometry
   group
    c(1)
-  Skeleton
   uncontract # uncontract the basis set (beneficial for the accuracy of core excitations)
   $END
 
   $XUANYUAN
-  Direct
   scalar
   heff
    3 # selects sf-X2C
@@ -901,7 +932,6 @@ BDF不仅支持TDDFT单点能（即给定分子结构下的激发能）的计算
    H                  1.95342119    1.19838319    0.00000000
    H                  2.73563916   -0.48057645    0.00000000
   End Geometry
-  Skeleton
   $END
 
   $BDFOPT
@@ -910,7 +940,6 @@ BDF不仅支持TDDFT单点能（即给定分子结构下的激发能）的计算
   $END
 
   $XUANYUAN
-  direct
   $END
 
   $SCF
@@ -1009,18 +1038,14 @@ BDF不仅支持TDDFT单点能（即给定分子结构下的激发能）的计算
    H       0.000000    0.932612   -1.626759
    H       0.000000   -0.932612   -1.626759
    End geometry
-   Skeleton
    check
    $END
    
    $xuanyuan
-   scalar
    heff  # ask for sf-X2C Hamiltonian
     3   
-   soint # ask for SOC integrals
    hsoc  # set SOC integral as 1e+mf-2e
     2
-   direct
    $end
    
    $scf
@@ -1278,14 +1303,12 @@ SOC计算结果为，
   O              2.0700698389        -0.0000000000        -1.1615808530
   O             -0.0000000000         0.0000000000         2.4934136445
   End geometry
-  skeleton
   check
   unit
    bohr
   $END
 
   $XUANYUAN
-  direct
   $END
 
   $SCF
@@ -1393,14 +1416,12 @@ SOC计算结果为，
           H             -2.9780678476        -4.6353463569        -1.6789597597
           H             -1.1205416224        -6.8569277129         0.0002044899
   end geometry
-  skeleton
   unit
    bohr
   nosymm
   $end
 
   $XUANYUAN
-  Direct
   $END
 
   $SCF
@@ -1492,13 +1513,11 @@ SOC计算结果为，
    End geometry
    Group
     C(1)
-   Skeleton
    Nfragment # must input: number of fragment, should be 1
     1
    $END
    
    $xuanyuan
-   Direct
    $end
    
    $scf

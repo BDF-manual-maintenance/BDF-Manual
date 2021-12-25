@@ -9,7 +9,7 @@
   * Huckel : 半经验Huckel方法猜测；
   * Hcore : 对角化单电子哈密顿猜测；
   * Readmo : 读入分子轨道做为初始猜测；
-  * Readdm : 读入密度矩阵做为初始猜测。
+--  * Readdm : 读入密度矩阵做为初始猜测。
 
 BDF默认的是Atom猜测。改变BDF的初始猜测，简洁输入模式下可以使用关键词 ``guess`` , 如下所示
 
@@ -71,7 +71,6 @@ BDF默认的是Atom猜测。改变BDF的初始猜测，简洁输入模式下可�
      H -3.4601679801 1.6628382651 0.0320205364
      O 2.2198078005 0.0000024315 0.2188182082
    end geometry
-   skeleton
    unit # set unit of coordinates as Bohr
      bohr
    basis
@@ -79,9 +78,6 @@ BDF默认的是Atom猜测。改变BDF的初始猜测，简洁输入模式下可�
    $end
 
    $xuanyuan
-   direct
-   maxmem
-   512mw
    $end
 
    $scf
@@ -138,7 +134,7 @@ BDF的SCF计算默认采用原子计算密度矩阵构建分子密度矩阵的�
 扩展小基组收敛轨道为大基组初始猜测
 ------------------------------------------------
 扩展小基组计算的收敛轨道为大基组的收敛轨道可以加速计算收敛，一般的，基组扩展应该采用同组的轨道，如cc-pVXZ系列的，ANO-RCC系列的等。
-目前，不同基组的扩展轨道只支持BDF的高级输入模式。对于 :math:`\ce{CH3CHO}` 分子，先用cc-pVDZ计算，然后将轨道扩展为cc-pVQZ基组计算的初始猜测轨道，
+目前，不同基组的扩展轨道目前只支持BDF的高级输入模式。对于 :math:`\ce{CH3CHO}` 分子，先用cc-pVDZ计算，然后将轨道扩展为cc-pVQZ基组计算的初始猜测轨道，
 输入如下：
 
 .. code-block:: bdf
@@ -154,7 +150,6 @@ BDF的SCF计算默认采用原子计算密度矩阵构建分子密度矩阵的�
     H      -3.4601679801        1.6628382651        0.0320205364
     O       2.2198078005        0.0000024315        0.2188182082
     end geometry
-     skeleton
     basis
      cc-pvdz
     unit # set unit of coordinates as Bohr
@@ -162,7 +157,6 @@ BDF的SCF计算默认采用原子计算密度矩阵构建分子密度矩阵的�
     $end
      
     $xuanyuan
-    direct
     $end
      
     $scf
@@ -182,7 +176,6 @@ BDF的SCF计算默认采用原子计算密度矩阵构建分子密度矩阵的�
     H      -3.4601679801        1.6628382651        0.0320205364
     O       2.2198078005        0.0000024315        0.2188182082
     end geometry
-     skeleton
     basis
      cc-pvqz
     unit
@@ -201,7 +194,6 @@ BDF的SCF计算默认采用原子计算密度矩阵构建分子密度矩阵的�
     $end
      
     $xuanyuan
-    Direct
     $end
     
     #use expanded orbital as initial guess orbital
@@ -294,10 +286,6 @@ expandmo模块的输出为，
     
       Label              CPU Time        SYS Time        Wall Time
      SCF iteration time:       517.800 S        0.733 S      175.617 S
-
-
-指定占据数计算激发态
-------------------------------------------------
 
 
 .. _momMethod:
@@ -674,8 +662,6 @@ SCF收敛后，轨道占据情况被再一次打印，可以看到 **alpha** 轨
 ------------------------------------------------
 BDF的一个重要特色是利用 **MPEC+COSX** 方法加速SCF、TDDFT的能量及梯度计算。设置MPEC+COSX计算，输入如下：
 
- **Todo: Bingbing Suo's** 
-
 .. code-block:: bdf
 
     #! amylose2.sh
@@ -785,3 +771,65 @@ BDF的一个重要特色是利用 **MPEC+COSX** 方法加速SCF、TDDFT的能量
       cc-pvdz
     MPEC+COSX # ask for the MPEC+COSX method
     $end
+
+在 **SCF** 模块会输出会有关 **MPEC+COSX** 是否都被设置为 True 的提示：
+
+.. code-block:: bdf
+
+    --- PRINT: Information about SCF Calculation --- 
+    ICTRL_FRAGSCF=  0
+    IPRTMO=  1
+    MAXITER=  100
+    THRENE= 0.10E-07 THRDEN= 0.50E-05
+    DAMP= 0.00 VSHIFT= 0.00
+    IFDIIS= T
+    THRDIIS= 0.10E+01
+    MINDIIS=   2 MAXDIIS=   8
+    iCHECK=  0
+    iAUFBAU=  1
+    INIGUESS=  0
+    IfMPEC= T
+    IfCOSX= T
+
+这里， ``IfMPEC= T`` , 且 ``IfCOSX= T`` 说明 **MPEC+COSX** 方法被用于计算。SCF迭代过程如下：
+
+.. code-block:: bdf
+
+     [scf_cycle_init_ecdenpot]
+    Meomory for coulpotential         0.02  G
+    
+     Start SCF iteration......
+    
+    
+    Iter.   idiis  vshift       SCF Energy            DeltaE          RMSDeltaD          MaxDeltaD      Damping    Times(S) 
+       1      0    0.000   -1299.6435521238     -23.7693069405       0.0062252375       0.2842668435    0.0000      2.69
+       2      1    0.000   -1290.1030630508       9.5404890730       0.0025508000       0.1065204344    0.0000      1.65
+       3      2    0.000   -1290.2258798561      -0.1228168053       0.0014087449       0.0742227520    0.0000      1.67
+       4      3    0.000   -1290.4879683983      -0.2620885422       0.0002338141       0.0153879051    0.0000      1.64
+       5      4    0.000   -1290.4955210658      -0.0075526675       0.0000713807       0.0049309441    0.0000      1.57
+       6      5    0.000   -1290.4966349620      -0.0011138962       0.0000156009       0.0010663736    0.0000      1.51
+       7      6    0.000   -1290.4966797420      -0.0000447800       0.0000043032       0.0002765334    0.0000      1.44
+       8      7    0.000   -1290.4966810419      -0.0000012999       0.0000014324       0.0000978302    0.0000      1.37
+       9      8    0.000   -1290.4966794202       0.0000016217       0.0000003030       0.0000173603    0.0000      1.40
+      10      2    0.000   -1290.4966902283      -0.0000108081       0.0000000659       0.0000034730    0.0000      1.11
+     diis/vshift is closed at iter =  10
+      11      0    0.000   -1290.5003691464      -0.0036789181       0.0000225953       0.0009032949    0.0000      5.85
+    
+      Label              CPU Time        SYS Time        Wall Time
+     SCF iteration time:       179.100 S        1.110 S       22.630 S
+    
+     Final DeltaE = -3.678918126752251E-003
+     Final DeltaD =  2.259533940614071E-005  5.000000000000000E-005
+     
+     Final scf result
+       E_tot =             -1290.50036915
+       E_ele =             -3626.68312754
+       E_nn  =              2336.18275840
+       E_1e  =             -6428.96436179
+       E_ne  =             -7717.90756825
+       E_kin =              1288.94320647
+       E_ee  =              2802.28123424
+       E_xc  =                 0.00000000
+      Virial Theorem      2.001208
+
+在CPU为i9-9900K的台式机上，8个OpenMP线程并行计算耗时22秒。相同条件下SCF计算不用MPEC+COSX方法加速，计算耗时110秒， **MPEC+COSX** 大约加速了 **5** 倍。

@@ -41,8 +41,7 @@ BDF支持在计算中考虑分子点群对称性。除某些计算任务（如�
    H                  0.81649655    0.47140450    0.23333324
   End geometry
   thresh
-   medium
-  skeleton
+   medium 
   $END
 
 注意因为初始结构不严格满足 :math:`\rm C_{3v}` 对称性，这里用 ``thresh medium`` 选择较松的判断对称性的阈值（默认为 ``tight`` ，也可选择更松的 ``loose`` ）。由输出文件可以看到，程序自动识别出该分子属于 :math:`\rm C_{3v}` 点群：
@@ -136,7 +135,6 @@ BDF支持在计算中考虑分子点群对称性。除某些计算任务（如�
    N 0.00 0.00 0.00
    N 0.00 0.00 1.10
   End geometry
-  Skeleton
   Group
    D(2h)
   $END
