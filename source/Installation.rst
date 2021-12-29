@@ -107,6 +107,30 @@ cmake编译BDF
    1. gcc编译器9.0及以上版本，与Intel Fortran编译器混合使用，链接程序出错，原因是Intel Fortran编译器的OpenMP版本落后于GNU编译器。因而，GNU 9.0及以上版本编译器目前不支持GNU与Intel编译器混合编译。
    2. Intel Fortran 2018版编译器Bug较多，应避免使用。
 
+4  编译BDFpro，并要求生成鸿之微License文件
+-------------------------------------------------------------------
+
+主要步骤同前面3种情况，在运行setup命令时，需要加入参数 ``--hzwlic``，如：
+
+.. code-block:: bdf
+
+    #cmake由setup命令自动执行
+    $./setup --fc=${FC} --cc=${CC} --cxx=${CXX} --bdfpro --hzwlic --omp --int64 --mkl sequential $1
+
+在运行完安装命令 ``make install`` 后，最后会给出如下的输出：
+
+.. code-block:: bdf
+
+    Please run command '/home/bsuo/bdf-pkg-pro/bdf-pkg-pro/bin/hzwlic.x /home/bsuo/bdf-pkg-pro/build/bdf-pkg-pro' to generate Hongzhiwei license!
+
+这里， ``/home/bsuo/bdf-pkg-pro`` 是BDFpro源文件目录， ``/home/bsuo/bdf-pkg-pro/build/bdf-pkg-pro`` 是BDFpro的二进制代码安装目录。运行命令：
+
+.. code-block:: bdf
+
+    /home/bsuo/bdf-pkg-pro/bdf-pkg-pro/bin/hzwlic.x /home/bsuo/bdf-pkg-pro/build/bdf-pkg-pro
+
+后，目录 ``/home/bsuo/bdf-pkg-pro/build/bdf-pkg-pro/license``中，生成文件 **LicenseNumber.txt** 。
+
 
 程序运行
 ==========================================================================
