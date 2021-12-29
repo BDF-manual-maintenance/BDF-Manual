@@ -29,7 +29,7 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
   #%export BDFTASK=c8h10frag1
   $COMPASS 
   Title
-   CH2 Molecule test run, cc-pvqz 
+   Fragment 1
   Basis
    6-31G
   Geometry
@@ -68,7 +68,7 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
   #%export BDFTASK=c8h10frag2
   $COMPASS 
   Title
-   CH2 Molecule test run, cc-pvqz 
+   Fragment 2
   Basis
    6-31G
   Geometry
@@ -114,7 +114,7 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
   
   $COMPASS 
   Title
-   CH2 Molecule test run, cc-pvqz 
+   Fragment 3
   Basis
    6-31G
   Geometry
@@ -161,7 +161,7 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
   
   $COMPASS 
   Title
-   CH2 Molecule test run, cc-pvqz 
+   Fragment 4
   Basis
    6-31G
   Geometry
@@ -202,7 +202,7 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
   %echo "--------CHECKDATA: From fragment to molecular SCF calculation---------------"
   $COMPASS 
   Title
-   CH2 Molecule test run, cc-pvqz 
+   Whole Molecule calculation
   Basis
    6-31G
   Geometry
@@ -540,7 +540,7 @@ FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用�
    2
   $end
 
-而 ``nprocs`` 表示对各个子体系的SCF计算进行并行化，以上述算例为例，即允许同时计算多个子体系，且任何时刻同时计算的子体系不超过2个。如果省略 ``nprocs`` 关键词，等价于将 ``nprocs`` 设为1，程序会依次计算所有子体系，每个子体系占用8个OpenMP线程，且每次待一个子体系计算结束后再计算下一个子体系。计算结果相比使用 ``nprocs`` 不会有任何区别，只是计算效率可能会有所降低。因此 ``nprocs`` 只影响FLMO计算的效率，而不影响其计算结果，也即以下写法同样可以成功运行，但计算时间可能相比不写 ``nprocs`` 略长：
+而 ``nprocs`` 表示对各个子体系的SCF计算进行并行化，以上述算例为例，即允许同时计算多个子体系，且任何时刻同时计算的子体系不超过2个。如果省略 ``nprocs`` 关键词，等价于将 ``nprocs`` 设为1，程序会依次计算所有子体系，每个子体系占用8个OpenMP线程，且每次待一个子体系计算结束后再计算下一个子体系。计算结果相比使用 ``nprocs`` 不会有任何区别，只是计算效率可能会有所降低。因此 ``nprocs`` 只影响FLMO计算的效率，而不影响其计算结果，也即以下写法同样可以成功运行，但计算时间可能比写 ``nprocs`` 略长：
 
 .. code-block::
 
@@ -751,7 +751,7 @@ iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采
  Elapsed time of post-processing: 0.04 s
  Total elapsed time of this iteration: 33.71 s
 
-此时程序自动判断这些子体系的大小已经足以将体系的LMO收敛到所需精度，因而iOI宏迭代收敛，进行iOI全局计算。iOI全局计算的输出与FLMO全局计算类似，但为了进一步加快Fock矩阵的块对角化，在iOI全局计算里，某些已经收敛的LMO会被冻结，从而降低需要块对角化的Fock矩阵的维度，但也引入了少许误差（一般在 :math:`10^{-6} \sim 10^{-5} \textrm{Hartree}`数量级）。以最后一步SCF迭代为例：
+此时程序自动判断这些子体系的大小已经足以将体系的LMO收敛到所需精度，因而iOI宏迭代收敛，进行iOI全局计算。iOI全局计算的输出与FLMO全局计算类似，但为了进一步加快Fock矩阵的块对角化，在iOI全局计算里，某些已经收敛的LMO会被冻结，从而降低需要块对角化的Fock矩阵的维度，但也引入了少许误差（一般在 :math:`10^{-6} \sim 10^{-5}` Hartree数量级）。以最后一步SCF迭代为例：
 
 .. code-block:: bdf
 

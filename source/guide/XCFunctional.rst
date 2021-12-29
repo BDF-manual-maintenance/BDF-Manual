@@ -12,7 +12,7 @@ BDF的密度泛函理论（DFT）支持限制性（restricted）、非限制性�
     ========================================  ====================================================
      局域密度近似（LDA）                       LSDA, SVWN5, SAOP
      广义梯度近似（GGA）                       BP86, BLYP, PBE, PW91, OLYP, KT2
-     含动能密度的广义梯度近（meta-GGA）        TPSS, M06L, M11L, MN12L, MN15L, SCAN, r2SCAN
+     含动能密度的广义梯度近似（meta-GGA）      TPSS, M06L, M11L, MN12L, MN15L, SCAN, r2SCAN
      杂化GGA泛函（Hybrid GGA）                 B3LYP, GB3LYP, BHHLYP, PBE0, B3PW91, HFLYP, VBLYP
      范围分离GGA泛函（RS Hybrid GGA）          wB97, wB97X, CAM-B3LYP, LC-BLYP
      杂化含动能密度泛函（Hybrid Meta-GGA）     TPSSh, M062X, PW6B95
