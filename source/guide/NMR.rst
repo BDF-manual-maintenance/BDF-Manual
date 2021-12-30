@@ -37,7 +37,6 @@ NMR算例
   $END
 
   $xuanyuan # 单双电子积分相关设定和计算
-  Direct                        # Direct SCF calculation
   $end
 
   $SCF      # 自洽场计算模块
@@ -84,11 +83,11 @@ COMMON GAUGE
   cgcoord
     1.0 0.0 0.0   # 输入为3个实型数，将规范原点至于空间坐标为（1.0，0.0，0.0）的点上
   cgunit
-    angstrom      # cgcoord坐标的单位，默认值为原子单位，当输入为angstrom，输入的规范原点坐标单位为埃
-                  # 其他输入（如bohr，AU），坐标单位为原子单位，输入不区分大小写
+    angstrom      # cgcoord坐标的单位，默认值为原子单位，当输入为angstrom，输入的规范原点坐标
+                  # 单位为埃；其他输入（如bohr，AU），坐标单位为原子单位，输入不区分大小写
   $END
 
-当输入中同时存在igatom和cgcoord时，以后输入的为准，上面例子，最终规范原点设定在空间坐标为（1.0，0.0，0.0）（单位埃）的位置上。
+当输入中同时存在igatom和cgcoord时，以后输入的为准。例如上面的例子，最终规范原点设定在空间坐标为（1.0，0.0，0.0）（单位埃）的位置上。
 如两个参数igatom和cgcoord都未输入，计算COMMON GAUGE的NMR值时，规范原点设在坐标原点上，即设在（0.0，0.0，0.0）的位置上。
 
 输出文件中Common gauge计算从 ``[nmr_nr_cg]`` 开始，如下：
@@ -168,6 +167,6 @@ GIAO
 第一列为各向同性屏蔽常数，第二列为各向异性屏蔽常数。
 
 .. warning::
-  输出中的关键词 ``Isotropic/anisotropic constant by atom type`` 
-  GIAO与COMMON GAUGE的相同，在读取结果时应注意是在 ``[nmr_nr_cg]`` 后的，
+  输出中的关键词 ``Isotropic/anisotropic constant by atom type`` 对于
+  GIAO与COMMON GAUGE完全相同，在读取结果时应注意是在 ``[nmr_nr_cg]`` 后的，
   还是 ``[nmr_nr_giao]`` 后的，来区分COMMON GAUGE的结果还是GIAO的结果

@@ -4,6 +4,10 @@
 安装说明
 ================================================
 
+.. note::
+
+   普通用户不需要阅读这一部分。
+
 硬件环境
 -------------------------------------------------
 原则上说，BDF可以在任何Unix和类Unix操作系统上进行编译安装。我们已经在一些常见的软硬件环境下进行了编译测试，
@@ -42,70 +46,94 @@ cmake编译BDF
 
 .. code-block:: shell
 
-    #设置编译器
-    $export FC=ifort
-    $export CC=gcc
-    $export CXX=g++
-    #cmake由setup命令自动执行
-    $./setup --fc=${FC} --cc=${CC} --cxx=${CXX} --bdfpro --omp --int64 --mkl sequential $1
-    #在build目录下构建BDF
-    $cd build
-    #使用make命令编译BDF，利用-j4参数指定使用4个CPU并行编译 
-    $make -j4
-    #安装BDF
-    $make install
-    #将build下bdf-pkg-pro复制至任意路径后，在bdfrc中写入正确路径，如：
-    $BDFHOME=/home/user/bdf-pkg-pro
-    #运行命令
-    $$BDFHOME/sbin/bdfdrv.py -r **.inp
+    # 设置编译器
+    $ export FC=ifort
+    $ export CC=gcc
+    $ export CXX=g++
+    # cmake由setup命令自动执行
+    $ ./setup --fc=${FC} --cc=${CC} --cxx=${CXX} --bdfpro --omp --int64 --mkl sequential $1
+    # 在build目录下构建BDF
+    $ cd build
+    # 使用make命令编译BDF，利用-j4参数指定使用4个CPU并行编译 
+    $ make -j4
+    # 安装BDF
+    $ make install
+    # 将build下bdf-pkg-pro复制至任意路径后，在bdfrc中写入正确路径，如：
+    $ BDFHOME=/home/user/bdf-pkg-pro
+    # 运行命令
+    $ $BDFHOME/sbin/bdfdrv.py -r **.inp
 
 2. GNU编译器gfortran/gcc/g++，链接MKL数学库，支持OpenMP并行
 -------------------------------------------------------------------
 
 .. code-block:: shell
 
-    #设置编译器
-    $export FC=gfortran
-    $export CC=gcc
-    $export CXX=g++
-    #cmake由setup命令自动执行
-    $./setup --fc=${FC} --cc=${CC} --cxx=${CXX} --bdfpro --omp --int64 --mkl sequential $1
-    #在build目录下构建BDF
-    $cd build
-    #使用make命令编译BDF，利用-j4参数指定使用4个CPU并行编译 
-    $make -j4
-    #安装BDF
-    $make install
-    #将build下bdf-pkg-pro复制至任意路径后，在bdfrc中写入正确路径，如：
-    $BDFHOME=/home/user/bdf-pkg-pro
-    #运行命令
-    $$BDFHOME/sbin/bdfdrv.py -r **.inp
+    # 设置编译器
+    $ export FC=gfortran
+    $ export CC=gcc
+    $ export CXX=g++
+    # cmake由setup命令自动执行
+    $ ./setup --fc=${FC} --cc=${CC} --cxx=${CXX} --bdfpro --omp --int64 --mkl sequential $1
+    # 在build目录下构建BDF
+    $ cd build
+    # 使用make命令编译BDF，利用-j4参数指定使用4个CPU并行编译 
+    $ make -j4
+    # 安装BDF
+    $ make install
+    # 将build下bdf-pkg-pro复制至任意路径后，在bdfrc中写入正确路径，如：
+    $ BDFHOME=/home/user/bdf-pkg-pro
+    # 运行命令
+    $ $BDFHOME/sbin/bdfdrv.py -r **.inp
 
 3. Intel编译器ifort/icc/icpc，链接MKL数学库，支持OpenMP并行
 -------------------------------------------------------------------
 
 .. code-block:: shell
 
-    #设置编译器
-    $export FC=ifort
-    $export CC=icc
-    $export CXX=icpc
-    #cmake由setup命令自动执行
-    $./setup --fc=${FC} --cc=${CC} --cxx=${CXX} --bdfpro --omp --int64 --mkl sequential $1
-    #在build目录下构建BDF
-    $cd build
-    #使用make命令编译BDF，利用-j4参数指定使用4个CPU并行编译 
-    $make -j4
-    #安装BDF
-    $make install
-    #将build下bdf-pkg-pro复制至任意路径后，在bdfrc中写入正确路径，如：
-    $BDFHOME=/home/user/bdf-pkg-pro
-    #运行命令
-    $$BDFHOME/sbin/bdfdrv.py -r **.inp
+    # 设置编译器
+    $ export FC=ifort
+    $ export CC=icc
+    $ export CXX=icpc
+    # cmake由setup命令自动执行
+    $ ./setup --fc=${FC} --cc=${CC} --cxx=${CXX} --bdfpro --omp --int64 --mkl sequential $1
+    # 在build目录下构建BDF
+    $ cd build
+    # 使用make命令编译BDF，利用-j4参数指定使用4个CPU并行编译 
+    $ make -j4
+    # 安装BDF
+    $ make install
+    # 将build下bdf-pkg-pro复制至任意路径后，在bdfrc中写入正确路径，如：
+    $ BDFHOME=/home/user/bdf-pkg-pro
+    # 运行命令
+    $ $BDFHOME/sbin/bdfdrv.py -r **.inp
 
 .. Warning::
    1. gcc编译器9.0及以上版本，与Intel Fortran编译器混合使用，链接程序出错，原因是Intel Fortran编译器的OpenMP版本落后于GNU编译器。因而，GNU 9.0及以上版本编译器目前不支持GNU与Intel编译器混合编译。
    2. Intel Fortran 2018版编译器Bug较多，应避免使用。
+
+4  编译BDFpro，并要求生成鸿之微License文件
+-------------------------------------------------------------------
+
+主要步骤同前面3种情况，在运行setup命令时，需要加入参数 ``--hzwlic``，如：
+
+.. code-block:: bdf
+
+    #cmake由setup命令自动执行
+    $./setup --fc=${FC} --cc=${CC} --cxx=${CXX} --bdfpro --hzwlic --omp --int64 --mkl sequential $1
+
+在运行完安装命令 ``make install`` 后，最后会给出如下的输出：
+
+.. code-block:: bdf
+
+    Please run command '/home/bsuo/bdf-pkg-pro/bdf-pkg-pro/bin/hzwlic.x /home/bsuo/bdf-pkg-pro/build/bdf-pkg-pro' to generate Hongzhiwei license!
+
+这里， ``/home/bsuo/bdf-pkg-pro`` 是BDFpro源文件目录， ``/home/bsuo/bdf-pkg-pro/build/bdf-pkg-pro`` 是BDFpro的二进制代码安装目录。运行命令：
+
+.. code-block:: bdf
+
+    /home/bsuo/bdf-pkg-pro/bdf-pkg-pro/bin/hzwlic.x /home/bsuo/bdf-pkg-pro/build/bdf-pkg-pro
+
+后，目录 ``/home/bsuo/bdf-pkg-pro/build/bdf-pkg-pro/license``中，生成文件 **LicenseNumber.txt** 。
 
 
 程序运行
@@ -152,13 +180,13 @@ BDF需在Linux终端下运行。运行BDF，需要先准备输入文件，输入
 
 .. code-block:: shell
 
-    #在/home/user中新建一个文件夹test
-    $mkdir test
-    $cd test
-    #拷贝/home/user/bdf-pkg-pro/tests/easyinput/ch2-hf.inp到test文件夹
-    $cp /home/user/bdf-pkg-pro/tests/easyinput/ch2-hf.inp
-    #在test目录中运行提交命令
-    $./run.sh ch2-hf.inp &> ch2-hf.out&
+    # 在/home/user中新建一个文件夹test
+    $ mkdir test
+    $ cd test
+    # 拷贝/home/user/bdf-pkg-pro/tests/easyinput/ch2-hf.inp到test文件夹
+    $ cp /home/user/bdf-pkg-pro/tests/easyinput/ch2-hf.inp
+    # 在test目录中运行提交命令
+    $ ./run.sh ch2-hf.inp &> ch2-hf.out&
 
 .. hint::
     BDF将输出打印至标准输出，需要用重定向命令 ``>`` 定向到文件ch2-hf.out中。
@@ -235,7 +263,7 @@ Slurm提交BDF作业的脚本示例如下：
 
 .. important::
     1. stacksize的问题。Intel Fortran编译器对程序运行的堆区（stack）内存要求较大，Linux系统默认的stacksize的大小通常太小，需要通过ulimit -s unlimited指定堆区内存大小。
-    2. OpenMP并行的线程数。OMP_NUM_THREAS用于设定OpenMP的并行线程数。BDF依赖于OpenMP并行提高计算效率。如果用户使用了Bash Shell，可以用命令 ``export OMP_NUM_THREADS=N`` 指定使用N个OpenMP线程加速计算。
+    2. OpenMP并行的线程数。OMP_NUM_THREADS用于设定OpenMP的并行线程数。BDF依赖于OpenMP并行提高计算效率。如果用户使用了Bash Shell，可以用命令 ``export OMP_NUM_THREADS=N`` 指定使用N个OpenMP线程加速计算。
     3. OpenMP可用堆区内存，用户可以用 ``export OMP_STACKSIZE=1024M`` 指定OpenMP可用的堆区内存大小。
 
 
@@ -264,7 +292,7 @@ BDF中pDynamo-2已经内置于安装目录的sbin目录下，在sbin目录下依
 
   cd pDynamo_2.0.0
   cd installation
-  python ./intall.py
+  python ./install.py
 
 安装脚本运行后，会生成 environment_bash.com，environment_cshell.com两个环境配置文件。用户可以在自己的 ``.bashrc`` 通过source加载这个
 环境文件，设置运行环境。

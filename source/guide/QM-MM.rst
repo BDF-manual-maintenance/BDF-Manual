@@ -248,17 +248,18 @@ QM/MM-TDDFT计算。以前一节中完成的算例为例，可以继续添加如
  END geometry
  Extcharge
   point
- Skeleton
  nosymm
  $END
+
  $XUANYUAN
- Direct
  $END
+ 
  $SCF
  RKS
  DFT
  cam-B3LYP
  $END
+
  $tddft   #TDDFT计算控制
  iprt
   3

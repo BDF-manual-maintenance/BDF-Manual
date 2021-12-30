@@ -9,11 +9,11 @@ XUANYUAN模块主要计算单、双电子积分和其他必要的积分并存储
 --------------------------------------
 指定使用积分直接的SCF（Direct）计算。
 
-积分直接的SCF不存储双电子积分，按照Schwartz不等式，结合积分对Fock矩阵的贡献，对积分计算进行预筛选，对基函数数目大于约300的计算，可以有效的利用双电子积分重复计算来避免IO操作，且支持OpenMP的多核并行计算。BDF中大多数需要计算Fock-Like矩阵（J与K矩阵）的模块，如SCF，TDDFT等都已经实现了积分直接计算。
+积分直接的SCF不存储双电子积分，按照Schwartz不等式，结合积分对Fock矩阵的贡献，对积分进行预筛选。当基函数数目大于300左右，可以有效地利用双电子积分重复计算来避免IO操作，且支持OpenMP的多核并行计算。BDF中大多数需要计算Fock-Like矩阵（J与K矩阵）的模块，如SCF，TDDFT等都已经实现了积分直接计算。
 
 .. note::
 
-    积分直接的SCF计算，需要在compass模块中加上 :ref:`Skeleton<compass.skeleton>` 关键词。
+    积分直接的SCF计算需要在compass模块中加上 :ref:`Skeleton<compass.skeleton>` 关键词。
 
 .. code-block:: bdf
 
@@ -21,7 +21,7 @@ XUANYUAN模块主要计算单、双电子积分和其他必要的积分并存储
      Direct
      $end
 
-:guilabel:`Maxmem` 参数类型：Bool型
+:guilabel:`Maxmem` 参数类型：字符串
 --------------------------------------
 指定非积分直接的SCF双电子积分计算缓存大小。大的缓存可以减少积分排序的次数。输入格式为数字+MW或数字+GW，1 Word=2 Byte， 因此512MW就等于1024MB。
 
@@ -32,16 +32,19 @@ XUANYUAN模块主要计算单、双电子积分和其他必要的积分并存储
        512MW
      $end
 
-:guilabel:`RS` 参数类型：浮点型
---------------------------------------
-指定Range-Speration泛函如CAM-B3LYP等的系数。建议值：0.33，如果DFT使用了Range-Speration泛函，必须加入此参数。
+
+:guilabel:`RSOMEGA` / :guilabel:`RS` 参数类型：浮点型
+------------------------------------------------------
+指定Range-Separated泛函如CAM-B3LYP等的 :math:`\omega` （某些文献称 :math:`\mu` ）系数。
+``RS`` 是 ``RSOMEGA`` 的同义词。建议值：0.33。如果DFT使用了Range-Speration泛函，必须加入此参数。
 
 .. code-block:: bdf
     
      $xuanyuan
-     RS
+     RSOMEGA
        0.33
      $end
+     
      $scf
        dft
          cam-b3lyp
@@ -49,15 +52,23 @@ XUANYUAN模块主要计算单、双电子积分和其他必要的积分并存储
 
 :guilabel:`Heff` 参数类型:整型
 -------------------------------------------------
- * 默认值：2
- * 可选值：1、2、3/4、5、21、22、23
+ * 默认值：0
+ * 可选值：0、1、2、3/4、5、21、22、23
 
-指定相对论哈密顿，如果只输入了Scalar，未加Heff，则默认是sf-X2C哈密顿。
+指定标量相对论哈密顿，包括：
+
+ * 0：非相对论，包括使用ECP的情况
+ * 1：sf-ZORA（不建议普通用户使用）
+ * 2：sf-IORA（不建议普通用户使用）
+ * 3、4：sf-X2C（二者计算流程不同，一般用3即可）
+ * 5：sf-X2C + so-DKH3（无自旋部分，需结合 ``Hsoc`` 使用，精度有待进一步测试） :cite:`doi:10.1063/1.4758987`
+ * 21：sf-X2C（同3、4，但支持解析导数和部分单电子性质） :cite:`doi:10.1021/acs.jctc.9b01120`
+ * 22：sf-X2C-aXR（使用原子X矩阵近似的sf-X2C，支持解析导数和部分单电子性质） :cite:`doi:10.1021/acs.jctc.9b01120`
+ * 23：sf-X2C-aU（使用原子酉变换近似的sf-X2C，支持解析导数和部分单电子性质） :cite:`doi:10.1021/acs.jctc.9b01120`
 
 .. code-block:: bdf
     
      $xuanyuan
-     Scaler
      Heff
        3
      $end
@@ -66,20 +77,37 @@ XUANYUAN模块主要计算单、双电子积分和其他必要的积分并存储
 ----------------------------------------------------
  * 可选值：0、1、2、3、4、5
 
-指定SOC积分类型。
+指定自旋轨道（SO）积分的类型，包括：
+
+ * 0：so-1e，仅计算单电子SO积分。对于ECP基组，这是唯一的选择
+ * 1：so-1e + SOMF，通过有效Fock算符计算双电子SO积分。对于全电子计算，这是最准确的方法
+ * 2：so-1e + SOMF-1c，使用单中心近似的SOMF。对于全电子计算，这是推荐选项，尤其是计算大分子
+ * 3：so-1e + SOMF-1c / no soo，关闭2中的自旋-其它轨道（SOO）贡献
+ * 4：so-1e + SOMF-1c / no soo + WSO_XC，采用DFT计算SOO贡献
+ * 5：so-1e + somf-1c / no soo + WSO_XC-2x，根据Neese的建议，把DFT部分乘以-2来模拟SOO贡献
+ * 以上参数加上10，将使用BP近似下的算符
 
 .. code-block:: bdf
     
      $xuanyuan
-     Soint
      Hsoc
        1
      $end
 
-:guilabel:`Nuclear` 参数类型：Bool型\&整数
+:guilabel:`Nuclear` 参数类型：整数
 ---------------------------------------------------
  * 默认值：0
  * 可选值：0、1
 
 指定原子核电荷分布模型。0为点电荷模型；1为高斯电荷模型。
+对于110号（Ds）之前的元素，均方根（RMS）核半径取自Visscher和Dyall汇总的数据 :cite:`visscher1997` ；
+从Ds元素开始，RMS核半径通过核素质量A估算（单位：费米）：
+
+.. math::
+   \left<r^2\right> \approx 0.57 + 0.836 \, A^{1/3}
+
+其中的核素质量A与核电荷数Z近似满足以下关系 :cite:`andrae2000,andrae2002` ：
+
+.. math::
+   A \approx 0.004467 \, Z^2 + 2.163 \, Z - 1.168
 

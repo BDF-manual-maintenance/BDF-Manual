@@ -2,10 +2,7 @@
 
 第一个算例 :math:`\ce{H2O}` 分子的RHF计算
 ================================================
-Hartree-Fock是量子化学最基本算法，如同计算机编程第一次成功输出“Hello world！”，完成一个完整的Hartree-Fock单点能量计算，
-搞清计算输出内容，对学习和理解量子化学，掌握一个量子化学软件的基本使用方法大有裨益。本小节，我们将通过一个的Hartree-Fock
-计算的例子，引导用户使用BDF，帮助用户了解量子化学的一些基本知识。本节将采用BDF的简洁输入模式做为例子，为了使用户理解
-BDF的简洁输入与高级输入模式的区别，我们也会给出每个简洁输入对应的高级输入文件，并给出分析。
+Hartree-Fock是量子化学最基本算法。本小节，我们将通过一个水分子的Hartree-Fock计算例子，引导用户完成一个BDF计算并分析输入与输出信息。这里，我们先给出BDF的简洁输入，为了使用户理解BDF的简洁输入与高级输入模式的区别，我们也会给出每个简洁输入对应的高级输入文件。
 
 
 准备输入
@@ -17,68 +14,62 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
     #!bdf.sh
     HF/3-21G    
   
-    geometry
+    Geometry
     O
     H  1  R1 
     H  1  R1  2 109.
   
     R1=1.0     # input bond length with the default unit angstrom
-    end geometry
+    End geometry
 
-输入的第一行必须以 ``#!`` 开始，跟着一个名为 ``bdf.sh`` 字符串，这个可以是任意的字母和数组字成字符串，不能包含除 ``.`` 外的特殊字符。第一行是系统保留行，用户可以利用这个字符串来标记计算任务。
-第二行 ``HF/3-21G`` 是BDF的计算参数控制行， ``HF`` 是Hartree-Fock的缩写， ``3-21G`` 指定计算使用 ``3-21G`` 基组。
-第三行为空行，在程序内部，用于提示计算参数控制行输入已结束。
-第四行与第十行分别为 ``geometry`` 和 ``end geometry`` ，标记分子几何结构输入的起始与中止，坐标的默认单位是埃 (Angstrom)。
-第五行到第九行用内坐标的模式输入了水分子的结构。(详见 :ref:`分子结构的内坐标格式输入<Internal-Coord>`)
+输入解读如下：
+ - 第一行必须以 ``#!`` 开始，跟着一个名为 ``bdf.sh`` 字符串，这个可以是任意的字母和数组字成字符串，不能包含除 ``.`` 外的特殊字符。第一行是系统保留行，用户可以利用这个字符串来标记计算任务。
+ - 第二行 ``HF/3-21G`` 是BDF的计算参数控制行， ``HF`` 是Hartree-Fock的缩写， ``3-21G`` 指定计算使用 ``3-21G`` 基组。关键参数控制行可以是连续的多行。
+ - 第三行为空行，可忽略。这里输入是为了区分不同的输入内容，增强输入的可读性，建议用户保留。
+ - 第四行与第十行分别为 ``Geometry`` 和 ``End geometry`` ，标记分子几何结构输入的起始与中止，坐标的默认单位是埃 (Angstrom)。
+ - 第五行到第九行用内坐标的模式输入了水分子的结构。(详见 :ref:`分子结构的内坐标格式输入<Internal-Coord>`)
 
 这个简单的输入对应的BDF高级输入为：
 
 .. code-block:: bdf 
 
-    $compass
-    geometry
+  $compass
+  Geometry
     O
-    H  1  R1 
-    H  1  R1  2 109.
+    H 1 1.0
+    H 1 1.0 2 109.
+  End geometry
+  Basis
+    3-21g  # set basis set as 3-21g
+  $end
   
-    R1=1.0
-    end geometry
-    skeleton # 利用对称独立积分计算骨架Fock矩阵方法。积分直接SCF必须使用这个关键词
-    basis
-      3-21g  # set basis set as 3-21g
-    $end
+  $xuanyuan
+  $end
   
-    $xuanyuan
-    direct    # 积分直接的SCF计算
-    $end
-  
-    $scf
-    rhf    #  限制性Hartree-Fock方法
-    charge
-      0    # 分子的电荷设置为0
-    spinmulti
-      1    # 自旋多重度 2S+1
-    $end
+  $scf
+  RHF       # 限制性Hartree-Fock方法
+  Charge    # 分子的电荷设置为0，默认计算中性分子，电荷为零
+    0    
+  Spinmulti # 自旋多重度 2S+1，偶数电子体系默认计算单重态
+    1    
+  $end
 
-从高级输入可以看出，BDF将按顺序执行模块 ``compass`` ， ``xuanyuan`` 和 ``scf`` 完成水分子的单点能量计算。
-``compass`` 用于读入分子结构，基函数等基本信息，判断分子的对称性，将分子转动到标准取向(Standard orientation，详见 :ref:`BDF对群论的使用小节<Point-Group>`)，产生对称匹配轨道等，
-并将这些信息存入BDF的执行目录下的文件 ``h2o.chkfil`` 。 ``compass`` 中的关键词
+从高级输入可以看出，BDF将按顺序执行模块 **COMPASS** ， **XUANYUAN** 和 **SCF** 完成水分子的单点能量计算。
+**COMPASS** 用于读入分子结构，基函数等基本信息，判断分子的对称性，将分子转动到标准取向(Standard orientation，详见 :ref:`BDF对群论的使用小节<Point-Group>`)，产生对称匹配轨道等，
+并将这些信息存入BDF的执行目录下的文件 ``h2o.chkfil`` 。 **COMPASS** 中的关键词
 
- * ``geommetry`` 到 ``end geometry`` 之间定义分子结构;
- * ``basis`` 定义基组为 ``3-21G``;
- * ``Skeleton`` 指定只计算对称独立的单、双电子积分，构造骨架Fock矩阵并对称化(详见 :ref:`BDF对群论的使用小节<Point-Group>` )。 
+ * ``Geometry`` 到 ``End geometry`` 之间定义的分子结构;
+ * ``Basis`` 定义基组为 ``3-21G``;
 
-执行完 ``compass`` 模块后，BDF利用 ``xuanyuan`` 模块计算单、双电子积分。
+执行完 **COMPASS** 模块后，BDF利用 **XUANYUAN** 模块计算单、双电子积分。由于BDF默认采用的是 **重复计算双电子积分的SCF** 方法，即 **Integral Direct SCF** 。
 
- * ``direct`` 关键词指定后续的自洽场计算采用积分直接的计算方法(详见 :ref:`BDF的积分计算方法小节<xuanyuan>`);
+最后，BDF执行 **SCF** 模块，完成基于Hartree-Fock的自洽场计算。
 
-最后，BDF执行 ``scf`` 模块，完成基于Hartree-Fock的自洽场计算。
+ * ``RHF`` 指定使用限制性Hartree-Fock方法;
+ * ``Charge`` 指定体系的电荷为0;
+ * ``Spinmulti`` 指定体系的自旋多重度为1。
 
- * ``rhf`` 指定使用限制性Hartree-Fock方法;
- * ``charge`` 指定体系的电荷为0;
- * ``spinmulti`` 指定体系的自旋多重度为1。
-
-这里 ``rhf`` 是必须输入的关键词， ``charge`` 和 ``spinmulti`` 对于限制性方法可以忽略。
+这里 ``RHF`` 是必须输入的关键词， ``Charge`` 和 ``Spinmulti`` 对于限制性方法可以忽略。
 
 执行计算
 -------------------------------------------------------
@@ -133,30 +124,31 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
 
 如果输入文件采用的是BDF简洁输入模式， ``h2o.out`` 中首先会给出一些基本的用户设置信息,
 
-.. code-block:: 
+.. code-block:: bdf 
 
-    |================== BDF Control parameters ==================|
-    
-    
-     1: Input BDF Keywords
-       xcfun=None    skeleton=True    scf=rhf    direct=True    
-       charge=0    spin=1    
-    
-     3: Basis sets
-        ['3-21g']
-    
-     4: Wavefunction, Charges and spin multiplicity
-       charge=0    nuclearcharge=10    spinmulti=1    
-    
-     5: Energy method
-        scf
-    
-     6: Acceleration method
-        ERI
-    
-     7: Potential energy surface method
-        energy
-    |============================================================|
+  |================== BDF Control parameters ==================|
+ 
+    1: Input BDF Keywords
+      soc=None    scf=rhf    skeleton=True    xcfuntype=None    
+      xcfun=None    direct=True    charge=0    hamilton=None    
+      spinmulti=1    
+   
+    2: Basis sets
+       ['3-21g']
+   
+    3: Wavefunction, Charges and spin multiplicity
+      charge=0    nuclearcharge=10    spinmulti=1    
+   
+    5: Energy method
+       scf
+   
+    7: Acceleration method
+       ERI
+   
+    8: Potential energy surface method
+       energy
+
+  |============================================================|
 
 这里，
 
@@ -167,7 +159,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
  * ``Accleration method`` 给出双电子积分计算加速方法；
  * ``Potential energy surface method`` 给出势能面计算方法，这里是单点能量计算。
 
-随后，系统执行 ``compass`` 模块，会给出如下提示：
+随后，系统执行 **COMPASS** 模块，会给出如下提示：
 
 .. code-block:: 
   
@@ -179,7 +171,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
     |************************************************************|
 
 
-然后打印输入的分子结构的笛卡尔坐标，单位为Bohr，以及每种类型原子的基函数详细信息
+然后打印输入的分子结构的笛卡尔坐标，单位为 **Bohr** ，以及每种类型原子的基函数详细信息
 
 .. code-block:: 
 
@@ -256,8 +248,8 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
     
     |----------------------------------------------------------------------------------|
 
-细心的用户可能已经注意到，这里的水分子的坐标与输入的不一样。最后， ``compass`` 会产生对称匹配轨道（Symmetry adapted orbital），并给出偶极矩和四极矩所属
-的不可约表示，打印 ``C2v`` 点群的乘法表，给出总的基函数数目和每个不可约表示对称匹配轨道数目。由于BDF深度使用了群论，感兴趣的用户可以通过BDF的输出对照学习群论知识。
+细心的用户可能已经注意到，这里的水分子的坐标与输入的不一样。最后， **COMPASS** 会产生对称匹配轨道（Symmetry adapted orbital），并给出偶极矩和四极矩所属
+的不可约表示，打印 ``C(2v)`` 点群的乘法表，给出总的基函数数目和每个不可约表示对称匹配轨道数目。
 
 .. code-block:: 
 
@@ -294,13 +286,13 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
       Norb  :      7         0         4         2
     |--------------------------------------------------|
 
-这里， ``C2v`` 点群有4个一维不可约表示，标记为 ``A1, A2, B2, B2`` , 分别有 ``7, 0, 4, 2`` 个对称匹配的轨道。
+这里， ``C(2v)`` 点群有4个一维不可约表示，标记为 ``A1, A2, B1, B2`` , 分别有 ``7, 0, 4, 2`` 个对称匹配的轨道。
 
 .. note::
 
     不同的量子化学软件，可能会采用不同的分子标准取向，导致某些分子轨道在不同程序中标记为不同的不可约表示。
 
-最后， ``compass`` 计算正常结束，会给出如下输出：
+最后， ``COMPASS`` 计算正常结束，会给出如下输出：
 
 .. code-block:: 
 
@@ -320,9 +312,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
     BDF的每个模块执行，都会有开始执行和执行结束后打印时间信息，方便用户具体定位哪个计算模块出错。
 
 
-一般地，在单点能量计算中第二个被执行的模块是 ``xuanyuan`` ，用于计算单、双电子积分。BDF简洁输入模式默认采用积分直接算法，
-只计算和保存单电子积分及需要做积分预筛选的特殊双电子积分。如果用户指定了 ``nodirect`` 关键词，双电子积分
-将被计算并保存到硬盘。 ``xuanyuan`` 模块的输出比较简单，一般不需要特别关注。这里，我们给出最关键的输出：
+本算例计算执行的第二个模块是 **XUANYUAN** ， 该模块主要用于计算单、双电子积分。如果不特别指定，BDF默认采用直接计算双电子积分构造Fock矩阵的算法。这里， **XUANYUAN** 模块只计算和保存单电子积分及需要做积分预筛选的特殊双电子积分。如果用户指定了 ``Nodirect`` 关键词，双电子积分将被计算并保存到硬盘。 **XUANYUAN** 模块的输出比较简单，一般不需要特别关注。这里，我们给出最关键的输出：
 
 .. code-block:: 
 
@@ -349,7 +339,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
     
 从输出我们看到单电子重叠、动能与核吸引积分被计算，还计算了偶极矩和四极矩积分。由于输入要求积分直接的SCF计算(Direct SCF)，双电子积分计算被忽略。
 
-最后，BDF调用 ``scf`` 模块执行 ``RHF`` 自洽场计算。需要关注的信息有：
+最后，BDF调用 **SCF** 模块执行 **RHF** 自洽场计算。需要关注的信息有：
 
 .. code-block:: 
 
@@ -400,7 +390,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
       Label              CPU Time        SYS Time        Wall Time
      SCF iteration time:         0.017 S        0.017 S        0.000 S
 
-最后打印不同项的能量贡献和维里比，
+最后打印不同项的能量贡献和维里比。
 
 .. code-block:: 
 
@@ -415,7 +405,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
        E_xc  =                 0.00000000
       Virial Theorem      2.003738
 
-这里，
+根据维里定律(Virial Theorem)，对于非相对论系统，系统的总势能的绝对值是电子的动能的2倍，这里的维里比是 ``2.003738`` 。 系统的能量为：
 
  * ``E_tot`` 是系统总能量，即 ``E_ele`` + ``E_nn`` ;
  * ``E_ele`` 是电子能量，即 ``E_1e`` + ``E_ee`` + ``E_xc`` ;
@@ -468,9 +458,9 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
 
  * ``[Final occupation pattern: ]`` 给出的是轨道占据情况。由于我们进行的是限制性Hartree-Fock计算，占据情况只给出了Alpha轨道的信息，按照不可约表示分别给出。从这个例子可以看出，A1轨道的前3个、B1和B2轨道的第1个分别有1个电子占据。由于本算例是RHF，alpha与beta轨道是一样的，所以A1表示有3个双占据轨道，B1和B2表示分别有1个双占据轨道。
  * ``[Orbital energies:]`` 按照不可约表示分别给出轨道能；
- * ``Alpha   HOMO energy:`` 给出了HOMO能量，单位为au及eV，属于B2表示；
- * ``Alpha   LUMO energy:`` 给出了LUMO能量，单位为au及eV，属于A1表示；
- * ``HOMO-LUMO gap:`` 给出HOMO和LUMO的能差。
+ * ``Alpha   HOMO energy:`` 按照单位 au 和 eV 给出了HOMO轨道能；该轨道所属的不可约表示，这里是B2；
+ * ``Alpha   LUMO energy:`` 按照单位 au 和 eV 给出了LUMO轨道能；该轨道所属的不可约表示，这里是A1；
+ * ``HOMO-LUMO gap:`` 给出HOMO和LUMO轨道的能差。
 
 为了减少输出行数，BDF默认不打印轨道成分及分子轨道系数，只按照不可约表示分类给出部分轨道占据数和轨道能信息，如下：
 
@@ -499,7 +489,7 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
         Energy      -0.47504    1.78424
         Occ No.      2.00000    0.00000
              
-``scf`` 模块最后打印的是Mulliken和Lowdin布居分析的结果，以及分子的偶极矩信息。
+**SCF** 模块最后打印的是Mulliken和Lowdin布居分析的结果，分子的偶极矩信息。
 
 .. code-block:: 
 
@@ -525,6 +515,6 @@ BDF的简洁输入与高级输入模式的区别，我们也会给出每个简�
        Totl:   -0.0000     0.0000    -2.3684
 
 .. hint:: 
-    1. 在 **scf** 模块输入中加入 ``iprtmo`` 关键词，值设置为 ``2`` ，可以输出分子轨道的详细信息；
-    2. 在 **scf** 模块输入中加入 ``molden`` 关键词，可以将分子轨道和占据输出为molden格式的文件，可用第三方程序做可视化或波函数分析。
+    1. 在 **SCF** 模块输入中加入 ``iprtmo`` 关键词，值设置为 ``2`` ，可以输出分子轨道的详细信息；
+    2. 在 **SCF** 模块输入中加入 ``molden`` 关键词，可以将分子轨道和占据输出为molden格式的文件，可用第三方程序做可视化或波函数分析。
 

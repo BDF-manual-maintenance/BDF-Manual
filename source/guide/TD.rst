@@ -4,14 +4,14 @@
 含时密度泛函理论
 ================================================
 
-BDF支持多种激发态计算方法，其中以基于Kohn-Sham参考态的线性响应含时密度泛函 （TDDFT）方法为主，以及TDDFT方法的Tamm-Dancoff近似（TDA）。与其他量化软件相比，BDF的TDDFT模块独具特色，主要体现在：
+BDF支持多种激发态计算方法，其中以基于Kohn-Sham参考态的线性响应含时密度泛函 （TDDFT）方法，以及TDDFT方法的Tamm-Dancoff近似（TDA）为主。与其他量化软件相比，BDF的TDDFT模块独具特色，主要体现在：
 
 1. 支持各种自旋翻转（spin-flip）方法；
 2. 支持自旋匹配TDDFT方法X-TDDFT，可以有效解决参考态为开壳层时激发态存在自旋污染的问题，适用于自由基、过渡金属等体系的激发态计算；
-3. 支持芯激发态（core excited state）相关的计算，如计算X射线吸收谱（XAS）。一般的TDDFT算法为了计算一个激发态，常需同时把比该激发态激发能更低的所有态均计算出来，而芯激发态的能量通常很高，这样计算效率太低。而BDF所用的iVI方法则可在不计算更低的激发态的情况下，直接计算某个较高的能量区间内的所有激发态，从而节省计算资源；
+3. 支持芯激发态（core excited state）相关的计算，如计算X射线吸收谱（XAS）。一般的TDDFT算法为了计算一个激发态，常需同时把比该激发态激发能更低的所有态均计算出来，而芯激发态的能量通常很高，这样计算效率太低。BDF所用的iVI方法则可在不计算更低的激发态的情况下，直接计算某个较高的能量区间内的所有激发态，从而节省计算资源；
 4. 支持一阶非绝热耦合矩阵元（first-order non-adiabatic coupling matrix element, fo-NACME，或简称NACME）的计算，尤其是激发态和激发态之间的NACME。NACME主要用于研究非辐射跃迁过程，如用费米黄金规则计算内转换速率常数，或用非绝热动力学研究内转换、光化学反应的过程等等。很多量子化学程序支持基态和激发态之间的NACME，但支持激发态和激发态之间的NACME的程序较少，因此对于激发态到激发态的内转换以及多态光化学反应等过程，BDF相比现有大部分量子化学程序有独特的优势。
 
-除此之外，BDF还支持利用 :ref:`mom方法<momMethod>` 在SCF水平下计算激发态。
+除TDDFT之外，BDF还支持利用 :ref:`mom方法<momMethod>` 在SCF水平下计算激发态。
 
 
 闭壳层体系计算：R-TDDFT
@@ -23,7 +23,7 @@ R-TDDFT用于计算闭壳层体系。如果基态计算从RHF出发，TDDFT模�
 .. code-block:: bdf
 
   #!bdf.sh
-  TDDFT/B3lyp/cc-pvdz     
+  TDDFT/B3lyp/cc-pvdz iroot=1   
   
   geometry
   O
@@ -33,59 +33,38 @@ R-TDDFT用于计算闭壳层体系。如果基态计算从RHF出发，TDDFT模�
   R1=1.0       # OH bond length in angstrom
   end geometry
 
-这里，关键词
-
-* ``TDDFT/B3lyp/cc-pvdz`` 指定执行TDDFT计算，所用泛函为 ``B3lyp`` ,基组为 ``cc-pVDZ``. 
-
+这里，关键词 ``TDDFT/B3lyp/cc-pvdz`` 指定执行TDDFT计算，所用泛函为 ``B3lyp`` ，基组为 ``cc-pVDZ`` 。
 与之对应的高级输入为：
 
 .. code-block:: bdf
 
   $compass
-  geometry
+  Geometry
     O
     H 1 1.0
     H 1 1.0 2 109.
-  end geometry
-  skeleton
-  basis
+  End geometry
+  Basis
     cc-pvdz
   $end
    
   $xuanyuan
-  direct
-  maxmem
-    512MW
   $end
    
   $scf
-  rks      # Restricted Kohn-sham
-  dft      # DFT exchange-correlation functional B3lyp
-    b3lyp
-  charge   # charge = 0
-    0
-  spinmulti     # 2S+1=1， singlet
-    1
+  RKS      # Restricted Kohn-sham
+  DFT      # DFT exchange-correlation functional B3lyp
+    b3lyp 
   $end
   
   # input for tddft
   $tddft
-  imethod   # imethod=1, starts from rhf/rks
-    1
-  isf       # isf=0, no spin-flip
-    0
-  itda     # itda=0, full TDDFT. Change to itda=1 for a TDA calculation
-    0
-  idiag    # Davidson diagonalization for solving Casida equation
-    1
-  iroot    # For each irrep, calculate 1 root. on default, 10 roots are calculated for each irreps
-    1
-  memjkop  #maximum memory for Coulomb and Exchange operator. 512MW(Mega Words).
-    512
+  iroot    # For each irrep, calculate 1 root. 
+    1       #on default, 10 roots are calculated for each irreps if advanced input used
   $end
 
-完成计算将顺序调用 ``compass`` , ``xuanyuan`` , ``scf`` 及 ``tddft`` 四个模块。其中 ``scf`` 模块执行 ``RKS`` 计算。
-基于RKS的计算结果，进行后续的 ``TDDFT`` 计算，注意 ``TDDFT`` 中的 ``imethod`` 关键词值设定为 ``1`` 。
+完成计算将顺序调用 **COMPASS** , **XUANYUAN** , **SCF** 及 **TDDFT** 四个模块。其中 **SCF** 模块执行RKS计算。
+基于RKS的计算结果，进行后续的 **TDDFT** 计算。
 
 注意因为水分子属于 :math:`\rm C_{2v}` 点群，共有4个不可约表示，而不同不可约表示的激发态是分别求解的，因此视用户需求而定，有以下若干种指定激发态数目的方法，例如：
 
@@ -101,15 +80,37 @@ R-TDDFT用于计算闭壳层体系。如果基态计算从RHF出发，TDDFT模�
 （2）只计算一个B1激发态和一个B2激发态，不计算其他不可约表示下的激发态：
 
 .. code-block:: bdf
+
+  #! tdtest.sh
+  TDDFT/B3lyp/3-21G nroot=0,0,1,1
+ 
+   Geometry
+   ...
+   End geometry
+
+或者
+
+.. code-block:: bdf
   
   $TDDFT
   nroot
-   0 0 1 1
+   0 0 1 1  # 也可输入为 0,0,1,1
   $END
 
-其中nroot关键字表明用户分别对每个不可约表示指定激发态的数目。因程序内部将 :math:`\rm C_{2v}` 点群的不可约表示以A1、A2、B1、B2的顺序排列（见点群相关章节关于各个不可约表示的排序的介绍），因此以上输入表明只计算B1、B2激发态各一个。
+其中nroot关键词表明用户分别对每个不可约表示指定激发态的数目。因程序内部将 :math:`\rm C_{2v}` 点群的不可约表示以A1、A2、B1、B2的顺序排列（见点群相关章节关于各个不可约表示的排序的介绍），因此以上输入表明只计算B1、B2各一个激发态。
 
 （3）计算最低的4个激发态，而不限定这些激发态的不可约表示
+
+.. code-block:: bdf
+
+  #! tdtest.sh
+  TDDFT/B3lyp/3-21G iroot=-4
+ 
+   Geometry
+   ...
+   End geometry
+
+或者
 
 .. code-block:: bdf
   
@@ -120,7 +121,7 @@ R-TDDFT用于计算闭壳层体系。如果基态计算从RHF出发，TDDFT模�
 
 此时程序通过初始猜测的激发能来判断各个不可约表示应当求解多少个激发态，但因为初始猜测的激发能排列顺序可能和完全收敛的激发能有一定差异，程序不能严格保证求得的4个激发态一定是能量最低的4个激发态。如用户要求严格保证得到的4个激发态为最低的4个激发态，用户应当令程序计算多于4个激发态，如8个激发态，然后取能量最低的4个。
 
-Kohn-Sham计算的输出前面已经介绍过，这里我们只关注 ``TDDFT`` 计算的结果。程序输出会先给出TDDFT计算的设置信息方便用户检查是否计算的设置，如下：
+Kohn-Sham计算的输出前面已经介绍过，这里我们只关注 **TDDFT** 计算的结果。程序输出会先给出TDDFT计算的设置信息，方便用户检查是否计算的设置，如下：
 
 .. code-block:: 
 
@@ -234,7 +235,7 @@ TDDFT模块还会打印占据轨道，虚轨道等TDDFT计算的活性轨道信�
 这里，系统统计存储JK算符需要的内存约 0.053MB, 输入设置的内存是512MB (见 ``memjkop`` 关键词 )。
 系统提示RPA计算，即完全的TDDFT计算每次(one pass)可以算1个根，TDA计算每次可以算2个根。由于分子体系小，内存足够。
 分子体系较大时，如果这里输出的允许的每次可算根的数目小于系统设置数目，TDDFT模块将根据最大允许可算根的数目，通过
-多次积分计算构造JK算符，会降低计算效率，用户需要用 ``memjkop`` 关键词增加内存。
+多次积分计算构造JK算符，导致计算效率降低，用户需要用 ``memjkop`` 关键词增加内存。
 
 Davidson迭代开始计算输出信息如下，
 
@@ -310,7 +311,7 @@ Davidson迭代开始计算输出信息如下，
             0.3446513056
      ------------------------------------------------------------------
   
-从上面输出的第一行看出，5次迭代计算收敛。系统随后打印了收敛后电子态的信息，
+从上面输出的第一行可以看出，5次迭代计算收敛。系统随后打印收敛后电子态的信息，
 
 .. code-block:: 
 
@@ -333,7 +334,7 @@ Davidson迭代开始计算输出信息如下，
 * ``A1(   3 )->  A1(   4 )`` 给出了电子跃迁的占据-空轨道对，电子从A1表示的第3个轨道跃迁到A1表示的第4个轨道，结合上面输出轨道信息，可看出这是HOMO-2到LUMO的激发；
 * ``c_i: 0.9883`` 表示该跃迁在整个激发态里的线性组合系数为0.9883;
 * ``Per: 97.7%`` 表示该激发组态占97.7%；
-* ``IPA:    14.207 eV`` 代表该跃迁所涉及的两个轨道的能量差为10.736 eV；
+* ``IPA:    10.736 eV`` 代表该跃迁所涉及的两个轨道的能量差为10.736 eV；
 * ``Oai: 0.5163`` 表示假如该激发态只有这一个跃迁的贡献，那么该激发态的绝对重叠积分为0.5001，由这一信息可以方便地得知哪些跃迁是局域激发，哪些跃迁是电荷转移激发。
 
 
@@ -348,7 +349,7 @@ Davidson迭代开始计算输出信息如下，
     3  A1    2  A1    9.3784 eV    132.20 nm   0.0767   0.0000  97.7%  CV(0):  A1(   3 )->  A1(   4 )  10.736 0.520    2.1850
     4  B1    1  B1   11.2755 eV    109.96 nm   0.0631   0.0000  98.0%  CV(0):  A1(   3 )->  B1(   2 )  12.779 0.473    4.0820
 
-随后还打印了跃迁矩和振子强度，可以用来绘制谱图。
+随后还打印了跃迁偶极矩和振子强度，可以用来绘制谱图。
 
 .. code-block:: 
 
@@ -362,7 +363,7 @@ Davidson迭代开始计算输出信息如下，
 
 开壳层体系计算：U-TDDFT
 ----------------------------------------------------------
-开壳层体系可以用U-TDDFT计算，例如对于 :math:`\ce{H2O+}` 离子，先进行UKS计算，然后利用U-TDDFT计算激发态，一个典型的输入为，
+开壳层体系可以用U-TDDFT计算，例如对于 :math:`\ce{H2O+}` 离子，先进行UKS计算，然后利用U-TDDFT计算激发态。典型的输入为，
 
 .. code-block:: bdf
 
@@ -377,9 +378,9 @@ Davidson迭代开始计算输出信息如下，
     R1=1.0     # OH bond length in angstrom 
     end geometry
 
-这里，关键词，
+这里，关键词
 
-* ``iroot=4`` 指定TDDFT计算每个不可约表示计算4个根；
+* ``iroot=4`` 指定对每个不可约表示计算4个根；
 * ``charge=1`` 指定体系的电荷为+1；
 * ``group=C(1)`` 指定强制使用C1点群计算。
 
@@ -388,23 +389,21 @@ Davidson迭代开始计算输出信息如下，
 .. code-block:: bdf
 
   $compass
-  #Notice: length unit for geometry is angstrom
+  #Notice: The unit of molecular coordinate is angstrom
   geometry
-   O
-   H 1 1.0
-   H 1 1.0 2 109.
+    O
+    H  1  R1
+    H  1  R1  2 109.
+    
+    R1=1.0     # OH bond length in angstrom 
   end geometry
-   skeleton
   basis
-   cc-pvdz
+    cc-pVDZ 
   group
    C(1)  # Force to use C1 symmetry
   $end
    
   $xuanyuan
-  direct
-  maxmem
-   512MW
   $end
    
   $scf
@@ -424,11 +423,11 @@ Davidson迭代开始计算输出信息如下，
 
 这个输入要注意的几个细节是：
 
-* ``compass`` 模块中利用关键词 ``group`` 强制计算使用点群 ``C(1)`` ;
-* ``scf`` 模块设置 ``UKS`` 计算， ``charge`` 为 ``1`` ， ``spinmulti`` (自旋多重度,2S+1)=2;   
-* ``tddft`` 模块设置  ``iroot`` 设定每个不可约表示算4个根，由于用了C1对称性，计算给出水的阳离子的前四个激发态。
+* ``compass`` 模块中利用关键词 ``group`` 强制计算使用 ``C(1)`` 点群;
+* ``scf`` 模块设置 ``UKS`` 计算， ``charge`` 为 ``1`` ， ``spinmulti`` (自旋多重度，2S+1)=2;   
+* ``tddft`` 模块的 ``iroot`` 设定每个不可约表示算4个根，由于用了C1对称性，计算给出水的阳离子的前四个激发态。
 
-从输出
+从以下输出可以看出执行的是U-TDDFT计算：
 
 .. code-block:: 
 
@@ -444,47 +443,45 @@ Davidson迭代开始计算输出信息如下，
   SC Excitations 
   RPA: (A-B)(A+B)Z=w2*Z 
 
-可以看出执行的是U-TDDFT计算。计算总结输出的4个激发态为，
+计算总结输出的4个激发态为，
 
 .. code-block:: 
 
-      No. Pair   ExSym   ExEnergies  Wavelengths      f     D<S^2>          Dominant Excitations             IPA   Ova     En-E1
-
-        1   A    2   A    2.1958 eV    564.65 nm   0.0009   0.0023  99.4% CO(bb):   A(   4 )->   A(   5 )   5.954 0.626    0.0000
-        2   A    3   A    6.3479 eV    195.32 nm   0.0000   0.0030  99.3% CO(bb):   A(   3 )->   A(   5 )   9.983 0.578    4.1521
-        3   A    4   A   12.0990 eV    102.47 nm   0.0028   1.9312  65.8% CV(bb):   A(   4 )->   A(   6 )  14.636 0.493    9.9033
-        4   A    5   A   13.3619 eV     92.79 nm   0.0174   0.0004  97.6% CV(aa):   A(   4 )->   A(   6 )  15.624 0.419   11.1661
+  No. Pair   ExSym   ExEnergies     Wavelengths      f     D<S^2>          Dominant Excitations             IPA   Ova     En-E1
+ 
+    1   A    2   A    2.1960 eV        564.60 nm   0.0009   0.0024  99.4% CO(bb):   A(   4 )->   A(   5 )   5.955 0.626    0.0000
+    2   A    3   A    6.3479 eV        195.31 nm   0.0000   0.0030  99.3% CO(bb):   A(   3 )->   A(   5 )   9.983 0.578    4.1520
+    3   A    4   A   12.0991 eV        102.47 nm   0.0028   1.9312  65.8% CV(bb):   A(   4 )->   A(   6 )  14.637 0.493    9.9032
+    4   A    5   A   13.3618 eV         92.79 nm   0.0174   0.0004  97.6% CV(aa):   A(   4 )->   A(   6 )  15.624 0.419   11.1659
 
 其中第3激发态的 ``D<S^2>`` 值较大，表明存在自旋污染问题。
 
 
 开壳层体系：X-TDDFT
 ----------------------------------------------------------
-X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系，开壳层体系的三重态耦合的双占据到虚轨道激发态(在BDF中标记为CV(1))存在自旋污染问题，因而其激发能常被高估。X-TDDFT可以用于解决这一问题，考虑 :math:`\ce{N2+}` 分子，X-TDDFT的计算输入为,
-
-简洁输入：
+X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系。
+开壳层体系U-TDDFT三重态耦合的双占据到虚轨道激发态（在BDF中标记为CV(1)）存在自旋污染问题，因而其激发能常被高估。X-TDDFT可以用于解决这一问题。考虑 :math:`\ce{N2+}` 分子，X-TDDFT的简洁计算输入为：
 
 .. code-block:: bdf
 
    #! N2+.sh
    X-TDDFT/b3lyp/aug-cc-pvtz group=D(2h) charge=1 spinmulti=2 iroot=5
 
-   geometry
+   Geometry
      N 0.00  0.00  0.00
      N 0.00  0.00  1.1164 
-   end geometry
+   End geometry
 
 高级输入：
 
 .. code-block:: bdf
 
     $compass
-    #Notice: length unit for geometry is angstrom
-    geometry
+    #Notice: The unit of molecular coordinate is angstrom
+    Geometry
      N 0.00  0.00  0.00
      N 0.00  0.00  1.1164 
-    end geometry
-    skeleton
+    End geometry
     basis
      aug-cc-pvtz
     group
@@ -492,7 +489,6 @@ X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系，开壳�
     $end
      
     $xuanyuan
-    direct
     $end
      
     $scf
@@ -510,29 +506,62 @@ X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系，开壳�
      5
     $end
 
-这里， **SCF** 模块要求是用 ``ROKS`` 方法计算基态， **TDDFT** 模块将默认采用 **X-TDDFT** 计算。
+这里， **SCF** 模块要求用 ``ROKS`` 方法计算基态， **TDDFT** 模块将默认采用 **X-TDDFT** 计算。
 
 激发态输出为，
 
 .. code-block:: 
 
-  No. Pair   ExSym   ExEnergies  Wavelengths      f     D<S^2>          Dominant Excitations             IPA   Ova     En-E1
+  No. Pair   ExSym   ExEnergies     Wavelengths      f     D<S^2>          Dominant Excitations             IPA   Ova     En-E1
+ 
+    1 B2u    1 B2u    0.7902 eV       1569.00 nm   0.0017   0.0195  98.6%  CO(0): B2u(   1 )->  Ag(   3 )   3.812 0.605    0.0000
+    2 B3u    1 B3u    0.7902 eV       1569.00 nm   0.0017   0.0195  98.6%  CO(0): B3u(   1 )->  Ag(   3 )   3.812 0.605    0.0000
+    3 B1u    1 B1u    3.2165 eV        385.46 nm   0.0378   0.3137  82.6%  CO(0): B1u(   2 )->  Ag(   3 )   5.487 0.897    2.4263
+    4 B1u    2 B1u    8.2479 eV        150.32 nm   0.0008   0.9514  48.9%  CV(1): B2u(   1 )-> B3g(   1 )  12.415 0.903    7.4577
+    5  Au    1  Au    8.9450 eV        138.61 nm   0.0000   1.2618  49.1%  CV(0): B2u(   1 )-> B2g(   1 )  12.903 0.574    8.1548
+    6  Au    2  Au    9.0519 eV        136.97 nm   0.0000   1.7806  40.1%  CV(1): B3u(   1 )-> B3g(   1 )  12.415 0.573    8.2617
+    7 B1u    3 B1u    9.0519 eV        136.97 nm   0.0000   1.7806  40.1%  CV(1): B3u(   1 )-> B2g(   1 )  12.415 0.906    8.2617
+    8 B2g    1 B2g    9.4442 eV        131.28 nm   0.0000   0.0061  99.0%  OV(0):  Ag(   3 )-> B2g(   1 )  12.174 0.683    8.6540
+    9 B3g    1 B3g    9.4442 eV        131.28 nm   0.0000   0.0061  99.0%  OV(0):  Ag(   3 )-> B3g(   1 )  12.174 0.683    8.6540
+   10  Au    3  Au    9.5281 eV        130.12 nm   0.0000   0.1268  37.0%  CV(0): B3u(   1 )-> B3g(   1 )  12.903 0.574    8.7379
+   11 B1u    4 B1u    9.5281 eV        130.12 nm   0.0000   0.1267  37.0%  CV(0): B2u(   1 )-> B3g(   1 )  12.903 0.909    8.7379
+   12  Au    4  Au   10.7557 eV        115.27 nm   0.0000   0.7378  49.1%  CV(1): B3u(   1 )-> B3g(   1 )  12.415 0.575    9.9655
+   13 B3u    2 B3u   12.4087 eV         99.92 nm   0.0983   0.1371  70.4%  CV(0): B1u(   2 )-> B2g(   1 )  15.288 0.793   11.6185
+   14 B2u    2 B2u   12.4087 eV         99.92 nm   0.0983   0.1371  70.4%  CV(0): B1u(   2 )-> B3g(   1 )  15.288 0.793   11.6185
+   15 B1u    5 B1u   15.9005 eV         77.98 nm   0.7766   0.7768  32.1%  CV(0): B3u(   1 )-> B2g(   1 )  12.903 0.742   15.1103
+   16 B2u    3 B2u   17.6494 eV         70.25 nm   0.1101   0.4841  92.0%  CV(0): B2u(   1 )->  Ag(   4 )  19.343 0.343   16.8592
+   17 B3u    3 B3u   17.6494 eV         70.25 nm   0.1101   0.4841  92.0%  CV(0): B3u(   1 )->  Ag(   4 )  19.343 0.343   16.8592
+   18  Ag    2  Ag   18.2820 eV         67.82 nm   0.0000   0.0132  85.2%  OV(0):  Ag(   3 )->  Ag(   4 )  19.677 0.382   17.4918
+   19 B2u    4 B2u   18.5465 eV         66.85 nm   0.0021   1.5661  77.8%  CV(1): B2u(   1 )->  Ag(   4 )  19.825 0.401   17.7562
+   20 B3u    4 B3u   18.5465 eV         66.85 nm   0.0021   1.5661  77.8%  CV(1): B3u(   1 )->  Ag(   4 )  19.825 0.401   17.7562
+   21  Ag    3  Ag   18.7805 eV         66.02 nm   0.0000   0.2156  40.4%  CV(0): B3u(   1 )-> B3u(   2 )  20.243 0.337   17.9903
+   22 B1g    1 B1g   18.7892 eV         65.99 nm   0.0000   0.2191  40.5%  CV(0): B2u(   1 )-> B3u(   2 )  20.243 0.213   17.9990
+   23 B1g    2 B1g   18.8704 eV         65.70 nm   0.0000   0.2625  41.8%  CV(0): B3u(   1 )-> B2u(   2 )  20.243 0.213   18.0802
+   24 B3g    2 B3g   18.9955 eV         65.27 nm   0.0000   0.2673  83.4%  CV(0): B2u(   1 )-> B1u(   3 )  20.290 0.230   18.2053
+   25 B2g    2 B2g   18.9955 eV         65.27 nm   0.0000   0.2673  83.4%  CV(0): B3u(   1 )-> B1u(   3 )  20.290 0.230   18.2053
+   26 B3u    5 B3u   19.0339 eV         65.14 nm   0.0168   1.6012  66.7%  CV(1): B1u(   2 )-> B2g(   1 )  20.612 0.715   18.2437
+   27 B2u    5 B2u   19.0339 eV         65.14 nm   0.0168   1.6012  66.7%  CV(1): B1u(   2 )-> B3g(   1 )  20.612 0.715   18.2437
+   28  Ag    4  Ag   19.0387 eV         65.12 nm   0.0000   0.0693  35.9%  CO(0):  Ag(   2 )->  Ag(   3 )  21.933 0.437   18.2484
+   29  Ag    5  Ag   19.3341 eV         64.13 nm   0.0000   0.1694  44.7%  CO(0):  Ag(   2 )->  Ag(   3 )  21.933 0.457   18.5439
+   30  Ag    6  Ag   19.8685 eV         62.40 nm   0.0000   1.7807  40.4%  CV(1): B3u(   1 )-> B3u(   2 )  21.084 0.338   19.0783
+   31 B1g    3 B1g   19.8695 eV         62.40 nm   0.0000   1.7774  40.5%  CV(1): B2u(   1 )-> B3u(   2 )  21.084 0.213   19.0792
+   32 B3g    3 B3g   19.9858 eV         62.04 nm   0.0000   1.6935  80.7%  CV(1): B2u(   1 )-> B1u(   3 )  21.038 0.231   19.1956
+   33 B2g    3 B2g   19.9858 eV         62.04 nm   0.0000   1.6935  80.7%  CV(1): B3u(   1 )-> B1u(   3 )  21.038 0.231   19.1956
+   34 B1g    4 B1g   19.9988 eV         62.00 nm   0.0000   1.7373  41.8%  CV(1): B3u(   1 )-> B2u(   2 )  21.084 0.213   19.2086
+   35 B2g    4 B2g   20.2417 eV         61.25 nm   0.0000   0.2901  81.4%  CV(0): B1u(   2 )-> B3u(   2 )  22.628 0.228   19.4515
+   36 B3g    4 B3g   20.2417 eV         61.25 nm   0.0000   0.2901  81.4%  CV(0): B1u(   2 )-> B2u(   2 )  22.628 0.228   19.4515
+   37  Au    5  Au   21.2302 eV         58.40 nm   0.0000   0.2173  40.4%  CV(0): B2u(   1 )-> B2g(   2 )  22.471 0.157   20.4400
+   38 B2g    5 B2g   22.1001 eV         56.10 nm   0.0000   0.0031  99.2%  OV(0):  Ag(   3 )-> B2g(   2 )  23.220 0.204   21.3099
+   39 B3g    5 B3g   22.1001 eV         56.10 nm   0.0000   0.0031  99.2%  OV(0):  Ag(   3 )-> B3g(   2 )  23.220 0.204   21.3099
+   40 B1g    5 B1g   23.4663 eV         52.84 nm   0.0000   0.0027  99.8%  OV(0):  Ag(   3 )-> B1g(   1 )  25.135 0.283   22.6761
 
-    1 B3u    1 B3u    0.7902 eV   1568.99 nm   0.0017   0.0195  98.6%  CO(0): B3u(   1 )->  Ag(   3 )   3.812 0.605    0.0000
-    2 B2u    1 B2u    0.7902 eV   1568.99 nm   0.0017   0.0195  98.6%  CO(0): B2u(   1 )->  Ag(   3 )   3.812 0.605    0.0000
-    3 B1u    1 B1u    3.2165 eV    385.46 nm   0.0378   0.3137  82.6%  CO(0): B1u(   2 )->  Ag(   3 )   5.487 0.897    2.4263
-    4 B1u    2 B1u    8.2479 eV    150.32 nm   0.0008   0.9514  48.9%  CV(1): B3u(   1 )-> B2g(   1 )  12.415 0.903    7.4577
-    5  Au    1  Au    8.9450 eV    138.61 nm   0.0000   1.2618  49.1%  CV(0): B3u(   1 )-> B3g(   1 )  12.903 0.574    8.1548
-    6  Au    2  Au    9.0519 eV    136.97 nm   0.0000   1.7806  40.1%  CV(1): B2u(   1 )-> B2g(   1 )  12.415 0.573    8.2617
-    7 B1u    3 B1u    9.0519 eV    136.97 nm   0.0000   1.7806  40.1%  CV(1): B2u(   1 )-> B3g(   1 )  12.415 0.906    8.2617
-
-这里，第3、6、7激发态都是CV(1)态。注意SA-TDDFT计算的 ``D<S^2>`` 值是按U-TDDFT的公式计算出来的，可以近似地表明假如用U-TDDFT计算这些态的话，结果的自旋污染程度，但并不代表这些态实际的自旋污染程度，因为SA-TDDFT可以保证所有激发态都严格不存在自旋污染。因此如果SA-TDDFT算得的某个态的 ``D<S^2>`` 值很大，并不能表明该态的结果不可靠，相反表示对于该态而言SA-TDDFT相比U-TDDFT的改进比较大。
+这里，第4、6、7激发态都是CV(1)态。注意SA-TDDFT计算的 ``D<S^2>`` 值是按U-TDDFT的公式计算出来的，可以近似地表明假如用U-TDDFT计算这些态的话，结果的自旋污染程度，但并不代表这些态实际的自旋污染程度，因为SA-TDDFT可以保证所有激发态都严格不存在自旋污染。因此如果SA-TDDFT算得的某个态的 ``D<S^2>`` 值很大，并不能表明该态的结果不可靠，相反表示对于该态而言SA-TDDFT相比U-TDDFT的改进比较大。
 
 
-计算自旋翻转 (spin-flip)的TDDFT
+自旋翻转 (spin-flip)TDDFT计算
 ----------------------------------------------------------
 
-从 :math:`\ce{H2O}` 分子闭壳层的基态出发，可以通过自旋翻转的TDDFT (spin-flip TDDFT -- SF-TDDFT)计算三重激发态，简洁输入为：
+从 :math:`\ce{H2O}` 分子闭壳层的基态出发，可以通过自旋翻转的TDDFT（spin-flip TDDFT, SF-TDDFT）计算三重激发态。简洁输入为：
 
 .. code-block:: bdf
 
@@ -552,13 +581,14 @@ X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系，开壳�
 .. code-block:: bdf
 
   $compass
-  #Notice: length unit for geometry is angstrom
+  #Notice: Coordinate unit is angstrom
   geometry
-   O
-   H 1 1.0
-   H 1 1.0 2 109.
+  O
+  H  1  R1
+  H  1  R1  2 109.
+  
+  R1=1.0     # OH bond length in angstrom
   end geometry
-   skeleton
   basis
    cc-pvdz
   group
@@ -566,9 +596,6 @@ X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系，开壳�
   $end
    
   $xuanyuan
-  direct
-  maxmem
-   512MW
   $end
    
   $scf
@@ -614,7 +641,7 @@ TDDFT计算快结束时有输出信息如下，
        3       0.0000       0.0000       0.0000       0.0000       0.0000
        4       0.0000       0.0000       0.0000       0.0000       0.0000
 
-其中， ``Spin change: isf=  1`` 提示自旋做了翻转，由于基态是单重态，基态到激发态跃迁是自旋禁阻的，所以振子强度和跃迁矩都是0.
+其中， ``Spin change: isf=  1`` 提示自旋做了翻转，由于基态是单重态，基态到激发态跃迁是自旋禁阻的，所以振子强度和跃迁偶极矩都是0.
 
 .. warning::
 
@@ -672,7 +699,7 @@ TDDFT **默认只计算与参考态自旋相同的激发态**， 例如，:math:
 .. code-block::
 
    #! H2OTDDFT.sh
-   TDA/b3lyp/cc-pVDZ spinmulti=3 iroot=-4 isf=-1
+   TDA/b3lyp/cc-pVDZ spinmulti=3 iroot=-4 spinflip=-1
 
    geometry
    O
@@ -693,7 +720,7 @@ TDDFT **默认只计算与参考态自旋相同的激发态**， 例如，:math:
     3   A    3   A    0.5166 eV       2399.85 nm   0.0000  -1.9935  54.0% OO(ab):   A(   6 )->   A(   6 )   2.712 0.999    9.1225
     4   A    4   A    2.3121 eV        536.24 nm   0.0000  -0.9994  99.9% OV(ab):   A(   6 )->   A(   7 )   4.671 0.872   10.9180
 
-这里，前三个态都是 **OO(ab)** 类型的激发态，第四个态是 **OV(ab)** 类型的激发态，第四个态会有自旋污染问题，激发能不可靠。
+这里，前三个态都是 **OO(ab)** 类型的激发态，其中第1个态和第3个态基本是纯的单重态（D<S^2>约等于-2，即激发态的<S^2>约等于0），第2个态基本是纯的三重态（D<S^2>约等于0）；第四个态是 **OV(ab)** 类型的激发态，有自旋污染问题（D<S^2>约等于-1，即激发态的<S^2>约等于1，介于单重态和三重态之间），其激发能不可靠。
 
 
 .. warning::
@@ -733,13 +760,12 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
    O                  0.00000000   -5.15052650   -0.22779097
    O                 -0.00000000    5.15052650   -0.22779097
   End geometry
-  skeleton
   units
    bohr
+  mpec+cosx # accelerate the calculation using MPEC+COSX
   $end
 
   $XUANYUAN
-  Direct
   rs
    0.3 # rs for wB97X
   $END
@@ -750,7 +776,6 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
    wB97X
   charge
    -1
-  mpec+cosx # accelerate the calculation using MPEC+COSX
   $END
 
   $tddft
@@ -761,14 +786,14 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
   idiag # selects the iVI method
    3
   iwindow
-   400 700 nm # alternatively the unit can be given as au, eV or cm-1 instead of nm. If no unit is given, the default is eV
+   400 700 nm # alternatively the unit can be given as au, eV or cm-1 instead of nm.
+              # default is in eV if no unit is given
   itest
    1
   icorrect
    1
   memjkop
    2048
-  mpec+cosx # accelerate the calculation using MPEC+COSX
   $end
 
 因该分子属于 :math:`\rm C_{2v}` 点群，共有4个不可约表示（A1，A2，B1，B2），程序分别在4个不可约表示下求解TDDFT问题。以A1不可约表示为例，iVI迭代收敛后，程序输出如下信息：
@@ -834,12 +859,10 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
   End geometry
   group
    c(1)
-  Skeleton
   uncontract # uncontract the basis set (beneficial for the accuracy of core excitations)
   $END
 
   $XUANYUAN
-  Direct
   scalar
   heff
    3 # selects sf-X2C
@@ -860,7 +883,7 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
    275 285 # default unit: eV
   $end
 
-由实验知碳的K-edge吸收在280 eV附近，因此这里的能量范围选为275-285 eV。计算得到该能量区间内共有15个激发态：
+由实验得知碳的K-edge吸收在280 eV附近，因此这里的能量范围选为275-285 eV。计算得到该能量区间内共有15个激发态：
 
 .. code-block::
 
@@ -910,7 +933,6 @@ BDF不仅支持TDDFT单点能（即给定分子结构下的激发能）的计算
    H                  1.95342119    1.19838319    0.00000000
    H                  2.73563916   -0.48057645    0.00000000
   End Geometry
-  Skeleton
   $END
 
   $BDFOPT
@@ -919,7 +941,6 @@ BDF不仅支持TDDFT单点能（即给定分子结构下的激发能）的计算
   $END
 
   $XUANYUAN
-  direct
   $END
 
   $SCF
@@ -936,8 +957,8 @@ BDF不仅支持TDDFT单点能（即给定分子结构下的激发能）的计算
    0 0 0 1
   istore
    1
-  # TDDFT gradient requires tighter TDDFT convergence criteria than single-point TDDFT calculations.
-  # Thus we tighten the convergence criteria below
+  # TDDFT gradient requires tighter TDDFT convergence criteria than single-point
+  # TDDFT calculations, thus we tighten the convergence criteria below.
   crit_vec
    1.d-6 # default 1.d-5
   crit_e
@@ -953,7 +974,8 @@ BDF不仅支持TDDFT单点能（即给定分子结构下的激发能）的计算
   nfiles
    1 # must be the same number as the number after the istore keyword in $TDDFT
   iroot
-   1 # calculate the gradient of the first root. Can be omitted here, as the $TDDFT block calculates only one root
+   1 # calculate the gradient of the first root. Can be omitted here since only
+     # one root is calculated in the $TDDFT block
   $end
 
 结构优化收敛后，在主输出文件中输出收敛的结构：
@@ -998,19 +1020,19 @@ BDF不仅支持TDDFT单点能（即给定分子结构下的激发能）的计算
 基于sf-X2C-TDDFT-SOC的自旋轨道耦合计算
 ----------------------------------------------------------
 
-相对论效应包括标量相对论和自旋轨道耦合 (spin-orbit coupling -- SOC)。相对论计算需要使用 **针对相对论效应优化的基组，
-选择合适的哈密顿** 。BDF支持全电子的sf-X2C-TDDFT-SOC计算，这里sf-X2C指用spin-free的精确二分量方法 (eXact Two-Component -- X2C)哈密顿考虑标量相对论效应，TDDFT-SOC指基于TDDFT计算自旋轨道耦合。注意虽然TDDFT是激发态方法，但TDDFT-SOC不仅可以用来计算SOC对激发态能量、性质的贡献，也可以用来计算SOC对基态能量、性质的贡献。
+相对论效应包括标量相对论和自旋轨道耦合（spin-orbit coupling, SOC）。相对论计算需要使用 **针对相对论效应优化的基组，
+并选择合适的哈密顿** 。BDF支持全电子的sf-X2C-TDDFT-SOC计算，这里sf-X2C指用无自旋的精确二分量（eXact Two-Component, X2C）哈密顿考虑标量相对论效应，TDDFT-SOC指基于TDDFT计算自旋轨道耦合。注意虽然TDDFT是激发态方法，但TDDFT-SOC不仅可以用来计算SOC对激发态能量、性质的贡献，也可以用来计算SOC对基态能量、性质的贡献。
 
 以基态为单重态的分子为例，完成sf-X2C-TDDFT-SOC计算需要按顺序调用三次TDDFT计算模块。其中，第一次执行利用R-TDDFT，计算单重态，
-第二次利用SF-TDDFT计算三重态，最后一次读入前两个TDDFT的计算波函数，用态相互作用 (State interaction -- SI)的方法
-计算这些态的自旋轨道耦合，从下面的 :math:`\ce{CH2S}` 分子的sf-X2C-TDDFT-SOC计算的高级输入可以清楚地看出。
+第二次利用SF-TDDFT计算三重态，最后一次读入前两个TDDFT计算的波函数，用态相互作用（State interaction, SI）方法
+计算这些态的自旋轨道耦合。这从下面 :math:`\ce{CH2S}` 分子的sf-X2C-TDDFT-SOC计算的高级输入可以清楚地看出。
 
 .. code-block:: bdf
 
    $COMPASS
    Title
     ch2s
-   Basis # Notice: we use basis set optimized for relativity using Douglas-Kroll Hamiltonian.
+   Basis # Notice: we use relativistic basis set contracted by DKH2
      cc-pVDZ-DK 
    Geometry
    C       0.000000    0.000000   -1.039839
@@ -1018,18 +1040,14 @@ BDF不仅支持TDDFT单点能（即给定分子结构下的激发能）的计算
    H       0.000000    0.932612   -1.626759
    H       0.000000   -0.932612   -1.626759
    End geometry
-   Skeleton
    check
    $END
    
    $xuanyuan
-   scalar
    heff  # ask for sf-X2C Hamiltonian
     3   
-   soint # ask for SOC integrals
    hsoc  # set SOC integral as 1e+mf-2e
     2
-   direct
    $end
    
    $scf
@@ -1048,7 +1066,7 @@ BDF不仅支持TDDFT单点能（即给定分子结构下的激发能）的计算
     10
    itda
     0
-   istore # save TDDFT wave function in 1st scratch file
+   istore # save TDDFT wave function in the 1st scratch file
     1
    $end
    
@@ -1062,7 +1080,7 @@ BDF不仅支持TDDFT单点能（即给定分子结构下的激发能）的计算
     1
    iroot
     10
-   istore # save TDDFT wave function in 2nd scratch file, must be specified
+   istore # save TDDFT wave function in the 2nd scratch file, must be specified
     2
    $end
    
@@ -1094,17 +1112,17 @@ BDF不仅支持TDDFT单点能（即给定分子结构下的激发能）的计算
     1 4
     1 5
     1 6
-   idiag # full diagonalization of SOC-corrected Hamiltonian
+   idiag # full diagonalization of SO Hamiltonian
     2
    $end
 
 .. warning:: 
 
-  * 计算必须按照isf=0,isf=1的顺序进行。当SOC处理不考虑基态（即 ``ifgs=0`` ）时，计算的激发态数 ``iroot`` 越多，结果越准；当考虑基态（即 ``ifgs=1`` 时， ``iroot`` 太多反倒会令精度降低，具体表现为低估基态能量，此时 ``iroot`` 的选取没有固定规则，对于一般体系以几十为宜。
+  * 计算必须按照isf=0,isf=1的顺序进行。当SOC处理不考虑基态（即 ``ifgs=0`` ）时，计算的激发态数 ``iroot`` 越多，结果越准；当考虑基态（即 ``ifgs=1`` ）时， ``iroot`` 太多反倒会令精度降低，具体表现为低估基态能量，此时 ``iroot`` 的选取没有固定规则，对于一般体系以几十为宜。
 
 关键词 ``imatsoc`` 控制要打印哪些SOC矩阵元<A|hso|B>，
 
-  * ``8`` 表示要打印8组组态之间的SOC，下面顺序输入了8行整数数组；
+  * ``8`` 表示要打印8组旋量态之间的SOC，下面顺序输入了8行整数数组；
   * 每一行的输入格式为 ``fileA symA stateA fileB symB stateB``，代表矩阵元 <fileA,symA,stateA|hsoc|fileB,symB,stateB>,其中
   * ``fileA symA stateA`` 代表文件 ``fileA`` 中的第 ``symA`` 个不可约表示的第 ``stateA`` 个根；例如 ``1 1 1`` 代表第1个TDDFT计算的第1个不可约表示的第1个根； 
   * ``0 0 0`` 表示基态 
@@ -1137,10 +1155,11 @@ BDF不仅支持TDDFT单点能（即给定分子结构下的激发能）的计算
    0.0  1.0     -0.0003065905    -67.2888361761     -0.0000000000     -0.0000000000
 
 这里， ``<  0  0  0 |Hso|  2  2  1 >`` 表示矩阵元 ``<S0|Hso|T1>`` , 分别给出其实部ReHso和虚部ImHso。
-由于S0只有一个分量，mi为1。T1(spin S=1)有3个分量 (Ms=-1,0,1), mj编号这3个分量。其中 ``Ms=0`` 的分量与基态的耦合矩阵元的虚部为 ``0.0007155424 au`` 。 
+由于S0只有一个分量，mi为1。T1（spin S=1）有3个分量（Ms=-1,0,1），用mj对这3个分量编号。
+其中 ``Ms=0`` 的分量与基态的耦合矩阵元的虚部为 ``0.0007155424 au`` 。 
 
 .. warning::
-  在不同程序结果对比时需要注意：这里给出的是所谓spherical tensor，而不是cartesian tensor，即T1是T_{-1},T_{0},T_{1}，不是Tx,Ty,Tz，两者之间存在酉变换。
+  对比不同程序结果时需要注意：这里给出的是所谓spherical tensor，而不是cartesian tensor，即T1是T_{-1},T_{0},T_{1}，不是Tx,Ty,Tz，两者之间存在酉变换。
 
 SOC计算结果为，
 
@@ -1208,25 +1227,25 @@ SOC计算结果为，
      
 这里的输出有两部分，第一部分给出了每个 ``SOC-SI`` 态相对于S0态的能量及组成成分，例如
 
-  * ``No.    10    w=      5.5116 eV`` 表示第10个 ``SOC-SI`` 态的能量为 ``5.5116 eV``, 注意这里是相对于S0态的能量;
+  * ``No.    10    w=      5.5116 eV`` 表示第10个 ``SOC-SI`` 态的能量为 ``5.5116 eV`` ，注意这里是相对于S0态的能量;
   
 下面三行是这个态的组成成分，
 
   * ``Spin: |S+,1>    1-th Spatial:  B2;`` 代表这是对称性为B2的第一个三重态（相对于S态自旋+1，因而是S+）;
-  * ``OmegaSF=      5.5115eV`` 是相对于第一个Omega态的能量；
-  * ``Cr= -0.5011  Ci= -0.0063`` 是该组态在Omega态中组成波函数的实部与虚部，所占百分比为 ``25.1%``。
+  * ``OmegaSF=      5.5115eV`` 是相对于第一个旋量态的能量；
+  * ``Cr= -0.5011  Ci= -0.0063`` 是该成分在旋量态中组成波函数的实部与虚部，所占百分比为 ``25.1%``。
 
 第二部分总结了SOC-SI态的计算结果，
 
   * ``ExEnergies`` 列出考虑SOC后的激发能。 ``Esf`` 为原始不考虑SOC时的激发能;
-  * 激发态表示用 ``Spin: |S,M> n-th sym`` 来表示，自旋\|Gs,1>，空间对称性为sym的第n个态。例如，\|Gs,1>代表基态，\|So,1>表示总自旋和基态相同的激发态，\|S+,2>表示总自旋加1的激发态。M为自旋投影的第几个分量(in total 2S+1)。
+  * 激发态表示用 ``Spin: |S,M> n-th sym`` 来表示，自旋\|Gs,1>，空间对称性为sym的第n个态。例如，\|Gs,1>代表基态，\|So,1>表示总自旋和基态相同的激发态，\|S+,2>表示总自旋加1的激发态。M为自旋投影的第几个分量（in total 2S+1）。
 
-关键词 ``imatrso`` 指定要计算并打印哪几组考虑了自旋轨道耦合后的 ``SOC-CI`` 态间跃迁矩。这里指定打印 ``6`` 组跃迁矩，
+关键词 ``imatrso`` 指定要计算并打印哪几组旋量态之间的跃迁偶极矩。这里指定打印 ``6`` 组跃迁偶极矩，
 
-  * ``1 1`` 表示基态偶极矩；
-  * ``1 2`` 表示第一个与第二个 ``SOC-SI`` 态间的偶极矩。
+  * ``1 1`` 表示基态固有偶极矩；
+  * ``1 2`` 表示第一个与第二个旋量态间的跃迁偶极矩。
 
-跃迁矩的输出如下：
+跃迁偶极矩的输出如下：
 
 .. code-block:: 
 
@@ -1264,13 +1283,13 @@ SOC计算结果为，
 
 .. hint::
   * ``imatsoc`` 设置为 ``-1`` 可指定打印所有的耦合矩阵元;
-  * 默认不计算打印跃迁矩，可以设置 ``imatrso`` 为 ``-1`` 打印所有SOC-SI态之间的跃迁矩。 
+  * 默认不计算打印跃迁偶极矩，设置 ``imatrso`` 为 ``-1`` 可以打印所有旋量态之间的跃迁偶极矩。 
  
  
 一阶非绝热耦合矩阵元（fo-NACME）的计算
 -------------------------------------------------------
 
-如前所述，（一阶）非绝热耦合矩阵元在非辐射跃迁过程中有着重要的意义。在BDF中，基态和激发态之间的NACME，以及激发态和激发态之间的NACME的输入文件写法存在一定差异，以下分别介绍。
+如前所述，（一阶）非绝热耦合矩阵元在非辐射跃迁过程中有着重要的意义。在BDF中，基态和激发态之间的NACME，以及激发态和激发态之间的NACME的输入文件在写法上存在一定差异，以下分别介绍。
 
 （1）基态和激发态之间的NACME： :math:`\ce{NO3}` 自由基的D0/D1 NACME（GB3LYP/cc-pVDZ）
 
@@ -1287,14 +1306,12 @@ SOC计算结果为，
   O              2.0700698389        -0.0000000000        -1.1615808530
   O             -0.0000000000         0.0000000000         2.4934136445
   End geometry
-  skeleton
   check
   unit
    bohr
   $END
 
   $XUANYUAN
-  direct
   $END
 
   $SCF
@@ -1307,7 +1324,7 @@ SOC计算结果为，
 
   $tddft
   iexit
-   1 # One root for every irrep
+   1 # One root for each irrep
   istore
    1 # File number, to be used later in $resp
   crit_vec
@@ -1315,7 +1332,8 @@ SOC计算结果为，
   crit_e
    1.d-8
   gridtol
-   1.d-7 # tighten the tolerance value of XC grid generation. This helps to reduce numerical error, and is recommended for open-shell molecules
+   1.d-7 # tighten the tolerance value of XC grid generation. This helps to
+         # reduce numerical error, and is recommended for open-shell molecules
   $end
 
   $resp
@@ -1323,7 +1341,8 @@ SOC计算结果为，
    1
   QUAD # quadratic response
   FNAC # first-order NACME
-  single # calculation of properties from single residues (ground state-excited state fo-NACMEs belong to this kind of properties)
+  single # calculation of properties from single residues (ground state-excited
+         # state fo-NACMEs belong to this kind of properties)
   norder
    1
   method
@@ -1402,14 +1421,12 @@ SOC计算结果为，
           H             -2.9780678476        -4.6353463569        -1.6789597597
           H             -1.1205416224        -6.8569277129         0.0002044899
   end geometry
-  skeleton
   unit
    bohr
   nosymm
   $end
 
   $XUANYUAN
-  Direct
   $END
 
   $SCF
@@ -1440,7 +1457,8 @@ SOC计算结果为，
    1
   QUAD
   FNAC
-  double # calculation of properties from double residues (excited state-excited state fo-NACMEs belong to this kind of properties)
+  double # calculation of properties from double residues (excited state-excited
+         # state fo-NACMEs belong to this kind of properties)
   norder
    1
   method
@@ -1501,13 +1519,11 @@ SOC计算结果为，
    End geometry
    Group
     C(1)
-   Skeleton
    Nfragment # must input: number of fragment, should be 1
     1
    $END
    
    $xuanyuan
-   Direct
    $end
    
    $scf
@@ -1617,4 +1633,5 @@ TDA计算了4个激发态，输出如下,
        State4    0.000000    0.000021    0.192803    8.873501
     **************************************************************
 
-其中，对角元为定域激发态的能量，非对角元为两个定域态之间的耦合，这里的能量单位是 ``eV`` .
+其中，对角元为定域激发态的能量，非对角元为两个定域态之间的耦合，这里的能量单位是 ``eV`` 。
+

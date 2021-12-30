@@ -61,7 +61,7 @@ ED或CD值 :math:`\rho_{A}` 和 :math:`\rho_{R}` 可以通过理论计算获得�
   $compass
    title
      FeF_6^4-
-   basis-multi
+   basis-block
      def2-tzvpp
      Fe = ANO-R2-ED
    end basis
