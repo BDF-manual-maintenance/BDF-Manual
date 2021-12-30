@@ -20,13 +20,12 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
 --------------------------------------------
 
 为了使用户对FLMO有个直观的了解，我们给出一个FLMO的计算示例。这里，我们要通过FLMO方法计算1,3,5,7-辛四烯 :math:`\ce{C8H10}` 分子的定域化轨道。
-我们先计算4个分子片，每个分子片是由中心原子、缓冲区原子和链接H原子组成。因分子结构较简单，这里的分子片是通过手动分片得到的，即每个分子片的中心原子为一个C=C双键及与其相连的所有氢原子，缓冲区原子为和该C=C双键直接相连的C=C双键及其所带的氢原子，也即分子片1和分子片4为1,3-丁二烯，分子片2和分子片3为1,3,5-己三烯。分子片SCF计算收敛后，通过Boys定域化方法得到分子片定域轨道。所有分子片计算完成后，再用四个分子片的定域轨道合成整体分子的pFLMO (primitive Fragment Local Molecule Orbital)。利用pFLMO做初始猜测，计算整个 :math:`\ce{C8H10}` 分子，并得到定域化的FLMO。输入示例如下：
+我们先计算4个分子片，每个分子片是由中心原子、缓冲区原子和链接H原子组成。因分子结构较简单，这里的分子片是通过手动分片得到的，即每个分子片的中心原子为一个C=C双键及与其相连的所有氢原子，缓冲区原子为和该C=C双键直接相连的C=C双键及其所带的氢原子，也即分子片1和分子片4为1,3-丁二烯，分子片2和分子片3为1,3,5-己三烯。分子片SCF计算收敛后，通过Boys定域化方法得到分子片定域轨道。所有分子片计算完成后，再用四个分子片的定域轨道合成整体分子的pFLMO (primitive Fragment Localized Molecular Orbital)。利用pFLMO做初始猜测，计算整个 :math:`\ce{C8H10}` 分子，并得到定域化的FLMO。输入示例如下：
 
 .. code-block:: bdf
 
   ###### Fragment 1
   %echo "-------CHECKDATA: Calculate the 1st fragment -------------"
-  #%export BDFTASK=c8h10frag1
   $COMPASS 
   Title
    Fragment 1
@@ -65,7 +64,6 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
   
   ##### Fragment 2
   %echo "-------CHECKDATA: Calculate the 2nd fragment -------------"
-  #%export BDFTASK=c8h10frag2
   $COMPASS 
   Title
    Fragment 2
@@ -110,8 +108,6 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
   
   # Fragment 3
   %echo "-------CHECKDATA: Calculate the 3rd fragment -------------"
-  #%export BDFTASK=c8h10frag3
-  
   $COMPASS 
   Title
    Fragment 3
@@ -157,8 +153,6 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
   
   # Fragment 4
   %echo "-------CHECKDATA: Calculate the 4th fragment -------------"
-  #%export BDFTASK=c8h10frag4
-  
   $COMPASS 
   Title
    Fragment 4
@@ -362,7 +356,7 @@ SCF收敛后，系统会再一次打印分子轨道的Mos信息，
 利用FLMO计算开壳层单重态（自动分片）
 --------------------------------------------
 
-研究单分子磁体以及某些催化体系等，常遇到所谓反铁磁耦合的态，又称开壳层单重态，一般由两个自旋相反的电子以开壳层的形式占据在不同的原子中心，但也可能涉及多个单电子。BDF可以结合FLMO方法计算开壳层单重态。例如，下述算例采用FLMO方法计算一个含有Cu(II)和氮氧稳定自由基的体系的自旋破缺基态：
+研究单分子磁体以及某些催化体系等，常遇到所谓反铁磁耦合的态，一般由两个自旋相反的电子以开壳层的形式占据在不同的原子中心（开壳层单重态），但也可能涉及多个单电子。BDF可以结合FLMO方法计算开壳层单重态。例如，下述算例采用FLMO方法计算一个含有Cu(II)和氮氧稳定自由基的体系的自旋破缺基态：
 
 .. code-block::
 
@@ -370,7 +364,7 @@ SCF收敛后，系统会再一次打印分子轨道的Mos信息，
   method
    flmo
   nprocs
-   2  # ask for 2 processes to perform FLMO calculation
+   2  # ask for 2 parallel processes to perform FLMO calculation
   spinocc
   # Set +1 spin population on atom 9 (O), set -1 spin population on atom 16 (Cu)
    9 +1 16 -1
@@ -426,7 +420,7 @@ SCF收敛后，系统会再一次打印分子轨道的Mos信息，
   
   $localmo
   FLMO
-  Pipek # Pipek-Mezey localization, requered by pure sigma/pure pi LMOs.
+  Pipek # Pipek-Mezey localization, recommended when pure sigma/pure pi LMOs are needed.
         # Otherwise Boys is better
   $end
 
@@ -465,7 +459,9 @@ FLMO计算目前不支持简洁输入。这个算例， ``autofrag`` 模块用�
   
   Starting global calculation ...
 
-这要注意计算资源的设置。总的计算资源是进程数（Number of parallel processes）与每个进程的线程数（Number of OpenMP threads per process）的乘积，其中进程数是通过 ``autofrag`` 模块的 ``nprocs`` 关键词设定的，而总的计算资源是通过环境变量 ``OMP_NUM_THREADS`` 设定的，每个进程的线程数由程序自动通过总的计算资源除以进程数来得到。整体计算输出类似普通的SCF计算，但采用了分块对角化Fock矩阵的方法以保持轨道的定域性。
+这要注意计算资源的设置。总的计算资源是进程数（Number of parallel processes）与每个进程的线程数（Number of OpenMP threads per process）的乘积，其中进程数是通过 ``autofrag`` 模块的 ``nprocs`` 关键词设定的，而总的计算资源是通过环境变量 ``OMP_NUM_THREADS`` 设定的，每个进程的线程数由程序自动通过总的计算资源除以进程数来得到。
+
+整体分子的计算输出类似普通的SCF计算，但采用了分块对角化Fock矩阵的方法以保持轨道的定域性。
 
 .. code-block:: bdf
 
