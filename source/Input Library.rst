@@ -1,9 +1,7 @@
 模块功能
 ************************************
 
-.. image:: images/modules.png
-   :width: 600
-   :align: center
+BDF各模块的调用关系参见 :ref:`BDF模块及计算流程图<BDFpromodules>` 。
 
 .. include:: module/autofrag.rst
 

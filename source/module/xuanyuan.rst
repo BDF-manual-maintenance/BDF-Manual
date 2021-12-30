@@ -33,15 +33,15 @@ XUANYUAN模块主要计算单、双电子积分和其他必要的积分并存储
      $end
 
 
-:guilabel:`RS` 参数类型：浮点型
----------------------------------------------------
-指定Range-Separated泛函如CAM-B3LYP等的 :math:`\omega` （某些文献称 :math:`\mu` ）系数。建议值：0.33。
-如果DFT使用了Range-Speration泛函，必须加入此参数。
+:guilabel:`RSOMEGA` / :guilabel:`RS` 参数类型：浮点型
+------------------------------------------------------
+指定Range-Separated泛函如CAM-B3LYP等的 :math:`\omega` （某些文献称 :math:`\mu` ）系数。
+``RS`` 是 ``RSOMEGA`` 的同义词。建议值：0.33。如果DFT使用了Range-Speration泛函，必须加入此参数。
 
 .. code-block:: bdf
     
      $xuanyuan
-     RS
+     RSOMEGA
        0.33
      $end
      
