@@ -241,10 +241,9 @@ QM/MM-TDDFT计算。以前一节中完成的算例为例，可以继续添加如
  Basis
   6-31g
  Geometry
- H 100.723 207.273 61.172
- MG   92.917  204.348   68.063
- C   95.652  206.390   67.185
- #可以用任意坐标，程序不读取
+  H 100.723 207.273 61.172
+  MG   92.917  204.348   68.063
+  C   95.652  206.390   67.185
  END geometry
  Extcharge
   point
@@ -252,12 +251,14 @@ QM/MM-TDDFT计算。以前一节中完成的算例为例，可以继续添加如
  $END
 
  $XUANYUAN
+ RSOMEGA
+   0.33
  $END
  
  $SCF
  RKS
  DFT
- cam-B3LYP
+   cam-B3LYP
  $END
 
  $tddft   #TDDFT计算控制
