@@ -201,7 +201,36 @@ PBS提交BDF作业的脚本示例如下：
 利用Slurm作业管理系统提交BDF作业
 ------------------------------------------------
 
+Slurm提交BDF作业的脚本示例如下：
+
 .. code-block:: shell
+
+    #!/bin/bash
+    #SBATCH --partition=v6_384
+    #SBATCH -J bdf.slurm
+    #SBATCH -N 1
+    #SBATCH --ntasks-per-node=48
+
+    
+    #### Set the environment variables #######
+    #module load tools/openmpi-3.0.1-intel-socket
+    
+    #### Set the PATH to find your applications #####
+    export BDFHOME=/home/bbs/bdf-pkg-pro
+    
+    # 指定BDF运行的临时文件存储目录
+    export BDF_WORKDIR=./
+    export BDF_TMPDIR=/tmp/$RANDOM
+    
+    # 指定OpenMP的Stack内存大小
+    export OMP_STACKSIZE=2G
+    
+    # 指定OpenMP可用线程数，应该等于ppn定义的数目
+    export OMP_NUM_THREADS=4
+    
+    #### Do not modify this section ! #####
+    $BDFHOME/bdfdrv.py -r jobname.inp
+
 
 
 .. important::
