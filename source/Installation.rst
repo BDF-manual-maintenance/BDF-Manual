@@ -133,7 +133,7 @@ cmake编译BDF
 
     /home/bsuo/bdf-pkg-pro/bdf-pkg-pro/bin/hzwlic.x /home/bsuo/bdf-pkg-pro/build/bdf-pkg-pro
 
-后，目录 ``/home/bsuo/bdf-pkg-pro/build/bdf-pkg-pro/license``中，生成文件 **LicenseNumber.txt** 。
+后，目录 ``/home/bsuo/bdf-pkg-pro/build/bdf-pkg-pro/license`` 中，生成文件 **LicenseNumber.txt** 。
 
 
 程序运行
@@ -176,7 +176,7 @@ BDF需在Linux终端下运行。运行BDF，需要先准备输入文件，输入
 
     $BDFHOME/sbin/bdfdrv.py -r $1
 
-并命名为run.sh，利用 "chmod +x run.sh"赋予脚本执行权限，然后按照如下方法执行。 
+并命名为run.sh，利用 "chmod +x run.sh" 赋予脚本执行权限，然后按照如下方法执行。 
 
 .. code-block:: shell
 
