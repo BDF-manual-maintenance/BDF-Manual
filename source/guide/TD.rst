@@ -460,7 +460,7 @@ Davidson迭代开始计算输出信息如下，
 开壳层体系：X-TDDFT
 ----------------------------------------------------------
 X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系。
-开壳层体系U-TDDFT三重态耦合的双占据到虚轨道激发态（在BDF中标记为CV(1)）存在自旋污染问题，因而其激发能常被高估。X-TDDFT可以用于解决这一问题。考虑 :math:`\ce{N2+}` 分子，X-TDDFT的简洁计算输入为：
+开壳层体系U-TDDFT三重态耦合的双占据到虚轨道激发态（在BDF中标记为CV(1)）存在自旋污染问题，因而其激发能常被低估。X-TDDFT可以用于解决这一问题。考虑 :math:`\ce{N2+}` 分子，X-TDDFT的简洁计算输入为：
 
 .. code-block:: bdf
 
@@ -923,6 +923,88 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
 
 但由激发态成分可以看出，只有激发能为280.8642 eV和280.8973 eV的两个激发态为C 1s到价层轨道的激发，其余激发均为价层轨道到非常高的Rydberg轨道的激发，也即对应于价层电子电离的背景吸收。
 
+高斯展宽的吸收光谱的绘制
+-------------------------------------------------------
+
+以上各计算得到的仅是各个激发态的激发能和振子强度，而用户常常需要得到理论预测的吸收谱的峰形，这就需要把每个激发态的吸收按一定的半峰宽进行高斯展宽。在BDF中，这是通过Python脚本plotspec.py（位于$BDFHOME/sbin/下，其中$BDFHOME是BDF的安装路径）来实现的。用户需要在TDDFT计算完成以后，手动从命令行调用plotspec.py。例如假设我们已经用BDF计算得到了C60分子的TDDFT激发态，对应的输出文件为C60.out，则可以运行
+
+.. code-block:: bash
+
+  $BDFHOME/sbin/plotspec.py C60.out
+
+或者
+
+.. code-block:: bash
+
+  $BDFHOME/sbin/plotspec.py C60
+
+该脚本会在屏幕上输出以下信息：
+
+.. code-block::
+
+  BDF output file: C60.out
+  1 TDDFT output block(s) found
+  Block 1: 10 excited state(s)
+   - Singlet absorption spectrum, spin-allowed
+  plotspec.py: exit successfully
+
+并产生两个文件，一个是C60.stick.csv，包含所有激发态的吸收波长和摩尔消光系数，可以用来作棒状图：
+
+.. code-block::
+
+  TDDFT Singlets 1,,
+  Wavelength,Extinction coefficient,
+  nm,L/(mol cm),
+  342.867139,2899.779319,
+  307.302300,31192.802393,
+  237.635960,131840.430395,
+  211.765024,295.895849,
+  209.090150,134.498113,
+  197.019205,179194.526059,
+  178.561512,145.257962,
+  176.943322,54837.570677,
+  164.778366,548.752301,
+  160.167663,780.089056,
+
+另一个是C60.spec.csv，包含高斯展宽后的吸收谱（默认的展宽FWHM为0.5 eV）：
+
+.. code-block::
+
+  TDDFT Singlets 1,,
+  Wavelength,Extinction coefficient,
+  nm,L/(mol cm),
+  200.000000,162720.545118,
+  201.000000,151036.824457,
+  202.000000,137429.257570,
+  ...
+  998.000000,0.000000,
+  999.000000,0.000000,
+  1000.000000,0.000000,
+
+这两个文件可以用Excel、Origin等作图软件打开并作图。
+
+可以用命令行参数控制作图范围、高斯展宽的FWHM等。示例：
+
+.. code-block::
+
+  # Plot the spectrum in the range 300-600 nm:
+   $BDFHOME/sbin/plotspec.py wavelength=300-600nm filename.out
+
+  # Plot an X-ray absorption spectrum in the range 200-210 eV,
+  # using an FWHM of 1 eV:
+   $BDFHOME/sbin/plotspec.py energy=200-210eV fwhm=1eV filename.out
+
+  # Plot a UV-Vis spectrum in the range 10000 cm-1 to 40000 cm-1,
+  # where the wavenumber is sampled at an interval of 50 cm-1:
+   $BDFHOME/sbin/plotspec.py wavenumber=10000-40000cm-1 interval=50 filename.out
+
+  # Plot an emission spectrum in the range 600-1200 nm, as would be
+  # given by Kasha's rule (i.e. only the first excited state is considered),
+  # where the wavelength is sampled at an interval of 5 nm:
+   $BDFHOME/sbin/plotspec.py -emi wavelength=600-1200nm interval=5 filename.out
+
+如果不带命令行参数运行$BDFHOME/sbin/plotspec.py，可以列出所有的命令行参数及用法，这里不予赘述。
+
 激发态结构优化
 -------------------------------------------------------
 
@@ -1056,7 +1138,6 @@ BDF不仅支持TDDFT单点能（即给定分子结构下的激发能）的计算
    H       0.000000    0.932612   -1.626759
    H       0.000000   -0.932612   -1.626759
    End geometry
-   check
    $END
    
    $xuanyuan
@@ -1277,10 +1358,6 @@ SOC计算结果为，
             Norm=   0.113E-15     0.828E-18     0.687E+00
   
   
-   ++++++++  DATA CHECK +++++++++++++++++++++++++++++++++
-    CHECKDATA:SOC:DIPmom:           0.0000           0.0000           0.4724
-    CHECKDATA:SOC:FOSC:       0.00000000
-   ++++++++++ END DATA CHECK ++++++++++++++++++++++++++++
   
     No.  ( I , J )   |rij|^2       E_J-E_I         fosc          rate(s^-1)
    -------------------------------------------------------------------------------
@@ -1292,14 +1369,12 @@ SOC计算结果为，
             Norm=   0.589E-03     0.147E-02     0.178E-15
   
   
-   ++++++++  DATA CHECK +++++++++++++++++++++++++++++++++
-    CHECKDATA:SOC:DIPmom:           0.0000           0.0000           0.0000
-    CHECKDATA:SOC:FOSC:       0.00000009
-   ++++++++++ END DATA CHECK ++++++++++++++++++++++++++++
 
 .. hint::
   * ``imatsoc`` 设置为 ``-1`` 可指定打印所有的耦合矩阵元;
-  * 默认不计算打印跃迁偶极矩，设置 ``imatrso`` 为 ``-1`` 可以打印所有旋量态之间的跃迁偶极矩，设置 ``imatrso`` 为 ``-2`` 可以打印所有基态旋量态和所有激发态旋量态之间的跃迁偶极矩。 
+  * 默认不计算打印跃迁偶极矩，设置 ``imatrso`` 为 ``-1`` 可以打印所有旋量态之间的跃迁偶极矩，设置 ``imatrso`` 为 ``-2`` 可以打印所有基态旋量态和所有激发态旋量态之间的跃迁偶极矩。
+  * SOC计算的参考态必须要么是RHF/RKS，要么是ROHF/ROKS，不支持UHF/UKS。
+  * 当SOC计算的参考态为ROHF/ROKS时，isf=0的TDDFT计算必须使用X-TDA（即itest=1, icorrect=1, isf=0, itda=1；不支持full X-TDDFT），isf=1的TDDFT计算必须使用SF-TDA（即isf=1, itda=1；不支持full SF-TDDFT）。
  
  
 一阶非绝热耦合矩阵元（fo-NACME）的计算
@@ -1322,7 +1397,6 @@ SOC计算结果为，
   O              2.0700698389        -0.0000000000        -1.1615808530
   O             -0.0000000000         0.0000000000         2.4934136445
   End geometry
-  check
   unit
    bohr
   $END
@@ -1408,6 +1482,8 @@ SOC计算结果为，
        2       -0.0000000000       -0.1920053581        0.0000000000
        3       -0.0000000000        0.1920053581        0.0000000000
        4       -0.0000000000        0.0000000000       -0.0000000000
+
+程序还会输出名为dpq-R、Final-NAC(R)、dpq-S、Final-NAC(S)等的矢量，这些量是中间变量，仅供监测计算过程使用，并非最终的NACME，一般情况下用户可忽略这些输出。
 
 （2）激发态和激发态之间的NACME：苯乙酮的T1/T2 NACME（BH&HLYP/def2-SVP）
 
@@ -1510,6 +1586,7 @@ SOC计算结果为，
       16       -0.1407399684       -0.1429881941       -0.1657943551
       17       -0.0000034197        0.0004577563       -0.0833951446
 
+类似基态的情形，
 
 激发态的定域化
 ----------------------------------------------
