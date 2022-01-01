@@ -27,6 +27,7 @@ BDF用户手册
 
    User Guide
    Easyinput Guide
+   GUI Guide
    Input Library
    Example
    Application
