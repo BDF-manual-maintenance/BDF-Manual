@@ -74,11 +74,10 @@ ED或CD值 :math:`\rho_{A}` 和 :math:`\rho_{R}` 可以通过理论计算获得�
      F   0.032586  0.003638  2.109790
      F  -0.030580 -0.001452 -2.109825
    end geometry
-   skeleton  # 计算骨架Fock矩阵
+   MPEC+cosx        # 使用MPEC+COSX加速
   $end
   
   $xuanyuan
-   direct    # direct SCF
    heff      # sf-X2C-AU；计算ED必须选21-23中的一个
      23
    nuclear   # 高斯有限核模型；ED必须设为1
@@ -95,7 +94,6 @@ ED或CD值 :math:`\rho_{A}` 和 :math:`\rho_{R}` 可以通过理论计算获得�
      pbe0
    grid             # DFT计算ED需要用精密格点
      sg1
-   MPEC+cosx        # 使用MPEC+COSX加速
    reled
      26             # 只计算Fe的ED（对于本例，10至26的整数等价）
   $end

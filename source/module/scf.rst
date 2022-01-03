@@ -230,6 +230,7 @@ Alpha和Beta两个关键词必须联用，用于UHF/UKS计算，分别指定alph
 :guilabel:`MPEC+COSX` 参数类型：Bool型
 ------------------------------------------------
 指定利用多级展开库伦势（Multipole expansion of Coulomb potential, MPEC）方法计算J矩阵， COSX（Chain-of-sphere exchange）方法计算K矩阵。
+在 ``Scf`` 模块中保留该关键词只是为了向下兼容，建议在 ``Compass`` 模块中设定该关键词。
 
 :guilabel:`Coulpot` 参数类型：整型
 ------------------------------------------------

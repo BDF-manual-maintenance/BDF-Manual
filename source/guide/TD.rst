@@ -879,7 +879,6 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
   $END
 
   $XUANYUAN
-  scalar
   heff
    3 # selects sf-X2C
   $END

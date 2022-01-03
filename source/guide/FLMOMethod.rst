@@ -221,13 +221,11 @@ FLMO已被用于获得分子的定域化轨道、iOI-SCF、FLMO-MP2、O(1)-NMR�
   End geometry
   Nfragment
    4
-  Skeleton
   Group
    C(1)
   $END
   
   $XUANYUAN
-  Direct
   $END
   
   $SCF
@@ -640,6 +638,7 @@ iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采
   H    -5.9086    4.3451    2.3469
   H    -6.1262    5.5024    1.0605
   End geometry
+  MPEC+cosx   # Accelerate the SCF iterations using MPEC+COSX. Not mandatory
   $end
   
   $xuanyuan
@@ -655,7 +654,6 @@ iOI方法可以看作是FLMO方法的一种改进。在FLMO方法中，即便采
    2
   charge
    2
-  MPEC+cosx   # Accelerate the SCF iterations using MPEC+COSX. Not mandatory
   $end
   
   $localmo

@@ -57,7 +57,6 @@
      H    2.16038783830607  -1.24730050000000   0.00000000000000
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
-     Skeleton         #不产生对称匹配的积分 
      # 默认用最高点群计算，即D(6h)
      $END
 
@@ -87,7 +86,6 @@
      H    2.16038783830607  -1.24730050000000   0.00000000000000
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
-     Skeleton          #不产生对称匹配的积分 
      Group
        D(6h)           #指定D6h点群
      $END
@@ -118,7 +116,6 @@
      H    2.16038783830607  -1.24730050000000   0.00000000000000
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
-     Skeleton          
      Group
        D(3h)          #指定D3h点群
      $END
@@ -149,7 +146,6 @@
      H    2.16038783830607  -1.24730050000000   0.00000000000000
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
-     Skeleton          
      Group
        C(6v)          #指定C6v点群
      $END
@@ -180,7 +176,6 @@
      H    2.16038783830607  -1.24730050000000   0.00000000000000
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
-     Skeleton          
      Group
        D(3d)          #指定D3d点群
      $END
@@ -211,7 +206,6 @@
      H    2.16038783830607  -1.24730050000000   0.00000000000000
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
-     Skeleton          
      Group
        D(2h)          #指定D2h点群
      $END
@@ -242,7 +236,6 @@
      H    2.16038783830607  -1.24730050000000   0.00000000000000
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
-     Skeleton          
      Group
        C(2v)          #指定C2v点群
      $END
@@ -273,7 +266,6 @@
      H    2.16038783830607  -1.24730050000000   0.00000000000000
      H    2.16038783830606   1.24730050000000   0.00000000000000
      End geometry
-     Skeleton          
      Group
        C(1)          #指定C1点群
      $END
@@ -324,7 +316,6 @@
      H  0.000000000  -0.783975899   -0.184686472 
      H  0.000000000   0.783975899   -0.184686472 
      End geometry
-     Skeleton        #不产生对称匹配的积分
      $END
 
      $XUANYUAN
@@ -383,8 +374,7 @@
      N   0.0000    0.000000   -1.05445
      End geometry
      Unit
-     Bohr
-     skeleton
+       Bohr
      Group
        D(2h)
      $END
@@ -413,8 +403,7 @@
      N   0.0000    0.000000   -1.05445
      End geometry
      Unit
-     Bohr
-     skeleton
+       Bohr
      $END
 
      $xuanyuan
@@ -490,8 +479,7 @@
      H     0.000000        1.65723       -0.94197
      End geometry
      UNIT                #指定坐标长度单位
-     Bohr
-     skeleton            #不产生对称匹配的积分
+       Bohr
      Group
        C(1)              #指定C1点群
      $END
@@ -589,8 +577,7 @@
      H  0.000000000   0.783975899   -0.184686472 
      End geometry
      RI-J                 #库伦拟合加速计算
-     DEF2-SV(P)           #密度拟合基组
-     Skeleton
+      DEF2-SV(P)          #密度拟合基组
      Group
       C(2v)               #指定C2v点群
      $END
@@ -643,8 +630,7 @@
      End geometry
      Check
      RI-J
-     DEF2-SV(P)
-     Skeleton
+      DEF2-SV(P)
      Group
       C(1)
      $END
@@ -703,11 +689,9 @@
      End geometry
      Group
        C(1)
-     Skeleton                      #不产生对称匹配的积分
      $END
 
      $xuanyuan
-     Direct                        #积分直接的SCF计算
      $end
 
      $scf
@@ -742,13 +726,11 @@
      End geometry
      Group
       C(1)
-     Skeleton
      Nfragment
       2
      $END
      
      $xuanyuan
-     Direct
      $end
      
      # calculate Electron and hole transfer integrals
@@ -789,7 +771,6 @@
      $END
      
      $xuanyuan
-     Direct
      rs                             #指定Range-Seperated泛函
      0.33
      $end
@@ -847,11 +828,9 @@
       H  0.000000000  -0.783975899   -0.184686472 
       H  0.000000000   0.783975899   -0.184686472 
      End geometry
-     Skeleton
      $END
      
      $XUANYUAN
-     direct
      $END
      
      $SCF
@@ -898,13 +877,10 @@
       H  0.000000000  -0.783975899   -0.184686472 
       H  0.000000000   0.783975899   -0.184686472 
      End geometry
-     skeleton
      group          #指定分子的对称点群
-     c(2v)
+      c(2v)
      $END
      
-     #积分非直接计算。对于不是特别小的分子（例如10个原子以上的分子），
-     #应在$XUANYUAN里添加direct关键词
      $XUANYUAN
      $END
      
@@ -946,12 +922,10 @@
       H                  2.16038781   -1.24730049   -0.00000000
      End geometry
      thresh        #判断分子对称性的阈值
-     medium
-     skeleton
+      medium
      $END
      
      $XUANYUAN
-     direct        #积分直接的scf计算
      $END
      
      $SCF
@@ -1020,14 +994,12 @@
      H             -2.9780678476        -4.6353463569        -1.6789597597
      H             -1.1205416224        -6.8569277129         0.0002044899
      end geometry
-     skeleton
      unit        # Set unit of length as Bohr
       bohr
      nosymm
      $end
      
      $XUANYUAN
-     Direct      # ask for direct SCF
      $END
      
      $SCF
@@ -1084,7 +1056,6 @@
       O                 -2.69323539    2.25832835    0.00000000
       O                 -0.44323539    0.95929024    0.00000000
      end geometry
-     skeleton
      thresh
       medium
      $end
@@ -1101,7 +1072,6 @@
      $end
      
      $xuanyuan
-     direct
      $end
      
      $scf
@@ -1159,13 +1129,11 @@
       N     0.00000        0.00000       0.5582
       N     0.00000        0.00000      -0.5582 
      End geometry
-     skeleton
      group
       d(2h)
      $END
      
      $XUANYUAN
-     direct
      $END
      
      % echo "SVWN SCF "
@@ -1250,7 +1218,6 @@
      $END
      
      $XUANYUAN
-     direct
      rs
       0.33
      $END
@@ -1356,11 +1323,10 @@
      H    -5.9086    4.3451    2.3469 
      H    -6.1262    5.5024    1.0605 
      End geometry
-     Skeleton
+     MPEC+cosx
      $end
 
      $xuanyuan
-     Direct
      rs # the range separation parameter omega (a.k.a. mu) of wB97X
       0.3
      $end
@@ -1373,7 +1339,6 @@
       2
      charge
       2
-     MPEC+cosx
      $end
 
      $localmo
@@ -1400,13 +1365,12 @@
              H              0.1735090569         1.0640211402        -0.0014981011
              H              2.3916890605         2.8947369696        -0.0002005778
      end geometry
-     skeleton
      unit
       bohr
+     MPEC+cosx
      $end
 
      $xuanyuan
-     direct
      $end
 
      $scf
@@ -1414,7 +1378,6 @@
      dft
       B2PLYP
      D3
-     MPEC+cosx
      $end
 
      $mp2

@@ -7,19 +7,15 @@ XUANYUAN模块主要计算单、双电子积分和其他必要的积分并存储
 
 :guilabel:`Direct` 参数类型：Bool型
 --------------------------------------
-指定使用积分直接的SCF（Direct）计算。
+指定使用积分直接的SCF（Direct）计算。如今是默认选项，不需要用户设置。
 
-积分直接的SCF不存储双电子积分，按照Schwartz不等式，结合积分对Fock矩阵的贡献，对积分进行预筛选。当基函数数目大于300左右，可以有效地利用双电子积分重复计算来避免IO操作，且支持OpenMP的多核并行计算。BDF中大多数需要计算Fock-Like矩阵（J与K矩阵）的模块，如SCF，TDDFT等都已经实现了积分直接计算。
+积分直接的SCF不存储双电子积分，按照Schwartz不等式，结合积分对Fock矩阵的贡献，对积分进行预筛选。当基函数数目大于300左右，可以有效地利用双电子积分重复计算来避免IO操作，且支持OpenMP的多核并行计算。
+BDF中大多数需要计算Fock-Like矩阵（J与K矩阵）的模块，如SCF，TDDFT等都已经实现了积分直接计算。
 
 .. note::
 
-    积分直接的SCF计算需要在compass模块中加上 :ref:`Skeleton<compass.skeleton>` 关键词。
-
-.. code-block:: bdf
-
-     $xuanyuan
-     Direct
-     $end
+    积分直接的SCF计算需要同时在compass模块中加上 :ref:`Skeleton<compass.skeleton>` 关键词，如今也是默认的。
+    关闭积分直接的SCF计算可以在compass模块中加上 :ref:`Saorb<compass.saorb>` 关键词。
 
 :guilabel:`Maxmem` 参数类型：字符串
 --------------------------------------

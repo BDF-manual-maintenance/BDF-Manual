@@ -199,13 +199,11 @@ RKS，UKS，和ROKS计算
     h 1 1.0
     h 1 1.0 2 109.
     end geometry
-    skeleton # 计算骨架Fock矩阵
     basis
       3-21g
     $end
 
     $xuanyuan
-    direct # ask for direct SCF
     $end
 
     $scf
@@ -277,11 +275,9 @@ CAM-B3LYP等RS杂化泛函，将库伦相互作用分为长短程，
    H -2.12887455 5.29173712 0.04421474
    H -0.52610710 4.36557056 -0.04551805
    end geometry
-   skeleton
    $end
    
    $xuanyuan
-   direct
    rs
     0.33   # define mu=0.33 in CAM-B3lyp functional
    $end
