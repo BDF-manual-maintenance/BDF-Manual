@@ -10,6 +10,7 @@ BDF用户手册
 ================
 
 .. figure:: /images/三个尺寸的BDF_32 32.png
+ :width: 32
 
 .. toctree::
    :caption: 软件简介
