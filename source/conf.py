@@ -89,7 +89,7 @@ pdf_documents = [
 #
 html_theme = 'sphinx_rtd_theme'
 
-html_logo = '/images/三个尺寸的BDF_32 32.png'
+html_logo = './images/三个尺寸的BDF_32 32.png'
 
 html_context = {
     "display_github": True, # Integrate GitHub
