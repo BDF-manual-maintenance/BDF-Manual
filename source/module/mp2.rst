@@ -1,6 +1,8 @@
-Møller–Plesset二级微扰 - MP2模块
+Møller–Plesset二阶微扰 - MP2模块
 ================================================
-Møller-Plesset微扰理论计算模块。
+Møller-Plesset二阶微扰理论计算模块，主要用于实现双杂化DFT计算。
+对于基于积分非直接的对称匹配轨道SCF算法（见 :ref:`Saorb<compass.saorb>` 关键词），MP2支持RHF和UHF参考波函；
+对于积分直接SCF算法（默认情况，见 :ref:`Skeleton<compass.skeleton>` 关键词），MP2仅支持RHF参考波函。
 
 :guilabel:`Nature` 参数类型：Bool型
 ------------------------------------------------
