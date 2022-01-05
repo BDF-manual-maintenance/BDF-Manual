@@ -207,6 +207,8 @@ PBS提交BDF作业的脚本示例如下：
     
     #### Set the environment variables #######
     #module load tools/openmpi-3.0.1-intel-socket
+
+    #module load compiler/intel-compiler-2020
     
     #### Set the PATH to find your applications #####
     export BDFHOME=/home/bbs/bdf-pkg-pro
@@ -242,6 +244,7 @@ Slurm提交BDF作业的脚本示例如下：
     
     #### Set the environment variables #######
     #module load tools/openmpi-3.0.1-intel-socket
+    #module load compiler/intel-compiler-2020
     
     #### Set the PATH to find your applications #####
     export BDFHOME=/home/bbs/bdf-pkg-pro
