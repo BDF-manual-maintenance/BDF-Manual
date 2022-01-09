@@ -148,6 +148,13 @@ Intel编译器可用stack区内存，特别是使用OpenMP并行计算时，inte
 
 这里设置了OpenMP可用stack区内存大小为2048MB。
 
+.. important::
+  环境变量OMP_STACKSIZE是通用环境变量，与其它OpenMP运行库的特殊环境变量之间存在覆盖关系：
+
+  KMP_STACKSIZE（Intel OpenMP） > GOMP_STACKSiZE（GNU OpenMP） > OMP_STACKSIZE
+
+  因此如果在脚本中设置了优先级更高的环境变量，会覆盖OMP_STACKSIZE的值。
+
 **Intel 2018版Fortran编译器**
 =================================================================
 

@@ -516,5 +516,8 @@ Hartree-Fock是量子化学最基本算法。本小节，我们将通过一个�
 
 .. hint:: 
     1. 在 **SCF** 模块输入中加入 ``iprtmo`` 关键词，值设置为 ``2`` ，可以输出分子轨道的详细信息；
-    2. 在 **SCF** 模块输入中加入 ``molden`` 关键词，可以将分子轨道和占据输出为molden格式的文件，可用第三方程序做可视化或波函数分析。
+    2. 在 **SCF** 模块输入中加入 ``molden`` 关键词，可以将分子轨道和占据输出为molden格式的文件，
+    可用第三方程序做可视化（如 `GabEdit <http://gabedit.sourceforge.net/>`_， `JMol <http://jmol.sourceforge.net>`_，
+    `Molden <https://www.theochem.ru.nl/molden/>`_，`Multiwfn <http://sobereva.com/multiwfn/>`_），
+    进行 :ref:`波函数分析<1e-prop>` ，或计算 :ref:`单电子性质<1e-prop>` 。
 
