@@ -168,9 +168,10 @@ Alpha和Beta两个关键词必须联用，用于UHF/UKS计算，分别指定alph
   0.46
  $end
 
-:guilabel:`RS` 参数类型：浮点型
+:guilabel:`RSOMEGA` / :guilabel:`RS` 参数类型：浮点型
 ---------------------------------------------------
-指定Range-Separated泛函如CAM-B3LYP等的 :math:`\omega` （某些文献称 :math:`\mu` ）系数。建议值：0.33。
+指定Range-Separated泛函如CAM-B3LYP等的 :math:`\omega` （某些文献称 :math:`\mu` ）系数。
+``RS`` 是 ``RSOMEGA`` 的同义词。本关键词在 **scf** 模块中仅用于调试，建议在 :ref:`xuanyuan<xuanyuan>` 模块中设置。
 
 **DFT数值积分格点控制参数关键词**
 

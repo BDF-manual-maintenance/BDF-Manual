@@ -255,8 +255,9 @@ CAM-B3LYP等RS杂化泛函，将库伦相互作用分为长短程，
 
     \frac{1}{r_{12}} = \frac{1-[\alpha + \beta \cdot erf(\mu r_{12})]}{r_{12}}+\frac{\alpha + \beta \cdot erf(\mu r_{12})}{r_{12}}
 
-采用BDF高级输入时，可以通过xuanyuan模块中的关键词RS，调整 :math:`\mu` 参数。CAM-B3lyp默认的 :math:`\mu` 参数为0.33。例如 1,3-Butadiene
-分子，利用CAM-B3lyp的RKS高级模式输入为，
+采用BDF高级输入时，可以通过xuanyuan模块中的关键词RS，调整 :math:`\mu` 参数。CAM-B3lyp默认的 :math:`\mu` 参数为0.33，
+其它范围分离泛函中的 :math:`\mu` 值见 :ref:`RSOMEGA<xuanyuan_rsomega>` 关键词。
+例如 1,3-Butadiene 分子，利用CAM-B3lyp的RKS高级模式输入为，
 
 .. code-block:: bdf
 
