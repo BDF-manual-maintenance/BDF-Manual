@@ -264,7 +264,7 @@ QM/MM-TDDFT计算。以前一节中完成的算例为例，可以继续添加如
  $tddft   #TDDFT计算控制
  iprt
   3
- iexit
+ iroot
   5
  $end
 

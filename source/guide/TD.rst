@@ -1520,7 +1520,7 @@ SOECP-TDDFT-SOC的计算输出与sf-X2C-TDDFT-SOC类似。结果总结如下，�
   $END
 
   $tddft
-  iexit
+  iroot
    1 # One root for each irrep
   istore
    1 # File number, to be used later in $resp
@@ -1639,7 +1639,7 @@ SOECP-TDDFT-SOC的计算输出与sf-X2C-TDDFT-SOC类似。结果总结如下，�
    1
   ialda # use collinear kernel (NAC only supports collinear kernel)
    4
-  iexit
+  iroot
    2 # calculate T1 and T2 states
   crit_vec
    1.d-6
@@ -1739,7 +1739,7 @@ SOECP-TDDFT-SOC的计算输出与sf-X2C-TDDFT-SOC类似。结果总结如下，�
     1
    istore
     1
-   iexit
+   iroot
      4
    crit_e # set a small threshhold for TDDFT energy convergence
      1.d-8

@@ -312,31 +312,6 @@
        CAM-B3lyp     #指定DFT计算的交换相关泛函
      $END
 
-     $COMPASS 
-     Title
-       H2O Molecule test run, cc-pvdz
-     Basis
-       cc-pvdz
-     Geometry
-     O  0.000000000   0.000000000    0.369372944
-     H  0.000000000  -0.783975899   -0.184686472 
-     H  0.000000000   0.783975899   -0.184686472 
-     End geometry
-     $END
-
-     $XUANYUAN
-     RS
-     0.33d0
-     $END
-
-     $SCF
-     RKS
-     Occupied
-     3 0 1 1
-     DFT
-       CAM-B3lyp      #Range-Seperated泛函
-     $END     
-
 示例4：检验非阿贝尔群和骨架矩阵法
 ------------------------------------------------
 算例下载链接 :download:`test029.zip <files/test029.zip>`  
@@ -372,34 +347,6 @@
 
 
      # 2nd task
-     $COMPASS 
-     Title
-     N2 Molecule test run, CC-PVTZ 
-     Basis
-       CC-PVTZ 
-     Geometry
-     N   0.0000    0.000000    1.05445
-     N   0.0000    0.000000   -1.05445
-     End geometry
-     Unit
-       Bohr
-     Group
-       D(2h)
-     $END
-
-     $xuanyuan
-     $end
-
-     $SCF
-     ROHF             #Restricted Open-shell Hartree-Fock
-     charge
-       1
-     spinmulti
-       2
-     $END
-
-
-     # 3rd task
      $COMPASS 
      Title
        N2 Molecule test run, CC-PVTZ 
@@ -863,7 +810,7 @@
      $TDDFT
      iprint
       3
-     iexit          #每一个不可约表示计算1个激发态
+     iroot          #每一个不可约表示计算1个激发态
       1
      istore         #指定将TDDFT计算结果存储在第1个TDDFT结果文件里，以备后续TDDFT梯度计算使用
       1 
@@ -966,7 +913,7 @@
       1
      iprint
       3
-     iexit        #每一个不可约表示计算1个激发态
+     iroot        #每一个不可约表示计算1个激发态
       1
      istore       # save TDDFT wave function in 1st scratch file
       1
@@ -1039,7 +986,7 @@
       1
      ialda       # use collinear kernel (NAC only supports collinear kernel)
       4
-     iexit       #每一个不可约表示计算2个激发态
+     iroot       #每一个不可约表示计算2个激发态
       2
      crit_vec    #指定TDDFT计算波函数收敛阈值
       1.d-6
@@ -1121,7 +1068,7 @@
       3
      itda
       1
-     iexit
+     iroot
       2
      istore       # save TDDFT wave function in 1st scratch file, must be specified
       1
@@ -1187,7 +1134,7 @@
       1
      ialda
       2
-     iexit
+     iroot
       20
      MemJKOP
       2048
@@ -1214,7 +1161,7 @@
       1
      ialda
       2
-     iexit
+     iroot
       20
      MemJKOP
       2048
@@ -1241,7 +1188,7 @@
       1
      ialda
       2
-     iexit
+     iroot
       20
      MemJKOP
       2048
@@ -1275,7 +1222,7 @@
       1
      ialda
       2
-     iexit
+     iroot
       20
      MemJKOP
       2048
