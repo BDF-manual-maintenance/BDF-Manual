@@ -707,7 +707,7 @@ BDF还支持在结构优化中限制一个或多个内坐标的值，方法是�
      1
     itda
      1
-    nexit 
+    nroot 
      5
     idiag
      1
