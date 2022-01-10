@@ -1,12 +1,13 @@
 安装和运行
 ************************************
 
+.. attention::
+
+   普通用户不需要阅读安装和编译有关的内容，可以直接跳到 :ref:`BDF程序运行<run-bdfpro>` 和 :ref:`BDF图形界面<run-bdfgui>` 。
+
+
 安装说明
 ================================================
-
-.. note::
-
-   普通用户不需要阅读这一部分。
 
 硬件环境
 -------------------------------------------------
@@ -136,6 +137,8 @@ cmake编译BDF
 后，目录 ``/home/bsuo/bdf-pkg-pro/build/bdf-pkg-pro/license`` 中，生成文件 **LicenseNumber.txt** 。
 
 
+.. _run-bdfpro:
+
 程序运行
 ==========================================================================
 
@@ -190,7 +193,7 @@ BDF需在Linux终端下运行。运行BDF，需要先准备输入文件，输入
 
 .. hint::
     BDF将输出打印至标准输出，需要用重定向命令 ``>`` 定向到文件ch2-hf.out中。
-    
+
 利用PBS作业管理系统提交BDF作业
 ------------------------------------------------
 
@@ -225,7 +228,7 @@ PBS提交BDF作业的脚本示例如下：
     #### Do not modify this section ! #####
     cd $PBS_O_WORKDIR
     
-    $BDFHOME/bdfdrv.py -r jobname.inp
+    $BDFHOME/sbin/bdfdrv.py -r jobname.inp
 
 
 利用Slurm作业管理系统提交BDF作业
@@ -260,7 +263,7 @@ Slurm提交BDF作业的脚本示例如下：
     export OMP_NUM_THREADS=4
     
     #### Do not modify this section ! #####
-    $BDFHOME/bdfdrv.py -r jobname.inp
+    $BDFHOME/sbin/bdfdrv.py -r jobname.inp
 
 
 

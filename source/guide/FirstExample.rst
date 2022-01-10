@@ -288,7 +288,7 @@ Hartree-Fock是量子化学最基本算法。本小节，我们将通过一个�
 
 这里， ``C(2v)`` 点群有4个一维不可约表示，标记为 ``A1, A2, B1, B2`` , 分别有 ``7, 0, 4, 2`` 个对称匹配的轨道。
 
-.. note::
+.. attention::
 
     不同的量子化学软件，可能会采用不同的分子标准取向，导致某些分子轨道在不同程序中标记为不同的不可约表示。
 
@@ -516,5 +516,8 @@ Hartree-Fock是量子化学最基本算法。本小节，我们将通过一个�
 
 .. hint:: 
     1. 在 **SCF** 模块输入中加入 ``iprtmo`` 关键词，值设置为 ``2`` ，可以输出分子轨道的详细信息；
-    2. 在 **SCF** 模块输入中加入 ``molden`` 关键词，可以将分子轨道和占据输出为molden格式的文件，可用第三方程序做可视化或波函数分析。
+    2. 在 **SCF** 模块输入中加入 ``molden`` 关键词，可以将分子轨道和占据输出为molden格式的文件，
+    可用第三方程序做可视化（如 `GabEdit <http://gabedit.sourceforge.net/>`_， `JMol <http://jmol.sourceforge.net>`_，
+    `Molden <https://www.theochem.ru.nl/molden/>`_，`Multiwfn <http://sobereva.com/multiwfn/>`_），
+    进行 :ref:`波函数分析<1e-prop>` ，或计算 :ref:`单电子性质<1e-prop>` 。
 

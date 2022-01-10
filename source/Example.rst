@@ -1,7 +1,9 @@
 算例说明
 ************************************
 
-示例1：计算SCF能量梯度、结构优化。算例下载链接 :download:`test003.zip <files/test003.zip>`
+示例1：计算SCF能量梯度、结构优化
+------------------------------------------------
+算例下载链接 :download:`test003.zip <files/test003.zip>`
 
 .. code-block:: bdf
 
@@ -34,7 +36,9 @@
      $BDFOPT          #结构优化。$BDFOPT模块既可以写在最后，也可以写在$COMPASS块和$XUANYUAN块之间
      $END
 
-示例2：自动识别对称性&指认对称性。算例下载链接 :download:`test006.zip <files/test006.zip>`
+示例2：自动识别对称性&指认对称性
+------------------------------------------------
+算例下载链接 :download:`test006.zip <files/test006.zip>`
 
 .. code-block:: bdf
 
@@ -277,7 +281,9 @@
      RHF
      $end  
 
-示例3：DFT计算。算例下载链接 :download:`test012.zip <files/test012.zip>`
+示例3：DFT计算
+------------------------------------------------
+算例下载链接 :download:`test012.zip <files/test012.zip>`
 
 .. code-block:: bdf
 
@@ -306,32 +312,9 @@
        CAM-B3lyp     #指定DFT计算的交换相关泛函
      $END
 
-     $COMPASS 
-     Title
-       H2O Molecule test run, cc-pvdz
-     Basis
-       cc-pvdz
-     Geometry
-     O  0.000000000   0.000000000    0.369372944
-     H  0.000000000  -0.783975899   -0.184686472 
-     H  0.000000000   0.783975899   -0.184686472 
-     End geometry
-     $END
-
-     $XUANYUAN
-     RS
-     0.33d0
-     $END
-
-     $SCF
-     RKS
-     Occupied
-     3 0 1 1
-     DFT
-       CAM-B3lyp      #Range-Seperated泛函
-     $END     
-
-示例4：检验非阿贝尔群和骨架矩阵法。算例下载链接 :download:`test029.zip <files/test029.zip>`  
+示例4：检验非阿贝尔群和骨架矩阵法
+------------------------------------------------
+算例下载链接 :download:`test029.zip <files/test029.zip>`  
 
 .. code-block:: bdf
 
@@ -366,34 +349,6 @@
      # 2nd task
      $COMPASS 
      Title
-     N2 Molecule test run, CC-PVTZ 
-     Basis
-       CC-PVTZ 
-     Geometry
-     N   0.0000    0.000000    1.05445
-     N   0.0000    0.000000   -1.05445
-     End geometry
-     Unit
-       Bohr
-     Group
-       D(2h)
-     $END
-
-     $xuanyuan
-     $end
-
-     $SCF
-     ROHF             #Restricted Open-shell Hartree-Fock
-     charge
-       1
-     spinmulti
-       2
-     $END
-
-
-     # 3rd task
-     $COMPASS 
-     Title
        N2 Molecule test run, CC-PVTZ 
      Basis
        CC-PVTZ 
@@ -417,7 +372,9 @@
        2
      $END
 
-示例5：开壳层体系。算例下载链接 :download:`test031.zip <files/test031.zip>`  
+示例5：开壳层体系
+------------------------------------------------
+算例下载链接 :download:`test031.zip <files/test031.zip>`  
 
 .. code-block:: bdf
 
@@ -449,7 +406,9 @@
      3 0 0 1 0 2 1 0
      $END
 
-示例6：势能面扫描。算例下载链接 :download:`test032.zip <files/test032.zip>`
+示例6：势能面扫描
+------------------------------------------------
+算例下载链接 :download:`test032.zip <files/test032.zip>`
 
 .. code-block:: bdf
 
@@ -464,7 +423,9 @@
      R1 0.8 0.05 4
      end geometry
 
-示例7：基于双电子积分Cholesky分解的SCF计算。算例下载链接 :download:`test033.zip <files/test033.zip>`
+示例7：基于双电子积分Cholesky分解的SCF计算
+------------------------------------------------
+算例下载链接 :download:`test033.zip <files/test033.zip>`
 
 .. code-block:: bdf
 
@@ -561,7 +522,9 @@
      $end
 
 
-示例8：基于RI-J的DFT计算。算例下载链接 :download:`test041.zip <files/test041.zip>`
+示例8：基于RI-J的DFT计算
+------------------------------------------------
+算例下载链接 :download:`test041.zip <files/test041.zip>`
 
 .. code-block:: bdf
 
@@ -670,7 +633,9 @@
      100
      $END
 
-示例9：计算电荷转移，库仑和交换积分。算例下载链接 :download:`test062.zip <files/test062.zip>`
+示例9：计算电荷转移，库仑和交换积分
+------------------------------------------------
+算例下载链接 :download:`test062.zip <files/test062.zip>`
 
 .. code-block:: bdf
 
@@ -814,7 +779,9 @@
       7 8 9 10 11 12
      &end  
      
-示例10：阿贝尔群对称结构的TD-DFT梯度计算。算例下载链接 :download:`test063.zip <files/test063.zip>`
+示例10：阿贝尔群对称结构的TD-DFT梯度计算
+------------------------------------------------
+算例下载链接 :download:`test063.zip <files/test063.zip>`
 
 .. code-block:: bdf
 
@@ -843,7 +810,7 @@
      $TDDFT
      iprint
       3
-     iexit          #每一个不可约表示计算1个激发态
+     iroot          #每一个不可约表示计算1个激发态
       1
      istore         #指定将TDDFT计算结果存储在第1个TDDFT结果文件里，以备后续TDDFT梯度计算使用
       1 
@@ -863,7 +830,9 @@
       1
      $end
 
-示例11：DFT基态梯度计算。算例下载链接 :download:`test065.zip <files/test065.zip>`
+示例11：DFT基态梯度计算
+------------------------------------------------
+算例下载链接 :download:`test065.zip <files/test065.zip>`
 
 .. code-block:: bdf
 
@@ -898,7 +867,9 @@
      geom 
      $end
 
-示例12：非阿贝尔群对称性下进行TD-DFT梯度的计算。算例下载链接 :download:`test068.zip <files/test068.zip>`
+示例12：非阿贝尔群对称性下进行TD-DFT梯度的计算
+------------------------------------------------
+算例下载链接 :download:`test068.zip <files/test068.zip>`
 
 .. code-block:: bdf
 
@@ -942,7 +913,7 @@
       1
      iprint
       3
-     iexit        #每一个不可约表示计算1个激发态
+     iroot        #每一个不可约表示计算1个激发态
       1
      istore       # save TDDFT wave function in 1st scratch file
       1
@@ -966,7 +937,9 @@
       1          # follow irrep component 1
      $end
 
-示例13：基于TDDFT的非绝热耦合计算。算例下载链接 :download:`test081.zip <files/test081.zip>`
+示例13：基于TDDFT的非绝热耦合计算
+------------------------------------------------
+算例下载链接 :download:`test081.zip <files/test081.zip>`
 
 .. code-block:: bdf
 
@@ -1013,7 +986,7 @@
       1
      ialda       # use collinear kernel (NAC only supports collinear kernel)
       4
-     iexit       #每一个不可约表示计算2个激发态
+     iroot       #每一个不可约表示计算2个激发态
       2
      crit_vec    #指定TDDFT计算波函数收敛阈值
       1.d-6
@@ -1042,7 +1015,9 @@
      noresp      #指定在Double和FNAC计算中忽略跃迁密度矩阵的响应项
      $end
 
-示例14：限制性结构优化以及开壳层体系的SA-TDDFT计算。算例下载链接 :download:`test085.zip <files/test085.zip>`
+示例14：限制性结构优化以及开壳层体系的SA-TDDFT计算
+----------------------------------------------------
+算例下载链接 :download:`test085.zip <files/test085.zip>`
 
 .. code-block:: bdf
 
@@ -1093,7 +1068,7 @@
       3
      itda
       1
-     iexit
+     iroot
       2
      istore       # save TDDFT wave function in 1st scratch file, must be specified
       1
@@ -1116,7 +1091,9 @@
      $end
 
 
-示例15：计算自旋翻转(spin-flip)的TDA。算例下载链接 :download:`test098.zip <files/test098.zip>`
+示例15：计算自旋翻转(spin-flip)的TDA
+------------------------------------------------
+算例下载链接 :download:`test098.zip <files/test098.zip>`
 
 .. code-block:: bdf
 
@@ -1157,7 +1134,7 @@
       1
      ialda
       2
-     iexit
+     iroot
       20
      MemJKOP
       2048
@@ -1184,7 +1161,7 @@
       1
      ialda
       2
-     iexit
+     iroot
       20
      MemJKOP
       2048
@@ -1211,7 +1188,7 @@
       1
      ialda
       2
-     iexit
+     iroot
       20
      MemJKOP
       2048
@@ -1245,13 +1222,15 @@
       1
      ialda
       2
-     iexit
+     iroot
       20
      MemJKOP
       2048
      $END
 
-示例16：iOI计算（基于分片方法的大体系SCF计算）。算例下载链接 :download:`test106.zip <files/test106.zip>`
+示例16：iOI计算（基于分片方法的大体系SCF计算）
+------------------------------------------------
+算例下载链接 :download:`test106.zip <files/test106.zip>`
 
 .. code-block:: bdf
 
@@ -1345,7 +1324,9 @@
      FLMO
      $end
 
-示例17：双杂化泛函基态单点能计算。算例下载链接 :download:`test116.zip <files/test116.zip>`
+示例17：双杂化泛函基态单点能计算
+------------------------------------------------
+算例下载链接 :download:`test116.zip <files/test116.zip>`
 
 .. code-block:: bdf
 

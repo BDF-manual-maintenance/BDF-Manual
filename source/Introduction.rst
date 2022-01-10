@@ -11,6 +11,18 @@ BDF的研发始于1993年，并于1997年正式命名 :cite:`doi:10.1007/s002140
 
 除了上述相对论/非相对论密度泛函、含时密度泛函理论，BDF还有基于“先静态再动态又静态”（SDS）思想的波函数电子相关方法SDSPT2 :cite:`doi:10.1007/s00214-014-1481-x`、SDSCI :cite:`doi:10.1007/s00214-014-1481-x`、iCI :cite:`doi:10.1021/acs.jctc.5b01099`、iCIPT2 :cite:`doi:10.1021/acs.jctc.9b01200,doi:10.1021/acs.jctc.0c01187`、iCAS :cite:`doi:10.1021/acs.jctc.1c00456`、iCISCF :cite:`doi:10.1021/acs.jctc.1c00781`、SOC-iCI、iCI-SOC，以及直接求解大矩阵内部本征态的iVI方法 :cite:`doi:10.1002/jcc.24907,doi:10.1002/jcc.25569` 等等。
 
-2021年7月与鸿之微科技（上海）股份有限公司签署协议，双方合作推广BDF的商业化。鉴于BDF的现状，首期商业化版本将以荧/磷光材料发光机理和材料设计为主要应用目标，因此不包括4C/X2C相对论、波函数电子相关、固体能带/核磁等方法。即首期商业化的BDF将以DFT、TDDFT为主，包括基态与激发态KS、QM/MM、FLMO-TDDFT、SF-TDDFT、NAC-TDDFT、sf-X2C-SA-TDDFT/SOC、SA-TDDFT解析能量梯度和数值Hessian、稳定结构和过渡态优化、隐式溶剂化模型、FLMO-NMR、基于局域轨道（FLMO）的性质计算和分析等特色功能。
+2021年7月与鸿之微科技（上海）股份有限公司签署协议，双方合作推广BDF的商业化。鉴于BDF的现状，首期商业化版本将以荧/磷光材料发光机理和材料设计为主要应用目标，因此不包括4C/X2C相对论、波函数电子相关、固体能带/核磁等方法。即首期商业化的BDF将以DFT、TDDFT等特色功能为主，包括
+
+ * 基态与激发态（通过ΔSCF）的能量：Hartree-Fock，Kohn-Sham DFT，包括LDA，GGA，meta-GGA，范围分离泛函，杂化泛函，双杂化泛函，等，支持色散校正
+ * 激发态计算：TDDFT和TDA（包括FLMO-TDDFT、SF-TDDFT，X-TDDFT，XAS-TDDFT，等），以及MOM
+ * TDDFT激发态偶极矩
+ * 自旋轨道耦合：sf-X2C/SA-TDDFT/SOC
+ * 激发态非绝热耦合：NAC-TDDFT
+ * 基态、ΔSCF激发态、SA-TDDFT激发态的解析梯度和半数值Hessian（振动频率）
+ * 结构优化：稳定结构优化，过渡态优化，最小能量交点（MECP），圆锥交点
+ * 能量转移，电子转移积分
+ * QM/MM
+ * 隐式溶剂化模型
+ * FLMO-NMR、基于局域轨道（FLMO）性质计算和分析
 
 BDF的研发任重而道远。其成功与否不仅取决于研发人员的长期努力，更离不开广大用户的鼓励和支持。

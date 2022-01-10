@@ -19,7 +19,7 @@ BDF的密度泛函理论（DFT）支持限制性（restricted）、非限制性�
      双杂化泛函（Double Hybrid）               B2PLYP
     ========================================  ====================================================
 
-.. note::
+.. attention::
     1. B3LYP的LDA相关项采用VWN5, 而GB3LYP对应Gaussian程序中的B3LYP，LDA相关项采用VWN3。
     2. 对于范围分离泛函计算，必须手动在 ``Xuanyuan`` 模块里设定 ``rs`` 值（参见 :ref:`xuanyuan模块的关键词列表<xuanyuan>` ）。wB97, wB97X, CAM-B3LYP, LC-BLYP的rs值分别为0.40, 0.30, 0.33和0.33。
     3. 对于双杂化泛函计算，必须在 ``SCF`` 模块后面添加一个 ``MP2`` 模块（参见 :doc:`算例说明<Example>` 里的算例test116），并从 ``MP2`` 模块的输出读取最终结果。

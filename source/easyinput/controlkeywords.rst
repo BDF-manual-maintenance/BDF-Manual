@@ -171,6 +171,6 @@
 默认值: False
 
 .. tip::
-  * RI在BDF中主要用于加速MP2计算，SCF和TDDFT均可用 MPEC+COSX方法，该方法是BDF特有的加速算法，与RI算法的精度相近，但不需要冗余基组。
+  * RI在BDF中主要用于加速MP2计算，SCF和TDDFT均可用 MPEC+COSX方法，该方法是BDF特有的加速算法，与RI算法的精度相近，但不需要辅助基组。
 
 
