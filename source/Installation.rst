@@ -267,7 +267,7 @@ Slurm提交BDF作业的脚本示例如下：
 .. important::
     1. stacksize的问题。Intel Fortran编译器对程序运行的堆区（stack）内存要求较大，Linux系统默认的stacksize的大小通常太小，需要通过ulimit -s unlimited指定堆区内存大小。
     2. OpenMP并行的线程数。OMP_NUM_THREADS用于设定OpenMP的并行线程数。BDF依赖于OpenMP并行提高计算效率。如果用户使用了Bash Shell，可以用命令 ``export OMP_NUM_THREADS=N`` 指定使用N个OpenMP线程加速计算。
-    3. OpenMP可用堆区内存，用户可以用 ``export OMP_STACKSIZE=1024M`` 指定OpenMP可用的堆区内存大小。
+    3. OpenMP可用堆区内存，用户可以用 ``export OMP_STACKSIZE=1024M`` 指定OpenMP每个线程可用的堆区内存大小，总的堆区内存大小为 ``OMP_STACKSIZE*OMP_NUM_THREADS`` .
 
 
 
