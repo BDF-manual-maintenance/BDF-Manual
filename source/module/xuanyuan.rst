@@ -92,13 +92,15 @@ BDF中大多数需要计算Fock-Like矩阵（J与K矩阵）的模块，如SCF，
 
 指定自旋轨道（SO）积分的类型，包括：
 
- * 0：so-1e，仅计算单电子SO积分。对于ECP基组，这是唯一的选择
+ * 0：so-1e，仅计算单电子SO积分。
  * 1：so-1e + SOMF，通过有效Fock算符计算双电子SO积分。对于全电子计算，这是最准确的方法
  * 2：so-1e + SOMF-1c，使用单中心近似的SOMF。对于全电子计算，这是推荐选项，尤其是计算大分子
  * 3：so-1e + SOMF-1c / no soo，关闭2中的自旋-其它轨道（SOO）贡献
  * 4：so-1e + SOMF-1c / no soo + WSO_XC，采用DFT计算SOO贡献
  * 5：so-1e + somf-1c / no soo + WSO_XC-2x，根据Neese的建议，把DFT部分乘以-2来模拟SOO贡献
  * 以上参数加上10，将使用BP近似下的算符
+ * 对于ECP基组（包括标量ECP基组、SOECP基组、全电子非相对论基组的混合），唯一接受的值是10，并且是默认选择。
+   也就是使用BP so-1e，其中对SOECP原子计算SOECP积分，标量ECP原子和全电子非相对论原子用有效核电荷。
 
 .. code-block:: bdf
     
