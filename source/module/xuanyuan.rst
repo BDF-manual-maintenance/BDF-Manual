@@ -100,7 +100,8 @@ BDF中大多数需要计算Fock-Like矩阵（J与K矩阵）的模块，如SCF，
  * 5：so-1e + somf-1c / no soo + WSO_XC-2x，根据Neese的建议，把DFT部分乘以-2来模拟SOO贡献
  * 以上参数加上10，将使用BP近似下的算符
  * 对于ECP基组（包括标量ECP基组、SOECP基组、全电子非相对论基组的混合），唯一接受的值是10，并且是默认选择。
-   也就是使用BP so-1e，其中对SOECP原子计算SOECP积分，标量ECP原子和全电子非相对论原子用有效核电荷。
+   也就是使用BP so-1e，其中对SOECP原子计算SOECP积分，标量ECP原子和全电子非相对论原子用有效核电荷，
+   但是后者支持的元素和基组类型有限（见soint_util/zefflib.F90）。
 
 .. code-block:: bdf
     
