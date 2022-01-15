@@ -6,13 +6,16 @@
 
 本章将介绍BDF图形界面的功能和使用的注意事项。
 
+初始参数界面
+================================================
+
 .. figure:: images/Basic-Tab.png
    :width: 800
    :align: center
 
 
 
-上图是启动BDF任务提交界面的初始界面，这儿我们以甲烷分子 :math:`\ce{CH4}` 作为计算对象。
+上图是启动BDF任务提交界面的初始参数界面，这儿我们以甲烷分子 :math:`\ce{CH4}` 作为计算对象。
 
 当我们导入分子结构之后，程序首先会识别分子的化学式、电荷数、对称点群等信息。并且根据这些信息来完成一些默认的设置，如Job Title输入框的内容、Input Filename的输入框内容、Multiplicity的输入框内容、Point Group的下拉框选项等。
 
@@ -39,3 +42,115 @@
 10. Solvent Model：溶剂化模型。
 
 11. Point Group：分子的对称点群。
+
+自洽场计算参数界面
+================================================
+
+.. figure:: images/SCF-Tab.png
+   :width: 800
+   :align: center
+
+上图是启动BDF任务提交界面的自洽场计算参数界面。
+
+下面我们对上图的图形界面的控件及其功能一一说明：
+
+1. Initial Guess：
+
+2. Maximum Iterations:
+
+3. Convergence Threshold:
+
+4. DFT Integral Grid:
+
+5. Level Shift:
+
+6. Damping:
+
+7. Fermi Smearing Temperature:
+
+8. Use MPEC+COSX Acceleration：
+
+9. Disable DIIS Acceleration
+
+10. Print Molecular Orbital:其中Frontier Orbitals","Energy & Occupation","All Information
+
+11. Save Atomic Orbitals：
+
+12. Output SCF Orbitals：
+
+13. Output SCF Orbitals in Pyscf format：
+
+14. Output SCF Orbitals in Molden format：
+
+
+结构优化计算参数界面
+================================================
+
+.. figure:: images/OPT-Tab.png
+   :width: 800
+   :align: center
+
+上图是启动BDF任务提交界面的结构优化计算参数界面。
+
+下面我们对上图的图形界面的控件及其功能一一说明：
+
+1. 
+
+
+
+频率计算参数界面
+================================================
+
+.. figure:: images/Freq-Tab.png
+   :width: 800
+   :align: center
+
+上图是启动BDF任务提交界面的频率计算参数界面。
+
+下面我们对上图的图形界面的控件及其功能一一说明：
+
+1. 
+
+
+激发态计算参数界面
+================================================
+
+.. figure:: images/TDDFT-Tab.png
+   :width: 800
+   :align: center
+
+上图是启动BDF任务提交界面的激发态计算参数界面。
+
+下面我们对上图的图形界面的控件及其功能一一说明：
+
+1. 
+
+
+
+自旋轨道耦合计算参数界面
+================================================
+
+.. figure:: images/SOC-Tab.png
+   :width: 800
+   :align: center
+
+上图是启动BDF任务提交界面的自旋轨道耦合计算参数界面。
+
+下面我们对上图的图形界面的控件及其功能一一说明：
+
+1. 
+
+
+非绝热耦合计算参数界面
+================================================
+
+.. figure:: images/NAC-Tab.png
+   :width: 800
+   :align: center
+
+上图是启动BDF任务提交界面的非绝热耦合计算参数界面。
+
+下面我们对上图的图形界面的控件及其功能一一说明：
+
+1. 
+
