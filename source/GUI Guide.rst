@@ -54,33 +54,33 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. Initial Guess：指定自洽场计算的初始猜测的类型。下拉框支持 **Atom（利用原子密度矩阵组合分子密度矩阵猜测）** ， **Huckel（半经验Huckel方法猜测）** ， **Hcore（对角化单电子哈密顿猜测）** ， **Read（读入分子轨道做为初始猜测）** 四种类型，一般情况下 **atom** 较 **Hcore** 、 **Huckel** 好，因此正常情况下无需选择 **Hcore** 或 **Huckel** 。
+1. Initial Guess：自洽场计算的初始猜测。下拉框支持 **Atom（利用原子密度矩阵组合分子密度矩阵猜测）** ， **Huckel（半经验Huckel方法猜测）** ， **Hcore（对角化单电子哈密顿猜测）** ， **Read（读入分子轨道做为初始猜测）** 四种类型。
 
-2. Maximum Iterations:定义SCF计算的最大迭代次数。
+2. Maximum Iterations:最大迭代次数。
 
 3. Convergence Threshold:同时指定SCF收敛的能量和密度矩阵阈值。下拉框支持 **Very Tight** , **Tight** , **Default** , **Loose** , **Very Loose** 五种。 **Default** 表示1.0D-7 5.0D-5， **Very Tight** 表示1.0D-10 5.0D-8， **Tight** 表示1.0D-9 5.0D-7， **Loose** 表示1.0D-7 5.0D-5， **Very Loose** 表示1.0D-6 5.0D-4。
 
-4. DFT Integral Grid:指定DFT计算的格点类型。下拉框支持 **Default** , **Ultra Coarse** , **Coarse** , **Medium** , **Fine** , **Ultra Fine** 六种。仅当初始参数界面-Method选择Kohn-Sham计算之后，才会显示这个界面选项。
+4. DFT Integral Grid:指定DFT计算的格点类型。下拉框支持 **Default** , **Ultra Coarse** , **Coarse** , **Medium** , **Fine** , **Ultra Fine** 六种。Method选择Kohn-Sham之后，该参数才激活。
 
-5. Level Shift:指定分子轨道能级移动值，对应的scf模块的Vshift参数。人为地将虚轨道能量加上用户指定数值，以加大HOMO-LUMO能隙，加速收敛。Vshift值越大，收敛过程越不容易出现振荡，但Vshift值太大会导致收敛变慢。一般只有在分子的HOMO-LUMO能隙较小（如小于2 eV），且SCF迭代时能量非单调降低时，才需要设置Vshift。
+5. Level Shift:指定分子轨道能级移动值。
 
-6. Damping:指定本次SCF迭代与上次迭代的密度矩阵以一定比例混合（P(i):=(1-C)*P(i)+C*P(i-1)），从而加速SCF收敛，对应scf模块的Damp参数。Damp值越大，收敛过程越不容易出现振荡，但Damp值太大会导致收敛变慢。一般只有在SCF迭代能量非单调降低的时候，才需要设置Damp。
+6. Damping:指定本次SCF迭代与上次迭代的密度矩阵以一定比例混合。
 
-7. Fermi Smearing Temperature:指定体系的电子温度，也即通过费米展宽（Fermi Smearing）方法改变前线轨道的占据数。该界面选项受前面的Level Shift（即Vshift参数）控制，当Vshift>0时，冻结该界面选项，且该界面选项值为0；当Vshift=0时才激活该界面选项。此外，该界面选项也不可在大分子体系的FLMO或iOI计算中使用。
+7. Fermi Smearing Temperature:指定体系的电子温度。
 
 8. Use MPEC+COSX Acceleration：指定利用多级展开库伦势（Multipole expansion of Coulomb potential, MPEC）方法计算J矩阵， COSX（Chain-of-sphere exchange）方法计算K矩阵。
 
-9. Disable DIIS Acceleration:指定不使用DIIS加速SCF收敛。一般只有在SCF能量以较大幅度（> 1.d-5）振荡不收敛，且scf模块的Damp和Vshift参数效果不明显时，才需要指定该界面复选框。
+9. Disable DIIS Acceleration:指定DIIS方法的子空间维数。
 
-10. Print Molecular Orbital:控制是否打印分子轨道系数。下拉框支持 **Frontier Orbitals(不打印分子轨道)** , **Energy & Occupation(打印前线轨道（每个不可约表示的HOMO-5到LUMO+5）的占据数、能量、系数；若设为2)** , **All Information(打印所有轨道的占据数、能量、系数)** 三种。
+10. Print Molecular Orbital:打印分子轨道。下拉框支持 **Frontier Orbitals** , **Energy & Occupation** , **All Information** 三种。
 
-11. Save Atomic Orbitals：计算并存储原子轨道。
+11. Save Atomic Orbitals：存储原子轨道。
 
-12. Output SCF Orbitals：输出SCF收敛轨道，不勾选该界面复选框，则表示强制不将分子轨道存入.scforb文件。
+12. Output SCF Orbitals：输出SCF收敛轨道。
 
 13. Output SCF Orbitals in Pyscf format：控制将SCF收敛轨道存储为Pyscf轨道格式。
 
-14. Output SCF Orbitals in Molden format：控制将分子轨道输出为Molden格式，以做后续的波函数分析。
+14. Output SCF Orbitals in Molden format：控制将分子轨道输出为Molden格式。
 
 
 结构优化计算参数界面
@@ -156,15 +156,15 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. Localization Method:其中"Boys (Default)","Modified Boys","Four-center moment","Pipek-Mezey"
-2. Exponential Factor:
-3. Atomic Charge:其中"Mulliken","Lowdin"
-4. Pipek-Mezey Method:其中"Jacobi Sweep","Trust Region"
-5. Maximum Iterations:
-6. Localize ROHF/ROKS Orbitals：
-7. Localize MCSCF Orbitals
-8. Project LMO to pFLMO
-9. Print coefficients of LMOs
+1. Localization Method:指定定域化方法。下拉框支持 **Boys (Default)** , **Modified Boys** , **Four-center moment** , **Pipek-Mezey** 四种。
+2. Exponential Factor:指定指数因子。Localization Method选Modified Boys时激活。
+3. Atomic Charge:指定使用的电荷类型。下拉框支持 **Mulliken** 和 **Lowdin** 。Localization Method选Pipek-Mezey时激活。
+4. Pipek-Mezey Method:下拉框支持 **Jacobi Sweep** 和 **Trust Region** 。
+5. Maximum Iterations:指定定域化允许的最大循环次数。
+6. Localize ROHF/ROKS Orbitals：指定定域化ROHF/ROKS轨道。
+7. Localize MCSCF Orbitals：指定定域化多组态自洽场轨道。该功能后续添加。
+8. Project LMO to pFLMO：指定投影LMO到pFLMO。
+9. Print coefficients of LMOs：指定打印定域分子轨道的系数。
 
 
 自旋轨道耦合计算参数界面
