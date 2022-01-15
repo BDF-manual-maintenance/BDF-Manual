@@ -94,7 +94,13 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. 
+1. Geometry Optimizer:"DL-Find","BDF"
+2. Optimize to:其中"Minimal","Transition State"
+3. Maximum Iterations:
+4. Convergence Threshold:其中Very Tight","Tight","Default","Loose","Very Loose"
+5. Trust Radius (Step Size):   Upper Limit控件
+6. Recalculate Hessian Per:
+7. Constraints：
 
 
 
@@ -109,7 +115,10 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. 
+1. Temperature:
+2. Pressure:
+3. Harmonic Correction Factor:
+4. Degree of Degeneracy:
 
 
 激发态计算参数界面
@@ -125,6 +134,26 @@
 
 1. 
 
+分子轨道局域化参数界面
+================================================
+
+.. figure:: images/MO-Tab.png
+   :width: 800
+   :align: center
+
+上图是启动BDF任务提交界面的分子轨道局域化参数界面。
+
+下面我们对上图的图形界面的控件及其功能一一说明：
+
+1. Localization Method:其中"Boys (Default)","Modified Boys","Four-center moment","Pipek-Mezey"
+2. Exponential Factor:
+3. Atomic Charge:其中"Mulliken","Lowdin"
+4. Pipek-Mezey Method:其中"Jacobi Sweep","Trust Region"
+5. Maximum Iterations:
+6. Localize ROHF/ROKS Orbitals：
+7. Localize MCSCF Orbitals
+8. Project LMO to pFLMO
+9. Print coefficients of LMOs
 
 
 自旋轨道耦合计算参数界面
