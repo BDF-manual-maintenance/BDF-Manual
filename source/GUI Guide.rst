@@ -132,17 +132,18 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. Method:
-2. Multiplicity:  Delta Ms:
-3. Number of Excited States:
-4. Target State:
-5. Convergence Threshold:
-6. Set Excitation Energy Window:
-7. Use iVI method
-8. Use MPEC+COSX Acceleration
-9. Perform NTO Analysis
-10. Localize Excited State:
-11. Calculate Dipole Moments of Target State
+1. Method:指定计算类型。下拉框支持TDDFT和TDA。
+2. Multiplicity:指定多重度。下拉框支持两组情况：一组为 **Singlet** ， **Triplet** ， **Singlet & Triplet** ；二组为 **Doublet** ， **Quartet** ， **Doublet & Quartet** 。
+3. Delta Ms:指定磁量子数。可选值0，1，-1。当Multiplicity>2，被激活。
+4. Number of Excited States:指定计算的激发态数目。
+5. Target State:指定计算第几个激发态偶极矩。
+6. Convergence Threshold:指定TDDFT计算能量和波函数的收敛阈值。下拉框支持 **Very Tight** , **Tight** , **Default** , **Loose** , **Very Loose** 五种。 **Default** 表示1E-7 1E-5， **Very Tight** 表示1E-9 1E-7， **Tight** 表示1E-8 1E-6， **Loose** 表示1E-6 1E-4， **Very Loose** 表示1E-5 1E-3。
+7. Set Excitation Energy Window:指定计算哪个能量/波长范围内的激发态。
+8. Use iVI method:指定使用iVI方法。
+9. Use MPEC+COSX Acceleration:指定利用多级展开库伦势（Multipole expansion of Coulomb potential, MPEC）方法计算J矩阵， COSX（Chain-of-sphere exchange）方法计算K矩阵。
+10. Perform NTO Analysis:指定对TDDFT计算的某些态做NTO分析。
+11. Localize Excited State:指定计算定域化激发态。该功能后续添加。
+12. Calculate Dipole Moments of Target State：指定计算偶极矩。
 
 分子轨道局域化参数界面
 ================================================
