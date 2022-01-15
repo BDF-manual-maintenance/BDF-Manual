@@ -94,12 +94,12 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. Geometry Optimizer:指定几何结构优化使用的求解器。下拉框支持 **DL-Find** 和 **BDF**， **DL-Find** 优化器支持在直角坐标或内坐标下，进行能量极小化、过渡态搜索、高阶鞍点搜索、锥形交叉点搜索、最小能量交叉点（MECP）搜索等； **BDF** 优化器将使用BDF程序自行开发的优化器进行优化。如果在冗余内坐标下（参见ICoord关键词）进行能量极小化、过渡态搜索，建议使用 **BDF** 优化器。
-2. Optimize to:优化类型。下拉框支持 **Minimal（极小值点结构优化）** , **Transition State（过渡态结构优化）** 。
-3. Maximum Iterations:指定最大优化步数。
-4. Convergence Threshold:同时指定均方根梯度和均方根步长的收敛标准。下拉框支持 **Very Tight** , **Tight** , **Default** , **Loose** , **Very Loose** 五种。
-5. Trust Radius (Step Size):指定优化的置信半径，当设置了优化的初始置信半径r，但在随后的结构优化步骤中可能会视优化情况而动态地增加或减少置信半径。而Upper Limit复选框可以设置优化的初始置信半径为-r，且随后的结构优化步骤中保证置信半径不会超过|r|。
-6. Recalculate Hessian Per:指定在几何优化中，每隔多少步计算一次数值Hessian。
+1. Geometry Optimizer: 指定几何结构优化使用的求解器。下拉框支持 **DL-Find** 和 **BDF**， **DL-Find** 优化器支持在直角坐标或内坐标下，进行能量极小化、过渡态搜索、高阶鞍点搜索、锥形交叉点搜索、最小能量交叉点（MECP）搜索等； **BDF** 优化器将使用BDF程序自行开发的优化器进行优化。如果在冗余内坐标下（参见ICoord关键词）进行能量极小化、过渡态搜索，建议使用 **BDF** 优化器。
+2. Optimize to: 优化类型。下拉框支持 **Minimal（极小值点结构优化）** , **Transition State（过渡态结构优化）** 。
+3. Maximum Iterations: 指定最大优化步数。
+4. Convergence Threshold: 同时指定均方根梯度和均方根步长的收敛标准。下拉框支持 **Very Tight** , **Tight** , **Default** , **Loose** , **Very Loose** 五种。
+5. Trust Radius (Step Size): 指定优化的置信半径，当设置了优化的初始置信半径r，但在随后的结构优化步骤中可能会视优化情况而动态地增加或减少置信半径。而Upper Limit复选框可以设置优化的初始置信半径为-r，且随后的结构优化步骤中保证置信半径不会超过|r|。
+6. Recalculate Hessian Per: 指定在几何优化中，每隔多少步计算一次数值Hessian。
 7. Constraints：指定进行约束性优化，即在约束一个或多个键长、键角或二面角的情况下，优化分子其余的自由度。目前该界面选项仅支持前面选择BDF优化器才生效。用户可自行编辑，该关键词后面的第一行应是一个整数，表示约束的数目，设其为N；第2行到第N+1行，每一行分别由2~4个整数组成。如某一行有2个整数，表示原子编号为这2个整数的原子之间的键被冻结；如某一行有3个整数，表示原子编号为这3个整数的原子之间的键角被冻结；如某一行有4个整数，表示原子编号为这4个整数的原子之间的二面角被冻结。
 
 
@@ -115,10 +115,10 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. Temperature:指定体系进行热化学分析的温度。
-2. Pressure:指定体系进行热化学分析的压强。
-3. Harmonic Correction Factor:指定频率校正因子。
-4. Degree of Degeneracy:指定电子态的简并度，用于计算热化学分析中的吉布斯自由能。电子简并度等于空间简并度乘以自旋简并度，其中空间简并度等于当前电子态所属不可约表示的维数（当分子属于阿贝尔群时，空间简并度等于1），自旋简并度对于非相对论计算和标量相对论计算等于自旋多重度（2S+1），而对考虑了旋轨耦合的计算等于2J+1，其中J为当前电子态的总角动量量子数。注意即使对于电子简并度不等于1的体系，用户必须手动指定正确的NDeg值，这一点对于开壳层体系的吉布斯自由能计算尤其重要。
+1. Temperature: 指定体系进行热化学分析的温度。
+2. Pressure: 指定体系进行热化学分析的压强。
+3. Harmonic Correction Factor: 指定频率校正因子。
+4. Degree of Degeneracy: 指定电子态的简并度，用于计算热化学分析中的吉布斯自由能。电子简并度等于空间简并度乘以自旋简并度，其中空间简并度等于当前电子态所属不可约表示的维数（当分子属于阿贝尔群时，空间简并度等于1），自旋简并度对于非相对论计算和标量相对论计算等于自旋多重度（2S+1），而对考虑了旋轨耦合的计算等于2J+1，其中J为当前电子态的总角动量量子数。注意即使对于电子简并度不等于1的体系，用户必须手动指定正确的NDeg值，这一点对于开壳层体系的吉布斯自由能计算尤其重要。
 
 
 激发态计算参数界面
@@ -132,17 +132,17 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. Method:指定计算类型。下拉框支持TDDFT和TDA。
-2. Multiplicity:指定多重度。下拉框支持两组情况：一组为 **Singlet** ， **Triplet** ， **Singlet & Triplet** ；二组为 **Doublet** ， **Quartet** ， **Doublet & Quartet** 。
-3. Delta Ms:指定磁量子数。可选值0，1，-1。当Multiplicity>2，被激活。
-4. Number of Excited States:指定计算的激发态数目。
-5. Target State:指定计算第几个激发态偶极矩。
-6. Convergence Threshold:指定TDDFT计算能量和波函数的收敛阈值。下拉框支持 **Very Tight** , **Tight** , **Default** , **Loose** , **Very Loose** 五种。 **Default** 表示1E-7 1E-5， **Very Tight** 表示1E-9 1E-7， **Tight** 表示1E-8 1E-6， **Loose** 表示1E-6 1E-4， **Very Loose** 表示1E-5 1E-3。
-7. Set Excitation Energy Window:指定计算哪个能量/波长范围内的激发态。
-8. Use iVI method:指定使用iVI方法。
-9. Use MPEC+COSX Acceleration:指定利用多级展开库伦势（Multipole expansion of Coulomb potential, MPEC）方法计算J矩阵， COSX（Chain-of-sphere exchange）方法计算K矩阵。
-10. Perform NTO Analysis:指定对TDDFT计算的某些态做NTO分析。
-11. Localize Excited State:指定计算定域化激发态。该功能后续添加。
+1. Method: 指定计算类型。下拉框支持TDDFT和TDA。
+2. Multiplicity: 指定多重度。下拉框支持两组情况：一组为 **Singlet** ， **Triplet** ， **Singlet & Triplet** ；二组为 **Doublet** ， **Quartet** ， **Doublet & Quartet** 。
+3. Delta Ms: 指定磁量子数。可选值0，1，-1。当Multiplicity>2，被激活。
+4. Number of Excited States: 指定计算的激发态数目。
+5. Target State: 指定计算第几个激发态偶极矩。
+6. Convergence Threshold: 指定TDDFT计算能量和波函数的收敛阈值。下拉框支持 **Very Tight** , **Tight** , **Default** , **Loose** , **Very Loose** 五种。 **Default** 表示1E-7 1E-5， **Very Tight** 表示1E-9 1E-7， **Tight** 表示1E-8 1E-6， **Loose** 表示1E-6 1E-4， **Very Loose** 表示1E-5 1E-3。
+7. Set Excitation Energy Window: 指定计算哪个能量/波长范围内的激发态。
+8. Use iVI method: 指定使用iVI方法。
+9. Use MPEC+COSX Acceleration: 指定利用多级展开库伦势（Multipole expansion of Coulomb potential, MPEC）方法计算J矩阵， COSX（Chain-of-sphere exchange）方法计算K矩阵。
+10. Perform NTO Analysis: 指定对TDDFT计算的某些态做NTO分析。
+11. Localize Excited State: 指定计算定域化激发态。该功能后续添加。
 12. Calculate Dipole Moments of Target State：指定计算偶极矩。
 
 分子轨道局域化参数界面
@@ -156,11 +156,11 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. Localization Method:指定定域化方法。下拉框支持 **Boys (Default)** , **Modified Boys** , **Four-center moment** , **Pipek-Mezey** 四种。
-2. Exponential Factor:指定指数因子。Localization Method选Modified Boys时激活。
-3. Atomic Charge:指定使用的电荷类型。下拉框支持 **Mulliken** 和 **Lowdin** 。Localization Method选Pipek-Mezey时激活。
-4. Pipek-Mezey Method:下拉框支持 **Jacobi Sweep** 和 **Trust Region** 。
-5. Maximum Iterations:指定定域化允许的最大循环次数。
+1. Localization Method: 指定定域化方法。下拉框支持 **Boys (Default)** , **Modified Boys** , **Four-center moment** , **Pipek-Mezey** 四种。
+2. Exponential Factor: 指定指数因子。Localization Method选Modified Boys时激活。
+3. Atomic Charge: 指定使用的电荷类型。下拉框支持 **Mulliken** 和 **Lowdin** 。Localization Method选Pipek-Mezey时激活。
+4. Pipek-Mezey Method: 下拉框支持 **Jacobi Sweep** 和 **Trust Region** 。
+5. Maximum Iterations: 指定定域化允许的最大循环次数。
 6. Localize ROHF/ROKS Orbitals：指定定域化ROHF/ROKS轨道。
 7. Localize MCSCF Orbitals：指定定域化多组态自洽场轨道。该功能后续添加。
 8. Project LMO to pFLMO：指定投影LMO到pFLMO。
