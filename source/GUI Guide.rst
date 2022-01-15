@@ -54,33 +54,33 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. Initial Guess：
+1. Initial Guess：自洽场计算的初始猜测。下拉框支持 **Atom（利用原子密度矩阵组合分子密度矩阵猜测）** ， **Huckel（半经验Huckel方法猜测）** ， **Hcore（对角化单电子哈密顿猜测）** ， **Read（读入分子轨道做为初始猜测）** 四种类型。
 
-2. Maximum Iterations:
+2. Maximum Iterations:最大迭代次数。
 
-3. Convergence Threshold:
+3. Convergence Threshold:同时指定SCF收敛的能量和密度矩阵阈值。下拉框支持 **Very Tight** , **Tight** , **Default** , **Loose** , **Very Loose** 五种。 **Default** 表示1.0D-7 5.0D-5， **Very Tight** 表示1.0D-10 5.0D-8， **Tight** 表示1.0D-9 5.0D-7， **Loose** 表示1.0D-7 5.0D-5， **Very Loose** 表示1.0D-6 5.0D-4。
 
-4. DFT Integral Grid:
+4. DFT Integral Grid:指定DFT计算的格点类型。下拉框支持 **Default** , **Ultra Coarse** , **Coarse** , **Medium** , **Fine** , **Ultra Fine** 六种。Method选择Kohn-Sham之后，该参数才激活。
 
-5. Level Shift:
+5. Level Shift:指定分子轨道能级移动值。
 
-6. Damping:
+6. Damping:指定本次SCF迭代与上次迭代的密度矩阵以一定比例混合。
 
-7. Fermi Smearing Temperature:
+7. Fermi Smearing Temperature:指定体系的电子温度。
 
-8. Use MPEC+COSX Acceleration：
+8. Use MPEC+COSX Acceleration：指定利用多级展开库伦势（Multipole expansion of Coulomb potential, MPEC）方法计算J矩阵， COSX（Chain-of-sphere exchange）方法计算K矩阵。
 
-9. Disable DIIS Acceleration
+9. Disable DIIS Acceleration:指定DIIS方法的子空间维数。
 
-10. Print Molecular Orbital:其中Frontier Orbitals","Energy & Occupation","All Information
+10. Print Molecular Orbital:打印分子轨道。下拉框支持 **Frontier Orbitals** , **Energy & Occupation** , **All Information** 三种。
 
-11. Save Atomic Orbitals：
+11. Save Atomic Orbitals：存储原子轨道。
 
-12. Output SCF Orbitals：
+12. Output SCF Orbitals：输出SCF收敛轨道。
 
-13. Output SCF Orbitals in Pyscf format：
+13. Output SCF Orbitals in Pyscf format：控制将SCF收敛轨道存储为Pyscf轨道格式。
 
-14. Output SCF Orbitals in Molden format：
+14. Output SCF Orbitals in Molden format：控制将分子轨道输出为Molden格式。
 
 
 结构优化计算参数界面
