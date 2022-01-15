@@ -145,14 +145,14 @@
 11. Localize Excited State: 指定计算定域化激发态。该功能后续添加。
 12. Calculate Dipole Moments of Target State：指定计算激发态偶极矩。
 
-分子轨道局域化参数界面
+分子轨道定域化参数界面
 ================================================
 
 .. figure:: images/MO-Tab.png
    :width: 800
    :align: center
 
-上图是启动BDF任务提交界面的分子轨道局域化参数界面，当初始参数界面-计算类型勾选了 **Localize molecular orbital** 复选框，则激活该界面模块。
+上图是启动BDF任务提交界面的分子轨道定域化参数界面，当初始参数界面-计算类型勾选了 **Localize molecular orbital** 复选框，则激活该界面模块。
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
