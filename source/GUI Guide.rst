@@ -37,7 +37,7 @@
 
 8. Charge：计算体系的净电荷数目。
 
-9. Multiplicity：计算体系的自旋多重度。
+9. Multiplicity：计算体系的自旋多重度（2S+1）。
 
 10. Solvent Model：溶剂化模型。
 
@@ -68,7 +68,7 @@
 
 7. Fermi Smearing Temperature:指定体系的电子温度，也即通过费米展宽（Fermi Smearing）方法改变前线轨道的占据数。该界面选项受前面的Level Shift（即Vshift参数）控制，当Vshift>0时，冻结该界面选项，且该界面选项值为0；当Vshift=0时才激活该界面选项。此外，该界面选项也不可在大分子体系的FLMO或iOI计算中使用。
 
-8. Use MPEC+COSX Acceleration：指定利用多级展开库伦势（Multipole expansion of Coulomb potential, MPEC）方法计算J矩阵， COSX（Chain-of-sphere exchange）方法计算K矩阵。
+8. Use MPEC+COSX Acceleration：指定利用多级展开库伦势（Multipole expansion of Coulomb potential, MPEC）方法计算J矩阵， COSX（Chain-of-sphere exchange）方法计算K矩阵。此外，该方法适合计算大分子体系的，对于小于20个原子体系，MPEC+COSX不推荐使用。
 
 9. Disable DIIS Acceleration:指定不使用DIIS加速SCF收敛。一般只有在SCF能量以较大幅度（> 1.d-5）振荡不收敛，且scf模块的Damp和Vshift参数效果不明显时，才需要指定该界面复选框。
 
@@ -132,18 +132,18 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. Method: 指定计算类型。下拉框支持TDDFT和TDA。
-2. Multiplicity: 指定多重度。下拉框支持两组情况：一组为 **Singlet** ， **Triplet** ， **Singlet & Triplet** ；二组为 **Doublet** ， **Quartet** ， **Doublet & Quartet** 。
-3. Delta Ms: 指定磁量子数。可选值0，1，-1。当Multiplicity>2，被激活。
+1. Method: 指定计算方法。下拉框支持TDDFT和TDA。
+2. Multiplicity: 指定计算激发态的自旋多重度。下拉框支持两组情况：一组为当初始参数界面-Multiplicity=1，则下拉选项为 **Singlet（计算单重态）** ， **Triplet（计算三重态）** ， **Singlet & Triplet（分别计算单重态与三重态）** ；二组为当初始参数界面-Multiplicity=2，则下拉选项为 **Doublet（计算二重态）** ， **Quartet（计算四重态）** ， **Doublet & Quartet（分别计算二重态和四重态）** 。
+3. Delta Ms: 控制是否进行spin-flip的TDDFT计算。可选值0，1，-1；0为no spin-flip（或称spin-conserving，计算磁量子数Ms与基态相同的激发态）；1为spin flip up（计算Ms比基态大1的激发态）；-1为spin flip down（计算Ms比基态小1的激发态）。当初始参数界面-Multiplicity>2，被激活该界面选项。
 4. Number of Excited States: 指定计算的激发态数目。
-5. Target State: 指定计算第几个激发态偶极矩。
+5. Target State: 指定计算第几个激发态偶极矩。仅当勾选 **Calculate Dipole Moments of Target State** 复选框，该界面选项才能生效。
 6. Convergence Threshold: 指定TDDFT计算能量和波函数的收敛阈值。下拉框支持 **Very Tight** , **Tight** , **Default** , **Loose** , **Very Loose** 五种。 **Default** 表示1E-7 1E-5， **Very Tight** 表示1E-9 1E-7， **Tight** 表示1E-8 1E-6， **Loose** 表示1E-6 1E-4， **Very Loose** 表示1E-5 1E-3。
-7. Set Excitation Energy Window: 指定计算哪个能量/波长范围内的激发态。
-8. Use iVI method: 指定使用iVI方法。
-9. Use MPEC+COSX Acceleration: 指定利用多级展开库伦势（Multipole expansion of Coulomb potential, MPEC）方法计算J矩阵， COSX（Chain-of-sphere exchange）方法计算K矩阵。
-10. Perform NTO Analysis: 指定对TDDFT计算的某些态做NTO分析。
+7. Set Excitation Energy Window: 指定计算哪个能量/波长范围内的激发态，即直接指定激发能/激发波长的范围。
+8. Use iVI method: 指定TDDFT的iVI 对角化方法（不支持非阿贝尔点群），对于下述情况之一建议使用该方法：第一、X射线吸收/发射光谱等涉及很高的激发态的计算；第二、计算某个能量或波长范围内的所有激发态，并且要求既不多算该范围外的激发态，又不少算该范围内的激发态。
+9. Use MPEC+COSX Acceleration: 指定利用多级展开库伦势（Multipole expansion of Coulomb potential, MPEC）方法计算J矩阵， COSX（Chain-of-sphere exchange）方法计算K矩阵。此外，该方法适合计算大分子体系的，对于小于20个原子体系，MPEC+COSX不推荐使用。
+10. Perform NTO Analysis: 指定对TDDFT计算的某些态做NTO分析，目前仅支持阿贝尔点群的TDDFT计算。
 11. Localize Excited State: 指定计算定域化激发态。该功能后续添加。
-12. Calculate Dipole Moments of Target State：指定计算偶极矩。
+12. Calculate Dipole Moments of Target State：指定计算激发态偶极矩。
 
 分子轨道局域化参数界面
 ================================================
