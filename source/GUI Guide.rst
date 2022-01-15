@@ -94,13 +94,13 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. Geometry Optimizer:"DL-Find","BDF"
-2. Optimize to:其中"Minimal","Transition State"
-3. Maximum Iterations:
-4. Convergence Threshold:其中Very Tight","Tight","Default","Loose","Very Loose"
-5. Trust Radius (Step Size):   Upper Limit控件
-6. Recalculate Hessian Per:
-7. Constraints：
+1. Geometry Optimizer:指定几何结构优化使用的求解器。下拉框支持 **DL-Find** 和 **BDF** 。
+2. Optimize to:优化类型。支持 **Minimal（极小值点结构优化）** , **Transition State（过渡态结构优化）** 。
+3. Maximum Iterations:指定最大优化步数。
+4. Convergence Threshold:同时指定均方根梯度和均方根步长的收敛标准。下拉框支持 **Very Tight** , **Tight** , **Default** , **Loose** , **Very Loose** 五种。
+5. Trust Radius (Step Size):指定优化的置信半径。   Upper Limit控件
+6. Recalculate Hessian Per:指定在几何优化中，每隔多少步计算一次数值Hessian。
+7. Constraints：指定进行约束性优化。用户自行编辑，每行最多输入4个数字，以空格分隔，且输入的数字必须是正整数，且不能超过计算体系的原子数目。
 
 
 
@@ -115,10 +115,10 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. Temperature:
-2. Pressure:
-3. Harmonic Correction Factor:
-4. Degree of Degeneracy:
+1. Temperature:指定体系温度。
+2. Pressure:指定压强。
+3. Harmonic Correction Factor:指定频率校正因子。
+4. Degree of Degeneracy:指定电子态的简并度。
 
 
 激发态计算参数界面
