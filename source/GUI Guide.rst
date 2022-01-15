@@ -132,7 +132,17 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. 
+1. Method:
+2. Multiplicity:  Delta Ms:
+3. Number of Excited States:
+4. Target State:
+5. Convergence Threshold:
+6. Set Excitation Energy Window:
+7. Use iVI method
+8. Use MPEC+COSX Acceleration
+9. Perform NTO Analysis
+10. Localize Excited State:
+11. Calculate Dipole Moments of Target State
 
 分子轨道局域化参数界面
 ================================================
@@ -163,11 +173,14 @@
    :width: 800
    :align: center
 
-上图是启动BDF任务提交界面的自旋轨道耦合计算参数界面。
+上图是启动BDF任务提交界面的自旋轨道耦合计算参数界面，即Spin-Orbit Coupling部分参数。
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. 
+1. Including Ground State：
+2. Print Spin-orbit Matrix
+3. Print Transition Dipole Between Scalar States
+4. Print Transition Dipole Between Spinor States
 
 
 非绝热耦合计算参数界面
@@ -177,9 +190,9 @@
    :width: 800
    :align: center
 
-上图是启动BDF任务提交界面的非绝热耦合计算参数界面。
+上图是启动BDF任务提交界面的非绝热耦合计算参数界面，即Non-Adiabatic Coupling部分参数。
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. 
+1. Coupling Between::其中"Ground and Excited-State","Two Excited-States","Irrep 1","State 1","Irrep 2","State 2"
 
