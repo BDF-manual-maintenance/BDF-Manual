@@ -178,10 +178,10 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. Including Ground State：
-2. Print Spin-orbit Matrix
-3. Print Transition Dipole Between Scalar States
-4. Print Transition Dipole Between Spinor States
+1. Including Ground State：指定TDDFT-SOC计算方法。
+2. Print Spin-orbit Matrix：指定打印旋轨耦合矩阵元。
+3. Print Transition Dipole Between Scalar States：指定打印标量态间的跃迁偶极矩。
+4. Print Transition Dipole Between Spinor States：指定打印考虑SOC之后的旋量态之间的跃迁偶极矩。
 
 
 非绝热耦合计算参数界面
@@ -195,5 +195,5 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. Coupling Between::其中"Ground and Excited-State","Two Excited-States","Irrep 1","State 1","Irrep 2","State 2"
+1. Coupling Between:指定计算哪些电子态间的非绝热耦合矩阵元。下拉框支持 **Ground and Excited-State** 和 **Two Excited-States** 。Irrep 1和State 1共同指定第几个不可约表示的第几个态。
 
