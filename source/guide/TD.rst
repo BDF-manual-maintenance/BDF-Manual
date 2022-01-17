@@ -959,11 +959,26 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
 
 .. code-block::
 
-  BDF output file: C60.out
-  1 TDDFT output block(s) found
-  Block 1: 10 excited state(s)
-   - Singlet absorption spectrum, spin-allowed
-  plotspec.py: exit successfully
+    
+    ==================================
+          P  L  O  T  S  P  E  C
+
+     Spectral broadening tool for BDF
+    ==================================
+
+    BDF output file: C60.out
+
+    1 TDDFT output block(s) found
+    Block 1: 10 excited state(s)
+     - Singlet absorption spectrum, spin-allowed
+
+    The spectra will be Gaussian-broadened (FWHM = 0.5000 eV) ...
+
+    Absorption maxima of spectrum 1 (nm (lg epsilon/(L/(mol cm)))):
+     - 238 (5.12), 308 (4.50)
+
+    plotspec.py: exit successfully
+
 
 并产生两个文件，一个是C60.stick.csv，包含所有激发态的吸收波长和摩尔消光系数，可以用来作棒状图：
 
@@ -998,7 +1013,12 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
   999.000000,0.000000,
   1000.000000,0.000000,
 
-这两个文件可以用Excel、Origin等作图软件打开并作图。
+这两个文件可以用Excel、Origin等作图软件打开并作图：
+
+
+.. figure:: images/C60-TDDFT-plotspec-example.png
+   :width: 800
+   :align: center
 
 可以用命令行参数控制作图范围、高斯展宽的FWHM等。示例：
 
