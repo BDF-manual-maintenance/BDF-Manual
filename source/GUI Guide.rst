@@ -142,7 +142,7 @@
 8. Use iVI method: 指定TDDFT的iVI 对角化方法（不支持非阿贝尔点群），对于下述情况之一建议使用该方法：第一、X射线吸收/发射光谱等涉及很高的激发态的计算；第二、计算某个能量或波长范围内的所有激发态，并且要求既不多算该范围外的激发态，又不少算该范围内的激发态。
 9. Use MPEC+COSX Acceleration: 指定利用多级展开库伦势（Multipole expansion of Coulomb potential, MPEC）方法计算J矩阵， COSX（Chain-of-sphere exchange）方法计算K矩阵。此外，该方法适合计算大分子体系的，对于小于20个原子体系，MPEC+COSX不推荐使用。
 10. Perform NTO Analysis: 指定对TDDFT计算的所有态做NTO分析，目前仅支持阿贝尔点群的TDDFT计算。
-11. Localize Excited State: 指定计算定域化激发态。目前该功能尚未在当前发布的BDF版本中支持，故界面上不允许用户选择，在未来BDF软件更新相关功能之后才会解锁。
+11. Localize Excited State: 指定计算定域化激发态。目前该界面上不允许用户选择，用户可自行在生成的BDF输入文件（.inp）中进行修改。
 12. Calculate Dipole Moments of Target State：指定计算激发态偶极矩。
 
 分子轨道定域化参数界面
