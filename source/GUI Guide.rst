@@ -72,7 +72,7 @@
 
 9. Disable DIIS Acceleration:指定不使用DIIS加速SCF收敛。一般只有在SCF能量以较大幅度（> 1.d-5）振荡不收敛，且scf模块的Damp和Vshift参数效果不明显时，才需要指定该界面复选框。
 
-10. Print Molecular Orbital:控制是否打印分子轨道系数。下拉框支持 **Frontier Orbitals(不打印分子轨道)** , **Energy & Occupation(打印前线轨道（每个不可约表示的HOMO-5到LUMO+5）的占据数、能量、系数；若设为2)** , **All Information(打印所有轨道的占据数、能量、系数)** 三种。
+10. Print Molecular Orbital:控制是否打印分子轨道系数。下拉框支持 **Frontier Orbitals(不打印分子轨道)** , **Energy & Occupation(打印前线轨道（每个不可约表示的HOMO-5到LUMO+5）的占据数、能量、系数)** , **All Information(打印所有轨道的占据数、能量、系数)** 三种。
 
 11. Save Atomic Orbitals：计算并存储原子轨道。
 
@@ -195,5 +195,5 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. Coupling Between:指定计算哪些电子态间的非绝热耦合矩阵元（包括基态-激发态之间的非绝热耦合矩阵元，和激发态-激发态之间的非绝热耦合矩阵元）。下拉框支持 **Ground and Excited-State（基态-激发态）** 和 **Two Excited-States（激发态-激发态）** 。Irrep 1和State 1分别指定激发态的第几个不可约表示和该不可约表示的第几个根，用于指定计算基态-激发态非绝热耦合向量。Irrep ，State 1和Irrep ，State 2分别指定两组激发态的第几个不可约表示和该不可约表示的第几个根，用于指定计算激发态-激发态非绝热耦合向量。
+1. Coupling Between: 指定计算哪些电子态间的非绝热耦合矩阵元（包括基态-激发态之间的非绝热耦合矩阵元，和激发态-激发态之间的非绝热耦合矩阵元）。下拉框支持 **Ground and Excited-State（基态-激发态）** 和 **Two Excited-States（激发态-激发态）** 。Irrep 1和State 1分别指定激发态的第几个不可约表示和该不可约表示的第几个根，用于指定计算基态-激发态非绝热耦合向量。Irrep ，State 1和Irrep ，State 2分别指定两组激发态的第几个不可约表示和该不可约表示的第几个根，用于指定计算激发态-激发态非绝热耦合向量。
 
