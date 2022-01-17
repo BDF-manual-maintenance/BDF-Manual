@@ -141,8 +141,8 @@
 7. Set Excitation Energy Window: 指定计算哪个能量/波长范围内的激发态，即直接指定激发能/激发波长的范围。
 8. Use iVI method: 指定TDDFT的iVI 对角化方法（不支持非阿贝尔点群），对于下述情况之一建议使用该方法：第一、X射线吸收/发射光谱等涉及很高的激发态的计算；第二、计算某个能量或波长范围内的所有激发态，并且要求既不多算该范围外的激发态，又不少算该范围内的激发态。
 9. Use MPEC+COSX Acceleration: 指定利用多级展开库伦势（Multipole expansion of Coulomb potential, MPEC）方法计算J矩阵， COSX（Chain-of-sphere exchange）方法计算K矩阵。此外，该方法适合计算大分子体系的，对于小于20个原子体系，MPEC+COSX不推荐使用。
-10. Perform NTO Analysis: 指定对TDDFT计算的某些态做NTO分析，目前仅支持阿贝尔点群的TDDFT计算。
-11. Localize Excited State: 指定计算定域化激发态。该功能后续添加。
+10. Perform NTO Analysis: 指定对TDDFT计算的所有态做NTO分析，目前仅支持阿贝尔点群的TDDFT计算。
+11. Localize Excited State: 指定计算定域化激发态。目前该功能尚未在当前发布的BDF版本中支持，故界面上不允许用户选择，在未来BDF软件更新相关功能之后才会解锁。
 12. Calculate Dipole Moments of Target State：指定计算激发态偶极矩。
 
 分子轨道定域化参数界面
@@ -156,15 +156,15 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. Localization Method: 指定定域化方法。下拉框支持 **Boys (Default)** , **Modified Boys** , **Four-center moment** , **Pipek-Mezey** 四种。
-2. Exponential Factor: 指定指数因子。Localization Method选Modified Boys时激活。
-3. Atomic Charge: 指定使用的电荷类型。下拉框支持 **Mulliken** 和 **Lowdin** 。Localization Method选Pipek-Mezey时激活。
-4. Pipek-Mezey Method: 下拉框支持 **Jacobi Sweep** 和 **Trust Region** 。
+1. Localization Method: 指定产生定域化的分子轨道的方法。下拉框支持 **Boys (Default)** , **Modified Boys** , **Four-center moment** , **Pipek-Mezey** 四种。
+2. Exponential Factor: 指定指数因子。前面的Localization Method选择Modified Boys或Four-center moment时激活该界面选项。
+3. Atomic Charge: 指定使用的电荷类型。下拉框支持 **Mulliken** 和 **Lowdin** 。前面的Localization Method选择Pipek-Mezey时激活该界面选项。
+4. Pipek-Mezey Method: 具体指定Pipek-Mezey方法定域轨道的方法。下拉框支持 **Jacobi Sweep** （指定Pipek-Mezey方法利用雅可比旋转定域轨道）和 **Trust Region** （指定Pipek-Mezey方法利用Trust Region方法定域轨道）。前面的Localization Method选择Pipek-Mezey时激活该界面选项。
 5. Maximum Iterations: 指定定域化允许的最大循环次数。
 6. Localize ROHF/ROKS Orbitals：指定定域化ROHF/ROKS轨道。
-7. Localize MCSCF Orbitals：指定定域化多组态自洽场轨道。该功能后续添加。
+7. Localize MCSCF Orbitals：指定定域化多组态自洽场轨道。目前该功能尚未在当前发布的BDF版本中支持，故界面上不允许用户选择，在未来BDF软件更新相关功能之后才会解锁。
 8. Project LMO to pFLMO：指定投影LMO到pFLMO。
-9. Print coefficients of LMOs：指定打印定域分子轨道的系数。
+9. Print coefficients of LMOs：指定打印定域化分子轨道的系数。
 
 
 自旋轨道耦合计算参数界面
@@ -178,10 +178,10 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. Including Ground State：指定TDDFT-SOC计算方法。
-2. Print Spin-orbit Matrix：指定打印旋轨耦合矩阵元。
-3. Print Transition Dipole Between Scalar States：指定打印标量态间的跃迁偶极矩。
-4. Print Transition Dipole Between Spinor States：指定打印考虑SOC之后的旋量态之间的跃迁偶极矩。
+1. Including Ground State：指定TDDFT-SOC计算是否包含基态。勾选该界面选项则表示为TDDFT-SOC计算包含基态，此时可以得到包含SOC校正的光谱，且可以计算基态的SOC校正，但此时纳入TDDFT-SOC处理的标量激发态的数目不宜过多（一般以10~100个左右为宜），否则会低估基态能量，从而高估激发能；不勾选该界面选项则表示为TDDFT-SOC计算不包含基态，此时无法得到基态和考虑了SOC的激发态（即旋量态）之间的跃迁偶极矩，因此无法绘制包含SOC校正的光谱，同时也无法计算基态的SOC校正，但仍可得到包含SOC校正的激发能。
+2. Print Spin-orbit Matrix：指定需要计算的SOC矩阵元。
+3. Print Transition Dipole Between Scalar States：指定在TDDFT-SOC计算里，计算标量态之间的跃迁偶极矩，勾选该选项则表示可以打印所有标量态间的跃迁偶极矩。
+4. Print Transition Dipole Between Spinor States：指定打印考虑SOC之后的旋量态之间的跃迁偶极矩（以及对应的振子强度，和根据费米黄金规则计算得到的辐射跃迁速率常数）。
 
 
 非绝热耦合计算参数界面
@@ -195,5 +195,5 @@
 
 下面我们对上图的图形界面的控件及其功能一一说明：
 
-1. Coupling Between:指定计算哪些电子态间的非绝热耦合矩阵元。下拉框支持 **Ground and Excited-State** 和 **Two Excited-States** 。Irrep 1和State 1共同指定第几个不可约表示的第几个态。
+1. Coupling Between:指定计算哪些电子态间的非绝热耦合矩阵元（包括基态-激发态之间的非绝热耦合矩阵元，和激发态-激发态之间的非绝热耦合矩阵元）。下拉框支持 **Ground and Excited-State（基态-激发态）** 和 **Two Excited-States（激发态-激发态）** 。Irrep 1和State 1分别指定激发态的第几个不可约表示和该不可约表示的第几个根，用于指定计算基态-激发态非绝热耦合向量。Irrep ，State 1和Irrep ，State 2分别指定两组激发态的第几个不可约表示和该不可约表示的第几个根，用于指定计算激发态-激发态非绝热耦合向量。
 
