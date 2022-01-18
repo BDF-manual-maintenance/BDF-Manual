@@ -136,7 +136,8 @@ cmake编译BDF
 
 后，目录 ``/home/bsuo/bdf-pkg-pro/build/bdf-pkg-pro/license`` 中，生成文件 **LicenseNumber.txt** 。
 
-.. hint::
+.. note::
+
     若安装目录没有自动生成license文件夹，需手动创建。
 
 
