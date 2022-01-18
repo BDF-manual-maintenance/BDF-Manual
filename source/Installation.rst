@@ -138,8 +138,7 @@ cmake编译BDF
 
 .. note::
 
-    若安装目录没有自动生成license文件夹，需手动创建。
-
+  若安装目录没有自动生成license文件夹，需手动创建。
 
 .. _run-bdfpro:
 
@@ -333,4 +332,3 @@ pDynamo-2运行时，默认调用sbin目录下的 ``qmmmrun.sh`` 文件进行QM�
   python RunExamples.py
 
 
-ZAHANG
