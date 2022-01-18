@@ -331,3 +331,6 @@ pDynamo-2运行时，默认调用sbin目录下的 ``qmmmrun.sh`` 文件进行QM�
 .. code-block:: shell
 
   python RunExamples.py
+
+
+ZAHANG
