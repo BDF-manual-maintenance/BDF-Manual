@@ -1016,7 +1016,7 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
 这两个文件可以用Excel、Origin等作图软件打开并作图：
 
 
-.. figure:: ../images/C60-TDDFT-plotspec-example.png
+.. figure:: /images/C60-TDDFT-plotspec-example.png
    :width: 800
    :align: center
 
