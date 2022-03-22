@@ -45,13 +45,13 @@ BDF支持的单电子性质有：
    dft
     b3lyp
    grid
-    sg1
+    ultra fine
    reled
     20
   $end
 
 其中，``reled`` 调用相对论性质ED的计算，``20`` 表示对原子序数小于20的轻元素不计算ED，从而节省计算时间。
-对于密度泛函计算，ED的值对积分格点比较敏感，建议用 ``ultra fine`` 或者更精密的 ``sg1`` 。
+对于密度泛函计算，ED的值对积分格点比较敏感，建议用精密的 ``ultra fine`` 。
 
 ED需要对基组进行特殊处理，见 :ref:`穆斯堡尔谱<mossbauer>` 。
 

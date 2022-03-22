@@ -367,7 +367,7 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
 
 虽然BDF对不同的泛函按照精度要求定义了默认积分格点（例如Meta-GGA类泛函对积分格点要求很高，BDF默认使用Fine格点），
 用户可能还希望对积分格点进行调节。Kohn-Sham泛函的积分格点可以在SCF模块的输入中通过Grid关键词定义，Grid的有效值为 ``Ultra coarse`` ，
-``Coarse`` ， ``medium`` ， ``fine`` ， ``Ultra fine`` ， ``sg1`` 等6个，从 ``Ultra coarse`` 到 ``sg1`` 积分格点依次增加，数值积分精度依次提高。
+``Coarse`` ， ``medium`` ， ``fine`` ， ``Ultra fine`` 等5个，从 ``Ultra coarse`` 到 ``Ultra fine`` 积分格点依次增加，数值积分精度依次提高。
 
 示例： :math:`\ce{H2O}` 分子的M062X计算。该泛函属于杂化Meta-GGA类型泛函，要求密集的积分格点，因此输入用到了高级输入和简洁输入混合模式，如下所示：
 

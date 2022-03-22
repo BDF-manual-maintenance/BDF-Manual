@@ -186,7 +186,7 @@ Alpha和Beta两个关键词必须联用，用于UHF/UKS计算，分别指定alph
 :guilabel:`Grid` 参数类型：字符串
 ------------------------------------------------
  * 默认值：Medium
- * 可选值：Ultra Coarse、Coarse、Medium、Fine、Ultra Fine、SG1
+ * 可选值：Ultra Coarse、Coarse、Medium、Fine、Ultra Fine
 
 指定DFT计算的格点类型。
 
