@@ -58,15 +58,19 @@ Hartree-Fock是量子化学最基本算法。本小节，我们将通过一个�
 **COMPASS** 用于读入分子结构，基函数等基本信息，判断分子的对称性，将分子转动到标准取向(Standard orientation，详见 :ref:`BDF对群论的使用小节<Point-Group>`)，产生对称匹配轨道等，
 并将这些信息存入BDF的执行目录下的文件 ``h2o.chkfil`` 。 **COMPASS** 中的关键词
 
- * ``Geometry`` 到 ``End geometry`` 之间定义的分子结构;
- * ``Basis`` 定义基组为 ``3-21G``;
+ * ``Geometry`` 到 ``End geometry`` 之间定义的分子结构；
+ * ``Basis`` 定义基组为 ``3-21G``。
+
+.. note::
+
+    只有在简洁输入中，才能用变量名（如上例中的R1）定义内坐标、定义完内坐标以后再给变量赋值。高级输入里的内坐标必须直接用数字定义，不支持使用变量。
 
 执行完 **COMPASS** 模块后，BDF利用 **XUANYUAN** 模块计算单、双电子积分。由于BDF默认采用的是 **重复计算双电子积分的SCF** 方法，即 **Integral Direct SCF** 。
 
 最后，BDF执行 **SCF** 模块，完成基于Hartree-Fock的自洽场计算。
 
- * ``RHF`` 指定使用限制性Hartree-Fock方法;
- * ``Charge`` 指定体系的电荷为0;
+ * ``RHF`` 指定使用限制性Hartree-Fock方法；
+ * ``Charge`` 指定体系的电荷为0；
  * ``Spinmulti`` 指定体系的自旋多重度为1。
 
 这里 ``RHF`` 是必须输入的关键词， ``Charge`` 和 ``Spinmulti`` 对于限制性方法可以忽略。
