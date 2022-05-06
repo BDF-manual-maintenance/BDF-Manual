@@ -658,6 +658,10 @@ BDF还支持在结构优化中限制一个或多个内坐标的值，方法是�
      10 15 20 25
     $end
     
+.. note::
+
+    即使分子坐标是以直角坐标而非内坐标的形式输入的，BDF仍然可以对内坐标做限制性优化。
+
 激发态结构优化
 -------------------------------------------------------
 
@@ -703,7 +707,7 @@ BDF还可以用QM/MM组合方法进行结构优化，但与纯QM结构优化不�
     1
     rmimag
     hess
-     init # calculate initial Hessian. If a thermochemistry analysis is desired, change “init” to “init+final”
+     init # calculate initial Hessian. If a thermochemistry analysis on the final Hessian is desired, change “init” to “init+final”
     iopt
      10 # transition state optimization
     $end
