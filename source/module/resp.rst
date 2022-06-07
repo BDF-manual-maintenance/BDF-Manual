@@ -196,3 +196,9 @@ d.	两者都不指定：计算tddft得到的所有态的梯度或偶极矩。
  * 默认值：1.0E-6（对于meta-GGA为1.0E-8）
  
  指定产生DFT自适应格点的截断阈值。该值越低，格点数越多，因此数值积分精度越高，但计算量也越大。
+
+:guilabel:`MPEC+COSX` 参数类型：Bool型
+------------------------------------------------
+指定利用多级展开库伦势（Multipole expansion of Coulomb potential, MPEC）方法计算J矩阵， COSX（Chain-of-sphere exchange）方法计算K矩阵。
+在 ``resp`` 模块中保留该关键词只是为了向下兼容，建议在 ``Compass`` 模块中设定该关键词。
+
