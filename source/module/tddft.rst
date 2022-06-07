@@ -80,6 +80,10 @@ Iact=1，通过定义激发能量下限与上限，指定TDDFT求解某个能量
 
 控制是否将自旋轨道基的激发态矢量转到自旋张量基。仅当参考态为ROKS，且后续不需要用 ``$resp`` 模块进行TDDFT梯度、激发态偶极矩等计算，也不需要计算NTO时，itrans才可设为1；其中，当参考态为ROKS且后续需要进行TDDFT-SOC计算时，itrans必须设为1。
 
+:guilabel:`Grimmestd` 参数类型：Bool型
+------------------------------------------------
+指定使用Grimme的sTDA或sTDDFT方法，其中当itda=0时，指定 ``grimmestd`` 表示使用sTDDFT方法；当itda=1时，指定 ``grimmestd`` 表示使用sTDA方法。sTDDFT和sTDA是近似求解TDDFT问题的方法，较MPEC+COSX快约100倍左右，但引入的误差也较大，对激发能引入的误差约为0.2 eV量级（相比之下MPEC+COSX引入的误差一般在0.01 eV以内），对于个别过渡金属体系可能达到1 eV量级。推荐用于100原子以上有机体系的pi-pi*激发态的计算，且常规TDDFT计算耗时或内存消耗过多的情况。目前程序支持计算sTDA、sTDDFT级别下的激发能、振子强度、NTO、SOC矩阵元等，但不支持计算sTDA、sTDDFT级别下的激发态梯度、激发态偶极矩和非绝热耦合矩阵元。
+
 :guilabel:`Grid` 参数类型：字符串
 ------------------------------------------------
  * 默认值：Medium
@@ -92,6 +96,11 @@ Iact=1，通过定义激发能量下限与上限，指定TDDFT求解某个能量
  * 默认值：1.0E-4（对于meta-GGA为1.0E-6）
  
  指定产生DFT自适应格点的截断阈值。该值越低，格点数越多，因此数值积分精度越高，但计算量也越大。
+
+:guilabel:`MPEC+COSX` 参数类型：Bool型
+------------------------------------------------
+指定利用多级展开库伦势（Multipole expansion of Coulomb potential, MPEC）方法计算J矩阵， COSX（Chain-of-sphere exchange）方法计算K矩阵。
+在 ``tddft`` 模块中保留该关键词只是为了向下兼容，建议在 ``Compass`` 模块中设定该关键词。
 
 **收敛控制关键词**
 
