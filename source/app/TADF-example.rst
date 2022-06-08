@@ -1,3 +1,4 @@
+
 .. _TADF-example:
 
 理论揭示DPO-TXO2的热激活延迟荧光（TADF）发光机制
