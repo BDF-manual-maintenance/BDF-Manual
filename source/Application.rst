@@ -4,3 +4,5 @@
 .. include:: app/moss.rst
 
 .. include:: app/TADF-example.rst
+    
+.. include:: app/QMMM.rst

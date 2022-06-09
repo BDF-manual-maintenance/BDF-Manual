@@ -169,6 +169,7 @@ parmchk2 -i GallicAcid.mol2 -f mol2 -o GallicAcid.frcmod
 - temp0=300.0：模拟的最终温度
 
 使用如下命令运行分子动力学模拟:
+
  **sander -O -i md.in -o md.out -p GallicAcid.prmtop -c GallicAcid_min.rst -r GallicAcid_md.rst -x GallicAcid_md.mdcrd -inf GallicAcid_md.mdinfo** 
 
 其中GallicAcid_md.mdcrd文件即为MD模拟的轨迹文件，可借助VMD软件进行可视化显示分子结构，并从动力学模拟轨迹提取感兴趣的结构存储于.crd文件中。

@@ -192,7 +192,7 @@ BDF计算
 绘制成表格如下：
 
 .. table:: 
-    :widths: 40 110
+   :widths: 40 110
 
     ============== ============== ====== ======================  ============ ===================== =============================== ============== ============= ==========================
     Excited state	 Multiplicity	 Irrep	Dominant Excitations	  ExEnergies	Oscillator Strength   Transition orbital contribution	Dipole moment	Wavelengths	   Absolute Overlap Integral
@@ -348,7 +348,7 @@ BDF计算
 绘制表格
 
 .. table:: 
-    :widths: 30 40
+   :widths: 30 40
 
 
     ===============  =======  =======
