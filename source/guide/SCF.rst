@@ -364,6 +364,9 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
 
 在Kohn-Sham计算结束后加入色散矫正，计算输出如下，
 
+.. code-block:: 
+    diis/vshift is closed at iter =   8
+      9     0   0.000  -76.380491166  -0.000000000  0.000000017  0.000000168  0.0000   0.02
 
      Label              CPU Time        SYS Time        Wall Time
     SCF iteration time:         0.467 S        0.033 S        0.233 S
@@ -383,7 +386,6 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
       E_xc  =                -7.50940464
      Virial Theorem      2.006140
 
-这里的总能量 ``E_tot`` 包含了色散矫正能， ``E_disp = -0.00057364`` 。
 
 
 提高Kohn-Sham计算的积分格点精度
