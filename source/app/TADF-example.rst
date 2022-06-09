@@ -184,15 +184,15 @@ BDF计算
    :align: center
    :alt: 图1.3-4
 
-   .. figure:: TADF-example/图1.3-5.png
+.. figure:: TADF-example/图1.3-5.png
    :width: 800
    :align: center
    :alt: 图1.3-5
 
 绘制成表格如下：
+
 .. table:: 
     :widths: 40 110
-
 
     ============== ============== ====== ======================  ============ ===================== =============================== ============== ============= ==========================
     Excited state	 Multiplicity	 Irrep	Dominant Excitations	  ExEnergies	Oscillator Strength   Transition orbital contribution	Dipole moment	Wavelengths	   Absolute Overlap Integral
@@ -207,7 +207,7 @@ BDF计算
 
 表中依次给出激发态由低到高排序、多重度、不可约表示、占主要贡献的电子-空穴对激发、激发能、振子强度、跃迁轨道贡献占比、偶极矩、波长和绝对重叠积分。从表中我们能够看出，所研究的6个单激发态能级在2.7-4.0eV之间，分布较密集，其中前两个单重激发态波长在355nm左右，主要组分跃迁分别由HOMO→LUMO和HOMO-1→LUMO，表现出电荷转移特征。
 
-   .. figure:: TADF-example/Wavelength.png
+.. figure:: TADF-example/Wavelength.png
    :width: 800
    :align: center
 
@@ -215,7 +215,7 @@ BDF计算
 
 计算显示DPO-TXO2分子的基态偶极矩是2.842 D，S1态的激发态偶极矩是19.4 D，显然激发态偶极矩明显大于基态偶极矩，因此激发态与溶剂环境的静电作用导致的能量降低比基态能量的降低更大，所以吸收光谱发生红移。
 
-   .. figure:: TADF-example/energy.png
+.. figure:: TADF-example/energy.png
    :width: 800
    :align: center
 
@@ -225,7 +225,7 @@ NTO分析
 
 假设我们对S1态感兴趣，可以单独对S1态做NTO分析。Basic Settings面板仍然按图1.3-1设置，TDDFT面板此时需要勾选“Perform NTO Analyze”，如图1.3-6所示。
 
-   .. figure:: TADF-example/图1.3-6.png
+.. figure:: TADF-example/图1.3-6.png
    :width: 800
    :align: center
    :alt: 图1.3-6
@@ -234,7 +234,7 @@ NTO分析
     生成的输入文件第二个tddft模块也可手动修改为图1.3-7所示。
 
 
-   .. figure:: TADF-example/图1.3-7.png
+.. figure:: TADF-example/图1.3-7.png
    :width: 800
    :align: center
    :alt: 图1.3-7
@@ -244,14 +244,14 @@ NTO分析
 DPO-TXO2分子的S1激发态的电子跃迁需要用两组NTO轨道才能较好地描述，下面是用VMD软件渲染出来的两组hole-particle轨道。
 
 
-   .. figure:: TADF-example/hole1-1.png；hole1-2.png
+.. figure:: TADF-example/hole1-1.png；hole1-2.png
    :width: 800
    :align: center
    :alt: hole1->particle1(73.26%)
 
 
 
-   .. figure:: TADF-example/hole2-1.png；hole2-2.png
+.. figure:: TADF-example/hole2-1.png；hole2-2.png
    :width: 800
    :align: center
    :alt: Hole2->particle2(26.59%)
@@ -264,7 +264,7 @@ S1态NTO分析后可以看到占据轨道NTO1→非占据轨道NTO3的跃迁起�
 对于激发态我们往往需要理论预测吸收谱，也就是将每个激发态按一定的半峰宽进行高斯展宽。在TDDFT计算正常结束后，我们需要进入终端用命令调用BDF安装路径下的plotspec.py脚本执行计算。若用户使用鸿之微云算力资源，进入命令端方式请查阅鸿之微云指南，此文不做赘述。
 进入终断后，在目录下运行$BDFHOME/sbin/plotspec.py bdf.out，会产生两个文件，分别为bdf.stick.csv和bdf.spec.csv，前者包含所有激发态的吸收波长和摩尔消光系数，可以用来作棒状图，后者包含高斯展宽后的吸收谱（默认的展宽FWHM为0.5 eV），将bdf.spec.csv用第三方软件Origin作图如下：
 
-   .. figure:: TADF-example/图1.3-8.png
+.. figure:: TADF-example/图1.3-8.png
    :width: 800
    :align: center
    :alt: 图1.3-8
@@ -280,17 +280,17 @@ S1态NTO分析后可以看到占据轨道NTO1→非占据轨道NTO3的跃迁起�
 
 导入优化好的基态结构，计算类型选择TDDFT-OPT，泛函PBE0，基组Def2-SVP，此时Basic Settings面板如图1.4-1所示，SCF面板同样消除“Use MPEC+COSX”勾选，如上图1.1-3。在优化S1态时，TDDFT面板的多重度选择Singlet，Target State为1，此时注意勾选“Calculate Dipole Moments of Target State”，如图1.4-2，OPT面板均保持默认值，点击 Generate files 即可生成对应计算的输入文件。生成的输入文件 bdf.inp参数tddft部分如图1.4-3所示。
 
-   .. figure:: TADF-example/图1.4-1.png
+.. figure:: TADF-example/图1.4-1.png
    :width: 800
    :align: center
    :alt: 图1.4-1
 
-   .. figure:: TADF-example/图1.4-2.png
+.. figure:: TADF-example/图1.4-2.png
    :width: 800
    :align: center
    :alt: 图1.4-2
 
-      .. figure:: TADF-example/图1.4-3.png
+.. figure:: TADF-example/图1.4-3.png
    :width: 800
    :align: center
    :alt: 图1.4-3
@@ -308,7 +308,7 @@ BDF计算
 激发态优化结果分析
 右击下载后的out文件，选择Open with/Open containing folder即可查看结果文件。类似基态结构优化，当Geom.converge的4个值均为YES时，证明结构优化收敛，如上图1.1-8。将优化后的T1与S1能量相减，粗略计算ΔEST=2.425 eV。
 
-      .. figure:: TADF-example/T1-S1.png
+.. figure:: TADF-example/T1-S1.png
    :width: 800
    :align: center
  
@@ -321,12 +321,12 @@ BDF计算
 
 对优化好的结构做SOC计算。计算类型选择TDDFT-SOC，哈密顿选择sf-x2c，方法、泛函可根据计算需要设置，基组选择相对论基组，例如cc-pVDZ-DK，此时Basic Settings面板如图1.5-1设置，SCF、TDDFT面板仍为默认值，之后点击 Generate files 即可生成对应计算的输入文件。生成的输入文件 bdf.inp参数tddft部分如图1.5-2所示。
   
-      .. figure:: TADF-example/图1.5-1.png
+.. figure:: TADF-example/图1.5-1.png
    :width: 800
    :align: center
    :alt: 图1.5-1
 
-      .. figure:: TADF-example/图1.5-2.png
+.. figure:: TADF-example/图1.5-2.png
    :width: 800
    :align: center
    :alt: 图1.5-2
@@ -340,12 +340,13 @@ BDF计算
 ########################################################
 右击下载后的out文件，选择Open with/Open containing folder即可查看结果文件。在Print selected matrix elements of [Hsoc]部分打印耦合矩阵元信息。
 
-      .. figure:: TADF-example/图1.5-3.png
+.. figure:: TADF-example/图1.5-3.png
    :width: 800
    :align: center
    :alt: 图1.5-3
 
 绘制表格
+
 .. table:: 
     :widths: 30 40
 
