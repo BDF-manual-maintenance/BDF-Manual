@@ -128,15 +128,18 @@ parmchk2 -i GallicAcid.mol2 -f mol2 -o GallicAcid.frcmod
       cut=16, ntb=0, igb=1,
     &end
 
-imin=1：运行能量最小化
-maxcyc=200：能量最小化的最大循环数
-ncyc=50：最初的0到ncyc循环使用最速下降算法, 此后的ncyc到maxcyc循环切换到共轭梯度算法
-cut=16：以埃为单位的非键截断距离
-ntb=0：关闭周期性边界条件
-igb=1：Born模型
+
+- imin=1：运行能量最小化
+- maxcyc=200：能量最小化的最大循环数
+- ncyc=50：最初的0到ncyc循环使用最速下降算法, 此后的ncyc到maxcyc循环切换到共轭梯度算法
+- cut=16：以埃为单位的非键截断距离
+- ntb=0：关闭周期性边界条件
+- igb=1：Born模型
 
 使用如下命令运行能量最小化:
-sander -O -i min.in -o GallicAcid_min.out -p GallicAcid.prmtop -c GallicAcid.crd -r GallicAcid_min.rst  &
+
+ **sander -O -i min.in -o GallicAcid_min.out -p GallicAcid.prmtop -c GallicAcid.crd -r GallicAcid_min.rst  &** 
+
 其中GallicAcid_min.rst为输出包含坐标和速度的重启文件
 
 2.	接下来利用最小化模拟得到的重启文件升温系统，从而完成分子动力学模拟，输入文件md.in如下：
@@ -153,20 +156,21 @@ sander -O -i min.in -o GallicAcid_min.out -p GallicAcid.prmtop -c GallicAcid.crd
      tempi=0.0, temp0=300.0,
    &end
 
-imin=0：进行分子动力学(MD)
-irest=0：读取先前保存的重新启动文件读取坐标和速度
-nstlim=1000：运行的MD步数
-dt=0.001：时间步长（单位：ps）
-ntc=1：不启用SHAKE约束
-ntpr=20：每ntpr步输出能量信息mdout一次
-ntwx=20：每ntwx步输出Amber轨迹文件mdcrd一次
-ntt=3：Langevin恒温器控制温度
-gamma_ln=1.0：Langevin恒温器的碰撞频率
-tempi=0.0：模拟的初始温度
-temp0=300.0：模拟的最终温度
+- imin=0：进行分子动力学(MD)
+- irest=0：读取先前保存的重新启动文件读取坐标和速度
+- nstlim=1000：运行的MD步数
+- dt=0.001：时间步长（单位：ps）
+- ntc=1：不启用SHAKE约束
+- ntpr=20：每ntpr步输出能量信息mdout一次
+- ntwx=20：每ntwx步输出Amber轨迹文件mdcrd一次
+- ntt=3：Langevin恒温器控制温度
+- gamma_ln=1.0：Langevin恒温器的碰撞频率
+- tempi=0.0：模拟的初始温度
+- temp0=300.0：模拟的最终温度
 
 使用如下命令运行分子动力学模拟:
-sander -O -i md.in -o md.out -p GallicAcid.prmtop -c GallicAcid_min.rst -r GallicAcid_md.rst -x GallicAcid_md.mdcrd -inf GallicAcid_md.mdinfo
+ **sander -O -i md.in -o md.out -p GallicAcid.prmtop -c GallicAcid_min.rst -r GallicAcid_md.rst -x GallicAcid_md.mdcrd -inf GallicAcid_md.mdinfo** 
+
 其中GallicAcid_md.mdcrd文件即为MD模拟的轨迹文件，可借助VMD软件进行可视化显示分子结构，并从动力学模拟轨迹提取感兴趣的结构存储于.crd文件中。
 
 
@@ -383,6 +387,7 @@ QM/MM几何构型优化计算的python脚本如下：
 ------------------------------------------------------------------------------------------
 
 .. note::
+
    QM/MM几何构型优化一般不容易收敛，在实际操作中需要的技巧较多。常见的有，固定MM区，优化QM区；然后固定QM区优化MM区。如此往复循环几次后，再同时优化QM区和MM区。优化是否收敛，和QM区的选择及QM/MM边界是否有带电较多的原子等关系很大。为了加速优化，可以在计算时固定MM区，仅选择离QM区较近的合适区域，作为活性区域，在优化中坐标可以变化。
 
 
