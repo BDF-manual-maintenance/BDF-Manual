@@ -18,9 +18,9 @@ BDF-QM/MM案例教程
 
 其中，需要提前安装好AmberTools，python2.0版本，并正确设置好 **AMBERHOME** 和 **PDYNAMO** 环境变量，关于如何将GallicAcid.pdb初始结构文件(图1，晶胞为2*1*1)生成使用AmberTools21程序相对应的坐标文件GallicAcid.crd和参数/拓扑文件GallicAcid.prmop的方法如下：
 
-.. figure:: TADF-example/GA.png
-   :width: 800
-   :align: center
+.. figure:: /TADF-example/GA.png
+     :width: 800
+     :align: center
 
 运行antechamber程序将Pdb文件转化为mol2文件：
 ######################################################
