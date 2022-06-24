@@ -713,29 +713,33 @@ NTO分析
 假设我们对S1态感兴趣，可以单独对S1态做NTO分析。Basic Settings面板仍然按图1.3-1设置，TDDFT面板此时需要勾选“Perform NTO Analyze”，如图1.3-6所示。
 
 .. figure:: /TADF-example/fig1.3-6.png
-    :width: 800
-    :align: center
-    :alt: 图1.3-6
+.. centered:: 1.3-6
 
 .. note::
-    生成的输入文件第二个tddft模块也可手动修改为图1.3-7所示。
+    生成的输入文件第二个tddft模块也可手动修改为如下形式：
 
 
-.. figure:: /TADF-example/fig1.3-7.png
-    :width: 800
-    :align: center
-    :alt: 图1.3-7
+.. code-block:: bdf
+
+     $tddft
+     NtoAnalyze
+       1       #对一个态NTO分析
+       1       #指定对第一个激发态做NTO分析
+     $end
 
 计算结束后会产生nto1_1.molden格式文件，此文件中记录的已经不是scf.molden中MO轨道的信息了，而是NTO轨道信息，我们直接通过第三方软件Multiwfn主功能0并调整orbital info处理，得到的即为NTO轨道对的本征值与轨道图，软件的使用方法在科音论坛有专门的帖子可以学习，此文不做涉及。
 
 DPO-TXO2分子的S1激发态的电子跃迁需要用两组NTO轨道才能较好地描述，下面是用VMD软件渲染出来的两组hole-particle轨道。
 
 
-.. figure:: /TADF-example/hole1-1.png; /TADF-example/hole1-2.png
-    :width: 800
-    :align: center
-    :alt: hole1->particle1(73.26%)
+.. figure:: /TADF-example/hole1-1.png
+    :width: 400
+    :align: left
 
+.. figure:: /TADF-example/hole1-2.png
+    :width: 400
+    :align: right
+.. centered:: hole1->particle1(73.26%)
 
 
 .. figure:: /TADF-example/hole2-1.png; /TADF-example/hole2-2.png
