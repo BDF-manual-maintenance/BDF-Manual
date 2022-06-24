@@ -463,7 +463,7 @@ BDF计算
 
 
 .. figure:: /TADF-example/fig1.3-2.png
-    1.3-2
+.. centered::(1.3-2)
 
 
 生成的输入文件 bdf.inp参数部分如下：
