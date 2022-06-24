@@ -34,7 +34,7 @@
 计算结构优化时计算类型选择Opt+Freq，方法、泛函、基组等选项用户可根据计算需要设置参数。例如Basic Settings面板设置为图1.1-2，SCF面板取消“Use MPEC+COSX”勾选（图1.1-3）、OPT 、Freq等面板的参数使用推荐的默认值，不需要做修改。之后点击 Generate files 即可生成对应计算的输入文件。
 
 .. figure:: /TADF-example/fig1.1-2.png
-..centered:: 1.1-2 
+.. centered:: 1.1-2 
 
 .. figure:: /TADF-example/fig1.1-3.png
 .. centered:: 1.1-3 
