@@ -461,12 +461,10 @@ BDF计算
     :align: center
     :alt: 1.3-1
 
-.. _fig1.3-2:
 
 .. figure:: /TADF-example/fig1.3-2.png
-    :alt: 1.3-2
-    :width: 800
-    :align: center
+    1.3-2
+
 
 生成的输入文件 bdf.inp参数部分如下：
 
