@@ -29,21 +29,15 @@
 在Device Studio中导入准备的分子结构DPO-TXO2.xyz得到如图1.1-1所示界面，选中 Simulator → BDF → BDF，在弹出的界面中设置参数。
 
 .. figure:: /TADF-example/fig1.1-1.png
-    :width: 800
-    :align: center
-    :alt: 图1.1-1
+.. centered:: 1.1-1
 
 计算结构优化时计算类型选择Opt+Freq，方法、泛函、基组等选项用户可根据计算需要设置参数。例如Basic Settings面板设置为图1.1-2，SCF面板取消“Use MPEC+COSX”勾选（图1.1-3）、OPT 、Freq等面板的参数使用推荐的默认值，不需要做修改。之后点击 Generate files 即可生成对应计算的输入文件。
 
 .. figure:: /TADF-example/fig1.1-2.png
-    :width: 800
-    :align: center
-    :alt: 图1.1-2 
+..centered:: 1.1-2 
 
 .. figure:: /TADF-example/fig1.1-3.png
-    :width: 800
-    :align: center
-    :alt: 图1.1-3 
+.. centered:: 1.1-3 
 
 生成的输入文件 bdf.inp参数部分如下： 
 
@@ -168,9 +162,7 @@
 此时Device Studio图形界面如图1.1-4所示
 
 .. figure:: /TADF-example/fig1.1-4.png
-    :width: 800
-    :align: center
-    :alt: 图1.1-4 
+.. centered:: 1.1-4 
 
 .. note::
 
@@ -185,16 +177,12 @@ BDF计算
 在图1.1-4所示的界面中，选中 bdf.inp → 右击 → Run。在弹出的界面导入相应的脚本，点击Run提交作业，如图1.1-5。
 
 .. figure:: /TADF-example/fig1.1-5.png
-    :width: 800
-    :align: center
-    :alt: 图1.1-5
+.. centered:: 1.1-5
 
 计算完成后点击下载按钮弹出计算结果界面如图1.1-6所示。选择.out结果文件，点击 Download下载。（提交作业操作为重复内容，在后面的计算中将不再赘述）
 
 .. figure:: /TADF-example/fig1.1-6.png
-    :width: 800
-    :align: center
-    :alt: 图1.1-6
+.. centered:: 1.1-6
 
 
 结构优化结果分析
@@ -222,9 +210,7 @@ BDF计算
 将优化后的坐标导入Device Studio，名字改为DPO-TXO2-sp.xyz，此时图形界面如图1.2-1。
 
 .. figure:: /TADF-example/fig1.2-1.png
-    :width: 800
-    :align: center
-    :alt: 图1.2-1 
+.. centered:: 1.2-1 
 
 选中 Simulator → BDF → BDF，在弹出的界面中计算类型选择Single Point（默认值），方法、泛函、基组等选项用户可根据计算需要设置参数。例如泛函选PBE0，基组Def2-TZVP，其他参数仍为默认值，之后点击 Generate files 即可生成对应计算的输入文件。
 生成的输入文件bdf.inp参数部分如下：
@@ -437,14 +423,10 @@ BDF计算
 为了更清楚的了解电子结构，往往需要做前线分子轨道分析。目前发布的版本BDF2022A中还无法实现数据的后处理，HOMO、LUMO轨道图可以用第三方软件Multiwfn+VMD渲染，需要用到scf.molden文件，软件的使用方法在量化论坛有专门的帖子可以学习，此文不做涉及。
 
 .. figure:: /TADF-example/HOMO.png
-    :width: 800
-    :align: center
-    :alt: HOMO轨道分布图
+.. centered:: HOMO轨道分布图
 
 .. figure:: /TADF-example/LUMO.png
-    :width: 800
-    :align: center
-    :alt: LUMO轨道分布图
+.. centered:: LUMO轨道分布图
 
 得到的最高占据轨道(HOMO)与最低非占据轨道（LUMO）如图所示，由于两侧对称分布的吩恶嗪杂环是一个典型的给电子结构，而中心的磺酰化的四氢化萘是一个典型的吸电子的结构，因此整个分子是非常典型的D-A-D结构。可以看到HOMO轨道主要分布在两翼，LUMO轨道分布在中心，HOMO和LUMO轨道几乎没有重叠，符合TADF分子的电子结构特征。当然并不是所有HOMO和LUMO轨道分离的分子都具有TADF的光电特性，还需要满足S1和T1激发都是HOMO->LUMO轨道跃迁才行，因此我们可以进一步用BDF软件计算该分子的激发态电子结构。
 
@@ -457,9 +439,7 @@ BDF计算
 读取优化好的结构做TDDFT计算，右键复制导入的优化后结构，命名为DPO-TXO2-td。计算类型选择TDDFT，方法、泛函、基组等选项用户可根据计算需要设置参数，前面的单点计算显示HOMO和LUMO轨道明显分离，对于这类具有明显D-A结构的分子，其激发态往往也会呈现电荷转移的特征，因此这儿我们选择最适合这类体系的范围分离泛函，如cam-B3LYP或者ω-B97xd。例如将Basic Settings面板按图1.3-1设置，TDDFT面板按图1.3-2设置，之后点击 Generate files 即可生成对应计算的输入文件。
 
 .. figure:: /TADF-example/fig1.3-1.png
-    :width: 800
-    :align: center
-    :alt: 1.3-1
+.. centered:: 1.3-1
 
 
 .. figure:: /TADF-example/fig1.3-2.png
@@ -631,17 +611,70 @@ BDF计算
 
 激发能分析
 ^^^^^^^^^^^^^^^^^^^^^^^
-右击下载后的out文件，选择Open with/Open containing folder即可查看结果文件。得到单重和三重激发能、振子强度、跃迁偶极矩等信息，图1.3-4为单重激发态信息，isf=0；图1.3-5为三重激发态信息，isf=1。
+右击下载后的out文件，选择Open with/Open containing folder即可查看结果文件。得到单重和三重激发能、振子强度、跃迁偶极矩等信息，isf=0为单重激发态信息，isf=1为三重激发态信息。
 
-.. figure:: /TADF-example/fig1.3-4.png
-    :width: 800
-    :align: center
-    :alt: 图1.3-4
+.. code-block:: bdf
 
-.. figure:: /TADF-example/fig1.3-5.png
-    :width: 800
-    :align: center
-    :alt: 图1.3-5
+           No. Pair   ExSym   ExEnergies     Wavelengths      f     D<S^2>          Domin
+     ant Excitations             IPA   Ova     En-E1
+     
+         1   A    2   A    3.4840 eV        355.86 nm   0.0023   0.0000  69.9%  CV(0)
+     :   A( 162 )->   A( 163 )   5.584 0.164    0.0000
+         2   A    3   A    3.4902 eV        355.24 nm   0.0005   0.0000  69.3%  CV(0)
+     :   A( 161 )->   A( 163 )   5.592 0.167    0.0061
+         3   A    4   A    3.8143 eV        325.05 nm   0.0003   0.0000  31.6%  CV(0)
+     :   A( 162 )->   A( 164 )   6.182 0.482    0.3302
+         4   A    5   A    3.8152 eV        324.97 nm   0.0040   0.0000  31.0%  CV(0)
+     :   A( 161 )->   A( 164 )   6.189 0.485    0.3312
+         5   A    6   A    4.1185 eV        301.05 nm   0.0163   0.0000  30.7%  CV(0)
+     :   A( 161 )->   A( 168 )   6.944 0.583    0.6344
+         6   A    7   A    4.1229 eV        300.72 nm   0.1369   0.0000  30.8%  CV(0)
+     :   A( 162 )->   A( 168 )   6.936 0.582    0.6388
+     
+      *** Ground to excited state Transition electric dipole moments (Au) ***
+         State          X           Y           Z          Osc.
+            1       0.0003      -0.1642       0.0004       0.0023       0.0023
+            2       0.0579      -0.0010       0.0549       0.0005       0.0005
+            3       0.0019       0.0580      -0.0012       0.0003       0.0003
+            4      -0.1789       0.0007       0.1034       0.0040       0.0040
+            5      -0.0070      -0.4020       0.0039       0.0163       0.0163
+            6       1.0339      -0.0028      -0.5353       0.1369       0.1369
+     
+     
+         ---------------------------------------------
+         ---- End TD-DFT Calculations for isf = 0 ----
+         ---------------------------------------------
+     ...
+       No. Pair   ExSym   ExEnergies     Wavelengths      f     D<S^2>          Domin
+     ant Excitations             IPA   Ova     En-E1
+     
+         1   A    1   A    2.7522 eV        450.49 nm   0.0000   2.0000  25.3%  CV(1)
+     :   A( 162 )->   A( 167 )   6.920 0.659    0.0000
+         2   A    2   A    2.7522 eV        450.49 nm   0.0000   2.0000  25.1%  CV(1)
+     :   A( 161 )->   A( 167 )   6.928 0.659    0.0000
+         3   A    3   A    3.3404 eV        371.17 nm   0.0000   2.0000  33.1%  CV(1)
+     :   A( 154 )->   A( 163 )   8.200 0.672    0.5882
+         4   A    4   A    3.3862 eV        366.15 nm   0.0000   2.0000  20.9%  CV(1)
+     :   A( 154 )->   A( 165 )   8.983 0.649    0.6340
+         5   A    5   A    3.4620 eV        358.13 nm   0.0000   2.0000  50.3%  CV(1)
+     :   A( 162 )->   A( 163 )   5.584 0.322    0.7098
+         6   A    6   A    3.4757 eV        356.72 nm   0.0000   2.0000  32.5%  CV(1)
+     :   A( 161 )->   A( 163 )   5.592 0.466    0.7235
+     
+      *** Ground to excited state Transition electric dipole moments (Au) ***
+         State          X           Y           Z          Osc.
+            1       0.0000       0.0000       0.0000       0.0000       0.0000
+            2       0.0000       0.0000       0.0000       0.0000       0.0000
+            3       0.0000       0.0000       0.0000       0.0000       0.0000
+            4       0.0000       0.0000       0.0000       0.0000       0.0000
+            5       0.0000       0.0000       0.0000       0.0000       0.0000
+            6       0.0000       0.0000       0.0000       0.0000       0.0000
+     
+     
+         ---------------------------------------------
+         ---- End TD-DFT Calculations for isf = 1 ----
+         ---------------------------------------------
+
 
 绘制成表格如下：
 
