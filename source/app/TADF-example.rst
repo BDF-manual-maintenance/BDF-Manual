@@ -738,6 +738,7 @@ DPO-TXO2分子的S1激发态的电子跃迁需要用两组NTO轨道才能较好�
 .. figure:: /TADF-example/hole1-2.png
     :width: 250
     :align: right
+
 .. centered:: hole1->particle1(73.26%)
 
 
@@ -747,7 +748,9 @@ DPO-TXO2分子的S1激发态的电子跃迁需要用两组NTO轨道才能较好�
 .. figure:: /TADF-example/hole2-2.png
     :width: 250
     :align: right
+
 .. centered:: Hole2->particle2(26.59%)
+
 
 S1态NTO分析后可以看到占据轨道NTO1→非占据轨道NTO3的跃迁起主导，贡献为73.26%，占据轨道NTO2→非占据轨道NTO4贡献为26.59%。S1激发态的电子从两侧的吩恶嗪给电子基团跃迁到了中心的吸电子基团。
 
