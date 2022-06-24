@@ -739,7 +739,7 @@ DPO-TXO2分子的S1激发态的电子跃迁需要用两组NTO轨道才能较好�
     :width: 300
     :align: right
 
-.. centered:: hole1->particle1(73.26%)
+.. centered:: Hole1->particle1(73.26%)
 
 
 .. figure:: /TADF-example/hole2-1.png
