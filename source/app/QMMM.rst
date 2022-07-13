@@ -199,7 +199,11 @@ QM/MM 总能量计算
    molecule.Summary()  #输出体系计算设置信息
    # 计算总能量
    energy  = molecule.Energy()
+
    除了可以用全量子化学QM计算体系总能量，也可对感兴趣的分子进行QM/MM计算（本例为指定第五个分子用QM方法计算），QM/MM组合能量计算python脚本如下：
+
+.. code-block:: bdf
+      
    import glob, math, os
    from pBabel import AmberCrdFile_ToCoordinates3, AmberTopologyFile_ToSystem
    from pCore import logFile, Selection
