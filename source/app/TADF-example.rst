@@ -954,7 +954,7 @@ BDF计算
 
 生成的输入文件 bdf.inp参数如下：
 
-.. code-clock:: bdf
+.. code-block:: bdf
 
      $compass
      Title
