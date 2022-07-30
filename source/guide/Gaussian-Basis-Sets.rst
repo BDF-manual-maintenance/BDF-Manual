@@ -50,7 +50,7 @@ BDF内置的高斯基组主要来自以下基组库网站，各种基组的原�
 * Dyall相对论基组：全电子相对论基组。 http://dirac.chem.sdu.dk/basisarchives/dyall/index.html
 * Sapporo基组库：全电子基组。 http://sapporo.center.ims.ac.jp/sapporo/
 * Clarkson大学ECP基组库：SOECP基组。 https://people.clarkson.edu/~pchristi/reps.html
-* ccECP基组库：标量ECP基组。 https://pseudopotentiallibrary.org/
+* ccECP基组库：标量ECP基组；Kr之后是SOECP基组。 https://pseudopotentiallibrary.org/
 
 此外，有个别元素的内置基组来自原始文献：
 
