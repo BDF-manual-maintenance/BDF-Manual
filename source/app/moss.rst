@@ -210,25 +210,25 @@ EFG计算对基组及相对论哈密顿的要求与有效接触密度的计算�
 .. attention::
 
   1. 非阿贝尔群分子的简并态在计算EFG时，单个分支的 :math:`V_{cc}` 和η 一般没有意义。必须对简并态的所有分支（通过在SCF中指定占据数）分别计算EFG张量，
-     获得平均的EFG张量后再计算 :math:`V_{cc}` 和η。
-  2. 对于孤立原子， :math:`V_{aa} = V_{bb} = V_{cc} = 0` ；对于双原子分子， :math:`V_{cc} = V_{zz}` （分子轴为z）。
-     利用这一特点，可以简化原子、双原子分子简并态的EFG计算。
+     对它们做平均后再计算 :math:`V_{cc}` 和η。
+  2. 对于孤立原子， :math:`V_{aa} = V_{bb} = V_{cc} = 0` ；对于线形分子（包括双原子分子）， :math:`V_{cc} = V_{zz}` （分子轴为z）。
+     利用这一特点，BDF可以对开壳层原子、线形分子简并态的EFG结果进行校正。
 
-核四极矩与EFG 之间的相互作用通常用核四极耦合常数（NQCC；nuclear quadrupole coupling constant） :math:`V_Q` 来衡量，定义为
+核四极矩与EFG 之间的相互作用通常用核四极耦合常数（NQCC；nuclear quadrupole coupling constant） :math:`eQq` 来衡量（在一些文献中也写作 :math:`eqQ` ），定义为
 
 .. math::
-    V_Q = 234.96478 ~Q ~V_{cc}
+    eQq = 234.96478 ~Q ~V_{cc}
 
-其中 :math:`V_{cc}` 仍取原子单位，核四极矩Q的单位是Barn（1 Barn = 1.0e-28 平方米）， :math:`V_Q` 的单位是MHz。
-当同位素的Q实验值已知时，程序会打印 :math:`V_Q` ，在本例中是-8.4172 MHz。
+其中 :math:`V_{cc}` 仍取原子单位，核四极矩Q的单位是Barn（1 Barn = 1.0e-28 平方米）， :math:`eQq` 的单位是MHz。
+当同位素的Q实验值已知时，程序会打印 :math:`eQq` ，在本例中是-8.4172 MHz。
 
 穆斯堡尔谱测量的核四极分裂 :math:`\Delta E_{Q}` 与NQCC满足一定的换算关系。例如， :math:`\ce{^{57}Fe}` 的I=3/2，γ 射线能量为14.412497 KeV
 （约34.85e11 MHz），有
 
 .. math::
-    \Delta E_{Q} {\rm (in ~mm/s)} = V_Q {\rm (in ~MHz)} / 11.6248
+    \Delta E_{Q} {\rm (in ~mm/s)} = eQq {\rm (in ~MHz)} / 11.6248
 
 :math:`\Delta E_{Q}` 的理论结果可以直接和穆斯堡尔谱实验值进行对比，还可以结合之前的ED结果，验证Fe的价态指认是否合理。
-不过，EFG对基组、电子关联、环境电荷极其敏感，因此符合程度一般不如ED结果那样好。
+不过，EFG对基组、电子关联、环境电荷极其敏感，并且开壳层的高对称体系还可能遇到波函数对称性破缺的问题（见上），因此符合程度一般不如ED结果那样好。
 
 
