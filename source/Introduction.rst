@@ -16,7 +16,7 @@ BDF的研发始于1993年，并于1997年正式命名 :cite:`doi:10.1007/s002140
  * 基态与激发态（通过ΔSCF）的能量：Hartree-Fock，Kohn-Sham DFT，包括LDA，GGA，meta-GGA，范围分离泛函，杂化泛函，双杂化泛函，等，支持色散校正
  * 激发态计算：TDDFT和TDA（包括FLMO-TDDFT、SF-TDDFT，X-TDDFT，XAS-TDDFT，等），以及MOM
  * TDDFT激发态偶极矩
- * 自旋轨道耦合：sf-X2C/SA-TDDFT/SOC
+ * 自旋轨道耦合：SA-TDDFT/SOC
  * 激发态非绝热耦合：NAC-TDDFT
  * 基态、ΔSCF激发态、SA-TDDFT激发态的解析梯度和半数值Hessian（振动频率）
  * 结构优化：稳定结构优化，过渡态优化，最小能量交点（MECP），圆锥交点
