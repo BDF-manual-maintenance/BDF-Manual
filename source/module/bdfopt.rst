@@ -113,6 +113,9 @@ Solver=1，BDF将使用自带的优化器进行优化。
 
 指定数值Hessian计算时，扰动分子的步长（单位：Bohr）。
 
+.. note::
+     NumHessStep只能在已经用其他关键词（如Hess、ReCalcHess、RmImag、Update等）指定计算Hessian的前提下，改变扰动分子的步长，其本身并没有指定计算Hessian的作用。因此，如果只指定NumHessStep而不搭配其他和计算Hessian有关的关键词，则NumHessStep不会有任何效果。
+
 :guilabel:`ReadHess` 参数类型：Bool型
 ---------------------------------------------------
 指定读取$BDFTASK.hess作为结构优化的初始Hessian（其中$BDFTASK为当前输入文件的名字去掉后缀.inp得到的字符串）。$BDFTASK.hess可以由其他的频率计算任务产生，而不一定需要和当前结构优化计算的理论级别一致。
