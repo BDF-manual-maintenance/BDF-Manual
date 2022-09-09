@@ -618,6 +618,91 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 （5）运行该输入文件即可。
 
+用Dimer方法优化过渡态结构
+---------------------------------------------------------------
+
+为了获得过渡态的虚频振动模式，需要执行一次甚至多次的Hessian矩阵计算，这是优化过渡态的标准流程中最耗时的步骤。不过，也有一些过渡态优化方法只需要梯度，不需要计算Hessian矩阵，这就大大提高了计算效率以及量子化学方法的应用范围。
+以下介绍的是Dimer方法 :cite:`dimer1999,dimer2005,dimer2008` 。
+
+Dimer方法需要定义两个结构，称为像点（Image），两个像点的间距为一个固定的小值Delta，像点连线称为轴。
+在Dimer计算过程中，对两个像点垂直于轴向的力进行最小化（称为旋转Dimer步骤），而在轴向的力进行最大化（称为平移Dimer步骤），最终收敛到过渡态结构。此时，轴向对应着虚频模式，而耗时的Hessian计算被巧妙地避开了。
+
+.. attention::
+
+  1. Dimer方法要调用DL-FIND外部库 :cite:`dlfind2009` （ ``Solver=0`` ），仅支持L-BFGS优化算法（ ``IOpt=3`` ）。
+  2. 由于DL-FIND与BDF默认的坐标转动有冲突，必须在 ``compass`` 模块中加上关键词 ``norotate`` 禁止分子转动，或用 ``nosymm`` 关闭对称性；对于双原子和三原子分子，只能用 ``nosymm`` 。此冲突今后会解决。
+  3. 结构优化和频率要分开算，因为频率步骤读取的分子坐标有错误。此问题今后会解决。
+
+仍然取上一节的例子，加上关键词 ``dimer`` 和 ``nosymm`` （后者关闭对称性并禁止分子转动），优化方法 ``iopt`` 要从10改为默认的3（也可以不指定 ``iopt`` ），因为我们不需要Hessian矩阵。输入文件如下：
+
+.. code-block:: bdf
+
+    $compass
+    title
+       HCN <-> HNC transition state
+    basis
+       def2-SVP
+    geometry
+     C                  0.00000000    0.00000000    0.00000000
+     N                  0.00000000    0.00000000    1.14838000
+     H                  1.58536000    0.00000000    1.14838000
+    end geometry
+    nosymm
+    $end
+
+    $bdfopt
+    solver
+     0
+    iopt
+     3
+    dimer
+    $end
+
+    $xuanyuan
+    $end
+
+    $scf
+    rks
+    dft
+     b3lyp
+    $end
+
+    $resp
+    geom
+    $end
+
+经过14步优化结束：
+
+.. code-block:: 
+
+  Testing convergence of dimer midpoint in cycle   14
+      Energy  0.0000E+00 Target: 1.0000E-06 converged?  yes
+    Max step  1.9375E-04 Target: 8.0000E-04 converged?  yes component     4
+    RMS step  9.0577E-05 Target: 5.3333E-04 converged?  yes
+    Max grad  6.9986E-06 Target: 2.0000E-04 converged?  yes component     6
+    RMS grad  4.0401E-06 Target: 1.3333E-04 converged?  yes
+  Converged!
+
+得到的过渡态总能量为-93.22419648 Hartree，与上一节得到的能量-93.22419582 Hartree非常接近。
+
+.. code-block::
+
+  Summary printing of molecular geometry and gradient for this step
+
+  Atom         Coord           
+   C        0.381665       0.002621       0.138107
+   N       -0.079657      -0.020912       1.233092
+   H        1.283352       0.018291       0.925561
+  State=  1
+  Energy=    -93.22419612
+  Gradient=
+   C        0.00000523       0.00000093      -0.00000335
+   N        0.00000131      -0.00000022       0.00000700
+   H       -0.00000655      -0.00000070      -0.00000365
+
+如果修改Dimer方法的默认参数，可以把关键词 ``dimer`` 改为 ``Dimer-Block`` ... ``End Dimer`` 输入块。其中的关键词参见BDFOPT模块的说明。
+
+
 限制性结构优化
 -------------------------------------------------------
 
