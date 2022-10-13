@@ -97,11 +97,14 @@ Solver=1，BDF将使用自带的优化器进行优化。
 ------------------------------------------------
  * 可选值：only、init、final、init+final
 
-指定计算数值Hessian。如为only，则仅计算数值Hessian而不做几何结构优化。如数值Hessian计算正常结束，程序将把Hessian对角化并进行热化学分析，给出振动频率、振动简正模、零点能、内能、焓、熵、Gibbs自由能等数据。如为init，则首先计算数值Hessian，然后以其为初始Hessian进行几何结构优化。该方法主要应用于过渡态搜索中（因为默认的基于分子力场的初始Hessian缺乏虚频）。程序不对该Hessian进行热化学分析。如为final，则首先进行结构优化，如结构优化收敛，则在收敛的几何结构上计算数值Hessian，并进行频率分析和热化学分析。在其他量化程序中，这种计算模式常被称为opt+freq。如为init+final，则首先计算初始数值Hessian，然后进行几何结构优化，优化收敛后再计算数值Hessian。程序仅对后一个数值Hessian进行频率分析和热化学分析，而不对前一个数值Hessian进行这些分析。
+指定计算Hessian。如为only，则仅计算Hessian而不做几何结构优化。如Hessian计算正常结束，程序将把Hessian对角化并进行热化学分析，给出振动频率、振动简正模、零点能、内能、焓、熵、Gibbs自由能等数据。如为init，则首先计算Hessian，然后以其为初始Hessian进行几何结构优化。该方法主要应用于过渡态搜索中（因为默认的基于分子力场的初始Hessian缺乏虚频）。程序不对该Hessian进行热化学分析。如为final，则首先进行结构优化，如结构优化收敛，则在收敛的几何结构上计算Hessian，并进行频率分析和热化学分析。在其他量化程序中，这种计算模式常被称为opt+freq。如为init+final，则首先计算初始Hessian，然后进行几何结构优化，优化收敛后再计算Hessian。程序仅对后一个Hessian进行频率分析和热化学分析，而不对前一个Hessian进行这些分析。
+
+.. attention::
+    BDF目前仅支持HF/DFT的解析Hessian，使用TDDFT激发态结构优化使用数值Hessian。如果要HF/DFT也强制使用数值Hessian，可以使用 ``UseNumHess`` 关键词。
 
 :guilabel:`UseNumHess` 参数类型：Bool
 -----------------------------------------------
-强行计算数值Hessian，即使某个方法的解析Hessian可以获得。解析Hessian方法仅支持HF/DFT，DFT泛函目前支持LDA，GGA和Hybrid。
+强行计算数值Hessian，即使某个方法的解析Hessian可以获得。解析Hessian方法仅支持HF/DFT，DFT目前支持LDA、GGA、Hybrid和RS-Hybrid泛函。
 
 :guilabel:`ReCalcHess` 参数类型：整型
 ---------------------------------------------------
