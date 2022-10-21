@@ -21,7 +21,7 @@ BDF目前支持基态溶剂化效应计算，包括HF和DFT方法。以下是甲
     H    0.00000000    0.93500000   -1.08200000
     H    0.00000000    -0.9350000  -1.08200000
   END geometry
-  nosym
+  nosymm
   unit
    ang
   $END
@@ -313,7 +313,7 @@ BDF中支持的溶剂类型列表如下：
   H          16.281  12.594   1.885
   H          17.062  11.978   3.013
   END geometry
-  nosym
+  nosymm
   mpec+cosx
   $END
   

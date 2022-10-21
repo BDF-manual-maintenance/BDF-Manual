@@ -126,6 +126,8 @@ BDF计算如果出现 **segmentation fault** ，大多数情况下都是用户�
 
 需要用root账户更改可用stack区的内存 **硬上限** 或者联系您的系统管理员解决问题。
 
+此外，有时 **segmentation fault** 也可能是OpenMP的stack区内存不足导致的，此时仅设置 ``ulimit`` 还不够，还需要设置OMP_STACKSIZE、KMP_STACKSIZE等环境变量，具体方法参见 :ref:`OpenMP的stack区内存大小<OMP_stack_problem>` 小节。
+
 **OpenMP并行计算**
 =================================================================
 
@@ -137,6 +139,7 @@ BDF支持OpenMP并行计算，需要在运行脚本中设置可用的OpenMP线�
 
 这里设置最大可用8个OpenMP线程并行计算。
 
+.. _OMP_stack_problem::
 **OpenMP的stack区内存大小**
 =================================================================
 
