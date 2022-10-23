@@ -68,7 +68,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 以上述 :math:`\ce{CH3Cl}` 的结构优化任务为例，可以看到 ``.out`` 文件里BDFOPT模块的输出：
 
-.. code-block:: 
+.. code-block::
 
        Geometry Optimization step :    1
 
@@ -102,7 +102,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 因此在第一步结构优化时，输出文件还会给出各个冗余内坐标的定义（即参与形成相应的键、键角、二面角的原子编号），
 以及它们的值（键长的单位为埃，键角、二面角的单位为度）：
 
-.. code-block:: 
+.. code-block::
 
     |******************************************************************************|
            Redundant internal coordinates on Angstrom/Degree
@@ -135,7 +135,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 待分子结构更新完成后，程序计算梯度以及几何步长的大小，判断结构优化是否收敛：
 
-.. code-block:: 
+.. code-block::
 
                            Force-RMS    Force-Max     Step-RMS     Step-Max
         Conv. tolerance :  0.2000E-03   0.3000E-03   0.8000E-03   0.1200E-02
@@ -144,7 +144,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 仅当均方根力（Force-RMS）、最大力（Force-Max）、均方根步长（Step-RMS）、最大步长（Step-Max）的当前值均小于对应的收敛限的时候（也即 ``Geom. converge`` 栏均为Yes），程序才认为结构优化收敛。对于本算例，结构优化在第5步时收敛，此时输出信息不仅包含各收敛判据的值，还会明确告知用户几何优化已收敛，并分别以笛卡尔坐标和内坐标的形式打印收敛的分子结构：
 
-.. code-block:: 
+.. code-block::
 
         Good Job, Geometry Optimization converged in     5 iterations!
 
@@ -196,7 +196,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 与此同时，程序还会产生后缀为 ``.optgeom`` 的文件，其内容是优化后的分子结构的笛卡尔坐标（若是一般的单点计算，则为当前结构在标准取向下的笛卡尔坐标），但单位为Bohr而非Angstrom：
 
-.. code-block:: 
+.. code-block::
 
     GEOM
             C             -0.7303234729        -2.0107211546        -0.0000057534
@@ -215,7 +215,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 最后顺便指出，当分子里有的键角接近或等于180度时，基于冗余内坐标的优化算法经常会出现数值不稳定性问题，导致优化无法继续进行。因此程序在产生冗余内坐标时，会尽量避免选取接近或等于180度的键角。但是即便如此，还是有可能有本来远小于180度的键角在优化过程中接近180度，导致数值不稳定问题，此时程序会自动重新构建冗余内坐标并自动重启优化，并输出如下信息：
 
-.. code-block:: 
+.. code-block::
 
       Something wrong in getting dihedral!
       This is probably because one or more angles have become linear.
@@ -223,6 +223,191 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
      --- Restarting optimizer ... (10 attempt(s) remaining) ---
 
+自旋混合态的结构优化：ZnS分子
+---------------------------------------------------------------------------------
+
+双原子分子ZnS的基态是闭壳层的 :math:`X^1\Sigma^+` ，键长2.05埃；在11 kcal/mol以上有第一激发态 :math:`^3\Pi` ，
+与基态在2.4埃附近发生交叉 :cite:`PSS2007` 。激发态的 :math:`^3\Pi_{0+}` 分量与基态存在相互作用，
+可能影响基态的键长。
+
+.. figure:: /images/zns.png
+
+如果对精度要求不高，可以用Truhlar等人建议的自旋轨道模型哈密顿 :cite:`Truhlar2018` 模拟两个自旋态之间的旋轨耦合，
+考虑 :math:`^3\Pi_{0+}` 对基态的影响。
+输入文件如下。其中，基态用RKS完成，第一激发态用TDDFT完成。输入文件中有以下几点需要注意：
+
+.. note::
+
+    1. 两态混合计算的选项是 ``2soc``，这两个自旋态必须有 **不同的自旋多重度** ，否则两态模型没有意义。
+    2. 这里设置的旋轨耦合常数经验值400 :math:`\rm cm^{-1}` 恰好是程序默认值，因此可以省略不写。
+    3. 通过 ``solver`` = 1指定BDF自带优化器。也可以用DL-Find优化器，但是一般会慢一些。
+    4. 两个自旋态的能量、梯度要分别保存到 ``$BDFTASK.egrad.1`` 和 ``$BDFTASK.egrad.2`` 文件。
+       至于哪个态规定为1号或2号，完全由用户决定，不影响最终结果。
+    5. 为了计算TDDFT自旋翻转三重态的梯度，需要在 ``$tddft`` 和 ``$resp`` 中加入一些额外的关键词（见输入文件中的注释）。
+
+.. code-block:: bdf
+
+    $COMPASS
+    Title
+     two-state calculation of ZnS
+    Basis
+     lanl2dz
+    Geometry
+     Zn  0.0  0.0  0.0
+     S   0.0  0.0  2.05
+    END geometry
+    $END
+
+    $bdfopt
+    solver
+     1
+    multistate
+     2soc  400
+    $end
+
+    $xuanyuan
+    $end
+
+    $SCF
+    rks
+    dft
+     pbe0
+    charge
+     0
+    spinmulti
+     1
+    $END
+
+    $resp
+    geom
+    norder
+     1
+    method
+     1
+    $end
+
+    %cp $BDF_WORKDIR/$BDFTASK.egrad1 $BDF_WORKDIR/$BDFTASK.egrad.1
+
+    $tddft
+    isf
+     1       # spin-flip TDDFT
+    ialda
+     4       # required by spin-flip TDDFT gradients
+    iroot
+     -1      # the first excited state
+    istore
+     1
+    # TDDFT gradient requires tighter TDDFT convergence criteria than single-point
+    # TDDFT calculations, thus we tighten the convergence criteria below.
+    crit_vec
+     1.d-6 # default 1.d-5
+    crit_e
+     1.d-8 # default 1.d-7
+    $end
+
+    $resp
+    geom
+    norder
+     1
+    method
+     2        # TDDFT gradients
+    iroot
+     1
+    nfiles
+     1        # must be the same as istore
+    $end
+
+    %cp $BDF_WORKDIR/$BDFTASK.egrad1 $BDF_WORKDIR/$BDFTASK.egrad.2
+
+计算结束后，优化的基态键长是2.151埃，比单纯优化基态的键长2.148埃（这个值远远大于高精度理论值2.05埃，是因为本例采用的基组太小）略长一些，
+说明 :math:`^3\Pi_{0+}` 通过旋轨耦合作用把基态的键长拉长。最后一步优化的输出信息显示， :math:`^3\Pi_{0+}` 在自旋混合基态中占了1.4%。
+
+.. code-block::
+
+   Multi-state calculation
+   -----------------------
+
+   Spin-mixed state by 2 scalar states.
+
+   Chi =  400.0 cm^-1 is used to constuct the SO model Hamiltonian.
+
+   /home/zouwl/work/tmp/test.egrad.1
+   /home/zouwl/work/tmp/test.egrad.2
+
+   Weights at this point:  98.6% (state1) +   1.4% (state2)
+
+也可以把TDDFT三重态计算步骤用UKS替代，输入如下：
+
+.. code-block:: bdf
+
+    $COMPASS
+    Title
+     two-state calculation of ZnS
+    Basis
+     lanl2dz
+    Geometry
+     Zn  0.0  0.0  0.0
+     S   0.0  0.0  2.05
+    END geometry
+    $END
+
+    $bdfopt
+    solver
+     1
+    multistate
+     2soc  400
+    $end
+
+    $xuanyuan
+    $end
+
+    $SCF
+    rks
+    dft
+     pbe0
+    charge
+     0
+    spinmulti
+     1
+    $END
+
+    $resp
+    geom
+    norder
+     1
+    method
+     1
+    $end
+
+    %cp $BDF_WORKDIR/$BDFTASK.egrad1 $BDF_WORKDIR/$BDFTASK.egrad.1
+
+    $SCF
+    uks
+    dft
+     pbe0
+    charge
+     0
+    spinmulti
+     3
+    $END
+
+    $resp
+    geom
+    norder
+     1
+    method
+     1
+    $end
+
+    %cp $BDF_WORKDIR/$BDFTASK.egrad1 $BDF_WORKDIR/$BDFTASK.egrad.2
+
+与前一个结构优化的结果不同，这个优化得到的自旋混合基态键长仍然是2.148埃，
+:math:`^3\Pi_{0+}` 在自旋混合基态中仅占0.2%，因此旋轨耦合对键长几乎没有影响。
+两种计算方法之所以得到不同的结果，是因为TDDFT低估了ZnS :math:`^3\Pi` 的激发能，从而高估了旋轨耦合相互作用。
+例如，UKS得到的垂直激发能是23 kcal/mol，接近高精度理论值20 kcal/mol :cite:`PSS2007` ，而TDDFT的结果仅为9 kcal/mol！
+
+两态（ ``2soc`` ）或三态（ ``3soc`` ）混合模型的主要用途是研究多态反应，优化自旋混合态的反应物，中间体，产物，以及过渡态。
+目前还不支持解析频率计算。
 
 频率计算：:math:`\ce{CH3Cl}` 在平衡结构下的谐振频率及热化学量的计算
 -------------------------------------------------------------------------
@@ -265,7 +450,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 其中分子结构为上述结构优化任务得到的收敛的结构。注意我们在BDFOPT模块中添加了 ``hess only`` ，其中 ``hess`` 代表计算（数值）Hessian，而 ``only`` 的含义将在后续章节详述。程序将分子中的每个原子分别向x轴正方向、x轴负方向、y轴正方向、y轴负方向、z轴正方向、z轴负方向进行扰动，并计算扰动结构下的梯度，如：
 
-.. code-block:: 
+.. code-block::
 
      Displacing atom    1 (+x)...
 
@@ -295,7 +480,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 若体系的原子数为N，则共需计算6N个梯度。然而实际上程序还会顺便计算未扰动的结构的梯度，以供用户检查前述结构优化是否确实已经收敛，因此程序实际共计算6N+1个梯度。最后程序通过有限差分方法得到体系的Hessian：
 
-.. code-block:: 
+.. code-block::
 
     |--------------------------------------------------------------------------------|
               Molecular Hessian - Numerical Hessian (BDFOPT)
@@ -357,7 +542,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 接下来BDF调用UniMoVib程序进行频率和热力学量的计算。首先是振动所属不可约表示、振动频率、约化质量、力常数和简正模的结果：
 
-.. code-block:: 
+.. code-block::
 
      ************************************
      ***  Properties of Normal Modes  ***
@@ -443,7 +628,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
     ndeg
      2
     $end
-    
+
 其中尤其需要注意的是电子态的简并度，对于非相对论或标量相对论计算，且电子态不存在空间简并性的情形，电子态的简并度等于自旋多重度（2S+1）；对于存在空间简并性的电子态，还应乘上电子态的空间简并度，也即电子波函数的空间部分所属不可约表示的维数。至于考虑了旋轨耦合的相对论性计算（如TDDFT-SOC计算），则应将自旋多重度替换为相应旋量态的简并度（2J+1）。
 
 有时因SCF不收敛或其他外在原因，导致频率计算中断，此时可在BDFOPT模块里加入 ``restarthess`` 关键词进行断点续算，节省计算时间，如：
@@ -520,7 +705,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 计算的输出与优化极小值点结构类似。最后频率分析时可以看到收敛的结构有且仅有一个虚频（-1104 :math:`\rm cm^{-1}`）：
 
-.. code-block:: 
+.. code-block::
 
      Results of vibrations:
      Normal frequencies (cm^-1), reduced masses (AMU), force constants (mDyn/A)
@@ -673,7 +858,7 @@ Dimer方法需要定义两个结构，称为像点（Image），两个像点的�
 
 经过14步优化结束：
 
-.. code-block:: 
+.. code-block::
 
   Testing convergence of dimer midpoint in cycle   14
       Energy  0.0000E+00 Target: 1.0000E-06 converged?  yes
@@ -689,7 +874,7 @@ Dimer方法需要定义两个结构，称为像点（Image），两个像点的�
 
   Summary printing of molecular geometry and gradient for this step
 
-  Atom         Coord           
+  Atom         Coord
    C        0.381665       0.002621       0.138107
    N       -0.079657      -0.020912       1.233092
    H        1.283352       0.018291       0.925561
@@ -919,9 +1104,9 @@ BDF还支持在结构优化中限制一个或多个内坐标的值，方法是�
      1 2
      2 5 10
     $end
- 
+
 以下输入表示在结构优化时限制第5、第10、第15、第20个原子之间的二面角，同时还限制第10、第15、第20、第25个原子之间的二面角：
- 
+
 .. code-block:: bdf
 
     $bdfopt
@@ -932,7 +1117,7 @@ BDF还支持在结构优化中限制一个或多个内坐标的值，方法是�
      5 10 15 20
      10 15 20 25
     $end
-    
+
 .. note::
 
     即使分子坐标是以直角坐标而非内坐标的形式输入的，BDF仍然可以对内坐标做限制性优化。
@@ -1119,7 +1304,7 @@ BDF还可以用QM/MM组合方法进行结构优化，但与纯QM结构优化不�
     # Gradient projection method for CI between T1 and T2 by TDDFT BHHLYP/6-31G
     #
 
-    $COMPASS 
+    $COMPASS
     Title
        C2H4 Molecule test run
     Basis
@@ -1167,7 +1352,7 @@ BDF还可以用QM/MM组合方法进行结构优化，但与纯QM结构优化不�
      1
     itda
      1
-    nroot 
+    nroot
      5
     idiag
      1
@@ -1189,7 +1374,7 @@ BDF还可以用QM/MM组合方法进行结构优化，但与纯QM结构优化不�
     method
      2
     iroot
-     1 
+     1
     nfiles
      1
     $end
@@ -1201,7 +1386,7 @@ BDF还可以用QM/MM组合方法进行结构优化，但与纯QM结构优化不�
     method
      2
     iroot
-     2 
+     2
     nfiles
      1
     $end
@@ -1225,7 +1410,7 @@ BDF还可以用QM/MM组合方法进行结构优化，但与纯QM结构优化不�
 
 注意该任务不仅需要计算T1态和T2态的梯度，还需要计算T1态和T2态之间的非绝热耦合矢量（由最后一个RESP模块完成），相关关键词参见 :doc:`tddft` ，此处不再赘述。在BDFOPT模块的输入中， ``imulti 2`` 代表优化CI。和普通结构优化任务类似，CI优化会输出每步的梯度和步长收敛情况，与此同时还会输出能量收敛情况。例如以上算例最后一步优化的输出为：
 
-.. code-block:: 
+.. code-block::
 
     Testing convergence  in cycle    6
         Energy  0.0000E+00 Target: 1.0000E-06 converged?  yes
@@ -1246,7 +1431,7 @@ BDF还可以用QM/MM组合方法进行结构优化，但与纯QM结构优化不�
     # Gradient projection method for MECP between S0 and T1 by BHHLYP/6-31G
     #
 
-    $COMPASS 
+    $COMPASS
     Title
        C2H4 Molecule test run
     Basis
@@ -1350,9 +1535,9 @@ BDF还可以用QM/MM组合方法进行结构优化，但与纯QM结构优化不�
  * 分子结构不合理，如坐标单位错误（如坐标的单位本来是Bohr，但输入文件里指定的单位是Angstrom，或反之），多画或漏画原子，非成键原子之间的距离太近，等等。
 
 如遇到几何优化不收敛，或虽然尚未达到最大收敛次数但毫无收敛趋势的情形，经反复检查分子三维结构无误且合理、波函数收敛正常以后，可依次尝试以下各方法解决：
- 
+
  * 以优化不收敛的任务的最后一帧结构为初始结构，重新开始优化。除了手动将最后一帧的结构坐标复制到输入文件里以外，一个更简单的办法是在COMPASS模块里加入 ``restart`` 关键词，如：
- 
+
 .. code-block:: bdf
 
     $compass
@@ -1382,9 +1567,9 @@ BDF还可以用QM/MM组合方法进行结构优化，但与纯QM结构优化不�
     trust
      0.05
     $end
- 
+
 默认的置信半径为0.3，因此新设置的置信半径应当小于0.3。注意程序如果检测到置信半径太小，会动态地增加置信半径，为了避免这一行为，可以将置信半径设为负值，如
-  
+
 .. code-block:: bdf
 
     $bdfopt
@@ -1393,7 +1578,7 @@ BDF还可以用QM/MM组合方法进行结构优化，但与纯QM结构优化不�
     trust
      -0.05
     $end
-  
+
 即表示，初始置信半径设为0.05，且在整个结构优化过程中禁止置信半径超过0.05。
 
  * 对于过渡态优化，可用 ``recalchess`` 关键词指定每隔若干步重新计算精确Hessian。如
