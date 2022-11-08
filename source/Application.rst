@@ -6,3 +6,5 @@
 .. include:: app/TADF-example.rst
     
 .. include:: app/QMMM.rst
+
+.. include:: app/HLCT-example.rst
