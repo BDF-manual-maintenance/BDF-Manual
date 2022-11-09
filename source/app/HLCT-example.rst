@@ -723,7 +723,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 作业完成后，在out输出文件中找到如下关键词即为旋轨耦合矩阵元结果
 
-.. code-block::bdf
+.. code-block:: bdf
 
      [tddft_soc_matsoc]
      
