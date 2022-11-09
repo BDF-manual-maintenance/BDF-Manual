@@ -16,7 +16,7 @@
 基态 :math:`\rm S_{0}` 优化
 --------------
 
-在对分子做精确计算前我们要得到可靠的基态结构（ :math:`\rm S_{0}` ），也就是对基态做结构优化和振动分析。首先使用Gaussian对分子基态S0进行结构优化，采用泛函B3LYP、基组6-31g** ，并考虑色散矫正。选用B3LYP泛函的原因是它计算效率高、对积分格点精度的依赖性低，并加上DFT-D3(BJ)色散校正以描述可能的非共价键作用。另外，由于对于结构优化和振动分析，其计算结果对基组的敏感性较小，选用小基组可以节约时间。gjf输入文件如下：
+在对分子做精确计算前我们要得到可靠的基态结构（ :math:`\rm S_{0}` ），也就是对基态做结构优化和振动分析。首先使用Gaussian对分子基态 :math:`\rm S_{0}` 进行结构优化，采用泛函B3LYP、基组6-31g** ，并考虑色散矫正。选用B3LYP泛函的原因是它计算效率高、对积分格点精度的依赖性低，并加上DFT-D3(BJ)色散校正以描述可能的非共价键作用。另外，由于对于结构优化和振动分析，其计算结果对基组的敏感性较小，选用小基组可以节约时间。gjf输入文件如下：
 
 .. code-block:: python
 
@@ -163,10 +163,13 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 * 满足Franck-Condon 原理：即电子跃迁过程中，起始和最终状态分子的几何结构（原子核位置）不变。
 如果激发态的几何结构与基态的差别很大，那么把电子由基态的最低振动能级激发到激发态的最低振动能级时，分子的几何构型需发生变化。但是，由于原子核的质量远大于电子，且跟不上电子的运动速度，因此这种激发的概率很小。
+
 * 电子自旋不变
 在单电子近似下，自旋轨道正交归一。如果跃迁前后自旋不同，则自旋重叠积分必然为0，即跃迁禁阻。这就是自旋选择规则：“单重态→单重态、三重态→三重态允许；单重态→三重态、三重态→单重态禁阻”。
+
 * 轨道重叠
 跃迁前后分子轨道必须要有重叠，否则电子跃迁偶极矩积分为0，即跃迁禁阻。
+
 * 轨道对称性改变
 如果分子轨道具有对称性，除了轨道重叠，跃迁前后的轨道对称性必须不同。根据中心反演对称性把轨道分成g（中心对称）和u（中心反对称）两种，具体说法：“g→u，u→g允许，u→u，g→g禁阻”。
 
@@ -275,7 +278,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 .. math::
     <i|-r|j>≡∫\varphi_{i}(r)(-r)\varphi_{j}(r)dr，
 
-     :math:`\rm E_{j}` 和 :math:`\rm E_{i}` 分别为两个态的能量。基态与某个激发态之间的振子强度越大，就越容易吸收相应频率的电磁波而跃迁到那个激发态上，那么在吸收光谱中相应的吸收峰也越强。一般情况下，振子强度小于0.001可认为是跃迁禁阻。
+ :math:`\rm E_{j}` 和 :math:`\rm E_{i}` 分别为两个态的能量。基态与某个激发态之间的振子强度越大，就越容易吸收相应频率的电磁波而跃迁到那个激发态上，那么在吸收光谱中相应的吸收峰也越强。一般情况下，振子强度小于0.001可认为是跃迁禁阻。
 
 低激发态激发能、振子强度、跃迁偶极矩如表中所示。
 
@@ -299,40 +302,40 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 将chk文件转换为fchk文件。用Multiwfn+VMD渲染NTO轨道。
 
 .. figure:: /HLCT-example/fig3.2-3.png
-    :width: 300
+    :width: 310
     :align: left
 .. figure:: /HLCT-example/fig3.2-4.png
-    :width: 300
+    :width: 310
     :align: right
 
 
 .. centered::  :math:`\rm S_{0}` → :math:`\rm S_{1}` 跃迁贡献最大的NTO对贡献值为96.40%。
 
 .. figure:: /HLCT-example/fig3.2-5.png
-    :width: 300
+    :width: 310
     :align: left
 .. figure:: /HLCT-example/fig3.2-6.png
-    :width: 300
+    :width: 310
     :align: right
 
 
 .. centered::  :math:`\rm S_{0}` → :math:`\rm T_{1}` 跃迁贡献最大的NTO对贡献值为95.52%。
 
 .. figure:: /HLCT-example/fig3.2-7.png
-    :width: 300
+    :width: 310
     :align: left
 .. figure:: /HLCT-example/fig3.2-8.png
-    :width: 300
+    :width: 310
     :align: right
 
 
 .. centered::  :math:`\rm S_{0}` → :math:`\rm T_{2}` 跃迁贡献最大的NTO对贡献值为86.41%。
 
 .. figure:: /HLCT-example/fig3.2-9.png
-    :width: 300
+    :width: 310
     :align: left
 .. figure:: /HLCT-example/fig3.2-10.png
-    :width: 300
+    :width: 310
     :align: right
 
 
