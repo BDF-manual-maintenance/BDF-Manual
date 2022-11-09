@@ -748,7 +748,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 重整能是指当分子得失电子后，因几何结构的弛豫而导致的体系能量的变化。它既是影响电子转移速率（基于Marcus理论）的关键的物理量，也是影响光谱和辐射速率的重要因素。具体来讲，分子在跃迁初态、末态平衡位置时的能量差，就分别是基态和激发态的重整能 :math:`\lambda_{S0}=E_{3}-E_{1}` ， :math:`\lambda_{S1}=E_{2}-E_{4}` 。
 
-.. figure::  /HLCT-example/fig3-6.1.png
+.. figure::  /HLCT-example/fig3.6-1.png
 
 重整能也可定义为
 
@@ -832,7 +832,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 对于绝热激发能Ead，由于用Gaussian计算 :math:`\rm S_0` 和 :math:`\rm S_1` 时采用了不同的计算级别，因此我们用 :math:`\rm S_1` 的结构在 :math:`\rm S_0` 的计算级别下，再做一次单点计算用于修正：用此能量- :math:`\rm S_0` 能量+ :math:`\rm S_1` 激发能得到绝热激发能，即Ead=0.09626 au。对于吸收跃迁偶极矩EDMA，从S1.log文件读取第一个基态到激发态跃迁电偶极矩Dip.S.，开根号并单位换算得到8.18309 debye。对于发射跃迁偶极矩EDME，从S1.log文件读取最后一个基态到激发态跃迁电偶极矩Dip.S.，开根号并换单位换算得到9.64296 debye。（Ead、EDMA、EDME结果均在加了苯溶剂条件下获得(scrf(solvent=benzene,SMD))，模拟薄膜环境）。
 
-作业完成后在spec.tvcf.log文件的末端能够读取辐射速率，本例 :math:`\rm S_1` → :math:`\rm S_0` 辐射速率为1.77 \times 108 :math:`s^{-1}` ，荧光寿命5.64 ns。
+作业完成后在spec.tvcf.log文件的末端能够读取辐射速率，本例 :math:`\rm S_1` → :math:`\rm S_0` 辐射速率为 :math:`\rm 1.77 \times 108 s^{-1}` ，荧光寿命5.64 ns。
 
 .. code-block:: python
 
