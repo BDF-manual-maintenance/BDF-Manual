@@ -276,7 +276,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 其中
 
 .. math::
-    <i|-r|j>≡∫\varphi_{i}(r)(-r)\varphi_{j}(r)dr，
+    <i|-r|j>≡∫\varphi_{i}(r)(-r)\varphi_{j}(r)dr
 
  :math:`\rm E_{j}` 和 :math:`\rm E_{i}` 分别为两个态的能量。基态与某个激发态之间的振子强度越大，就越容易吸收相应频率的电磁波而跃迁到那个激发态上，那么在吸收光谱中相应的吸收峰也越强。一般情况下，振子强度小于0.001可认为是跃迁禁阻。
 
@@ -293,7 +293,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
            T1           2.1539	      0.0000           0.0000
            T2           3.2507        0.0000           0.0000
     ==============  =============  ===========  =====================
-
+    
 绘制的吸收光谱如下。
 
 .. figure:: /HLCT-example/fig3.2-2.png
@@ -302,20 +302,20 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 将chk文件转换为fchk文件。用Multiwfn+VMD渲染NTO轨道。
 
 .. figure:: /HLCT-example/fig3.2-3.png
-    :width: 310
+    :width: 320
     :align: left
 .. figure:: /HLCT-example/fig3.2-4.png
-    :width: 310
+    :width: 320
     :align: right
 
 
 .. centered::  :math:`\rm S_{0}` → :math:`\rm S_{1}` 跃迁贡献最大的NTO对贡献值为96.40%。
 
 .. figure:: /HLCT-example/fig3.2-5.png
-    :width: 310
+    :width: 320
     :align: left
 .. figure:: /HLCT-example/fig3.2-6.png
-    :width: 310
+    :width: 320
     :align: right
 
 
