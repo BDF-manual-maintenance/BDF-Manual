@@ -741,4 +741,165 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
        0.0  0.0      0.0000000000      0.0000000000     -0.0000069588     -1.5272872617
        0.0  1.0     -0.0000000002     -0.0000481328     -0.0000000002     -0.0000411125
 
-这里的SOCmat=<1 1 1 |HSO| 2 1 2>表示矩阵元 :math:`\rm <S_{1}| HSO |T_{2}>` ，ReHso和ImHso分别表示实部和虚部，单位为au或cm^-1。将三个mj分量的SOC矩阵元的模平方求和后再开平方得到后续MOMAP会用到的 :math:`\rm S_{1}` 态与 :math:`\rm T_{2}` 态旋轨耦合矩阵元，即1.15035 cm^-1； :math:`\rm S_{1}` 态与 :math:`\rm T_{3}` 态旋轨耦合矩阵元1.52729 cm^-1。
+这里的 :math:`\rm SOCmat=<1 1 1 |H_{SO}| 2 1 2>` 表示矩阵元 :math:`\rm <S_{1}| H_{SO} |T_{2}>` ，ReHso和ImHso分别表示实部和虚部，单位为au或 :math:`\rm cm^{-1}` 。将三个mj分量的SOC矩阵元的模平方求和后再开平方得到后续MOMAP会用到的 :math:`\rm S_{1}` 态与 :math:`\rm T_{2}` 态旋轨耦合矩阵元，即1.15035  :math:`\rm cm^{-1}` ； :math:`\rm S_{1}` 态与 :math:`\rm T_{3}` 态旋轨耦合矩阵元1.52729  :math:`\rm cm^{-1}` 。
+
+重整能
+---------
+
+重整能是指当分子得失电子后，因几何结构的弛豫而导致的体系能量的变化。它既是影响电子转移速率（基于Marcus理论）的关键的物理量，也是影响光谱和辐射速率的重要因素。具体来讲，分子在跃迁初态、末态平衡位置时的能量差，就分别是基态和激发态的重整能 :math:`\lambda_{S0}=E_{3}-E_{1}` ， :math:`\lambda_{S1}=E_{2}-E_{4}` 。
+
+.. figure:: /HLCT-example/fig3-6.1.png
+.. center:: 3.6-1
+
+重整能也可定义为
+
+.. math::
+      \lambda_{k} = S_{k}ћω_{k} = 1/2ω_{k}^2 D_{k}^2
+
+其中 :math:`\rm S_k` 和 :math:`\rm ω_k` 分别为第k个模式的黄昆因子(Huang−Rhys)和频率，D为模式位移。
+ 
+黄昆因子
+
+.. math::
+     S_k=ω_{k}/2ћ * D_{k}^2
+     
+用MOMAP做电子振动耦合即evc计算可以得到重整能、黄昆因子等数据，输入文件需要 :math:`\rm S_0` 和 :math:`\rm S_1` 的结构优化和频率计算log文件和fchk文件，以及momap.inp文件，momap.inp内容如下：
+
+.. code-block:: python
+
+    do_evc            = 1
+
+    &evc
+      ffreq(1)      = "s0.log"
+      ffreq(2)      = "s1.log"
+      set_cart = t
+    /
+
+作业完成后产生evc.cart.dat文件，找到下方关键词为 :math:`\rm S_0` 和 :math:`\rm S_1` 重整能。如下图， :math:`\lambda_{S0} = 1610.605 cm^{−1}` ， :math:`\lambda_{S1} = 1864.085 cm^{−1}` ，即基态和激发态重整能相差不大，说明两个态构型相差不大，属于同一个Franck-Condon区。
+
+.. code-block:: python
+
+      Total reorganization energy      (cm-1):         1610.605075       1864.085048
+
+在Device Studio中打开evc.cart.dat文件得到 :math:`\rm S_0` 态和 :math:`\rm S_1` 态重整能和黄昆因子在每个振动模式下的贡献。
+
+.. figure:: /HLCT-example/fig3.6-2.png
+    :width: 320
+    :align: left
+.. figure:: /HLCT-example/fig3.6-3.png
+    :width: 320
+    :align: right
+
+.. figure:: /HLCT-example/fig3.6-4.png
+    :width: 320
+    :align: left
+.. figure:: /HLCT-example/fig3.6-5.png
+    :width: 320
+    :align: right
+
+分析振动模式，发现 :math:`\rm S_{0}` 态的重组能主要贡献来自于1676.69  :math:`\rm cm^{-1}` 的高频C-C伸缩振动和1308.32  :math:`\rm cm^{-1}` 的高频弯曲振动， :math:`S_1` 态的重组能主要贡献来自于1683.31  :math:`\rm cm^{-1}` 、1695.91  :math:`\rm cm^{-1}` 和1414.86  :math:`\rm cm^{-1}` 的高频弯曲振动。低频振动模式的黄昆因子显著，其中 :math:`S_{0}` 态的黄昆因子的最大模式为12.24  :math:`\rm cm^{-1}` 的低频弯曲振动，S1态的黄昆因子最大模式为18.30  :math:`\rm cm^{-1}` 的低频弯曲振动。
+
+在分子的光物理过程中，由跃迁初态和末态的正则模式之间的相互交叠而引起的Duschinsky转动效应也会对光谱和速率产生重要影响，S0和S1极小点下分别得到的3N-6个正则坐标是不同的，它们彼此间是线性变换关系可表达为Q''=J*Q'+ΔQ，这里Q'和Q''分别代表两个电子态极小点下的正则模式，J称为Duschinsky矩阵。在Device Studio中打开evc.cart.abs文件就可以得到S0和S1态之间的Duschinsky转动矩阵的二维图。
+
+.. figure:: /HLCT-example/fig3.6-6.png
+
+荧光光谱
+-----------
+
+用MOMAP进行荧光辐射速率的计算需要上一步的结果evc.cart.dat以及新的输入文件momap.inp，momap.inp内容如下：
+
+.. code-block:: python
+
+    do_spec_tvcf_ft   = 1
+    do_spec_tvcf_spec = 1
+    
+    &spec_tvcf
+      DUSHIN        = .t.
+      Temp          = 300 K
+      tmax          = 1000 fs
+      dt            = 1   fs
+      Ead           = 0.09626 au
+      EDMA          = 8.18309 debye
+      EDME          = 9.64296 debye
+      FreqScale     = 1.0
+      DSFile        = "evc.cart.dat"
+      Emax          = 0.3 au
+      dE            = 0.00001 au
+      logFile       = "spec.tvcf.log"
+      FtFile        = "spec.tvcf.ft.dat"
+      FoFile        = "spec.tvcf.fo.dat"
+      FoSFile       = "spec.tvcf.spec.dat"
+    /
+
+对于绝热激发能Ead，由于用Gaussian计算 :math:`\rm S_0` 和 :math:`\rm S_1` 时采用了不同的计算级别，因此我们用 :math:`\rm S_1` 的结构在 :math:`\rm S_0` 的计算级别下，再做一次单点计算用于修正：用此能量- :math:`\rm S_0` 能量+ :math:`\rm S_1` 激发能得到绝热激发能，即Ead=0.09626 au。对于吸收跃迁偶极矩EDMA，从S1.log文件读取第一个基态到激发态跃迁电偶极矩Dip.S.，开根号并单位换算得到8.18309 debye。对于发射跃迁偶极矩EDME，从S1.log文件读取最后一个基态到激发态跃迁电偶极矩Dip.S.，开根号并换单位换算得到9.64296 debye。（Ead、EDMA、EDME结果均在加了苯溶剂条件下获得(scrf(solvent=benzene,SMD))，模拟薄膜环境）。
+
+作业完成后在spec.tvcf.log文件的末端能够读取辐射速率，本例 :math:`\rm S_1` → :math:`\rm S_0` 辐射速率为1.77◊108 :math:`s^{-1}` ，荧光寿命5.64 ns。
+
+.. code-block:: python
+
+      I^-1 =     3.05463233E+00 Hartree =    6.70414303E+05 cm-1 =   8.31208105E+01 eV
+
+    radiative rate     (0):     4.28614462E-09    1.77195105E+08 /s,       5.64 ns
+
+在Device Studio中打开spec.tvcf.spec.dat文件得到吸收和发射谱，如下图，吸收光在388 nm，发射光在497 nm。
+
+.. figure:: /HLCT-example/fig3.7-1.png
+
+反系间窜越速率
+---------------
+
+系间窜越是光化学中一种重要的无辐射过程。它是指分子受激后，由于不同自旋多重度的态的势能面之间存在交叉，导致体系经历这样的结构时以非辐射方式改变自旋多重度。在一般有机体系中，系间窜越（RISC）指的是从单重跃迁到三重态，反系间窜越（RISC）指的是从三重跃迁到单重态。反系间窜越速率，例如 :math:`\rm S_0 → t_2` ，还与他们的能级差 :math:`\DeltaE_{ST}` 有关。这里 :math:`\DeltaE_{ST}` 可以用 :math:`\rm S_{1}` 的激发态能量与 :math:`\rm T_{2}` 激发态能量相减得到。算得 :math:`\rm S_1 - T_2` 态 :math:`\DeltaE_{ST}` =0.05518 au， :math:`\rm S_1 - T_3` 态 :math:`\DeltaE_{ST}` =0.05528 au。
+
+在MOMAP程序中要想计算反系间窜越速率，首先要计算 :math:`\rm S_1` 和 :math:`\rm T_2` 的电子振动耦合，文件需要 :math:`\rm S_1` 和 :math:`\rm T_2` 的log频率计算文件以及fchk文件，还有momap.inp输入文件，momap.inp内容如下：
+
+.. code-block:: python
+
+    do_evc            = 1
+
+    &evc
+      ffreq(1)      = "s1.log"
+      ffreq(2)      = "t2.log"
+      set_cart = t
+    /
+
+作业结束后生成的evc.cart.dat文件再与新的momap.inp文件放在同一目录下计算非辐射速率。此时输入文件momap.inp如下：
+
+.. code-block:: python
+
+    do_isc_tvcf_ft   = 1
+    do_isc_tvcf_spec = 1
+    
+    &isc_tvcf
+       DUSHIN    = .t.
+       Temp      = 298 K
+       tmax      = 1500 fs
+       dt        = 1 fs
+       Ead       = 0.05518 au
+       Hso       = 1.15035 cm-1
+       DSFile    = "evc.cart.dat"
+       Emax      = 0.3 au
+       logFile   = "isc.tvcf.log"
+       FtFile    = "isc.tvcf.ft.dat"
+       FoFile    = "isc.tvcf.fo.dat"
+    /
+
+Ead为 :math:`\DeltaE_{ST}` ， :math:`\rm H_{SO}` 为 :math:`\rm S_1` 态与 :math:`\rm T_2` 态旋轨耦合矩阵元，计算得到的isc.tvcf.log文件末端为系间窜越速率和反系间窜越速率，本例 :math:`\rm k_{ISC} = 4.53 \times 104 s^{-1}` ， :math:`k_{RISC} = 1.48 \times 102 s^{-1}`` 。
+
+.. code-block:: python
+
+    #         Intersystem crossing Ead is      0.0551800 au, rate is    4.53103856E+04 s-1, lifetime is    2.20699954E-05 s
+    # Reverse Intersystem crossing Ead is     -0.0551800 au, rate is    1.47691362E+02 s-1, lifetime is    6.77087667E-03 s
+
+同样地， :math:`\rm S_1` 态与 :math:`T_3` 态系间窜越速率 :math:`\rm k_{ISC} = 8.75 \times 107 s^{-1}` ，反系间窜越速率 :math:`\rm k_{ISC} = 1.32 \times 107 s^{-1}` 。
+
+.. code-block:: python
+
+    #         Intersystem crossing Ead is      0.0552800 au, rate is    8.75255907E+07 s-1, lifetime is    1.14252300E-08 s
+    # Reverse Intersystem crossing Ead is     -0.0552800 au, rate is    1.31729899E+07 s-1, lifetime is    7.59129104E-08 s
+
+通过计算，我们发现 :math:`\rm T_2` 态到 :math:`\rm S_1` 态之间的反系间窜越速率很小，不满足HLCT分子的要求。 :math:`\rm T_3` 态到 :math:`\rm S_1` 态的反系间窜越速率很大，表明三重态激子有可能在 :math:`\rm T_3` 态发生反系间窜越并转化为 :math:`\rm S_1` 态。
+
+小结
+--------
+
+本文基于DFT和TDDFT理论，计算了2TPA-Py分子的激发态光物理过程。结果表明，2TPA-Py分子的 :math:`\rm S_1` 态具有HLCT特征，其最大发射波长在497 nm为天蓝光。这个分子的 :math:`\rm T_3 → S_1` 的反系间窜越速率高达4.39◊106 :math:`s^{-1}` ，基本满足了通过反系间窜越来利用三重态激子的要求。可见，donor-π-donor的分子设计策略有望成为构筑高稳定性蓝光HLCT分子的有效手段。
