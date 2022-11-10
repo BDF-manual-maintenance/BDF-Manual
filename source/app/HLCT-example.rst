@@ -16,7 +16,7 @@
 基态 :math:`\rm S_{0}` 优化
 --------------
 
-在对分子做精确计算前我们要得到可靠的基态结构（ :math:`\rm S_{0}` ），也就是对基态做结构优化和振动分析。首先使用Gaussian对分子基态 :math:`\rm S_{0}` 进行结构优化，采用泛函B3LYP、基组6-31g** ，并考虑色散矫正。选用B3LYP泛函的原因是它计算效率高、对积分格点精度的依赖性低，并加上DFT-D3(BJ)色散校正以描述可能的非共价键作用。另外，由于对于结构优化和振动分析，其计算结果对基组的敏感性较小，选用小基组可以节约时间。gjf输入文件如下：
+在对分子做精确计算前我们要得到可靠的基态结构（ :math:`\rm S_{0}` ），也就是对基态做结构优化和振动分析。首先使用Gaussian对分子基态 :math:`\rm S_{0}` 进行结构优化，采用泛函B3LYP、基组6-31g** ，并考虑色散矫正。选用B3LYP泛函的原因是它计算效率高、对积分格点精度的依赖性低，并加上DFT-D3(BJ)色散校正以描述可能的非共价键作用。另外，由于对于结构优化和振动分析，其计算结果对基组的敏感性较小，选用小基组可以节约时间。 ``gjf`` 输入文件如下：
 
 .. code-block:: python
 
@@ -105,7 +105,7 @@
     H         9.65623043406863    3.09668205158134   -0.86638315237225
 
 
-Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步长（Step-RMS）、最大步长（Step-Max）四个标准来判断分子结构是否收敛。作业结束后，打开log输出文件，找到如下关键词
+Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步长（Step-RMS）、最大步长（Step-Max）四个标准来判断分子结构是否收敛。作业结束后，打开 ``log`` 输出文件，找到如下关键词
 
 .. code-block:: python
 
@@ -135,7 +135,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
       6          6           0        5.278240   -0.466495   -0.995386
       7          6           0        4.884618   -0.626003   -2.332720
 
-当分子处于势能面的极小点时，一般不存在虚频（负频）。为了验证结构的可靠性还要检查频率计算结果。在log输出文件找到如下关键词，由于振动频率是从小到大排列的，观察前几个频率没有虚频说明分子处于势能面的局域极小点，其分子结构一般是可靠的。
+当分子处于势能面的极小点时，一般不存在虚频（负频）。为了验证结构的可靠性还要检查频率计算结果。在 ``log`` 输出文件找到如下关键词，由于振动频率是从小到大排列的，观察前几个频率没有虚频说明分子处于势能面的局域极小点，其分子结构一般是可靠的。
 
 .. code-block:: python
 
@@ -174,7 +174,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 如果分子轨道具有对称性，除了轨道重叠，跃迁前后的轨道对称性必须不同。根据中心反演对称性把轨道分成g（中心对称）和u（中心反对称）两种，具体说法：“g→u，u→g允许，u→u，g→g禁阻”。
 
 人们往往习惯以某占据轨道的电子向某虚轨道跃迁的形式来描述电子跃迁问题，例如自然跃迁轨道（NTO）分析：以一对占主导地位的轨道跃迁模式来阐述跃迁的本质。对于激发态电子结构分析需要做含时密度泛函（TDDFT）计算，本案例激发态选取M062x泛函，Def2SVP基组，对单重态和三重态分别计算8个态。选择M062x泛函是猜测分子的基态可能具有部分电荷转移（CT）特性。对于这一类的激发态，如果选择HF成分较低的泛函，
-可能出现ghost态（不存在的态）。为了保险起见，选择高HF成分的M062x。当然，其他高HF成分的泛函，如CAM-B3LYP和ωB97XD也可以使用。IOP(9/40=4)关键词是为了输出更多轨道信息，以便MO变换成NTO后找到对电子激发贡献最大的一对NTO。gjf输入文件如下：
+可能出现ghost态（不存在的态）。为了保险起见，选择高HF成分的M062x。当然，其他高HF成分的泛函，如CAM-B3LYP和ωB97XD也可以使用。 ``IOP(9/40=4)`` 关键词是为了输出更多轨道信息，以便MO变换成NTO后找到对电子激发贡献最大的一对NTO。 ``gjf`` 输入文件如下：
 
 .. code-block:: python
 
@@ -299,7 +299,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 .. figure:: /HLCT-example/fig3.2-2.png
 .. center:: 3.2-2
 
-将chk文件转换为fchk文件。用Multiwfn+VMD渲染NTO轨道。
+将 ``chk`` 文件转换为 ``fchk`` 文件。用Multiwfn+VMD渲染NTO轨道。
 
 .. figure:: /HLCT-example/fig3.2-3.png
     :width: 320
@@ -346,7 +346,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 激发态 :math:`\rm S_{1}` 优化
 -------------------------------
 
-荧光是冷光现象，一般指发生在自旋单重态之间的辐射过程。根据Kasha规则，它是最低激发态到基态的发射，一般为 :math:`\rm S_{1}` 态到 :math:`\rm S_{0}` 态。为了模拟荧光过程，还需要对激发态 :math:`\rm S_{1}` 做结构优化和频率计算，得到log文件和fchk文件，为后续MOMAP的计算做准备。泛函和基组分别为M062x和Def2SVP，gjf文件如下：
+荧光是冷光现象，一般指发生在自旋单重态之间的辐射过程。根据Kasha规则，它是最低激发态到基态的发射，一般为 :math:`\rm S_{1}` 态到 :math:`\rm S_{0}` 态。为了模拟荧光过程，还需要对激发态 :math:`\rm S_{1}` 做结构优化和频率计算，得到 ``log`` 文件和 ``fchk`` 文件，为后续MOMAP的计算做准备。泛函和基组分别为M062x和Def2SVP， ``gjf`` 文件如下：
 
 .. code-block:: python
 
@@ -435,7 +435,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
      H                 -2.565752    4.572979   -0.166245
      H                 -1.054607    4.496714   -1.079120
 
-作业完成后在log文件中找到最后一个Excited State 1为 :math:`\rm S_{1}` 激发能，Total Energy为电子态能量。
+作业完成后在 ``log`` 文件中找到最后一个Excited State 1为 :math:`\rm S_{1}` 激发能，Total Energy为电子态能量。
 
 .. code-block:: python
 
@@ -448,7 +448,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 激发态 :math:`\rm T_{2}` 、 :math:`\rm T_{3}` 优化
 -------------------------------------------
 
-由于本案例后续会用MOMAP做 :math:`\rm T_{2}` → :math:`\rm S_{1}` 态和 :math:`\rm T_{3}` → :math:`\rm S_{1}` 态的反系间窜越速率计算，所以前期还需要量化软件做激发态 :math:`\rm T_{2}` 和 :math:`\rm T_{3}` 的结构优化和频率计算，得到log文件和fchk文件。泛函和基组分别为M062x和Def2SVP，T2.gjf文件如下：
+由于本案例后续会用MOMAP做 :math:`\rm T_{2}` → :math:`\rm S_{1}` 态和 :math:`\rm T_{3}` → :math:`\rm S_{1}` 态的反系间窜越速率计算，所以前期还需要量化软件做激发态 :math:`\rm T_{2}` 和 :math:`\rm T_{3}` 的结构优化和频率计算，得到 ``log`` 文件和 ``fchk`` 文件。泛函和基组分别为M062x和Def2SVP， ``T2.gjf`` 文件如下：
 
 .. code-block:: python
 
@@ -537,7 +537,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
      H                 -2.565752    4.572979   -0.166245
      H                 -1.054607    4.496714   -1.079120
 
-作业完成后在log文件中找到最后一个Excited State 2为 :math:`\rm T_{2}` 激发能，Total Energy为电子态能量。
+作业完成后在 ``log`` 文件中找到最后一个Excited State 2为 :math:`\rm T_{2}` 激发能，Total Energy为电子态能量。
 
 .. code-block:: python
 
@@ -566,7 +566,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 自旋轨道耦合（SOC）体现的是电子自旋与电子绕核转动的相互作用。计算单重态和三重态之间的跃迁时，如果未考虑自旋轨道耦合（也就是二者耦合严格为0），那么他们的跃迁就是禁阻的；而把旋轨耦合引入哈密顿量之后，二者耦合不严格为0，此时单重态与三重态之间的跃迁就有可能发生。我们往往关心在某个特定结构下 :math:`\rm S_{i}` 态与 :math:`\rm T_{j}` 态之间的自旋轨道耦合。其中 :math:`\rm <S_{i}|SOC|T_{j}>` 表示自旋轨道耦合矩阵元，取它的模来衡量 :math:`\rm S_{i}` 、 :math:`\rm T_{j}` 电子态之间的旋轨耦合作用大小。这一物理量还可以用于计算系间窜越（ISC）速率和反系间窜越（RISC）速率。
 
-本例用BDF计算 :math:`\rm S_{1}` - :math:`\rm T_{2}` 和 :math:`\rm S_{1}-T_{3}` 态之间的旋轨耦合矩阵元，采用M062x泛函，Def2SVP基组，inp文件如下：
+本例用BDF计算 :math:`\rm S_{1}` - :math:`\rm T_{2}` 和 :math:`\rm S_{1}-T_{3}` 态之间的旋轨耦合矩阵元，采用M062x泛函，Def2SVP基组， ``inp`` 文件如下：
 
 .. code-block:: bdf
 
@@ -721,7 +721,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
     1 1 1 2 1 3
     $end
 
-作业完成后，在out输出文件中找到如下关键词即为旋轨耦合矩阵元结果
+作业完成后，在 ``out`` 输出文件中找到如下关键词即为旋轨耦合矩阵元结果
 
 .. code-block:: bdf
 
@@ -762,7 +762,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 .. math::
      S_k=ω_{k}/2ћ * D_{k}^2
      
-用MOMAP做电子振动耦合即evc计算可以得到重整能、黄昆因子等数据，输入文件需要 :math:`\rm S_0` 和 :math:`\rm S_1` 的结构优化和频率计算log文件和fchk文件，以及momap.inp文件，momap.inp内容如下：
+用MOMAP做电子振动耦合即evc计算可以得到重整能、黄昆因子等数据，输入文件需要 :math:`\rm S_0` 和 :math:`\rm S_1` 的结构优化和频率计算log文件和fchk文件，以及 ``momap.inp`` 文件， ``momap.inp`` 内容如下：
 
 .. code-block:: python
 
@@ -774,13 +774,13 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
       set_cart = t
     /
 
-作业完成后产生evc.cart.dat文件，找到下方关键词为 :math:`\rm S_0` 和 :math:`\rm S_1` 重整能。如下图， :math:`\lambda_{S0} = 1610.605 cm^{−1}` ， :math:`\lambda_{S1} = 1864.085 cm^{−1}` ，即基态和激发态重整能相差不大，说明两个态构型相差不大，属于同一个Franck-Condon区。
+作业完成后产生 ``evc.cart.dat`` 文件，找到下方关键词为 :math:`\rm S_0` 和 :math:`\rm S_1` 重整能。如下图， :math:`\lambda_{S0} = 1610.605 cm^{−1}` ， :math:`\lambda_{S1} = 1864.085 cm^{−1}` ，即基态和激发态重整能相差不大，说明两个态构型相差不大，属于同一个Franck-Condon区。
 
 .. code-block:: python
 
       Total reorganization energy      (cm-1):         1610.605075       1864.085048
 
-在Device Studio中打开evc.cart.dat文件得到 :math:`\rm S_0` 态和 :math:`\rm S_1` 态重整能和黄昆因子在每个振动模式下的贡献。
+在Device Studio中打开 ``evc.cart.dat`` 文件得到 :math:`\rm S_0` 态和 :math:`\rm S_1` 态重整能和黄昆因子在每个振动模式下的贡献。
 
 .. figure:: /HLCT-example/fig3.6-2.png
     :width: 320
@@ -798,14 +798,14 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 分析振动模式，发现 :math:`\rm S_{0}` 态的重组能主要贡献来自于1676.69  :math:`\rm cm^{-1}` 的高频C-C伸缩振动和1308.32  :math:`\rm cm^{-1}` 的高频弯曲振动， :math:`\rm S_1` 态的重组能主要贡献来自于1683.31  :math:`\rm cm^{-1}` 、1695.91  :math:`\rm cm^{-1}` 和1414.86  :math:`\rm cm^{-1}` 的高频弯曲振动。低频振动模式的黄昆因子显著，其中 :math:`\rm S_{0}` 态的黄昆因子的最大模式为12.24  :math:`\rm cm^{-1}` 的低频弯曲振动，S1态的黄昆因子最大模式为18.30  :math:`\rm cm^{-1}` 的低频弯曲振动。
 
-在分子的光物理过程中，由跃迁初态和末态的正则模式之间的相互交叠而引起的Duschinsky转动效应也会对光谱和速率产生重要影响，S0和S1极小点下分别得到的3N-6个正则坐标是不同的，它们彼此间是线性变换关系可表达为Q''=J*Q'+ΔQ，这里Q'和Q''分别代表两个电子态极小点下的正则模式，J称为Duschinsky矩阵。在Device Studio中打开evc.cart.abs文件就可以得到S0和S1态之间的Duschinsky转动矩阵的二维图。
+在分子的光物理过程中，由跃迁初态和末态的正则模式之间的相互交叠而引起的Duschinsky转动效应也会对光谱和速率产生重要影响，S0和S1极小点下分别得到的3N-6个正则坐标是不同的，它们彼此间是线性变换关系可表达为Q''=J*Q'+ΔQ，这里Q'和Q''分别代表两个电子态极小点下的正则模式，J称为Duschinsky矩阵。在Device Studio中打开 ``evc.cart.abs`` 文件就可以得到S0和S1态之间的Duschinsky转动矩阵的二维图。
 
 .. figure:: /HLCT-example/fig3.6-6.png
 
 荧光光谱
 -----------
 
-用MOMAP进行荧光辐射速率的计算需要上一步的结果evc.cart.dat以及新的输入文件momap.inp，momap.inp内容如下：
+用MOMAP进行荧光辐射速率的计算需要上一步的结果 ``evc.cart.dat`` 以及新的输入文件 ``momap.inp`` ， ``momap.inp`` 内容如下：
 
 .. code-block:: python
 
@@ -832,7 +832,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 对于绝热激发能Ead，由于用Gaussian计算 :math:`\rm S_0` 和 :math:`\rm S_1` 时采用了不同的计算级别，因此我们用 :math:`\rm S_1` 的结构在 :math:`\rm S_0` 的计算级别下，再做一次单点计算用于修正：用此能量- :math:`\rm S_0` 能量+ :math:`\rm S_1` 激发能得到绝热激发能，即Ead=0.09626 au。对于吸收跃迁偶极矩EDMA，从S1.log文件读取第一个基态到激发态跃迁电偶极矩Dip.S.，开根号并单位换算得到8.18309 debye。对于发射跃迁偶极矩EDME，从S1.log文件读取最后一个基态到激发态跃迁电偶极矩Dip.S.，开根号并换单位换算得到9.64296 debye。（Ead、EDMA、EDME结果均在加了苯溶剂条件下获得(scrf(solvent=benzene,SMD))，模拟薄膜环境）。
 
-作业完成后在spec.tvcf.log文件的末端能够读取辐射速率，本例 :math:`\rm S_1` → :math:`\rm S_0` 辐射速率为 :math:`\rm 1.77 \times 108 s^{-1}` ，荧光寿命5.64 ns。
+作业完成后在 ``spec.tvcf.log`` 文件的末端能够读取辐射速率，本例 :math:`\rm S_1` → :math:`\rm S_0` 辐射速率为 :math:`\rm 1.77 \times 108 s^{-1}` ，荧光寿命5.64 ns。
 
 .. code-block:: python
 
@@ -840,7 +840,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
     radiative rate     (0):     4.28614462E-09    1.77195105E+08 /s,       5.64 ns
 
-在Device Studio中打开spec.tvcf.spec.dat文件得到吸收和发射谱，如下图，吸收光在388 nm，发射光在497 nm。
+在Device Studio中打开 ``spec.tvcf.spec.dat`` 文件得到吸收和发射谱，如下图，吸收光在388 nm，发射光在497 nm。
 
 .. figure:: /HLCT-example/fig3.7-1.png
 
@@ -849,7 +849,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 系间窜越是光化学中一种重要的无辐射过程。它是指分子受激后，由于不同自旋多重度的态的势能面之间存在交叉，导致体系经历这样的结构时以非辐射方式改变自旋多重度。在一般有机体系中，系间窜越（RISC）指的是从单重跃迁到三重态，反系间窜越（RISC）指的是从三重跃迁到单重态。反系间窜越速率，例如 :math:`\rm S_0 → t_2` ，还与他们的能级差 :math:`\Delta E_{ST}` 有关。这里 :math:`\Delta E_{ST}` 可以用 :math:`\rm S_{1}` 的激发态能量与 :math:`\rm T_{2}` 激发态能量相减得到。算得 :math:`\rm S_1 - T_2` 态 :math:`\Delta E_{ST}` =0.05518 au， :math:`\rm S_1 - T_3` 态 :math:`\Delta E_{ST}` =0.05528 au。
 
-在MOMAP程序中要想计算反系间窜越速率，首先要计算 :math:`\rm S_1` 和 :math:`\rm T_2` 的电子振动耦合，文件需要 :math:`\rm S_1` 和 :math:`\rm T_2` 的log频率计算文件以及fchk文件，还有momap.inp输入文件，momap.inp内容如下：
+在MOMAP程序中要想计算反系间窜越速率，首先要计算 :math:`\rm S_1` 和 :math:`\rm T_2` 的电子振动耦合，文件需要 :math:`\rm S_1` 和 :math:`\rm T_2` 的log频率计算文件以及fchk文件，还有 ``momap.inp`` 输入文件， ``momap.inp`` 内容如下：
 
 .. code-block:: python
 
@@ -861,7 +861,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
       set_cart = t
     /
 
-作业结束后生成的evc.cart.dat文件再与新的momap.inp文件放在同一目录下计算非辐射速率。此时输入文件momap.inp如下：
+作业结束后生成的 ``evc.cart.dat`` 文件再与新的 ``momap.inp`` 文件放在同一目录下计算非辐射速率。此时输入文件 ``momap.inp`` 如下：
 
 .. code-block:: python
 
@@ -901,4 +901,4 @@ Ead为 :math:`\Delta E_{ST}` ， :math:`\rm H_{SO}` 为 :math:`\rm S_1` 态与 :
 小结
 --------
 
-本文基于DFT和TDDFT理论，计算了2TPA-Py分子的激发态光物理过程。结果表明，2TPA-Py分子的 :math:`\rm S_1` 态具有HLCT特征，其最大发射波长在497 nm为天蓝光。这个分子的 :math:`\rm T_3 → S_1` 的反系间窜越速率高达4.39 \times 106 :math:`s^{-1}` ，基本满足了通过反系间窜越来利用三重态激子的要求。可见，donor-π-donor的分子设计策略有望成为构筑高稳定性蓝光HLCT分子的有效手段。
+本文基于DFT和TDDFT理论，计算了2TPA-Py分子的激发态光物理过程。结果表明，2TPA-Py分子的 :math:`\rm S_1` 态具有HLCT特征，其最大发射波长在497 nm为天蓝光。这个分子的 :math:`\rm T_3 → S_1` 的反系间窜越速率高达 :math:`4.39 \times 106 s^{-1}` ，基本满足了通过反系间窜越来利用三重态激子的要求。可见，donor-π-donor的分子设计策略有望成为构筑高稳定性蓝光HLCT分子的有效手段。

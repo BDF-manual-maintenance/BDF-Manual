@@ -8,3 +8,5 @@
 .. include:: app/QMMM.rst
 
 .. include:: app/HLCT-example.rst
+
+.. include:: app/Ir(ppy)3-example.rst
