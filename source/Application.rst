@@ -9,4 +9,4 @@
 
 .. include:: app/HLCT-example.rst
 
-.. include:: app/Ir(ppy)3-example.rst
+.. include:: app/Irppy3-example.rst
