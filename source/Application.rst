@@ -10,3 +10,5 @@
 .. include:: app/HLCT-example.rst
 
 .. include:: app/Irppy3-example.rst
+
+.. include:: app/azulene-example.rst   
