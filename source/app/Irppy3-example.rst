@@ -226,7 +226,7 @@ Freq Settings界面中的参数使用推荐的默认值，不需要做修改。�
 激发态优化
 -----------
 
-选择 ``bdf.out`` 文件，右击open with containing folder打开所在文件夹，在 ``bdf.out`` 文件中查找 ``converged in`` ，紧接着输出的 ``Molecular Cartesian Coordinates (X,Y,Z) in Angstrom : `` 下的结构即为优化好的 :math:`\rm Ir(ppy)_3` 的S0结构。
+选择 ``bdf.out`` 文件，右击open with containing folder打开所在文件夹，在 ``bdf.out`` 文件中查找 ``converged in`` ，紧接着输出的 ``Molecular Cartesian Coordinates (X,Y,Z) in Angstrom :`` 下的结构即为优化好的 :math:`\rm Ir(ppy)_3` 的S0结构。
 
 将其保存为 ``Irppy3_t1.xyz`` 文件，将 ``Irppy3_t1.xyz`` 拖入Device Studio中进行T1激发态的结构优化和频率计算。
 
@@ -465,7 +465,7 @@ OPT Settings和Freq Settings面板的参数使用推荐的默认值，不需要�
 自旋轨道耦合
 -------------
 
-选择 ``bdf.out`` 文件，右击open with containing folder打开 ``bdf.out`` 文件，在文件中查找 ``converged in`` ，紧接着输出的 ``Molecular Cartesian Coordinates (X,Y,Z) in Angstrom : `` 下的结构即为优化好的T1激发态的结构。将其保存为 ``Irppy3_t1_soc.xyz`` 文件，如下：
+选择 ``bdf.out`` 文件，右击open with containing folder打开 ``bdf.out`` 文件，在文件中查找 ``converged in`` ，紧接着输出的 ``Molecular Cartesian Coordinates (X,Y,Z) in Angstrom :`` 下的结构即为优化好的T1激发态的结构。将其保存为 ``Irppy3_t1_soc.xyz`` 文件，如下：
 
 .. code-block:: python
 
@@ -683,7 +683,7 @@ Basic Settings、SCF Settings和TDDFT Settings界面中的其它参数使用推�
       -2
     $end
 
-选中 ``bdf.inp``文件，右击选择Run提交作业，任务结束后 ``bdf.out`` ， ``bdf.scf.molden`` 结果文件会出现在Project中。选择 ``bdf.out`` ，右击选择show view，在TDDFT面板中，选择Spinor，在Dominant Excitations中确定第2、3和4为T1态的三个分量。
+选中 ``bdf.inp`` 文件，右击选择Run提交作业，任务结束后 ``bdf.out`` ， ``bdf.scf.molden`` 结果文件会出现在Project中。选择 ``bdf.out`` ，右击选择show view，在TDDFT面板中，选择Spinor，在Dominant Excitations中确定第2、3和4为T1态的三个分量。
 
 .. figure:: /Irppy3-example/fig4.3-3.png
 
