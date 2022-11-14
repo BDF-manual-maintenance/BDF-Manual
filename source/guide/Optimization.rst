@@ -818,9 +818,9 @@ Dimer方法需要定义两个结构，称为像点（Image），两个像点的�
 
   1. Dimer方法要调用DL-FIND外部库 :cite:`dlfind2009` （ ``Solver=0`` ），仅支持L-BFGS优化算法（ ``IOpt=3`` ）。
   2. 由于DL-FIND与BDF默认的坐标转动有冲突，必须在 ``compass`` 模块中加上关键词 ``norotate`` 禁止分子转动，或用 ``nosymm`` 关闭对称性；对于双原子和三原子分子，只能用 ``nosymm`` 。此冲突今后会解决。
-  3. 结构优化和频率要分开算，因为频率步骤读取的分子坐标有错误。此问题今后会解决。
+  3. 如果在过渡态优化后做频率计算，加上 ``hess`` = ``final``。由于Dimer方法不需要Hessian，不要用 ``init+final``。
 
-仍然取上一节的例子，加上关键词 ``dimer`` 和 ``nosymm`` （后者关闭对称性并禁止分子转动），优化方法 ``iopt`` 要从10改为默认的3（也可以不指定 ``iopt`` ），因为我们不需要Hessian矩阵。输入文件如下：
+仍然取上一节的例子，加上关键词 ``dimer`` 和 ``nosymm`` （后者关闭对称性并禁止分子转动），优化方法 ``iopt`` 要从10改为默认的3（也可以不指定 ``iopt`` ），因为我们不需要计算Hessian。输入文件如下：
 
 .. code-block:: bdf
 
@@ -843,6 +843,8 @@ Dimer方法需要定义两个结构，称为像点（Image），两个像点的�
     iopt
      3
     dimer
+    #hess
+    # final
     $end
 
     $xuanyuan
