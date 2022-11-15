@@ -223,6 +223,8 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
      --- Restarting optimizer ... (10 attempt(s) remaining) ---
 
+.. _MultiStateMix:
+
 自旋混合态的结构优化：ZnS分子
 ---------------------------------------------------------------------------------
 
@@ -334,7 +336,10 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
    /home/zouwl/work/tmp/test.egrad.1
    /home/zouwl/work/tmp/test.egrad.2
 
-   Weights at this point:  98.6% (state1) +   1.4% (state2)
+   Energies and weights of spin-mixed states:
+
+      State 1:          -75.49739847        98.6%     1.4%
+      State 2:          -75.48187407         1.4%    98.6%
 
 也可以把TDDFT三重态计算步骤用UKS替代，输入如下：
 
@@ -407,7 +412,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 低估了 :math:`^3\Pi` 的激发能，从而高估了旋轨耦合相互作用。而UKS在这种情况下一般会得到更合理的结果。
 例如，UKS得到的垂直激发能是23 kcal/mol，接近高精度理论值20 kcal/mol :cite:`PSS2007` ，而TDDFT的结果仅为9 kcal/mol！
 
-两态（ ``2soc`` ）或三态（ ``3soc`` ）混合模型的主要用途是研究多态反应，优化自旋混合态的反应物，中间体，产物，过渡态，
+多态混合模型的主要用途是研究多态反应，优化自旋混合态的反应物，中间体，产物，过渡态，
 以及反应路径。相比于MECP优化，它能提供更多信息，并且比严格考虑旋轨耦合的二分量或四分量相对论方法有更多优势。
 目前还不支持解析频率计算。
 
