@@ -832,7 +832,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 对于绝热激发能Ead，由于用Gaussian计算 :math:`\rm S_0` 和 :math:`\rm S_1` 时采用了不同的计算级别，因此我们用 :math:`\rm S_1` 的结构在 :math:`\rm S_0` 的计算级别下，再做一次单点计算用于修正：用此能量- :math:`\rm S_0` 能量+ :math:`\rm S_1` 激发能得到绝热激发能，即Ead=0.09626 au。对于吸收跃迁偶极矩EDMA，从S1.log文件读取第一个基态到激发态跃迁电偶极矩Dip.S.，开根号并单位换算得到8.18309 debye。对于发射跃迁偶极矩EDME，从S1.log文件读取最后一个基态到激发态跃迁电偶极矩Dip.S.，开根号并换单位换算得到9.64296 debye。（Ead、EDMA、EDME结果均在加了苯溶剂条件下获得(scrf(solvent=benzene,SMD))，模拟薄膜环境）。
 
-作业完成后在 ``spec.tvcf.log`` 文件的末端能够读取辐射速率，本例 :math:`\rm S_1` → :math:`\rm S_0` 辐射速率为 :math:`\rm 1.77 \times 108 s^{-1}` ，荧光寿命5.64 ns。
+作业完成后在 ``spec.tvcf.log`` 文件的末端能够读取辐射速率，本例 :math:`\rm S_1` → :math:`\rm S_0` 辐射速率为 :math:`\rm 1.77 \times 10^8 s^{-1}` ，荧光寿命5.64 ns。
 
 .. code-block:: python
 
@@ -882,14 +882,14 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
        FoFile    = "isc.tvcf.fo.dat"
     /
 
-Ead为 :math:`\Delta E_{ST}` ， :math:`\rm H_{SO}` 为 :math:`\rm S_1` 态与 :math:`\rm T_2` 态旋轨耦合矩阵元，计算得到的isc.tvcf.log文件末端为系间窜越速率和反系间窜越速率，本例 :math:`\rm k_{ISC} = 4.53 \times 104 s^{-1}` ， :math:`k_{RISC} = 1.48 \times 102 s^{-1}`` 。
+Ead为 :math:`\Delta E_{ST}` ， :math:`\rm H_{SO}` 为 :math:`\rm S_1` 态与 :math:`\rm T_2` 态旋轨耦合矩阵元，计算得到的isc.tvcf.log文件末端为系间窜越速率和反系间窜越速率，本例 :math:`\rm k_{ISC} = 4.53 \times 10^4 s^{-1}` ， :math:`k_{RISC} = 1.48 \times 10^2 s^{-1}`` 。
 
 .. code-block:: python
 
     #         Intersystem crossing Ead is      0.0551800 au, rate is    4.53103856E+04 s-1, lifetime is    2.20699954E-05 s
     # Reverse Intersystem crossing Ead is     -0.0551800 au, rate is    1.47691362E+02 s-1, lifetime is    6.77087667E-03 s
 
-同样地， :math:`\rm S_1` 态与 :math:`T_3` 态系间窜越速率 :math:`\rm k_{ISC} = 8.75 \times 107 s^{-1}` ，反系间窜越速率 :math:`\rm k_{ISC} = 1.32 \times 107 s^{-1}` 。
+同样地， :math:`\rm S_1` 态与 :math:`T_3` 态系间窜越速率 :math:`\rm k_{ISC} = 8.75 \times 10^7 s^{-1}` ，反系间窜越速率 :math:`\rm k_{ISC} = 1.32 \times 10^7 s^{-1}` 。
 
 .. code-block:: python
 
