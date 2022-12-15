@@ -327,6 +327,10 @@ Alpha和Beta两个关键词必须联用，用于UHF/UKS计算，分别指定alph
       1.d-4
      $end
 
+.. hint::
+
+ 当且仅当以下任何一条满足时，程序认为SCF收敛：（1）能量变化小于ThrEne，且RMS密度矩阵元变化小于ThrDen；（2）能量变化小于ThrEne的0.1倍，且RMS密度矩阵元变化小于ThrDen的1.5倍；（3）最大密度矩阵元变化小于ThrDen。
+
 :guilabel:`NoDiis` 参数类型：Bool型
 ------------------------------------------------
 指定不使用DIIS加速SCF收敛。一般只有在SCF能量以较大幅度（> 1.0E-5）振荡不收敛，且Damp和Vshift效果不明显时，才需要指定NoDiis。
