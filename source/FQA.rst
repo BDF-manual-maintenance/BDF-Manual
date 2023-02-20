@@ -17,6 +17,8 @@ BDF支持一部分常见任务的断点续算，包括：
     $end
 
 
+.. _tddftrestart:
+
 2. TDDFT单点能：当TDDFT任务中断，且idiag不等于2时，可以读取该任务最后一步TDDFT迭代（当idiag=1时为Davidson迭代，当idiag=3时为iVI迭代）的TDDFT激发矢量作为初猜。其中当idiag=3时，只有采用C(1)对称性的计算允许断点续算。
 
    TDDFT任务断点续算的方式是：在$scf模块里用 ``guess`` 关键词读取被中断的任务的收敛的SCF波函数，并在$tddft模块里用 ``iguess`` 指定读取被中断的任务的TDDFT激发矢量。假设输入文件为
