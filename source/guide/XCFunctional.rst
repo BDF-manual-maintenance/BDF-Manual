@@ -2,7 +2,7 @@ BDF支持的交换相关泛函
 ===============================================
 BDF的密度泛函理论（DFT）支持限制性（restricted）、非限制性（unrestricted）和
 限制性开壳层（restricted open-shell）Kohn-Sham计算，分别简称为RKS，UKS和ROKS。其输入与RHF、UHF和ROHF接近，
-关键是要指定交换相关泛函。BDF支持LDA，GGA，Meta-GGA，Hybrid，RS Hybrid和Hyrid Meta-GGA等多种泛函。
+关键是要指定交换相关泛函。BDF支持LDA，GGA，Meta-GGA，Hybrid，RS Hybrid和Hybrid Meta-GGA等多种泛函。
 
 .. table:: BDF中支持的泛函
     :widths: 40 60
