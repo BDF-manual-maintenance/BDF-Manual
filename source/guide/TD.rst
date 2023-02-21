@@ -1181,6 +1181,8 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
 .. code-block:: bdf
 
     $tddft
+    itda
+     1
     iwindow
      300 700 nm
     grimmestd
