@@ -66,6 +66,7 @@ latex_elements = {
     'preamble': r'''
 \usepackage{cite}
 \usepackage{longtable}
+\usepackage{emptypage}
 \usepackage[version=4]{mhchem}
 \hypersetup{unicode=true}
 \usepackage{ctex}
