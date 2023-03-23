@@ -152,10 +152,21 @@ BDF中支持的溶剂类型列表如下：
   dielectric
     78.3553   #输入介电常数
 
+设置溶剂模型
+--------------
 
-.. note::
+目前BDF支持的溶剂模型有ddCOSMO、COSMO和IEFPCM。输入为：
 
-   溶剂化效应目前只支持能量计算，梯度计算会在近期完成。 
+.. code-block:: bdf 
+
+  solvent
+    Water
+  solmodel
+    IEFPCM   #溶剂模型
+
+#.. note::
+#
+#   溶剂化效应目前只支持能量计算，梯度计算会在近期完成。 
 
 
 激发态溶剂化效应
