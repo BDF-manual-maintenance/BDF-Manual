@@ -9,7 +9,6 @@
   * Huckel : 半经验Huckel方法猜测；
   * Hcore : 对角化单电子哈密顿猜测；
   * Readmo : 读入分子轨道做为初始猜测；
---  * Readdm : 读入密度矩阵做为初始猜测。
 
 BDF默认用Atom猜测。在简洁输入模式下可以使用关键词 ``guess`` 改变BDF的初始猜测，如下所示
 
@@ -85,6 +84,10 @@ BDF默认用Atom猜测。在简洁输入模式下可以使用关键词 ``guess``
    guess # ask for hcore guess
      hcore
    $end
+ 
+.. note::
+
+ 绝大部分情况下，Huckel和Hcore都不是最好的选择，因此除非万不得已，尽量不要使用Huckel和Hcore（尤其是后者）。
 
 读入初始猜测轨道
 ------------------------------------------------------------------------------------------
@@ -294,7 +297,7 @@ expandmo模块的输出为，
 
 分子轨道最大占据数(mom)方法计算激发态
 ------------------------------------------------
-mom（maximum occupation method）是一种ΔSCF方法，可用于计算激发态。
+mom（maximum occupation method）是一种ΔSCF方法，可用于计算激发态。注意该方法的缩写为全小写字母，以和另一种ΔSCF方法——MOM（maximum overlap method）方法区分。
                                     
 .. code-block:: bdf
 
