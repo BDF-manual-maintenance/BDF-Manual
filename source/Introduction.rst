@@ -14,7 +14,7 @@ BDF的研发始于1993年，并于1997年正式命名 :cite:`doi:10.1007/s002140
 2021年7月与鸿之微科技（上海）股份有限公司签署协议，双方合作推广BDF的商业化。鉴于BDF的现状，首期商业化版本将以荧/磷光材料发光机理和材料设计为主要应用目标，因此不包括4C/X2C相对论、波函数电子相关、固体能带/核磁等方法。即首期商业化的BDF将以DFT、TDDFT等特色功能为主，包括
 
  * 基态与激发态（通过ΔSCF）的能量：Hartree-Fock，Kohn-Sham DFT，包括LDA，GGA，meta-GGA，范围分离泛函，杂化泛函，双杂化泛函，等，支持色散校正
- * 激发态计算：TDDFT和TDA（包括FLMO-TDDFT、SF-TDDFT，X-TDDFT，XAS-TDDFT，等），以及MOM
+ * 激发态计算：TDDFT和TDA（包括FLMO-TDDFT、SF-TDDFT，X-TDDFT，XAS-TDDFT等），以及用于ΔSCF计算的mom方法
  * TDDFT激发态偶极矩
  * 自旋轨道耦合：SA-TDDFT/SOC
  * 激发态非绝热耦合：NAC-TDDFT
