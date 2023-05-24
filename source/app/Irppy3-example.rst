@@ -687,7 +687,53 @@ Basic Settings、SCF Settings和TDDFT Settings界面中的其它参数使用推�
 
 .. figure:: /Irppy3-example/fig4.3-3.png
 
-点击 ``bdf.out`` 文件，右击选择Open Containing Folder进入所在文件夹，打开 ``bdf.out`` ，查找 ``[tddft_soc_matrso]:`` ，输出了考虑SOC之后各激发态相对于基态的能量和跃迁偶极矩。
+点击bdf.out文件，右击选择Open Containing Folder进入所在文件夹，打开bdf.out，查找 ``*** List of SOC-SI results ***`` ，读取第2、3和4态的ExEnergies，分别为：2.1906 eV，2.1961 eV和2.2052 eV。
+
+.. code-block:: python
+
+  *** List of SOC-SI results ***
+ 
+  No.      ExEnergies            Dominant Excitations         Esf        dE      Eex(eV)     (cm^-1) 
+ 
+    1      -0.0054 eV    99.8%  Spin: |Gs,1>    0-th    A    0.0000   -0.0054    0.0000         0.00
+    2       2.1906 eV    43.5%  Spin: |S+,3>    1-th    A    2.2232   -0.0326    2.1961     17712.45
+    3       2.1961 eV    75.0%  Spin: |S+,2>    1-th    A    2.2232   -0.0272    2.2015     17756.09
+    4       2.2052 eV    42.1%  Spin: |S+,1>    1-th    A    2.2232   -0.0180    2.2106     17829.67
+    5       2.5334 eV    49.1%  Spin: |So,1>    1-th    A    2.6854   -0.1520    2.5388     20477.15
+    6       2.5861 eV    42.4%  Spin: |S+,3>    2-th    A    2.6312   -0.0452    2.5915     20901.71
+    7       2.6064 eV    82.9%  Spin: |S+,2>    2-th    A    2.6312   -0.0248    2.6118     21065.69
+
+查找 ``E_tot`` ，读取相应的能量为 -19265.29575859。T1的三个子态的能量分别为E_tot的能量与ExEnergies的能量相加，以第2个子态为例，计算方法为：-19265.29575859+2.1906/27.2114=-19265.215256 au。第3个子态的能量为-19265.215053 au。第4个子态的能量为-19265.214719 au。   
+
+.. code-block:: python
+
+   Final scf result
+   E_tot =            -19265.29575859
+   E_ele =            -25841.98940694
+   E_nn  =              6576.69364834
+   E_1e  =            -39510.05277256
+   E_ne  =            -66428.66809936
+   E_kin =             26918.61532681
+   E_ee  =             14091.21945939
+   E_xc  =              -423.15609377
+  Virial Theorem      1.715687
+
+使用上述相同的方法和基组，以S0基态的结构计算SOC。在bdf.out中查找 ``E_tot`` ，读取相应的能量为：-19265.30415493 au。
+
+.. code-block:: python
+
+   Final scf result
+   E_tot =            -19265.30415493
+   E_ele =            -25838.09048037
+   E_nn  =              6572.78632544
+   E_1e  =            -39502.28526599
+   E_ne  =            -66421.04136762
+   E_kin =             26918.75610162
+   E_ee  =             14087.38176801
+   E_xc  =              -423.18698239
+  Virial Theorem      1.715683
+
+T1的三个子态相对于S0态的能量为上述三个子态能量减去S0态的能量，分别为：0.088899 au，0.089102 au，0.089436 au。在T1结构的SOC计算的out文件中查找 ``[tddft_soc_matrso]:`` ，输出了考虑SOC之后各激发态相对于基态的能量和跃迁偶极矩。
 
 .. code-block:: python
 
@@ -738,13 +784,11 @@ Basic Settings、SCF Settings和TDDFT Settings界面中的其它参数使用推�
           Imag=  -0.132E-07     0.447E-07     0.428E-07    -0.0000   0.0000   0.0000
           Norm=   0.339E-01     0.292E-01     0.273E-01
 
-其中， ``1  1`` 表示基态固有偶极矩； ``1  2`` 表示第一个与第二个旋量态间的跃迁偶极矩，以此类推。这里需要第2、3和4激发态的激发能和跃迁偶极矩数据。
-
-激发能在E_J-E_I列下读取，分别为2.201474871 eV，2.210597826 eV和2.538843563 eV。转换为以au单位分别为0.080902668 a.u., 0.081237931 a.u.和0.093300733 a.u.。
+其中， ``1  2`` 表示第一个与第二个旋量态间的跃迁偶极矩，以此类推。这里需要第1、2和3激发态的激发能和跃迁偶极矩数据。
 
 跃迁偶极矩的数据在 ``Details of transition dipole moment with SOC (in a.u.):`` 中列出，前三列为单位为au的偶极矩数据，后三列为单位为Debye的偶极矩数据。
 
-将debye单位下六个数的平方之和开方，得到该态的跃迁偶极矩。另一种方法为将Norm后的三个数平方之和开方，再乘以2.5417。得到第2、3和4激发态的跃迁偶极矩为0.04778347 Debye, 0.408818358 Debye和0.998260011 Debye。
+将debye单位下六个数的平方之和开方，得到该态的跃迁偶极矩。另一种方法为将Norm后的三个数平方之和开方，再乘以2.5417。得到第1、2和3激发态的跃迁偶极矩为0.082058 debye, 0.047881 Debye, 0.407979 Debye。
 
 得到的这6个参数将用于MOMAP软件的磷光发射速率的计算中。
 
@@ -783,9 +827,9 @@ EVC计算的输入文件 ``momap.inp`` 为：
       Temp          = 300 K
       tmax          = 1000 fs
       dt            = 1   fs  
-      Ead           = 0.080902668 au
+      Ead           = 0.088899 au
       EDMA          = 1 debye
-      EDME          = 0.04778347 debye
+      EDME          = 0.082058 debye
       FreqScale     = 1
       DSFile        = "evc.cart.dat"
       Emax          = 0.3 au
@@ -798,13 +842,7 @@ EVC计算的输入文件 ``momap.inp`` 为：
 
 提交脚本文件 ``momap.slurm`` 运行任务。任务结束后，确认关联函数是否收敛。
 
-打开 ``spec.tvcf.log`` ，文件末尾输出了第2个态的磷光辐射速率值，
-
-.. code-block:: python
-
-    radiative rate     (0):     1.82745093E-13    7.55493312E+03 /s,     1.32364E+05 ns
-
-磷光辐射速率在第一个数和第二个数读取，单位分别为a.u.和s-1，第三个数为寿命，单位为ns。这里为 7.55493312E+03 /s。
+打开 ``spec.tvcf.log`` ，磷光辐射速率在第一个数和第二个数读取，单位分别为a.u.和s-1，第三个数为寿命，单位为ns。
 
 第二个子态，即第3个态的磷光发射速率，输入文件 ``momap.inp`` 为:
 
@@ -818,9 +856,9 @@ EVC计算的输入文件 ``momap.inp`` 为：
       Temp          = 300 K
       tmax          = 1000 fs
       dt            = 1   fs  
-      Ead           = 0.081237931 au
+      Ead           = 0.089102 au
       EDMA          = 1 debye
-      EDME          = 0.408818358 debye
+      EDME          = 0.047881 debye
       FreqScale     = 1
       DSFile        = "evc.cart.dat"
       Emax          = 0.3 au
@@ -831,15 +869,7 @@ EVC计算的输入文件 ``momap.inp`` 为：
       FoSFile       = "spec.tvcf.spec.dat"
     /
 
-提交脚本文件 ``momap.slurm`` 运行任务。任务结束后，确认关联函数是否收敛。
-
-打开 ``spec.tvcf.log`` ，文件末尾输出了第3个态的磷光辐射速率值，
-
-.. code-block:: python
-
-    radiative rate     (0):     1.34914628E-11    5.57755602E+05 /s,    1792.90 ns
-
-磷光辐射速率为 5.57755602E+05 /s。
+提交脚本文件 ``momap.slurm`` 运行任务。
 
 第三个子态，即第4个态的磷光发射速率，输入文件 ``momap.inp`` 为:
 
@@ -853,9 +883,9 @@ EVC计算的输入文件 ``momap.inp`` 为：
       Temp          = 300 K
       tmax          = 1000 fs
       dt            = 1   fs  
-      Ead           = 0.093300733 au
+      Ead           = 0.089436 au
       EDMA          = 1 debye
-      EDME          = 0.998260011 debye
+      EDME          = 0.407979 debye
       FreqScale     = 1
       DSFile        = "evc.cart.dat"
       Emax          = 0.3 au
@@ -866,16 +896,4 @@ EVC计算的输入文件 ``momap.inp`` 为：
       FoSFile       = "spec.tvcf.spec.dat"
     /
 
-提交脚本文件 ``momap.slurm`` 运行任务。任务结束后，确认关联函数是否收敛。
-
-打开 ``spec.tvcf.log`` ，文件末尾输出了第4个态的磷光辐射速率值，
-
-.. code-block:: python
-
-    radiative rate     (0):     1.08105308E-10    4.46922190E+06 /s,     223.75 ns
-
-磷光辐射速率为 4.46922190E+06 /s。
-
-根据三个子态E_J-E_I能量的玻尔兹曼分布，得到第2个态占58.73%，第3个态占41.27%，第4个态占0%。
-
-因此对三个子态的磷光发射速率乘以相应的比例，加和得到T1态的磷光发射速率为2.346119845E+05 /s。
+根据三个子态相对能量的玻尔兹曼分布（可参考http://sobereva.com/462和http://sobereva.com/165中的介绍以及相应的excel表格）对三个子态的磷光发射速率乘以相应的比例，加和，最终得到T1态的磷光发射速率。
