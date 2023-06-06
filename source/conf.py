@@ -66,6 +66,8 @@ latex_elements = {
     'preamble': r'''
 \usepackage{cite}
 \usepackage{longtable}
+\documentclass[openany]{book}
+\let\cleardoublepage\clearpage
 \usepackage[version=4]{mhchem}
 \hypersetup{unicode=true}
 \usepackage{ctex}
@@ -158,7 +160,7 @@ class BDFLexer(RegexLexer):
         ],
         "values": [
             (words((
-                'Angstrom','Ang','Bohr','Coarse','Medium','Strict','read', 'b3lyp', 'b3pw91', 'bp86', 'LSDA', 'SVWN5', 'SAOP', 'BLYP', 'PBE', 'PW91', 'OLYP', 'KT2', 'TPSS', 'M06L', 'GB3LYP', 'BHHLYP', 'PBE0', 'HFLYP', 'VBLYP', 'wB97', 'wB97X', 'CAM-B3LYP', 'LC-BLYP', 'TPSSh', 'M062X', 'B2PLYP', 'only', 'init', 'final', 'init+final', 'S-CD', '1c-CD',  'ADZP-ANO', 'ANO-DK3', 'ANO-R', 'ANO-R0', 'ANO-R1', 'ANO-R2', 'ANO-R3', 'ANO-RCC', 'ANO-RCC-VDZ', 'ANO-RCC-VDZP', 'ANO-RCC-VTZP', 'ANO-RCC-VQZP', 'ANO-RCC-VTZ', 'jorge-DZP', 'jorge-TZP', 'jorge-QZP', 'jorge-DZP-DKH', 'jorge-TZP-DKH', 'jorge-QZP-DKH', 'SARC-DKH2', 'SARC2-QZV-DKH2', 'SARC2-QZVP-DKH2', 'x2c-SVPall', 'x2c-TZVPall', 'x2c-TZVPPall', 'x2c-QZVPall', 'x2c-QZVPPall', 'x2c-SVPall-2c', 'x2c-TZVPall-2c', 'x2c-TZVPPall-2c', 'x2c-QZVPall-2c', 'x2c-QZVPPall-2c', 'UGBS', 'Dirac-RPF-4Z', 'Dirac-aug-RPF-4Z', 'SVP-BSEX', 'DZP', 'DZVP', 'TZVPP', 'IGLO-II', 'IGLO-III', 'Sadlej-pVTZ', 'Wachters+f', 'Pitzer-AVDZ-PP', 'Pitzer-VDZ-PP', 'Pitzer-VTZ-PP', 'CRENBL', 'CRENBS', 'DHF-SVP', 'DHF-TZVP', 'DHF-TZVPP', 'DHF-QZVP', 'DHF-QZVPP', 'SBKJC-VDZ', 'SBKJC-POLAR', 'pSBKJC', 'Aoper', 'Boper', 'Bfreq','None','2Soc','3Soc','MECP','CI'), suffix=r'\b'),
+                'Angstrom','Ang','Bohr','Coarse','Medium','Strict','read', 'b3lyp', 'b3pw91', 'bp86', 'LSDA', 'SVWN5', 'SAOP', 'BLYP', 'PBE', 'PW91', 'OLYP', 'KT2', 'TPSS', 'M06L', 'GB3LYP', 'BHHLYP', 'PBE0', 'HFLYP', 'VBLYP', 'wB97', 'wB97X', 'CAM-B3LYP', 'LC-BLYP', 'TPSSh', 'M062X', 'B2PLYP', 'only', 'init', 'final', 'init+final', 'S-CD', '1c-CD',  'ADZP-ANO', 'ANO-DK3', 'ANO-R', 'ANO-R0', 'ANO-R1', 'ANO-R2', 'ANO-R3', 'ANO-RCC', 'ANO-RCC-VDZ', 'ANO-RCC-VDZP', 'ANO-RCC-VTZP', 'ANO-RCC-VQZP', 'ANO-RCC-VTZ', 'jorge-DZP', 'jorge-TZP', 'jorge-QZP', 'jorge-DZP-DKH', 'jorge-TZP-DKH', 'jorge-QZP-DKH', 'SARC-DKH2', 'SARC2-QZV-DKH2', 'SARC2-QZVP-DKH2', 'x2c-SVPall', 'x2c-TZVPall', 'x2c-TZVPPall', 'x2c-QZVPall', 'x2c-QZVPPall', 'x2c-SVPall-2c', 'x2c-TZVPall-2c', 'x2c-TZVPPall-2c', 'x2c-QZVPall-2c', 'x2c-QZVPPall-2c', 'UGBS', 'Dirac-RPF-4Z', 'Dirac-aug-RPF-4Z', 'SVP-BSEX', 'DZP', 'DZVP', 'TZVPP', 'IGLO-II', 'IGLO-III', 'Sadlej-pVTZ', 'Wachters+f', 'Pitzer-AVDZ-PP', 'Pitzer-VDZ-PP', 'Pitzer-VTZ-PP', 'CRENBL', 'CRENBS', 'DHF-SVP', 'DHF-TZVP', 'DHF-TZVPP', 'DHF-QZVP', 'DHF-QZVPP', 'SBKJC-VDZ', 'SBKJC-POLAR', 'pSBKJC', 'Aoper', 'Boper', 'Bfreq','None','1Soc','2Soc','3Soc','4Soc','5Soc','6Soc','7Soc','8Soc','9Soc','MECP','CI'), suffix=r'\b'),
             Name.Constant),
         ],
         'numbers': [

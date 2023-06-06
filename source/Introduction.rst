@@ -14,7 +14,7 @@ BDF的研发始于1993年，并于1997年正式命名 :cite:`doi:10.1007/s002140
 2021年7月与鸿之微科技（上海）股份有限公司签署协议，双方合作推广BDF的商业化。鉴于BDF的现状，首期商业化版本将以荧/磷光材料发光机理和材料设计为主要应用目标，因此不包括4C/X2C相对论、波函数电子相关、固体能带/核磁等方法。即首期商业化的BDF将以DFT、TDDFT等特色功能为主，包括
 
  * 基态与激发态（通过ΔSCF）的能量：Hartree-Fock，Kohn-Sham DFT，包括LDA，GGA，meta-GGA，范围分离泛函，杂化泛函，双杂化泛函，等，支持色散校正
- * 激发态计算：TDDFT和TDA（包括FLMO-TDDFT、SF-TDDFT，X-TDDFT，XAS-TDDFT，等），以及MOM
+ * 激发态计算：TDDFT和TDA（包括FLMO-TDDFT、SF-TDDFT，X-TDDFT，XAS-TDDFT等），以及用于ΔSCF计算的mom方法
  * TDDFT激发态偶极矩
  * 自旋轨道耦合：SA-TDDFT/SOC
  * 激发态非绝热耦合：NAC-TDDFT
@@ -28,7 +28,22 @@ BDF的研发始于1993年，并于1997年正式命名 :cite:`doi:10.1007/s002140
 
 BDF的研发任重而道远。其成功与否不仅取决于研发人员的长期努力，更离不开广大用户的鼓励和支持。
 
+功能更新
+================================================   
+
+2023A版本（2023.2）
+
+  * 更新二阶解析Hessian：支持包括Hartree-Fock方法，LDA、GGA、全局杂化泛函和范围分离泛函，ECP基组的DFT计算。可应用于化学反应过渡态搜索模块，频率分析及计算热力学数据
+  * 增加IEFPCM和COSMO溶剂模型：基态能量和梯度; TDDFT/TDA: PTD能量和梯度，线性响应能量（闭壳层）
+  * 增加结构优化计算方法：Dimer方法优化过渡态结构
+  * 增加反应路径验证分析：内禀反应坐标(IRC)计算
+  * 增加结构优化中自动消除虚频的功能
+  * 增加近似计算大体系激发态的方法：sTDA、sTDDFT
+  * 增加X2C相对论电场梯度（EFG）方法
+  * 基态结构优化以及含时密度泛函部分aMPEC+COSX算法问题修复
+  * 完善计算报错提示，方便用户寻找解决办法
+
 免费试用BDF
 ================================================   
 
-有意使用BDF软件的用户可在 https://iresearch.net.cn/mobile/trialForm?productId=13 填写表单，申请免费试用。
+有意使用BDF软件的用户可在 https://iresearch.net.cn/web/personal-space/activity-page 注册鸿之微云账号，申请免费试用。此外，用户可直接发送试用申请邮件至sales@hzwtech.com，或者直接拨打021-50550302即可申请使用。

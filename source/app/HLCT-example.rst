@@ -14,11 +14,11 @@
 .. centered:: 图 1. （a）HLCT分子的电致发光机理示意图。（b）2DPA-Py的分子结构。
 
 基态 :math:`\rm S_{0}` 优化
---------------
+----------------------------
 
 在对分子做精确计算前我们要得到可靠的基态结构（ :math:`\rm S_{0}` ），也就是对基态做结构优化和振动分析。首先使用Gaussian对分子基态 :math:`\rm S_{0}` 进行结构优化，采用泛函B3LYP、基组6-31g** ，并考虑色散矫正。选用B3LYP泛函的原因是它计算效率高、对积分格点精度的依赖性低，并加上DFT-D3(BJ)色散校正以描述可能的非共价键作用。另外，由于对于结构优化和振动分析，其计算结果对基组的敏感性较小，选用小基组可以节约时间。 ``gjf`` 输入文件如下：
 
-.. code-block:: python
+.. code-block:: bdf
 
     %nprocshared=32
     %chk=opt.chk
@@ -107,7 +107,7 @@
 
 Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步长（Step-RMS）、最大步长（Step-Max）四个标准来判断分子结构是否收敛。作业结束后，打开 ``log`` 输出文件，找到如下关键词
 
-.. code-block:: python
+.. code-block:: bdf
 
              Item               Value     Threshold  Converged?
     Maximum Force            0.000012     0.000450     YES
@@ -120,7 +120,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 将达到收敛后的结构提取出来，作为初始结构用于后续计算。下图为部分截取：
 
-.. code-block:: python
+.. code-block:: bdf
 
                              Standard orientation:                         
  ---------------------------------------------------------------------
@@ -137,7 +137,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 当分子处于势能面的极小点时，一般不存在虚频（负频）。为了验证结构的可靠性还要检查频率计算结果。在 ``log`` 输出文件找到如下关键词，由于振动频率是从小到大排列的，观察前几个频率没有虚频说明分子处于势能面的局域极小点，其分子结构一般是可靠的。
 
-.. code-block:: python
+.. code-block:: bdf
 
                       1                      2                      3
                       A                      A                      A
@@ -176,7 +176,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 人们往往习惯以某占据轨道的电子向某虚轨道跃迁的形式来描述电子跃迁问题，例如自然跃迁轨道（NTO）分析：以一对占主导地位的轨道跃迁模式来阐述跃迁的本质。对于激发态电子结构分析需要做含时密度泛函（TDDFT）计算，本案例激发态选取M062x泛函，Def2SVP基组，对单重态和三重态分别计算8个态。选择M062x泛函是猜测分子的基态可能具有部分电荷转移（CT）特性。对于这一类的激发态，如果选择HF成分较低的泛函，
 可能出现ghost态（不存在的态）。为了保险起见，选择高HF成分的M062x。当然，其他高HF成分的泛函，如CAM-B3LYP和ωB97XD也可以使用。 ``IOP(9/40=4)`` 关键词是为了输出更多轨道信息，以便MO变换成NTO后找到对电子激发贡献最大的一对NTO。 ``gjf`` 输入文件如下：
 
-.. code-block:: python
+.. code-block:: bdf
 
     %nprocshared=32
     %mem=6GB
@@ -266,7 +266,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 作业完成后根据激发能绘制低激发态能级图。可以看到 :math:`\rm S_{1}` 态和 :math:`\rm T_{2}` 、 :math:`\rm T_{3}` 态之间的能级差较小，若旋轨耦合矩阵元较大则存在发生系间窜越和反系间窜越的可能。
 
 .. figure:: /HLCT-example/fig3.2-1.png
-.. center:: 3.2-1
+    :caption: 3.2-1
 
 衡量两个态之间跃迁强度可以用振子强度来衡量，它是一个无量纲量。原子单位下|i> → |j>跃迁的振子强度表达式为
 
@@ -283,21 +283,21 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 低激发态激发能、振子强度、跃迁偶极矩如表中所示。
 
 .. table:: 
-     :widths: auto
-     
-     ===========  =============  ===========  =====================
-        激发态      激发能/eV	   振子强度      跃迁偶极矩/Debye
-     ===========  =============  ===========  =====================
-         S1          3.1509	       0.6012          19.7948
-         T1          2.1539	       0.0000           0.0000
-         T2          3.2507        0.0000           0.0000
-     ===========  =============  ===========  =====================
+    :widths: auto
 
+
+    ============ ============== ============ ======================
+      激发态       激发能/eV	     振子强度      跃迁偶极矩/Debye     
+    ============ ============== ============ ======================
+      S1           3.1509         0.6012          19.7948        
+      T1           2.1539         0.0000           0.0000        
+      T2           3.2507         0.0000           0.0000        
+    ============ ============== ============ ======================
 
 绘制的吸收光谱如下。
 
 .. figure:: /HLCT-example/fig3.2-2.png
-.. center:: 3.2-2
+    :caption: 3.2-2
 
 将 ``chk`` 文件转换为 ``fchk`` 文件。用Multiwfn+VMD渲染NTO轨道。
 
@@ -348,7 +348,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 荧光是冷光现象，一般指发生在自旋单重态之间的辐射过程。根据Kasha规则，它是最低激发态到基态的发射，一般为 :math:`\rm S_{1}` 态到 :math:`\rm S_{0}` 态。为了模拟荧光过程，还需要对激发态 :math:`\rm S_{1}` 做结构优化和频率计算，得到 ``log`` 文件和 ``fchk`` 文件，为后续MOMAP的计算做准备。泛函和基组分别为M062x和Def2SVP， ``gjf`` 文件如下：
 
-.. code-block:: python
+.. code-block:: bdf
 
     %nprocshared=32
     %mem=6GB
@@ -437,7 +437,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 作业完成后在 ``log`` 文件中找到最后一个Excited State 1为 :math:`\rm S_{1}` 激发能，Total Energy为电子态能量。
 
-.. code-block:: python
+.. code-block:: bdf
 
      Excited State   1:      Singlet-A      2.7938 eV  443.79 nm  f=0.8006  <S**2>=0.000
      149 ->150         0.69410
@@ -450,12 +450,12 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 由于本案例后续会用MOMAP做 :math:`\rm T_{2}` → :math:`\rm S_{1}` 态和 :math:`\rm T_{3}` → :math:`\rm S_{1}` 态的反系间窜越速率计算，所以前期还需要量化软件做激发态 :math:`\rm T_{2}` 和 :math:`\rm T_{3}` 的结构优化和频率计算，得到 ``log`` 文件和 ``fchk`` 文件。泛函和基组分别为M062x和Def2SVP， ``T2.gjf`` 文件如下：
 
-.. code-block:: python
+.. code-block:: bdf
 
     %nprocshared=32
     %mem=6GB
     %chk=t2.chk
-    #P opt freq M062x/Def2SVP TD(triplets，nstates=6,root=2)
+    #P opt freq M062x/Def2SVP TD(triplets,nstates=6,root=2)
     
     Title Card Required
     
@@ -539,7 +539,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 作业完成后在 ``log`` 文件中找到最后一个Excited State 2为 :math:`\rm T_{2}` 激发能，Total Energy为电子态能量。
 
-.. code-block:: python
+.. code-block:: bdf
 
      Excited State   2:      Triplet-A      3.0388 eV  408.01 nm  f=0.0000  <S**2>=2.000
      138 ->150        -0.14038
@@ -552,7 +552,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 同样对 :math:`\rm T_{3}` 优化可得 :math:`\rm T_{3}` 态能量。结果显示 :math:`\rm T_{3}` 电子态能量小于 :math:`\rm T_{2}` 态能量，这表示 :math:`\rm T_{2}` 与 :math:`\rm T_{3}` 态在远离Frank-Condon区优化的过程中可能存在势能面交叉，使得最终优化的 :math:`\rm T_{3}` 极小点能量小于 :math:`\rm T_{2}` 。
 
-.. code-block:: python
+.. code-block:: bdf
 
      Excited State   3:      Triplet-A      2.9283 eV  423.40 nm  f=0.0000  <S**2>=2.000
      149 ->151         0.67322
@@ -764,7 +764,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
      
 用MOMAP做电子振动耦合即evc计算可以得到重整能、黄昆因子等数据，输入文件需要 :math:`\rm S_0` 和 :math:`\rm S_1` 的结构优化和频率计算log文件和fchk文件，以及 ``momap.inp`` 文件， ``momap.inp`` 内容如下：
 
-.. code-block:: python
+.. code-block:: bdf
 
     do_evc            = 1
 
@@ -776,7 +776,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 作业完成后产生 ``evc.cart.dat`` 文件，找到下方关键词为 :math:`\rm S_0` 和 :math:`\rm S_1` 重整能。如下图， :math:`\lambda_{S0} = 1610.605 cm^{−1}` ， :math:`\lambda_{S1} = 1864.085 cm^{−1}` ，即基态和激发态重整能相差不大，说明两个态构型相差不大，属于同一个Franck-Condon区。
 
-.. code-block:: python
+.. code-block:: bdf
 
       Total reorganization energy      (cm-1):         1610.605075       1864.085048
 
@@ -807,7 +807,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 用MOMAP进行荧光辐射速率的计算需要上一步的结果 ``evc.cart.dat`` 以及新的输入文件 ``momap.inp`` ， ``momap.inp`` 内容如下：
 
-.. code-block:: python
+.. code-block:: bdf
 
     do_spec_tvcf_ft   = 1
     do_spec_tvcf_spec = 1
@@ -832,9 +832,9 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 对于绝热激发能Ead，由于用Gaussian计算 :math:`\rm S_0` 和 :math:`\rm S_1` 时采用了不同的计算级别，因此我们用 :math:`\rm S_1` 的结构在 :math:`\rm S_0` 的计算级别下，再做一次单点计算用于修正：用此能量- :math:`\rm S_0` 能量+ :math:`\rm S_1` 激发能得到绝热激发能，即Ead=0.09626 au。对于吸收跃迁偶极矩EDMA，从S1.log文件读取第一个基态到激发态跃迁电偶极矩Dip.S.，开根号并单位换算得到8.18309 debye。对于发射跃迁偶极矩EDME，从S1.log文件读取最后一个基态到激发态跃迁电偶极矩Dip.S.，开根号并换单位换算得到9.64296 debye。（Ead、EDMA、EDME结果均在加了苯溶剂条件下获得(scrf(solvent=benzene,SMD))，模拟薄膜环境）。
 
-作业完成后在 ``spec.tvcf.log`` 文件的末端能够读取辐射速率，本例 :math:`\rm S_1` → :math:`\rm S_0` 辐射速率为 :math:`\rm 1.77 \times 108 s^{-1}` ，荧光寿命5.64 ns。
+作业完成后在 ``spec.tvcf.log`` 文件的末端能够读取辐射速率，本例 :math:`\rm S_1` → :math:`\rm S_0` 辐射速率为 :math:`\rm 1.77 \times 10^8 s^{-1}` ，荧光寿命5.64 ns。
 
-.. code-block:: python
+.. code-block:: bdf
 
       I^-1 =     3.05463233E+00 Hartree =    6.70414303E+05 cm-1 =   8.31208105E+01 eV
 
@@ -851,7 +851,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 在MOMAP程序中要想计算反系间窜越速率，首先要计算 :math:`\rm S_1` 和 :math:`\rm T_2` 的电子振动耦合，文件需要 :math:`\rm S_1` 和 :math:`\rm T_2` 的log频率计算文件以及fchk文件，还有 ``momap.inp`` 输入文件， ``momap.inp`` 内容如下：
 
-.. code-block:: python
+.. code-block:: bdf
 
     do_evc            = 1
 
@@ -863,7 +863,7 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
 
 作业结束后生成的 ``evc.cart.dat`` 文件再与新的 ``momap.inp`` 文件放在同一目录下计算非辐射速率。此时输入文件 ``momap.inp`` 如下：
 
-.. code-block:: python
+.. code-block:: bdf
 
     do_isc_tvcf_ft   = 1
     do_isc_tvcf_spec = 1
@@ -882,16 +882,16 @@ Gaussian以均方根力（Force-RMS）、最大力（Force-Max）、均方根步
        FoFile    = "isc.tvcf.fo.dat"
     /
 
-Ead为 :math:`\Delta E_{ST}` ， :math:`\rm H_{SO}` 为 :math:`\rm S_1` 态与 :math:`\rm T_2` 态旋轨耦合矩阵元，计算得到的isc.tvcf.log文件末端为系间窜越速率和反系间窜越速率，本例 :math:`\rm k_{ISC} = 4.53 \times 104 s^{-1}` ， :math:`k_{RISC} = 1.48 \times 102 s^{-1}`` 。
+Ead为 :math:`\Delta E_{ST}` ， :math:`\rm H_{SO}` 为 :math:`\rm S_1` 态与 :math:`\rm T_2` 态旋轨耦合矩阵元，计算得到的isc.tvcf.log文件末端为系间窜越速率和反系间窜越速率，本例 :math:`\rm k_{ISC} = 4.53 \times 10^4 s^{-1}` ， :math:`k_{RISC} = 1.48 \times 10^2 s^{-1}`` 。
 
-.. code-block:: python
+.. code-block:: bdf
 
     #         Intersystem crossing Ead is      0.0551800 au, rate is    4.53103856E+04 s-1, lifetime is    2.20699954E-05 s
     # Reverse Intersystem crossing Ead is     -0.0551800 au, rate is    1.47691362E+02 s-1, lifetime is    6.77087667E-03 s
 
-同样地， :math:`\rm S_1` 态与 :math:`T_3` 态系间窜越速率 :math:`\rm k_{ISC} = 8.75 \times 107 s^{-1}` ，反系间窜越速率 :math:`\rm k_{ISC} = 1.32 \times 107 s^{-1}` 。
+同样地， :math:`\rm S_1` 态与 :math:`T_3` 态系间窜越速率 :math:`\rm k_{ISC} = 8.75 \times 10^7 s^{-1}` ，反系间窜越速率 :math:`\rm k_{ISC} = 1.32 \times 10^7 s^{-1}` 。
 
-.. code-block:: python
+.. code-block:: bdf
 
     #         Intersystem crossing Ead is      0.0552800 au, rate is    8.75255907E+07 s-1, lifetime is    1.14252300E-08 s
     # Reverse Intersystem crossing Ead is     -0.0552800 au, rate is    1.31729899E+07 s-1, lifetime is    7.59129104E-08 s
