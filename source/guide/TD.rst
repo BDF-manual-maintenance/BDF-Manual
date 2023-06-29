@@ -1875,6 +1875,10 @@ BDF程序已经对Xe之前主族元素的全电子非相对论基组优化了Zef
 
 如前所述，（一阶）非绝热耦合矩阵元在非辐射跃迁过程中有着重要的意义，其主要用途之一为计算内转换速率常数（参见 :ref:`BDF-MOMAP联用计算内转换速率常数的示例<azulene-example>` ）。在BDF中，基态和激发态之间的NACME，以及激发态和激发态之间的NACME的输入文件在写法上存在一定差异，以下分别介绍。
 
+.. note::
+
+    基态和激发态之间的NACME、激发态和激发态之间的NACME均支持R-TDDFT和U-TDDFT，但均暂不支持X-TDDFT。
+
 （1）基态和激发态之间的NACME： :math:`\ce{NO3}` 自由基的D0/D1 NACME（GB3LYP/cc-pVDZ）
 
 .. code-block:: bdf
