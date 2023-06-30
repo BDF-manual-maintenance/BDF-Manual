@@ -485,3 +485,81 @@ Ifpair参数指定电子如何激发，确定mom方法的电子占初态，必�
 :guilabel:`Pinalpha` & :guilabel:`Pinbeta` 参数类型：整型
 -----------------------------------------------------------
 指定固定的分子轨道。
+
+:guilabel:`EnableSecondOrderScf` 参数类型: Bool 型
+-----------------------------------------------------------
+指定启用二阶 SCF 并使用默认设置. 二阶收敛应仅在无法通过其它收敛算法得到稳定解时使用.
+
+.. hint::
+    * 二阶 SCF 目前不支持 iOI 等算法
+    * 二阶 SCF 目前不支持限制性开壳层计算
+    * 二阶 SCF 目前不支持相对论计算
+
+:guilabel:`DisableSecondOrderScf` 参数类型: Bool 型
+-----------------------------------------------------------
+指定禁用二阶SCF.
+
+:guilabel:`SecondOrderConfig` 参数类型: 字符串
+-----------------------------------------------------------
+指定二阶 SCF 所用的高级设置. 一般用户仅需指定 ``EnableSecondOrderScf`` 关键词, 无需指定该项.
+
+.. code-block:: bdf
+
+    $Scf
+        ...
+        SecondOrderConfig
+            Enable
+            EnableExpression
+                AfterIteration 10
+            LevelShiftGradientThreshold
+                1e-3
+            ConvergeGradientThreshold
+                1e-6
+            ConvergeRotationThreshold
+                1e-9
+            MaxIterationCycle
+                16
+            InitialTrustRadius
+                0.4
+            MaxTrustRadius
+                5
+            MaxConjugateGradientIterationCycle
+                16
+            MaxDavidsonIterationCycle
+                16
+            CorrectionType
+                Olsen
+            LinearSolverTolerance
+                1e-4
+            AllowConverge
+            ScfConvergeGradientThreshold
+                1e-7
+        EndSecondOrderConfig
+        ...
+    $End
+
+* ``Enable``: 指定启用二阶 SCF 并将启用表达式将为默认设置
+* ``Disable``: 指定禁用二阶 SCF
+* ``EnableExpression``: 指定启用表达式
+    指定启用表达式将隐式设定 ``Enable`` 关键词. 其内容可为
+
+    - ``AfterIteration`` + 整型数: 指定在一定标准 SCF 迭代后启用
+    - ``AfterDeltaEnergyLessThan`` + 浮点数: 指定在执行标准SCF迭代至能量误差低于一定值后启用
+    - ``AfterDeltaRmsDensityLessThan`` + 浮点数: 指定在执行标准SCF迭代至密度矩阵之误差低于一定值后启用
+    - 自定义逻辑表达式. 注, 我们提供自定义表达式的目的是为方便开发人员调试程序及为高级用户提供更灵活的选项, 如果您对其感觉不适请考虑使用上文所述的默认选项或预设选项. 自定义表达式可用关键词为 ``Iteration``, ``DeltaEnergy``, 及 ``DeltaRmsDensity``. 可用算符有 ``&``, ``|``, ``!``, ``>``, ``<``, ``=``, 及 ``[]``. 算符均不可串联, 并在作用至变量后必须以逻辑求值算符 ``[]`` 括起. 表达式不区分大小写, 忽略全部空格字符, 这意味着 "DeltaRmsDensity" 与 "Delta RMS Density" 等价. 例:
+     ``[ [ Iteration > 10 ] & [ [ DeltaEnergy < 1e-3 ] | [![ DeltaRmsDensity > 2.5e-3 ]] ] ]``
+* ``LevelShiftGradientThreshold``, 浮点型: 指定在能量-轨道梯度低于一定值后解除可信半径, 改用 Newton-Raphson 法计算旋转矢量
+* ``ConvergeGradientThreshold``, 浮点型: 指定在能量-轨道梯度值模低于一定值后停止二次 SCF 微迭代
+* ``ConvergeRotationThreshold``, 浮点型: 指定在旋转矢量之模长低于一定值后停止二次 SCF 微迭代
+* ``MaxIterationCycle``, 整型: 指定最大二阶 SCF 微迭代次数直到做一次标准 SCF 更新
+* ``InitialTrustRadius``, 浮点型: 指定用 Levenberg-Marquardt 法求旋转矢量时所用的初始可信半径
+* ``MaxTrustRadius``, 浮点型: 指定用 Levenberg-Marquardt 法求旋转矢量时所用的最大可信半径
+* ``MaxConjugateGradientIterationCycle``, 整型: 指定用共轭梯度法求解 Newton-Raphson 方程时所用的最大迭代次数. 最终矢量将被用作旋转矢量即使未收敛
+* ``MaxDavidsonIterationCycle``, 整型: 指定用 Davidson 对角化求解 Levenberg-Marquardt 方程时所用的最大迭代次数. 最终矢量将被用作旋转矢量即使未收敛
+* ``CorrectionType``, 字符串: 指定 Davidson 对角化所用的矫正方法, 可选项为 ``DavidsonDPR`` (也作 ``DPR``), ``JacobiDavidson``, 及 ``Olsen``
+* ``LinearSolverTolerance``, 浮点型: 指定 Davidson 对角化所用线性方程求解器所用收敛阈值
+* ``ExcludeNonOccupiesFromRotation``:  指定将在构造原理下本该为占据轨道但用户明确指定为非占据轨道的轨道从轨道旋转对中排除, 以防止塌陷至构造原理所表示的态. 该选项只在做 ΔSCF 计算时生效.
+* ``IncludeNonOccupiesInRotation``: 指定将所有轨道都包含至旋转对中. 该选项只在做 ΔSCF 时生效.
+* ``AllowConverge``: 允许 SCF 于二次收敛迭代过程中宣布 SCF 已收敛
+* ``ForbidConverge``: 禁止 SCF 于二次收敛迭代过程中宣布 SCF 已收敛
+* ``ScfConvergeGradientThreshold``, 浮点型: 指定在能量-轨道梯度之模低于一定值后认为 SCF 已收敛. 仅在已设 ``AllowConverge`` 时生效
