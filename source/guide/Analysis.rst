@@ -1,4 +1,4 @@
-波函数分析和单电子性质
+波函数分析和性质分析
 ================================================
 
 BDF支持的波函数分析有：Mulliken布居分析和Lowdin布居分析，包括原子净电荷和原子自旋密度。
@@ -24,6 +24,8 @@ BDF支持的单电子性质有：
   $end
 
 标准的molden格式仅支持spdfg型高斯基函数，但在BDF中已推广到h函数。
+
+借助第三方程序LModeA-nano或LModeA，还可以对BDF的振动频率计算结果进行局域振动模式分析，并为分子力学计算提取内坐标的力常数。
 
 有效接触密度
 ------------------------------------------------
@@ -82,4 +84,12 @@ BDF目前不包含NBO（ https://nbo7.chem.wisc.edu/ ）的接口，但是可以
 
 对于RHF/RKS和UHF/UKS类型的波函数（即，MO占据数只能是0，1，2三种），NBO可以计算“Second Order Perturbation Theory Analysis”，这需要在47文件中出现Fock矩阵。
 为此需要在molden2aim的配置文件 ``m2a.ini`` 中设置 ``nbopro=1`` 。
+
+力常数
+------------------------------------------------
+LModeA-nano（https://lmodea-nano.readthedocs.io/en/latest/）是PyMOL插件，用于固体和分子的局域振动模式分析，
+计算化学键、键长、键角的力常数和谐振频率。
+中文介绍见：http://bbs.keinsci.com/thread-28658-1-1.html
+
+BDF振动频率计算任务产生的.umv数据文件可以直接被LModeA-nano程序读取。
 
