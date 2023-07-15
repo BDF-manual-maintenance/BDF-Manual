@@ -1,12 +1,12 @@
 溶剂化模型
 ================================================
 
-溶剂化模型用于计算溶质和溶剂之间的相互作用，一般分为隐式溶剂模型（连续介质模型）和显式溶剂模型两种。 在BDF中，对于连续溶剂模型，我们采用
-ddCOSMO（domain-decomposition COSMO solvation model），对于显示溶剂模型我们采用QM/MM方法，结合pDymamo2.0程序包进行计算。
+溶剂化模型用于计算溶质和溶剂之间的相互作用，一般分为隐式溶剂模型（连续介质模型）和显式溶剂模型两种。 在BDF中，对于连续溶剂模型，可以选择IEFPCM、SS(V)PE、CPCM、COSMO、
+ddCOSMO（domain-decomposition COSMO solvation model）以及SMD，对于显示溶剂模型采用QM/MM方法，结合pDymamo2.0程序包进行计算。
 
 溶剂化效应计算
 ------------------------------------------------
-BDF目前支持基态溶剂化效应计算，包括HF和DFT方法。以下是甲醛分子溶剂化效应计算的输入文件：
+BDF目前支持基态溶剂化效应计算，包括HF和DFT方法。以甲醛分子在水溶液中的计算为例，其输入文件为：
 
 .. code-block:: bdf
 
@@ -155,7 +155,7 @@ BDF中支持的溶剂类型列表如下：
 设置溶剂模型
 --------------
 
-目前BDF支持的溶剂模型有ddCOSMO、COSMO和IEFPCM。输入为：
+目前BDF支持的溶剂模型有ddCOSMO、COSMO、CPCM、IEFPCM、SS(V)PE以及SMD， 对应的关键词为 ``ddcosmo`` 、 ``cosmo``、 ``cpcm``、 ``iefpcm``、 ``ssvpe``、 ``smd``。输入为：
 
 .. code-block:: bdf 
 
@@ -164,12 +164,485 @@ BDF中支持的溶剂类型列表如下：
   solmodel
     IEFPCM   #溶剂模型
 
+连续介质模型是将溶剂视为有一定介电常数的可极化的连续介质，根据溶质分子来形成孔穴，孔穴的形状会对溶剂化能的计算产生较大的影响。对于连续介质模型，有多种孔穴的定义：vdW(van der Waals surface), SES(solvent-excluded surface), SAS(solvent-accessible surface)等。
+
+在BDF中默认采用1.1倍的UFF半径来构建vdW表面的孔穴。
+对于COSMO、CPCM、IEFPCM和SS(V)PE溶剂模型，可以通过 ``cavity``, ``vdWScale``, ``radii``, ``uatm``, ``acidHRadius`` 等关键词来自定义孔穴的形状。
+
+.. code-block:: bdf
+
+  cavity # 生成孔穴表面的方式
+    swig # swig | switching | ses | sphere，默认为 swig
+  uatm # 联合原子拓扑方法
+    false # false | true，默认为 false
+  vdWScale
+    1.1 # 默认 1.1, 即 1.1 倍 UFF 半径
+  radii
+    1=1.4430 2=1.7500 # 第一个原子的半径设为 1.4430Å, 第二个原子的半径设为 1.7500Å
+    # 等号间不能有空格, 一行最多128字符, 一行写不下可以加上radii之后新增一行
+  radii
+    H=1.4430 O=1.7500 # 同上, 将 H 原子的半径设为1.4430Å, 将 O 原子的半径设为 1.7500Å。两种方式可以混合使用。
+  acidHRadius # 单独设置酸性H半径，单位 Å
+    1.2
+
+通过 ``cavity`` 关键词，可以控制生成孔穴表面的方式
+
+- ``switching`` 表示用平滑函数来处理vdW表面的格点权重
+- ``swig`` 表示 switching/gaussian，即在switching的基础上再使用高斯函数对格点处的点电荷做平滑处理
+- ``sphere`` 表示形成一个圆球状的孔穴来包裹整个分子。
+
+``uatm`` 表示将H原子联合进重原子共同形成孔穴。
+
+另外还可以通过 ``cavityNGrid`` 或 ``cavityPrecision`` 来指定孔穴的格点精度（每个原子表面的最大tesserae数）。
+
+.. code-block:: bdf
+
+  cavityNGrid # 控制每个原子生成的孔穴表面的格点数, 会自动调整至最近的 lebedev 格点
+    302 # 默认为 302
+
+  # 或者
+
+  cavityPrecision
+    medium # ultraCoarse | coarse | medium | fine | ultraFine，默认为 medium
+
+对于COSMO和CPCM，可以通过 ``cosmoFactorK`` 来指定the dielectric screening factor， :math:`f_\epsilon=\frac{\epsilon-1}{\epsilon+k}` ，中k的大小。对于COSMO，k默认为0.5；对于CPCM，k默认为0。
+
+.. code-block:: bdf 
+
+  cosmoFactorK
+    0.5
+
+对于SMD模型，可以手动指定溶剂的折射率、Abraham氢键酸度、Abraham氢键碱度、表面张力、芳香度、卤素度
+
+.. code-block:: bdf 
+
+  refractiveIndex # 折射率
+    1.43
+  HBondAcidity # Abraham氢键酸度
+    0.229
+  HBondBasicity # Abraham氢键碱度
+    0.265
+  SurfaceTensionAtInterface # 表面张力
+    61.24
+  CarbonAromaticity # 芳香度
+    0.12
+  ElectronegativeHalogenicity # 卤素度
+    0.24
+
+
 .. note::
 
-   溶剂化效应目前支持能量和梯度计算。 
+   使用SMD模型将关闭溶剂化自由能非静电部分的计算，取而代之将计算SMx系列的 :math:`\Delta G_{CDS}`
+
+非静电溶剂化能
+----------------------------------------------------------
+
+溶剂化自由能包括静电溶剂化能以及非静电溶剂化能。上述的PCM模型计算了静电溶剂化能。非静电溶剂化能一般可以分为为孔穴能 :math:`\Delta G_{cav}` 和色散-排斥能 :math:`\Delta G_{dis-rep}` 。
+孔穴能是在假设溶质溶剂之间无相互作用时，将溶质分子从气相移入液相形成孔穴所做的功。可以用基于定标粒子理论(SPT)的Pierotti-Claverie公式来进行计算。色散能与排斥能可以用粒子对势近似法来计算。
+
+在BDF中，默认不开启非静电溶剂化能的计算，可以通过以下关键词来开启非静电溶剂化能的计算
+
+.. code-block:: bdf 
+
+  nonels
+    dis rep cav # 色散能 排斥能 孔穴能
+  solventAtoms # 溶剂分子的各类型原子的个数（分子式）
+    H2O1 # 默认为H2O1，不能省略1，因为不区分大小写后无法确定元素符号是几个字母
+  solventRho # 溶剂分子数密度，单位 molecules Å^-3
+    0.03333
+  solventRadius # 溶剂分子半径，单位 Å
+    1.385 
+
+.. note::
+
+   指定cav时，除非solvent指定为water会自动使用默认值，其他溶剂必须手动指定 ``solventRho``、 ``solventRadius``。
+   指定rep或dis时，除非solvent指定为water会自动使用默认值，其他溶剂必须手动指定 ``solventRho``、 ``solventAtoms``。
+
+一些常见溶剂的分子半径
+
+.. table::
+  
+  ================ ========= =================== =============== ============ =========== ====================
+    **Solvent**     Water     Tetrahydrofuran     Cyclohexane     Methanol     Ethanol     Tetrachloromethane
+    **Radius(Å)**   1.385     2.900               2.815           1.855        2.180       2.685
+  ================ ========= =================== =============== ============ =========== ====================
 
 
-激发态溶剂化效应
+计算色散排斥能以及孔穴能时，默认使用的Bondi半径，也可以自定义计算色散排斥能或者孔穴能时的半径。
+通过 ``solventAtomicSASRadii`` 关键词来指定计算色散排斥能时所构建的SAS孔穴的溶剂分子中每类原子的半径。
+通过 ``radiiForCavEnergy``  关键词来指定计算孔穴能时的半径，并且可以通过 ``acidHRadiusForCavEnergy`` 关键词来单独设置酸性H的半径。
+
+.. code-block:: bdf 
+
+  solventAtomicSASRadii # 计算色散排斥能时，构建SAS孔穴的溶剂分子中每类原子的半径
+    H=1.20 O=1.50
+  radiiForCavEnergy # 计算孔穴能的溶质半径
+    H=1.4430 O=1.7500 # 注意事项同radii
+  acidHRadiusForCavEnergy # 计算孔穴能的溶质半径，单独设置酸性H，单位 Å
+    1.2
+
+激发态溶剂化效应-垂直吸收
+----------------------------------------------------------
+
+激发态溶剂化效应在隐式模型中有 **线性响应** （linear-response, LR）和 **态特定** (state-specific, SS)的处理方式。
+
+激发态溶剂化效应需要考虑非平衡溶剂化现象。溶剂的极化可以分为快极化和慢极化部分。垂直吸收和发射过程十分迅速，溶剂的偶极和构型不能迅速调整至与溶质电荷达到平衡的状态，于是需要考虑非平衡溶剂化效应。
+
+传统非平衡溶剂化理论中平衡态到非平衡态的可逆功积分违背了经典热力学原理，会导致溶剂重组能的高估。在进行态特定计算时，采用了李象远教授发展的非平衡溶剂化新理论（X. Y. Li. Int. J. Quantum Chem. 2015, 115(11): 700-721）。
+
+以下是采用 **线性响应** 计算甲醛分子激发态非平衡溶剂化效应的输入文件：
+
+.. code-block:: bdf
+
+  $COMPASS
+  Title
+    ch2o Molecule test run
+  Basis
+    6-31g
+  Geometry
+    C    0.00000000    0.00000000   -0.54200000
+    O    0.00000000    0.00000000    0.67700000
+    H    0.00000000    0.93500000   -1.08200000
+    H    0.00000000    -0.9350000  -1.08200000
+  END geometry
+  nosymm
+  unit
+   ang
+  $END
+
+  $xuanyuan
+  $END
+
+  $SCF
+  rks
+  dft
+    b3lyp
+  grid
+    medium
+  solvent
+    user      # 用户指定
+  dielectric
+    78.3553   # 输入介电常数
+  opticalDielectric
+    1.7778    # 光介电常数
+  solmodel 
+    iefpcm
+  $END
+
+  $TDDFT
+  iroot
+    8
+  solneqlr
+  $END
+
+
+其中，在 ``TDDFT`` 中加入 ``solneqlr`` 关键词，表示要进行非平衡溶剂化效应计算。
+
+.. note::
+
+   计算非平衡溶剂化效应时，溶剂如果为用户指定的，需要设置光介电常数，关键词为 ``opticalDielectric``。
+
+
+BDF目前支持一阶微扰态特定的能量计算（ptSS），以下是采用 **态特定** 计算丙烯醛分子激发态非平衡溶剂化效应的输入文件：
+
+.. code-block:: bdf
+
+  $COMPASS
+  Title
+    SS-PCM of S-trans-acrolein Molecule
+  Basis
+    cc-PVDZ
+  Geometry
+    C                  0.55794100   -0.45384200   -0.00001300
+    H                  0.44564200   -1.53846100   -0.00002900
+    C                 -0.66970500    0.34745600   -0.00001300
+    H                 -0.50375600    1.44863100   -0.00005100
+    C                  1.75266800    0.14414300    0.00001100
+    H                  2.68187400   -0.42304000    0.00001600
+    H                  1.83151500    1.23273300    0.00002700
+    O                 -1.78758800   -0.11830000    0.00001600
+  END geometry
+  $END
+
+  $xuanyuan
+  $END
+
+  $SCF
+  rks
+  dft
+    PBE0
+  solvent
+    water
+  solmodel 
+    iefpcm
+  $END
+
+  $TDDFT
+  iroot
+    5
+  istore
+    1
+  $END
+
+  $resp
+  nfiles
+    1
+  method
+    2
+  iroot
+    1 2 3
+  norder
+    0
+  SolNeqSS
+  $end
+
+其中，在 ``resp`` 中加入 ``solneqss`` 关键词，表示要进行态特定非平衡溶剂化效应计算。指定 ``norder`` 为 0 ，表示不进行梯度的计算。用 ``iroot`` 指定计算哪些态。
+
+在文件中的输出：
+
+.. code-block:: 
+
+  -Energy correction based on constrant equilibrium theory with relaxed density
+ *State   1  ->  0
+ Corrected vertical absorption energy(Li)           =    3.6935 eV
+ Corrected vertical absorption energy(Marcus)       =    3.7143 eV
+ Nonequilibrium solvation free energy(Li)           =   -0.0700 eV
+ Nonequilibrium solvation free energy(Marcus)       =   -0.0492 eV
+ Equilibrium solvation free energy                  =   -0.1744 eV
+
+其中 Corrected vertical absorption energy(Li) 表示采用李象远教授发展的非平衡溶剂化新理论计算的激发能矫正， Corrected vertical absorption energy(Marcus) 表示用Marcus理论计算的激发能矫正。
+
+上面的例子中，垂直吸收能为 :math:`3.69eV`。
+
+BDF目前还支持矫正的线性响应的计算（corrected linear response, cLR），以下是采用cLR计算丙烯醛分子激发态非平衡溶剂化效应的输入文件：
+
+.. code-block:: bdf
+
+  $COMPASS
+  Title
+    cLR-PCM of S-trans-acrolein Molecule
+  Basis
+    cc-PVDZ
+  Geometry
+    C                  0.55794100   -0.45384200   -0.00001300
+    H                  0.44564200   -1.53846100   -0.00002900
+    C                 -0.66970500    0.34745600   -0.00001300
+    H                 -0.50375600    1.44863100   -0.00005100
+    C                  1.75266800    0.14414300    0.00001100
+    H                  2.68187400   -0.42304000    0.00001600
+    H                  1.83151500    1.23273300    0.00002700
+    O                 -1.78758800   -0.11830000    0.00001600
+  END geometry
+  $END
+
+  $xuanyuan
+  $END
+
+  $SCF
+  rks
+  dft
+    PBE0
+  solvent
+    water
+  solmodel 
+    iefpcm
+  $END
+
+  $TDDFT
+  iroot
+    5
+  istore
+    1
+  $END
+
+  $TDDFT
+  iroot
+    5
+  istore
+    1
+  solneqlr
+  $END
+
+  $resp
+  nfiles
+    1
+  method
+    2
+  iroot
+    1
+  norder
+    0
+  solneqlr
+  SolNeqSS
+  $end
+
+在文件中的找到 **第一个TDDFT** 的输出， 以及resp模块中的cLR输出：
+
+.. code-block:: 
+
+  No.     1    w=      3.7475 eV     -191.566549 a.u.  f=    0.0001   D<Pab>= 0.0000   Ova= 0.4683
+      CV(0):    A(  15 )->   A(  16 )  c_i:  0.9871  Per: 97.4%  IPA:     5.808 eV  Oai: 0.4688
+      CV(0):    A(  15 )->   A(  17 )  c_i:  0.1496  Per:  2.2%  IPA:     9.144 eV  Oai: 0.4392
+
+  ...
+
+  Excitation energy correction(cLR)                  =   -0.0377 eV
+
+可算得cLR的激发能为  :math:`3.7475-0.0377=3.7098eV`。
+
+激发态溶剂化效应-几何优化
+----------------------------------------------------------
+
+对于几何优化过程，溶剂有足够的时间进行响应，应考虑平衡溶剂效应。
+需要在 ``tddft`` 以及 ``resp`` 模块中加入 ``soleqlr`` 关键词来表示平衡溶剂效应的计算。输入文件的其他部分以及输出，与 :ref:`TDDFT相关章节<TDDFTopt>` 类似，此处不再赘述。
+
+以下是苯酚分子的激发态溶剂化效应的几何优化计算
+
+.. code-block:: bdf
+
+  $COMPASS
+  Geometry
+    C                 -1.15617700   -1.20786100    0.00501300
+    C                 -1.85718200    0.00000000    0.01667700
+    C                 -1.15617700    1.20786100    0.00501300
+    C                  0.23962700    1.21165300   -0.01258600
+    C                  0.93461900    0.00000000   -0.01633400
+    C                  0.23962700   -1.21165300   -0.01258600
+    H                 -1.69626800   -2.15127300    0.00745900
+    H                 -2.94368500    0.00000000    0.02907200
+    H                 -1.69626800    2.15127300    0.00745900
+    H                  0.80143900    2.14104700   -0.03186000
+    H                  0.80143900   -2.14104700   -0.03186000
+    O                  2.32295900    0.00000000   -0.08796400
+    H                  2.68364400    0.00000000    0.81225800
+  End geometry
+  basis
+    6-31G
+  $END
+
+  $bdfopt
+  solver
+    1
+  $end
+
+  $XUANYUAN
+  $END
+
+  $SCF
+  DFT
+    gb3lyp
+  rks
+  solModel
+    iefpcm
+  solvent
+    water
+  $END
+
+  $TDDFT
+  iroot
+    5
+  istore
+    1
+  soleqlr
+  $END
+
+  $resp
+  geom
+  soleqlr
+  method
+    2
+  nfiles
+    1
+  iroot
+    1
+  $end
+
+激发态溶剂化效应-垂直发射
+----------------------------------------------------------
+
+在激发态的平衡几何结构下，进行ptSS或者cLR的平衡溶剂化效应的计算，将保存对应的溶剂慢极化电荷。在随后的scf模块中加入 ``emit`` 关键词，来计算非平衡的基态能量。以丙烯醛分子为例，采用ptSS计算激发态，对应的输入文件如下：
+
+.. code-block:: bdf
+
+  $COMPASS
+  Geometry
+    C       -1.810472    0.158959    0.000002
+    H       -1.949516    1.241815    0.000018
+    H       -2.698562   -0.472615   -0.000042
+    C       -0.549925   -0.413873    0.000029
+    H       -0.443723   -1.502963   -0.000000
+    C        0.644085    0.314498    0.000060
+    H        0.618815    1.429158   -0.000047
+    O        1.862127   -0.113145   -0.000086
+  End geometry
+  basis
+    cc-PVDZ
+  $END
+
+  $XUANYUAN
+  $END
+
+  $SCF
+  DFT
+    PBE0
+  rks
+  solModel
+    iefpcm
+  solvent
+    water
+  $END
+
+  $TDDFT
+  iroot
+    5
+  istore
+    1
+  #soleqlr
+  $END
+
+  $resp
+  nfiles
+    1
+  method
+    2
+  iroot
+    1
+  norder
+    0
+  #soleqlr
+  Soleqss
+  $end
+
+  $SCF
+  DFT
+    PBE0
+  rks
+  solModel
+    iefpcm
+  solvent
+    water
+  emit
+  $END
+
+需要注意指定 ``soleqss`` 来计算平衡溶剂化效应。在文件中的输出为：
+
+.. code-block:: 
+
+ -Energy correction based on constrant equilibrium theory
+ *State   1  ->  0
+ Corrected vertical emission energy(Li)             =    2.9170 eV
+ Corrected vertical emission energy(Marcus)         =    2.9040 eV
+ Nonequilibrium solvation free energy(Li)           =   -0.0964 eV
+ Nonequilibrium solvation free energy(Marcus)       =   -0.0834 eV
+ Equilibrium solvation free energy                  =   -0.1145 eV
+
+其中  Corrected vertical emission energy(Li) 表示采用李象远教授发展的非平衡溶剂化新理论计算的激发能矫正， Corrected vertical emission energy(Marcus) 表示用Marcus理论计算的激发能矫正。
+
+上面的例子中，垂直吸收能为 :math:`2.92eV`。
+
+采用cLR计算时，需要在文件中的找到 **第一个TDDFT** 的输出， 以及resp模块中的cLR输出，并与两个scf的 ``E_tot`` 之差进行相加，得到最终的垂直吸收能。
+
+采用显式溶剂和隐式溶剂相结合的方法计算激发态溶剂化效应
 ----------------------------------------------------------
 
 激发态溶剂化效应可以采用显式溶剂和隐式溶剂相结合的方法计算。以水溶液为例，由于溶质分子的HOMO和LUMO轨道有可能弥散到
