@@ -486,22 +486,22 @@ Ifpair参数指定电子如何激发，确定mom方法的电子占初态，必�
 -----------------------------------------------------------
 指定固定的分子轨道。
 
-:guilabel:`EnableSecondOrderScf` 参数类型: Bool 型
------------------------------------------------------------
-指定启用二阶 SCF 并使用默认设置. 二阶收敛应仅在无法通过其它收敛算法得到稳定解时使用.
+:guilabel:`EnableSecondOrderScf` / :guilabel:`EnableApproxSecondOrderScf` 参数类型: Bool 型
+----------------------------------------------------------------------------------------------
+指定启用二阶 (或近似的二阶) SCF 并使用默认设置. 严格的二次收敛很昂贵, 仅应在无法通过其它收敛算法得到稳定解时使用.
 
 .. hint::
-    * 二阶 SCF 目前不支持 iOI 等算法
-    * 二阶 SCF 目前不支持限制性开壳层计算
-    * 二阶 SCF 目前不支持相对论计算
+    * 二阶 (及近似的二阶) SCF 目前不支持 iOI 等算法
+    * 二阶 (及近似的二阶) SCF 目前不支持限制性开壳层计算
+    * 二阶 (及近似的二阶) SCF 目前不支持相对论计算
 
-:guilabel:`DisableSecondOrderScf` 参数类型: Bool 型
------------------------------------------------------------
-指定禁用二阶SCF.
+:guilabel:`DisableSecondOrderScf` / :guilabel:`DisableApproxSecondOrderScf` 参数类型: Bool 型
+------------------------------------------------------------------------------------------------
+指定禁用二阶 (或近似的二阶) SCF.
 
-:guilabel:`SecondOrderConfig` 参数类型: 字符串
------------------------------------------------------------
-指定二阶 SCF 所用的高级设置. 一般用户仅需指定 ``EnableSecondOrderScf`` 关键词, 无需指定该项.
+:guilabel:`SecondOrderConfig` / :guilabel:`ApproxSecondOrderConfig` 参数类型: 字符串
+---------------------------------------------------------------------------------------
+指定二阶 (或近似的二阶)  SCF 所用的高级设置. 一般用户仅需指定 ``EnableSecondOrderScf`` (或 ``EnableApproxSecondOrderScf``) 关键词, 无需指定该项.
 
 .. code-block:: bdf
 
@@ -558,8 +558,9 @@ Ifpair参数指定电子如何激发，确定mom方法的电子占初态，必�
 * ``MaxDavidsonIterationCycle``, 整型: 指定用 Davidson 对角化求解 Levenberg-Marquardt 方程时所用的最大迭代次数. 最终矢量将被用作旋转矢量即使未收敛
 * ``CorrectionType``, 字符串: 指定 Davidson 对角化所用的矫正方法, 可选项为 ``DavidsonDPR`` (也作 ``DPR``), ``JacobiDavidson``, 及 ``Olsen``
 * ``LinearSolverTolerance``, 浮点型: 指定 Davidson 对角化所用线性方程求解器所用收敛阈值
-* ``ExcludeNonOccupiesFromRotation``:  指定将在构造原理下本该为占据轨道但用户明确指定为非占据轨道的轨道从轨道旋转对中排除, 以防止塌陷至构造原理所表示的态. 该选项只在做 ΔSCF 计算时生效.
-* ``IncludeNonOccupiesInRotation``: 指定将所有轨道都包含至旋转对中. 该选项只在做 ΔSCF 时生效.
+* ``ExcludeNonOccupiesFromRotation``:  指定将在构造原理下本该为占据轨道但用户明确指定为非占据轨道的轨道从轨道旋转对中排除, 以防止塌陷至构造原理所表示的态. 该选项只在做 ΔSCF 计算时生效
+* ``IncludeNonOccupiesInRotation``: 指定将所有轨道都包含至旋转对中. 该选项只在做 ΔSCF 时生效
 * ``AllowConverge``: 允许 SCF 于二次收敛迭代过程中宣布 SCF 已收敛
 * ``ForbidConverge``: 禁止 SCF 于二次收敛迭代过程中宣布 SCF 已收敛
 * ``ScfConvergeGradientThreshold``, 浮点型: 指定在能量-轨道梯度之模低于一定值后认为 SCF 已收敛. 仅在已设 ``AllowConverge`` 时生效
+* ``QuasiNewtonAlgorithm``, 字符串: 指定所用伪牛顿算法, 可选项有 ``BFGS`` (默认), ``SR1``, 及 ``DFP``. 仅在使用近似的二阶 SCF 时生效
