@@ -1308,6 +1308,111 @@ BDF的iVI方法为以上问题提供了一种解决方案。在iVI方法中，�
 
 如果不带命令行参数运行$BDFHOME/sbin/plotspec.py，可以列出所有的命令行参数及用法，这里不予赘述。
 
+电子圆二色性（ECD）谱的计算
+-------------------------------------------------------
+.. _ECD:
+
+除吸收光谱外，BDF还支持在TDDFT级别下计算圆二色性（ECD）谱。用户只需在$tddft模块的输入中添加ECD关键字即可。例如以下输入文件在wB97X/ma-def2-TZVP水平下计算(S)-5-甲基环戊-2-烯-1-酮在160-300 nm范围内的ECD谱，溶剂为水：
+
+.. code-block:: bdf
+
+    $COMPASS
+    Title
+     ECD test
+    Basis
+     ma-def2-TZVP
+    Geometry # B3LYP/def2-SVP geometry
+      C   11.03017501307698     -1.06358915357097     18.65132535474617
+      C   12.57384005718525     -1.02456284484694     18.65658561738920
+      C   12.91529117412091      0.43177145174825     18.82255138315294
+      C   11.83078974644673      1.23189442235475     18.82242608164620
+      H   10.67388955940226     -1.47007769437446     19.61628109972719
+      H   13.00096293117676     -1.40629079282790     17.71067917782706
+      H   13.02306939327327     -1.63533989080155     19.45869631125239
+      H   13.94838829748073      0.77963695466942     18.91842719115154
+      H   11.81586135485978      2.32060314334658     18.90537981712256
+      C   10.61010494985639      0.41685642111484     18.65633627754937
+      O   9.46516754355473      0.82239910074197     18.54006339565965
+      C   10.37591484801120     -1.85714650215417     17.51891751829459
+      H   10.61141701850992     -2.93014535161767     17.59810807151853
+      H   9.28153845878811     -1.73962079399751     17.55678289237466
+      H   10.72376849425688     -1.50217177978463     16.53426564058783
+    End Geometry
+    MPEC+COSX
+    $END
+    
+    $XUANYUAN
+    rs
+     0.3
+    $END
+    
+    $SCF
+    RKS
+    DFT
+     wB97X
+    solvent
+     water
+    solmodel
+     SMD # IEFPCM is also a reasonable choice and is almost equally accurate
+    $END
+    
+    $tddft
+    iprt
+     3
+    # To ensure that we get all roots within the window, we use the iVI method.
+    # Nevertheless, of course, iVI is not mandatory for ECD calculations
+    idiag
+     3 # use iVI
+    iwindow
+     160 300 nm
+    ecd # specifies ECD calculation
+    solneqlr # linear response solvation, recommended when the number of excited states
+             # is large
+    $end
+
+该计算在输出吸收波长、振子强度、跃迁偶极矩后，还输出了跃迁磁偶极矩，以及长度、速度表象下的转子强度：
+
+.. code-block:: bdf
+
+     *** Ground to excited state Transition magnetic dipole moments (Au) ***
+        State          X           Y           Z
+           1    -0.001936     0.002882     0.000034
+           2    -0.000444    -0.000188    -0.004692
+           3    -0.000342    -0.003475    -0.000070
+           4    -0.001232     0.000479    -0.001992
+           5     0.000581     0.002272    -0.001047
+           6    -0.001917     0.003593    -0.000178
+           7     0.002065     0.000206    -0.000823
+    
+    
+     *** Electronic circular dichroism (ECD) rotatory strengths (1e-40 cgs) ***
+        State      Length formalism     Velocity formalism
+           1               -2.9144               -3.0791
+           2               18.0007               17.5760
+           3              -25.1038              -25.1132
+           4               -7.2316               -7.0551
+           5               25.1323               24.4034
+           6              -14.9753              -14.2051
+           7              -30.6305              -30.8057
+
+接下来，可以用plotspec.py读取该输出文件中的转子强度信息，进行高斯展宽，得到.spec.csv和.stick.csv文件，作ECD图（其中因为吸收波长略小于160 nm的激发态在高斯展宽后会对160 nm附近的图谱有一定影响，160 nm附近的ECD谱可能不可靠，因此作图时只作到180 nm）：
+
+.. code-block::
+
+    $BDFHOME/sbin/plotspec.py -cd wavelength=180-300 filename.out
+
+结果如下：
+
+.. figure:: /images/ketone-ECD-plotspec-example.png
+   :width: 800
+   :align: center
+
+.. note::
+
+    1. 虽然当基组趋于完备时，速度表象下的转子强度和长度表象下的转子强度严格相等，但当基组大小有限时，速度表象下的转子强度不依赖于分子的取向和中心位置，但长度表象下的转子强度是依赖于分子的取向和中心位置的。因此，起码当分子比较大、基组不太大的情况下，速度表象下的转子强度结果较为可靠。plotspec.py默认是用速度表象下的转子强度来绘制ECD图的，如需要用长度表象下的转子强度来绘制ECD图，应将plotspec.py的命令行参数中的-cd改为-cdl。
+    2. 因BDF和其他程序确定分子标准取向以及分子坐标原点的方法不同，BDF计算出的长度表象下的转子强度可能与其他程序存在少许差别，这是正常现象，是由上述长度表象下的转子强度的理论缺陷所导致的，不代表计算结果错误。但速度表象下的转子强度理应和其他程序吻合较好。
+    3. 对于柔性分子，单一构象的ECD计算结果不可靠，建议结合CREST、Molclus等软件进行构象搜索，对所有主要构象分别计算ECD谱后，进行Boltzmann加权平均。
+
 激发态结构优化
 -------------------------------------------------------
 .. _TDDFTopt:
