@@ -838,7 +838,7 @@ QM模型选择QCModelBDF_TDGRAD1类使用模板文件进行激发态的几何构
 
 ----------------------------------------------------------------------------
 
-
+.. include:: /app/QMMM_example/menprotein/menprotein.rst
 
 
 
