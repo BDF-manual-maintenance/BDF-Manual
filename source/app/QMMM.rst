@@ -1,7 +1,7 @@
 
 .. _QMMM:
 
-BDF-QM/MM案例教程
+BDF-QM/MM案例教程一
 =====================================================
 
 本专题将介绍一种量子化学与分子力学结合的方法（QM/MM方法），该方法既包括量子化学的精确性，又利用分子力学的高效性，其基本思想是用量子力学处理感兴趣的中心，其余部分用经典分子力学来处理。
@@ -27,9 +27,9 @@ BDF-QM/MM案例教程
      :align: center
 
 运行antechamber程序将Pdb文件转化为mol2文件：
-######################################################
-antechamber -i GallicAcid.pdb -fi pdb -o GallicAcid.mol2 -fo mol2 -j 5 -at amber -dr no
 
+.. code-block:: python
+antechamber -i GallicAcid.pdb -fi pdb -o GallicAcid.mol2 -fo mol2 -j 5 -at amber -dr no
 - -i 指定输入文件
 - -fi 指定输入文件类型
 - -o 指定输出文件
@@ -37,13 +37,14 @@ antechamber -i GallicAcid.pdb -fi pdb -o GallicAcid.mol2 -fo mol2 -j 5 -at amber
 - -j 匹配原子类型和键类型
 - -at 定义原子类型
 
-
 运行parmchk2程序生成对应体系的力场参数文件
-######################################################
+
+.. code-block:: python
+
 parmchk2 -i GallicAcid.mol2 -f mol2 -o GallicAcid.frcmod
 
 运行tleap程序构建系统拓扑并为分子定义力场参数步骤如下:
-######################################################
+
 1. 使用 **tleap** 命令启动tleap程序
 
 .. code-block:: bdf
@@ -538,3 +539,306 @@ QM/MM 激发态计算
        3      -0.0797      -0.2409       0.4272       0.0287       0.0287
        4       0.0384      -0.0172      -0.0189       0.0003       0.0003
        5       1.1981       0.8618      -0.1305       0.2751       0.2751
+
+
+---------------------------------------------------------------------------------------------------------
+
+.. _QMMM_example_2:
+
+QM/MM案例教程二  二苯甲酮
+==========================================
+
+Benzophenone结构准备
+-----------------------------------
+
+首先准备二苯甲酮Benzophenone的坐标文件,命名为BPH.xyz
+
+.. code-block:: python
+
+ 24
+ 
+ C         -2.54700        0.45510        0.06680
+ C         -2.54160       -0.01810        1.38630
+ C         -3.74290       -0.40660        1.99760
+ C         -4.94170       -0.34290        1.28250
+ C         -4.94480        0.12330       -0.03620
+ C         -3.74920        0.52640       -0.64160
+ C         -1.27680       -0.08120        2.18450
+ O         -1.26930        0.16880        3.37250
+ C         -0.02150       -0.46400        1.46430
+ C          1.18620        0.13430        1.85330
+ C          2.37660       -0.21530        1.21040
+ C          2.36490       -1.17300        0.19100
+ C          1.16310       -1.78220       -0.18680
+ C         -0.03080       -1.42830        0.44700
+ H          1.18770        0.86620        2.66440
+ H         -3.73280       -0.75010        3.03460
+ H          3.31310        0.25350        1.50860
+ H         -5.87330       -0.64990        1.75530
+ H          3.29390       -1.44820       -0.30740
+ H         -5.88040        0.17660       -0.59220
+ H          1.15790       -2.53420       -0.97410
+ H         -3.75550        0.89780       -1.66500
+ H         -0.96650       -1.90720        0.15500
+ H         -1.61620        0.77400       -0.40440
+
+
+
+使用Open Babe、Amber插件antechamber得到键、电荷等信息
+命令行操作:
+
+.. code-block:: python
+
+ obabel BPH.xyz -O BPH_mid.mol2
+ #默认得到分子名为NUL,可将mol2中分子名字替换为BPH,此示例未进行该操作
+ antechamber -i BPH_mid.mol2 -fi mol2 -o BPH.mol2 -fo mol2 -c bcc -at gaff
+
+使用Amber中parmchk工具得到力场参数
+命令行操作:
+
+.. code-block:: python
+
+ parmchk -a Y -i BPH.mol2 -f mol2 -o BPH.frcmod
+
+使用tleap进行溶剂化处理,并得到小分子的lib文件以及体系的溶剂化处理
+准备文件tleap.in,溶剂化处理得到top、crd文件(文件名为BPH_solv.top BPH_solv.crd)
+
+.. code-block:: python
+
+ source leaprc.protein.ff14SB
+ source leaprc.water.tip3p
+ loadamberparams BPH.frcmod
+ BPH=loadmol2 BPH.mol2
+ check BPH
+ saveoff BPH BPH.lib
+ solvateoct BPH TIP3PBOX 18.0
+ saveamberparm BPH BPH_solv.top BPH_solv.crd
+ quit
+
+命令行运行:
+
+.. code-block:: python
+
+ tleap -f tleap.in
+
+得到初始构想的BPH_solv.top BPH_solv.crd.
+
+.. figure:: /app/QMMM_example/BPH/BPHimage/fig1.png
+
+
+动力学平衡
+-----------------------------------
+
+创建文件夹md/,在此文件夹中准备动力学模拟所需文件:最小化输入文件
+:download:`01_Min.in <QMMM_example/BPH/BPHfilelist/01_Min.in>`,
+升温输入文件
+:download:`02_Heat.in <QMMM_example/BPH/BPHfilelist/02_Heat.in>`,
+平衡输入文件
+:download:`03_Prod.in <QMMM_example/BPHfilelist/03_Prod.in>`.
+
+使用Amber中sander依次进行分子动力学最小化、升温、平衡;
+
+命令行依次运行:
+
+.. code-block:: python
+
+ ### Optimization
+ sander -O -i 01_Min.in -o 01_Min.out -p ../BPH_solv.top -c ../BPH_solv.crd -r 01_Min.rst -inf 01_Min.mdinfo
+ ### Heat
+ sander -O -i 02_Heat.in -o 02_Heat.out -p ../BPH_solv.top -c 01_Min.rst -r 02_Heat.rst -x 02_Heat.mdcrd -inf 02_Heat.mdinfo
+ ### Production
+ sander -O -i 03_Prod.in -o 03_Prod.out -p ../BPH_solv.top -c 02_Heat.rst -r 03_Prod.rst -x 03_Prod.mdcrd -inf 03_Prod.mdinfo
+
+动力学结果分析
+-----------------------------------
+
+.. figure:: /app/QMMM_example/BPH/BPHimage/energy.png
+.. figure:: /app/QMMM_example/BPH/BPHimage/pres.png
+.. figure:: /app/QMMM_example/BPH/BPHimage/temp.png
+
+随机选取单帧结构，截取部分水的构象
+-----------------------------------
+
+1 使用cpptraj获取单帧构象(仅作示例，故随机选取一帧)
+
+准备输入文件snap.trajin
+
+.. code-block:: python
+
+ parm ../BPH_solv.top
+ trajin 03_Prod.mdcrd 2976 2976 1      # read from mdcrd frames 2976 to 2976 (1 frame)
+ center :1                             # put BPH in the center
+ image familiar                        # re-image
+ trajout snapshot_2976.rst rest        # write the coordinates of this frame
+ go 
+
+命令行运行:
+
+.. code-block:: python
+
+ cpptraj -i snap.trajin
+
+2 截取部分水的构象
+
+删去与BPH中距离C7原子 > 20Å 的水分子,准备输入文件strip.trajin
+
+.. code-block:: python
+
+ parm ../BPH_solv.top
+ trajin snapshot_2976.rst                 # read the snapshot
+ reference snapshot_2976.rst rest         # use it as reference (necessary for strip command)
+ strip @7>:20.0                           # strip all waters further than 20A around atom C7
+ trajout strip_2976.pdb pdb               # write pdb output
+ go
+
+命令行运行
+
+.. code-block:: python
+
+ cpptraj -i strip.trajin
+
+得到新的溶剂化体系 
+:download:`strip_2976.pdb </app/QMMM_example/BHP/BPHfilelist/strip_2976.pdb>`.
+
+QM/MM计算准备
+-----------------------------------
+1 top和crd文件准备
+
+pDynamo使用Amber的top和crd文件作为输入,依据strip_2976.pdb文件,使用前面生成的力场文件得到该文件对应的Amber的top和crd文件。
+新建并进入文件夹md/get_topcrd/,准备tleap的输入文件
+:download:`tleap.in </app/QMMM_example/BPH/BPHfilelist/tleap.in>`.
+
+.. code-block:: python
+
+ ource leaprc.protein.ff14SB
+ source leaprc.water.tip3p
+ loadamberparams ../../BPH.frcmod
+ loadoff ../../BPH.lib
+ a=loadpdb strip_2976.pdb
+ check a
+ saveamberparm a BPH_new.top BPH_new.crd
+ savepdb a BPH_new.pdb
+ quit
+
+命令行运行,得到新的top和crd文件(
+:download:`BPH_new.top </app/QMMM_example/BPH/BPHfilelist/BPH_new.top>`、
+:download:`BPH_new.crd </app/QMMM_example/BPH/BPHfilelist/BPH_new.crd>`、
+:download:`BPH_new.pdb </app/QMMM_example/BPH/BPHfilelist/BPH_new.pdb>`
+)
+
+2 活性区域水分子层选取
+VMD 中选择距离二苯甲酮周围3Å的水作为可运动的水分子层,vmd中按照如下设置可显示二苯甲酮以及其周围3Å的水层
+
+.. figure:: /app/QMMM_example/BPH/BPHimage/vmdset.png
+
+BPH和3Å内的水构象如下图所示
+
+.. figure:: /app/QMMM_example/BPH/BPHimage/BPH3A.png
+
+整体构象如下图所示
+
+.. figure:: /app/QMMM_example/BPH/BPHimage/BPHandwat.png
+
+整个体系QM/MM区域划分如下图所示
+
+.. figure:: /app/QMMM_example/BPH/BPHimage/QMMMzone.png
+
+使用VMD 中TkConsole得到MM区活性区域原子index,后续需用于QM/MM输入文件中;
+TkConsole控制台依次键入:
+
+.. code-block:: python
+
+ #选择BPH周围3Å的水
+ set sel [atomselect 0 "same residue as exwithin 3 of residue 0"] 
+ #获取BPH周围3Å的水的index
+ $sel get index
+
+如图所示
+
+.. figure:: /app/QMMM_example/BPH/BPHimage/tk.png
+
+QM/MM计算
+-----------------------------------
+1. 基态优化
+
+- 新建文件夹qmmm/,将BPH_new.crd,BPH_new.top文件拷贝至该目录
+- 新建qmmm/ground_opt/文件夹,进行基态的QM/MM几何构型优化
+  
+准备QM/MM输入文件opt.py,其中定义QM区域和可活动的MM区域:
+
+.. code-block:: python
+
+ #. Define Atoms List 
+ natoms = len ( molecule.atoms )
+ qm_list = range(24)
+ activate_list = [387,388,389,390,391,392,402,403,404,552,553,554,624,625,626,1104,1105,1106,
+                  1203,1204,1205,1359,1360,1361,1419,1420,1421,1554,1555,1556,1572,1573,1574,
+                  1611,1612,1613,1617,1618,1619,1845,1846,1847,1944,1945,1946,2139,2140,2141,
+                  2262,2263,2264,2337,2338,2339,2460,2461,2462,2568,2569,2570,2736,2737,2738]
+ mm_list = range ( natoms )
+ for i in qm_list :
+     mm_list.remove( i )
+ mm_inactivate_list = mm_list[ : ]
+ for i in activate_list :
+     mm_inactivate_list.remove( i )
+
+ # . Define the selection for the first molecule.
+ qmmmtest_qc = Selection.FromIterable ( qm_list )
+
+ # . Define Fixed Atoms
+ selection_qm_mm_inactivate = Selection.FromIterable ( qm_list + mm_inactivate_list )
+
+
+最小化100步
+
+.. code-block:: python
+
+ ConjugateGradientMinimize_SystemGeometry ( molecule                    ,
+                                          logFrequency         =  2,
+                                          maximumIterations    =  100,
+                                          rmsGradientTolerance =  0.1,
+                                          trajectories   = [ ( trajectory, 2 ) ])
+
+QM模型选择
+
+.. code-block:: python
+
+ qcModel = QCModelBDF ( "GB3LYP:6-31g" )
+
+文件全文见
+:download:`opt.py </app/QMMM_example/BPH/BPHfilelist/ground_opt/opt.py>`
+
+- QM/MM基态几何优化结果
+
+.. figure:: /app/QMMM_example/BPH/BPHimage/groundshow.png
+.. figure:: /app/QMMM_example/BPH/BPHimage/groundenergy.png
+
+2. S1态优化
+
+- 新建qmmm/s1_opt/文件夹,进行s1态的QM/MM几何构型优化
+- 准备QM/MM输入文件opt.py,其中定义QM区域和可活动的MM区域(同基态)
+  
+QM模型选择QCModelBDF_TDGRAD1类使用模板文件进行激发态的几何构型优化;
+
+.. code-block:: python
+
+ qcModel = qcModel = QCModelBDF_TDGRAD1 ( template = 'temple.inp', exgrad = 1 )
+
+文件全文见
+:download:`opt.py </app/QMMM_example/BPH/BPHfilelist/s1_opt/opt.py>`;
+其中模板文件
+:download:`opt.py </app/QMMM_example/BPH/BPHfilelist/s1_opt/temple.inp>`
+中激发态梯度设置为s1激发态的梯度。
+
+- QM/MM s1态几何优化结果
+
+.. figure:: /app/QMMM_example/BPH/BPHimage/s1show.png
+
+.. figure:: /app/QMMM_example/BPH/BPHimage/s1energy.png
+
+----------------------------------------------------------------------------
+
+
+
+
+

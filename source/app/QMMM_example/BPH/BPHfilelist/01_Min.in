@@ -1,0 +1,14 @@
+Minimize            ! line for comment
+&cntrl              ! start the control sequence
+   imin=1,          ! do minimization
+   ntx=1,           ! read initial coordinates from filename
+   irest=0,         ! that’s not a restart
+   maxcyc=2000,     ! in total 2000 opt. cycles
+   ncyc=1000,       ! last 1000 being Newton-Raphson steps
+   ntpr=100,        ! Print energy every 100 steps
+   ntwx=0,          ! No mdcrd file will be written
+   cut=14.0,        ! cutoff for vdw/electrost. interactions
+   ntb=1,           ! use periodic boundaries
+   ntxo=1,          ! write output coordinates in ascii format
+/                   ! end of control sequence
+

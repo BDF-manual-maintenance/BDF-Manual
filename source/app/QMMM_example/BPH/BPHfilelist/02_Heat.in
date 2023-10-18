@@ -1,0 +1,28 @@
+Heat                     ! line for comment
+&cntrl                   ! start the control sequence
+   imin=0,               ! no minimization
+   ntx=1,                ! read initial coordinates from file
+   irest=0,              ! that’s not a restart
+   nstlim=10000,         ! in total 10000 MD steps
+   dt=0.002,             ! with a time step of 2 fs
+   ntf=2,                ! ommit bond interactions involving H atoms
+   ntc=2,                ! switch on SHAKE for hydrogens
+   tempi=0.0,            ! initial temperature
+   temp0=300.0,          ! target temperature
+   ntpr=100,             ! print energy every 100 steps
+   ntwx=100,             ! write coord. every 100 steps to mdcrd
+   cut=8.0,              ! cutoff for vdw/electrost. interactions
+   ntb=1,                ! use periodic boundaries
+   ntp=0,                ! No mdcrd file will be written
+   ntt=3,                ! Use Langevin dynamics
+   gamma_ln=2.0,         ! collision frequency for Langevin dynamics
+   nmropt=1,             ! read NMR restraints/weights
+   ig=-1,                ! random seed
+   ntxo=1,               ! write output coordinates in ascii format
+/                        ! end of control sequence
+&wt type='TEMP0', istep1=0, istep2=9000,      ! bring the system from 0 to 300K in steps 0 to
+value1=0.0, value2=300.0 /                    ! 9000
+&wt type='TEMP0', istep1=9001, istep2=10000,  ! stay at 300 K for the next 1000 steps
+value1=300.0, value2=300.0 /                  !
+&wt type='END' /                              ! end of temperature input
+

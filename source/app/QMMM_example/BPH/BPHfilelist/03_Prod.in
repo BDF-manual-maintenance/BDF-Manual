@@ -1,0 +1,21 @@
+Production            ! line for comment        
+&cntrl                ! start the control sequence
+   imin=0,            ! no minimization
+   ntx=5,             ! read initial coord. and veloc. from file
+   irest=1,           ! that’s a restart
+   nstlim=300000,     ! in total 300000 MD steps
+   dt=0.002,          ! with a time step of 2 fs
+   ntf=2,             ! ommit bond interactions involving H atoms
+   ntc=2,             ! switch on SHAKE for hydrogens
+   temp0=300.0,       ! target temperature
+   ntpr=100,          ! print energy every 100 steps
+   ntwx=100,          ! write coord. every 100 steps to mdcrd
+   cut=8.0,           ! cutoff for vdw/electrost. interactions
+   ntb=2,             ! use periodic boundaries
+   ntp=1,             ! use constant pressure (default 1.0 atm)
+   ntt=3,             ! Use Langevin dynamics
+   gamma_ln=2.0,      ! collision frequency for Langevin dynamics
+   ig=-1,             ! random seed
+   ntxo=1,            ! write output coordinates in ascii format
+ /                     ! end of control sequence
+

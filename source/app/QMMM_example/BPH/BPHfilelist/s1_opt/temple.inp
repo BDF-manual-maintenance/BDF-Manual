@@ -1,0 +1,62 @@
+$COMPASS 
+Title
+ h2o
+Basis
+ 6-31g
+Geometry
+ O                 -1.41348200   -0.10238200   -0.01279600
+ H                 -0.77210800    0.62018200    0.00286200
+ H                 -2.27203100    0.32451700    0.08352600
+End geometry
+Extcharge
+ point
+Skeleton
+nosymm
+$END
+
+$XUANYUAN
+Direct
+Schwarz
+$END
+
+$SCF
+RKS
+DFT
+GB3LYP
+charge
+0
+spin
+1
+$END
+
+$resp
+GEOM
+norder
+1
+imethod
+1
+$END
+
+$tddft
+iprt
+3
+iroot
+3
+istore
+1
+gridtol
+1.d-7
+$end
+
+$resp
+GEOM
+norder
+1
+imethod
+2
+iroot
+1
+nfiles
+1
+$END
+

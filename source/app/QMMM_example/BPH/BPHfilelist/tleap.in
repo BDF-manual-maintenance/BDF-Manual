@@ -1,0 +1,10 @@
+source leaprc.protein.ff14SB
+source leaprc.water.tip3p
+loadamberparams ../../BPH.frcmod
+loadoff ../../BPH.lib
+a=loadpdb strip_2976.pdb
+check a
+saveamberparm a BPH_new.top BPH_new.crd
+savepdb a BPH_new.pdb
+quit
+
