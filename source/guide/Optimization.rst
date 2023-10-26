@@ -1316,7 +1316,7 @@ BDF还支持在结构优化中限制一个或多个内坐标的值，方法是�
 
     即使分子坐标是以直角坐标而非内坐标的形式输入的，BDF仍然可以对内坐标做限制性优化。
 
-当需要同时冻结多个原子（例如用团簇模型研究表面催化反应，欲冻结一部分催化剂原子）时，虽仍然可以穷尽这些原子之间的所有键长、键角、二面角并一一冻结，但是当需要冻结的原子数较多时，这样做比较麻烦。因此BDF还支持冻结原子的笛卡尔坐标的功能，方法是使用frozen关键字。例如：
+当需要同时冻结多个原子（例如用团簇模型研究表面催化反应，欲冻结一部分催化剂原子）时，虽仍然可以穷尽这些原子之间的所有键长、键角、二面角并一一冻结，但是当需要冻结的原子数较多时，这样做比较麻烦、易错。因此BDF还支持冻结原子的笛卡尔坐标的功能，方法是使用frozen关键字。例如：
 
 .. code-block:: bdf
 
@@ -1362,6 +1362,122 @@ BDF还支持在结构优化中限制一个或多个内坐标的值，方法是�
 
     （1）程序冻结的是用户指定的各原子之间的相对笛卡尔坐标，原子的绝对笛卡尔坐标仍可能因为分子标准取向的变化而变化；
     （2）同一个计算可以既冻结任意多的笛卡尔坐标，也冻结任意多的内坐标。
+
+对于冻结内坐标的计算，程序还支持将内坐标冻结为某个和初始结构不同的值。例如以下输入文件，在M06-2X/6-31+G(d,p)/SMD(water)级别下优化环氧乙烷的结构，但限制其中一根C-O键长为2.0埃：
+
+.. code-block:: bdf
+
+    $compass
+    Geometry
+     C                  0.00000000    0.70678098   -0.40492819
+     C                  0.00000000   -0.70678098   -0.40492819
+     O                  0.00000000    0.00000000    0.95133348
+     H                  0.86041653    1.24388179   -0.74567167
+     H                 -0.86041653    1.24388179   -0.74567167
+     H                  0.86041653   -1.24388179   -0.74567167
+     H                 -0.86041653   -1.24388179   -0.74567167
+    End Geometry
+    Basis
+     6-31+G(d,p)
+    MPEC+COSX
+    $end
+    
+    $bdfopt
+    Solver
+      1
+    constraint
+     1 # number of constraints
+     2 3 = 2.0 # constrain the distance of atom 2 and atom 3 at 2.0 Angstrom
+    $end
+    
+    $xuanyuan
+    $end
+    
+    $scf
+    RKS
+    dft
+     M062X
+    solmodel
+     SMD
+    solvent
+     water
+    $end
+    
+    $resp
+    geom
+    $end
+
+初始结构中，两根C-O键的键长均为1.53埃，但优化收敛后，可以发现被冻结的C-O键的键长刚好为2.00埃（而不是1.53埃），另一根没有冻结的C-O键长则被优化为1.43埃：
+
+.. code-block:: bdf
+
+    |******************************************************************************|
+           Redundant internal coordinates on Angstrom/Degree
+    
+      Name         Definition         Value     Constraint
+      R1          1   2               1.4907    No
+      R2          1   3               1.4332    No
+      R3          1   4               1.0917    No
+      R4          1   5               1.0917    No
+      R5          2   3               2.0000    Yes
+      R6          2   6               1.0845    No
+      R7          2   7               1.0845    No
+      A1          2   1   3            86.29    No
+    ...
+
+同一个计算冻结的坐标中，可以只给一部分赋值，其余坐标自动沿用初始结构中的值。例如以下输入是合法的，表示冻结原子1、2、5的笛卡尔坐标，且冻结原子5-原子6-原子8的键角，以及原子11-原子12-原子13-原子14的二面角。其中除了原子5-原子6-原子8的键角被冻结为60度以外，其他几个被冻结的坐标的取值均与用户给定的初始结构一致，例如假如初始结构中原子11-原子12-原子13-原子14的二面角为120度，则在之后的结构优化中原子11-原子12-原子13-原子14的二面角始终为120度：
+
+.. code-block:: bdf
+
+    $bdfopt
+    ...
+    solver
+     1
+    frozen
+     3
+     1 -1
+     2 -1
+     5 -1
+    constrain
+     2
+     5 6 8 = 60.
+     11 12 13 14
+    $end
+
+.. note::
+
+    程序只支持设定被冻结的键长、键角、二面角值，而不支持在冻结笛卡尔坐标时设定被冻结的原子的笛卡尔坐标值。
+
+当用户同时冻结多个内坐标并赋值时，用户需确认其冻结的内坐标值彼此自洽。作为内坐标不自洽的例子，考虑以下输入：
+
+.. code-block:: bdf
+
+    $bdfopt
+    Solver
+      1
+    constraint
+     3
+     1 2 = 1.0
+     1 3 = 2.0
+     2 3 = 4.0
+    $end
+
+显然，这三个键长限制条件不能同时满足，因为无法由键长1埃、2埃、4埃的三根键构成一个三角形。程序发现无法同时满足三个限制条件后，打印警告信息：
+
+.. code-block:: bdf
+
+       q2c_coord_calc: warning: the   1-th constraint cannot be enforced, error =  0.204E+00
+     Check if the input constraints are mutually contradictory, or numerically ill-posed!
+       q2c_coord_calc: warning: the   2-th constraint cannot be enforced, error =  0.200E+00
+     Check if the input constraints are mutually contradictory, or numerically ill-posed!
+       q2c_coord_calc: warning: the   3-th constraint cannot be enforced, error = -0.149E+01
+     Check if the input constraints are mutually contradictory, or numerically ill-posed!
+
+最后因多次重启优化器仍然无法解决该问题，程序报错退出。
+
+.. note::
+
+    以上算例中，同时满足各个内坐标限制条件是数学上不可能的。有时虽然同时满足各个限制条件在数学上可能，但初始结构离满足限制条件的结构太远，此时程序仍然可能找不到同时满足所有限制条件的结构，并打印警告或报错退出。
 
 激发态结构优化
 -------------------------------------------------------
