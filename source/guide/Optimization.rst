@@ -921,7 +921,7 @@ BDF的IRC计算是由IRC模块来实现的，使用的算法是支持笛卡尔�
 
 计算IRC时，需要把 ``$IRC`` 模块的参数写在输入文件 ``3c2o5h.inp`` 的最前面，并且保留优化过渡态时使用的计算参数，即 ``$scf`` 和 ``$resp`` 模块需要严格保留。需要说明的是，你需要把ts对应的hess、scforb文件都改名为 ``3c2o5h.hess``, ``3c2o5h.scforb``，以及把ts收敛的坐标写到 ``3c2o5h.inp`` 中。
 
-.. figure:: images/irc.png
+.. figure:: /images/irc.png
    :width: 800
    :align: center
 

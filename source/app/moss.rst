@@ -52,7 +52,7 @@ ED或CD值 :math:`\rho_{A}` 和 :math:`\rho_{R}` 可以通过理论计算获得�
 在以下的全电子相对论计算中，铁采用ANO-R2基组（具有三ζ精度），
 并把 *s* 函数做非收缩处理，也就是删除 *s* 函数的收缩因子部分，并把收缩度从6改为0，然后存为其它文件名（如ANO-R2-ED）。
 由于铁没有4 *p* 价电子， *p* 函数不需要修改。
-把ANO-R2-ED复制到$BDF_WORKDIR目录下，供后面的计算调用（下载链接 :download:`ano-r2-ed.zip <files/ano-r2-ed.zip>` ）。
+把ANO-R2-ED复制到$BDF_WORKDIR目录下，供后面的计算调用（下载链接 :download:`ano-r2-ed.zip </files/ano-r2-ed.zip>` ）。
 注意：对于非标准基组，基组名的字母必须全部大写。
 
 我们对于铁的一系列模型体系化合物进行相对论密度泛函理论计算，泛函选取PBE0，相对论哈密顿用sf-X2C-AU。
@@ -112,7 +112,7 @@ ED或CD值 :math:`\rho_{A}` 和 :math:`\rho_{R}` 可以通过理论计算获得�
           1        1       26        3.76842           14552.65555
   ----------------------------------------------------------------
 
-以此为例，完成其它铁化合物分子的ED计算（输入文件下载链接 :download:`ed-fe.zip <files/ed-fe.zip>` ）。
+以此为例，完成其它铁化合物分子的ED计算（输入文件下载链接 :download:`ed-fe.zip </files/ed-fe.zip>` ）。
 ED结果以及 :math:`\delta^{IS}` 实验值 :cite:`neese2009` 列于下表：
 
 .. table:: 部分铁化合物的 :math:`\delta^{IS}` 和有效接触密度

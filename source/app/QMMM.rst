@@ -1,6 +1,4 @@
 
-.. _QMMM:
-
 BDF-QM/MM案例教程一
 =====================================================
 
@@ -29,6 +27,7 @@ BDF-QM/MM案例教程一
 运行antechamber程序将Pdb文件转化为mol2文件：
 
 .. code-block:: python
+
 antechamber -i GallicAcid.pdb -fi pdb -o GallicAcid.mol2 -fo mol2 -j 5 -at amber -dr no
 - -i 指定输入文件
 - -fi 指定输入文件类型
@@ -132,14 +131,12 @@ parmchk2 -i GallicAcid.mol2 -f mol2 -o GallicAcid.frcmod
       imin=1, maxcyc=200, ncyc=50,
       cut=16, ntb=0, igb=1,
     &end
-
-
-- imin=1：运行能量最小化
-- maxcyc=200：能量最小化的最大循环数
-- ncyc=50：最初的0到ncyc循环使用最速下降算法, 此后的ncyc到maxcyc循环切换到共轭梯度算法
-- cut=16：以埃为单位的非键截断距离
-- ntb=0：关闭周期性边界条件
-- igb=1：Born模型
+ - imin=1：运行能量最小化
+ - maxcyc=200：能量最小化的最大循环数
+ - ncyc=50：最初的0到ncyc循环使用最速下降算法, 此后的ncyc到maxcyc循环切换到共轭梯度算法
+ - cut=16：以埃为单位的非键截断距离
+ - ntb=0：关闭周期性边界条件
+ - igb=1：Born模型
 
 使用如下命令运行能量最小化:
 
@@ -543,7 +540,6 @@ QM/MM 激发态计算
 
 ---------------------------------------------------------------------------------------------------------
 
-.. _QMMM_example_2:
 
 QM/MM案例教程二  二苯甲酮
 ==========================================
@@ -630,11 +626,11 @@ Benzophenone结构准备
 -----------------------------------
 
 创建文件夹md/,在此文件夹中准备动力学模拟所需文件:最小化输入文件
-:download:`01_Min.in <QMMM_example/BPH/BPHfilelist/01_Min.in>`,
+:download:`01_Min.in </app/QMMM_example/BPH/BPHfilelist/01_Min.in>`,
 升温输入文件
-:download:`02_Heat.in <QMMM_example/BPH/BPHfilelist/02_Heat.in>`,
+:download:`02_Heat.in </app/QMMM_example/BPH/BPHfilelist/02_Heat.in>`,
 平衡输入文件
-:download:`03_Prod.in <QMMM_example/BPHfilelist/03_Prod.in>`.
+:download:`03_Prod.in </app/QMMM_example/BPH/BPHfilelist/03_Prod.in>`.
 
 使用Amber中sander依次进行分子动力学最小化、升温、平衡;
 
@@ -698,7 +694,7 @@ Benzophenone结构准备
  cpptraj -i strip.trajin
 
 得到新的溶剂化体系 
-:download:`strip_2976.pdb </app/QMMM_example/BHP/BPHfilelist/strip_2976.pdb>`.
+:download:`strip_2976.pdb </app/QMMM_example/BPH/BPHfilelist/strip_2976.pdb>`.
 
 QM/MM计算准备
 -----------------------------------
@@ -746,7 +742,7 @@ BPH和3Å内的水构象如下图所示
 使用VMD 中TkConsole得到MM区活性区域原子index,后续需用于QM/MM输入文件中;
 TkConsole控制台依次键入:
 
-.. code-block:: python
+.. code-block::bdf
 
  #选择BPH周围3Å的水
  set sel [atomselect 0 "same residue as exwithin 3 of residue 0"] 
@@ -839,6 +835,68 @@ QM模型选择QCModelBDF_TDGRAD1类使用模板文件进行激发态的几何构
 ----------------------------------------------------------------------------
 
 .. include:: /app/QMMM_example/menprotein/menprotein.rst
+
+----------------------------------------------------------------------------
+
+QM/MM边界选择算例教程
+=======================================
+
+本教程示例QMMM边界的选择对几何构型优化的影响，错误的边界选择可能会导致意向不到的构象变化。
+
+体系视图
+-----------------------------------
+本示例以五肽作为计算体系,以测试成建体系QM区的选择。体系
+(:download:`5ala.pdb </app/QMMM_example/qmmmboundary/qmmmboundaryfilelist/5ala.pdb>`)
+由五个ALA组成,N端、C端分别使用ACE、NME进行封端。
+
+.. image:: /app/QMMM_example/qmmmboundary/qmmmboundaryimage/5ala.png
+
+QM区域的选取
+-----------------------------------
+以五肽体系为例：
+
+1 QM区: ALA4
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+QM区域选择一:
+
+选取第三个丙氨酸ALA4作为QM区,邻近的ALA作为其active MM区
+
+.. code-block :: bdf
+
+ qm_list = range (26, 36 )
+ activate_list = range ( 16, 26 ) + range ( 36, 46 )
+
+.. image:: /app/QMMM_example/qmmmboundary/qmmmboundaryimage//QM-1.jpg
+
+QM/MM优化结果
+
+.. image:: /app/QMMM_example/qmmmboundary/qmmmboundaryimage/choose1.gif
+
+QM区选择时,邻近MM区若带有较强的电荷(如本例的C=O),QM区和MM区之间静电相互作用较强,
+体系无法收敛,如上动画所示,由于邻近MM区电荷较大,QM-MM之间的静电相互作用会导致QM区结构优化出现问题。
+
+
+2 QM区: ALA4 和 C=0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+QM区域选择二:
+
+选取第三个丙氨酸ALA4作为QM区,以及其邻近的C=O,其余邻近的ALA作为其active MM区
+
+.. code-block :: bdf
+
+ qm_list = range (24, 36 )
+ activate_list = range ( 16, 24 ) + range ( 36, 46 )
+
+.. image:: /app/QMMM_example/qmmmboundary/qmmmboundaryimage/QM-2.jpg
+
+QM/MM优化结果
+
+.. image:: /app/QMMM_example/qmmmboundary/qmmmboundaryimage/choose2.gif
+
+将C=O基团包含在QM区,体系优化收敛,体系结构在合理范围中进行优化。
+
+_________________________________________________________________________________________
+
 
 
 

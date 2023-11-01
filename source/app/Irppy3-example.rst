@@ -82,7 +82,7 @@
 
 打开Device studio，点击File-new project，命名为 ``phosphorescence.hpf`` ，将 ``Ir(ppy)3_s0.xyz`` 拖入Project中，双击 ``Ir(ppy)3_s0.hzw`` 。接下来进 :math:`\rm Ir(ppy)_3` 基态S0的结构优化和频率计算。选中Simulator → BDF → BDF，在界面中设置参数。在Basic Settings界面中的Calculation Type选择Opt+Freq，方法选择PBE0泛函，基组在Basis中的All Electron类型中，选择Def2-SVP。Basic Settings界面中的其它参数使用推荐的默认值，不需要做修改。
 
-.. figuire:: /Irppy3-example/fig4.1-1.png
+.. figure:: /Irppy3-example/fig4.1-1.png
 
 在SCF Settings界面中，DFT Integral Grid选择Coarse，Convergence Threshold选择Tight。SCF Settings界面中的其它参数使用推荐的默认值，不需要做修改。
 
