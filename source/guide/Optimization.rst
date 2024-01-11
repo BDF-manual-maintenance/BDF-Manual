@@ -236,199 +236,6 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 此时用户应检查.optgeom文件里的当前坐标是否合理，如合理，则可改用DL-Find优化器，在直角坐标下进行优化，详情请参见 :ref:`几何优化不收敛的解决方法<geomoptnotconverged>` 。
 
-.. _MultiStateMix:
-
-自旋混合态的结构优化：ZnS分子
----------------------------------------------------------------------------------
-
-双原子分子ZnS的基态是闭壳层的 :math:`X^1\Sigma^+` ，键长2.05埃；在11 kcal/mol以上有第一激发态 :math:`^3\Pi` ，
-与基态在2.4埃附近发生交叉 :cite:`PSS2007` 。激发态的 :math:`^3\Pi_{0+}` 分量与基态存在相互作用，
-可能影响基态的键长。
-
-.. figure:: /images/zns.png
-
-如果对精度要求不高，可以用Truhlar等人建议的自旋轨道模型哈密顿 :cite:`Truhlar2018` 模拟两个自旋态之间的旋轨耦合，
-考虑 :math:`^3\Pi_{0+}` 对基态的影响。
-输入文件如下。其中，基态用RKS完成，第一激发态用TDDFT完成。输入文件中有以下几点需要注意：
-
-.. note::
-
-    1. 两态混合计算的选项是 ``2soc``，这两个自旋态必须有 **不同的自旋多重度** ，否则两态模型没有意义。
-    2. 这里设置的旋轨耦合常数经验值400 :math:`\rm cm^{-1}` 恰好是程序默认值，因此可以省略不写。
-    3. 通过 ``solver`` = 1指定BDF自带优化器。也可以用DL-Find优化器，但是一般会慢一些。
-    4. 两个自旋态的能量、梯度要分别保存到 ``$BDFTASK.egrad.1`` 和 ``$BDFTASK.egrad.2`` 文件。
-       至于哪个态规定为1号或2号，完全由用户决定，不影响最终结果。
-    5. 为了计算TDDFT自旋翻转三重态的梯度，需要在 ``$tddft`` 和 ``$resp`` 中加入一些额外的关键词（见输入文件中的注释）。
-
-.. code-block:: bdf
-
-    $COMPASS
-    Title
-     two-state calculation of ZnS
-    Basis
-     lanl2dz
-    Geometry
-     Zn  0.0  0.0  0.0
-     S   0.0  0.0  2.05
-    END geometry
-    $END
-
-    $bdfopt
-    solver
-     1
-    multistate
-     2soc  400
-    $end
-
-    $xuanyuan
-    $end
-
-    $SCF
-    rks
-    dft
-     pbe0
-    charge
-     0
-    spinmulti
-     1
-    $END
-
-    $resp
-    geom
-    norder
-     1
-    method
-     1
-    $end
-
-    %cp $BDF_WORKDIR/$BDFTASK.egrad1 $BDF_WORKDIR/$BDFTASK.egrad.1
-
-    $tddft
-    isf
-     1       # spin-flip TDDFT
-    ialda
-     4       # required by spin-flip TDDFT gradients
-    iroot
-     -1      # the first excited state
-    istore
-     1
-    # TDDFT gradient requires tighter TDDFT convergence criteria than single-point
-    # TDDFT calculations, thus we tighten the convergence criteria below.
-    crit_vec
-     1.d-6 # default 1.d-5
-    crit_e
-     1.d-8 # default 1.d-7
-    $end
-
-    $resp
-    geom
-    norder
-     1
-    method
-     2        # TDDFT gradients
-    iroot
-     1
-    nfiles
-     1        # must be the same as istore
-    $end
-
-    %cp $BDF_WORKDIR/$BDFTASK.egrad1 $BDF_WORKDIR/$BDFTASK.egrad.2
-
-计算结束后，优化的自旋混合基态键长是2.151埃，比纯单重基态的键长2.148埃（这个值远远大于高精度理论值2.05埃，是因为本算例采用的基组太小）略长一些，
-说明 :math:`^3\Pi_{0+}` 通过旋轨耦合作用把基态的键长拉长。最后一步优化的输出信息显示， :math:`^3\Pi_{0+}` 在自旋混合基态中占了1.4%。
-
-.. code-block::
-
-   Multi-state calculation
-   -----------------------
-
-   Spin-mixed state by 2 scalar states.
-
-   Chi =  400.0 cm^-1 is used to constuct the SO model Hamiltonian.
-
-   /home/zouwl/work/tmp/test.egrad.1
-   /home/zouwl/work/tmp/test.egrad.2
-
-   Energies and weights of spin-mixed states:
-
-      State 1:          -75.49739847        98.6%     1.4%
-      State 2:          -75.48187407         1.4%    98.6%
-
-也可以把TDDFT三重态计算步骤用UKS替代，输入如下：
-
-.. code-block:: bdf
-
-    $COMPASS
-    Title
-     two-state calculation of ZnS
-    Basis
-     lanl2dz
-    Geometry
-     Zn  0.0  0.0  0.0
-     S   0.0  0.0  2.05
-    END geometry
-    $END
-
-    $bdfopt
-    solver
-     1
-    multistate
-     2soc  400
-    $end
-
-    $xuanyuan
-    $end
-
-    $SCF
-    rks
-    dft
-     pbe0
-    charge
-     0
-    spinmulti
-     1
-    $END
-
-    $resp
-    geom
-    norder
-     1
-    method
-     1
-    $end
-
-    %cp $BDF_WORKDIR/$BDFTASK.egrad1 $BDF_WORKDIR/$BDFTASK.egrad.1
-
-    $SCF
-    uks
-    dft
-     pbe0
-    charge
-     0
-    spinmulti
-     3
-    $END
-
-    $resp
-    geom
-    norder
-     1
-    method
-     1
-    $end
-
-    %cp $BDF_WORKDIR/$BDFTASK.egrad1 $BDF_WORKDIR/$BDFTASK.egrad.2
-
-与前一个结构优化的结果不同，这个优化得到的自旋混合基态键长仍然是2.148埃，
-:math:`^3\Pi_{0+}` 在自旋混合基态中仅占0.2%，因此旋轨耦合对键长几乎没有影响。
-两种计算方法之所以得到不同的结果，是因为ZnS :math:`^3\Pi` 是电荷转移态，TDDFT存在较大误差，
-低估了 :math:`^3\Pi` 的激发能，从而高估了旋轨耦合相互作用。而UKS在这种情况下一般会得到更合理的结果。
-例如，UKS得到的垂直激发能是23 kcal/mol，接近高精度理论值20 kcal/mol :cite:`PSS2007` ，而TDDFT的结果仅为9 kcal/mol！
-
-多态混合模型的主要用途是研究多态反应，优化自旋混合态的反应物，中间体，产物，过渡态，
-以及反应路径。相比于MECP优化，它能提供更多信息，并且比严格考虑旋轨耦合的二分量或四分量相对论方法有更多优势。
-目前还不支持解析频率计算。
-
 频率计算：:math:`\ce{CH3Cl}` 在平衡结构下的谐振频率及热化学量的计算
 -------------------------------------------------------------------------
 
@@ -1268,6 +1075,212 @@ CI-NEB计算经常不收敛。有以下处理方法：
 
 .. figure:: /images/cineb2.png
 
+
+
+.. _MultiStateMix:
+
+自旋混合态的结构优化：ZnS分子
+---------------------------------------------------------------------------------
+
+双原子分子ZnS的基态是闭壳层的 :math:`X^1\Sigma^+` ，键长2.05埃；在11 kcal/mol以上有第一激发态 :math:`^3\Pi` ，
+与基态在2.4埃附近发生交叉 :cite:`PSS2007` 。激发态的 :math:`^3\Pi_{0+}` 分量与基态存在相互作用，
+可能影响基态的键长。
+
+.. figure:: /images/zns.png
+
+如果对精度要求不高，可以用Truhlar等人建议的自旋轨道模型哈密顿 :cite:`Truhlar2018` 模拟两个自旋态之间的旋轨耦合，
+考虑 :math:`^3\Pi_{0+}` 对基态的影响。
+输入文件如下。其中，基态用RKS完成，最低三重激发态用UKS完成。输入文件中有以下几点需要注意：
+
+.. note::
+
+    1. 两态混合计算的选项是 ``2soc`` （类似有 ``3soc`` 、 ``4soc`` 等），这两个自旋态必须有 **不同的自旋多重度** ，否则两态模型没有意义。
+    2. 这里设置的旋轨耦合常数经验值400 :math:`\rm cm^{-1}` 恰好是程序默认值，因此可以省略不写。
+    3. 通过 ``solver`` = 1指定BDF自带优化器。也可以用DL-Find优化器，但是一般会慢一些。
+    4. 两个自旋态的能量、梯度要分别保存到 ``$BDFTASK.egrad.1`` 和 ``$BDFTASK.egrad.2`` 文件。
+       至于哪个态规定为1号或2号，完全由用户决定，不影响最终结果。
+    5. 在BDF结构优化过程中，默认用上一步保存的SCF轨道作为当前SCF步骤的初猜，以获得最快的SCF收敛。由于两个SCF计算使用的SCF初猜轨道不同，
+       需要把它们分别备份为 ``$BDFTASK.scforb.1`` 和 ``$BDFTASK.scforb.2`` 。然而当首次用它们覆盖 ``$BDFTASK.scforb`` 时，由于尚未进行SCF计算，
+       这两个文件不存在导致复制出错，BDF发现后会停止计算。为了屏蔽掉复制出错的信息，需要在复制命令的末尾加上 ``2>/dev/null || :`` 。
+    6. 最低三重激发态也可以用TDDFT通过自旋翻转计算，需要在 ``$tddft`` 和 ``$resp`` 中加入一些额外的关键词（参见 :ref:`TDDFT相关章节<TDDFTopt>` ）。
+       不过TDDFT不能很好描述电荷转移态（ZnS就属于这种情况），这里不采用。
+
+.. code-block:: bdf
+
+    $COMPASS
+    Title
+     two-state calculation of ZnS
+    Basis
+     lanl2dz
+    Geometry
+     Zn  0.0  0.0  0.0
+     S   0.0  0.0  2.05
+    END geometry
+    $END
+
+    $bdfopt
+    solver
+     1
+    multistate
+     2soc  400
+    $end
+
+    $xuanyuan
+    $end
+
+    %cp $BDF_WORKDIR/$BDFTASK.scforb.1   $BDF_WORKDIR/$BDFTASK.scforb    2>/dev/null || :
+
+    $SCF
+    rks
+    dft
+     pbe0
+    charge
+     0
+    spinmulti
+     1
+    $END
+
+    %cp $BDF_WORKDIR/$BDFTASK.scforb     $BDF_WORKDIR/$BDFTASK.scforb.1
+
+    $resp
+    geom
+    norder
+     1
+    method
+     1
+    $end
+
+    %cp $BDF_WORKDIR/$BDFTASK.egrad1     $BDF_WORKDIR/$BDFTASK.egrad.1
+
+    %cp $BDF_WORKDIR/$BDFTASK.scforb.2   $BDF_WORKDIR/$BDFTASK.scforb    2>/dev/null || :
+
+    $SCF
+    uks
+    dft
+     pbe0
+    charge
+     0
+    spinmulti
+     3
+    $END
+
+    %cp $BDF_WORKDIR/$BDFTASK.scforb     $BDF_WORKDIR/$BDFTASK.scforb.2
+
+    $resp
+    geom
+    norder
+     1
+    method
+     1
+    $end
+
+    %cp $BDF_WORKDIR/$BDFTASK.egrad1     $BDF_WORKDIR/$BDFTASK.egrad.2
+
+计算结束后，优化的自旋混合基态键长是2.1485埃，比纯单重基态的键长2.1480埃（这个值远远大于高精度理论值2.05埃，是因为本算例采用的基组太小）略长一些，
+说明 :math:`^3\Pi_{0+}` 通过旋轨耦合作用把基态的键长拉长。最后一步优化的输出信息显示， :math:`^3\Pi_{0+}` 在自旋混合基态中占了0.2%。
+
+.. code-block::
+
+   Multi-state calculation
+   -----------------------
+
+   Mixed-spin states by 2 scalar states.
+
+   Chi =  400.0 cm^-1 is used to constuct the SO model Hamiltonian.
+
+   /tmp/zouwl/BDF-1/test.egrad.1
+     E=           -75.49718339
+   /tmp/zouwl/BDF-1/test.egrad.2
+     E=           -75.46038704
+
+   Energies and weights of mixed-spin states:
+   ------------------------------------------------------------------
+    No.            E(mix)            Weights
+   ------------------------------------------------------------------
+     1           -75.49727344        99.8%     0.2%
+     2           -75.46029699         0.2%    99.8%
+   ------------------------------------------------------------------
+
+除了优化自旋混合基态的结构，还可以计算它的振动频率，为此需要把两个自旋态的Hessian分别保存到 ``$BDFTASK.hess.1`` 和 ``$BDFTASK.hess.2`` 文件。
+
+* 如果仅在优化的结构上计算频率，和上面结构优化的输入类似，只需要把 ``solver`` = 1 改为 ``hess`` = ``only``，并把备份梯度文件 ``$BDFTASK.egrad1`` 改为备份Hessian文件 ``$BDFTASK.hess`` 。
+* 在做结构优化+频率计算时，输入要做额外修改。这是因为优化过程中不存在Hessian文件，而频率计算过程中不存在梯度文件，必须用 ``2>/dev/null || :`` 屏蔽掉复制出错的信息。能够正常运行的输入文件如下：
+
+.. code-block:: bdf
+
+    $COMPASS
+    Title
+     two-state calculation of ZnS
+    Basis
+     lanl2dz
+    Geometry
+     Zn  0.0  0.0  0.0
+     S   0.0  0.0  2.05
+    END geometry
+    $END
+
+    $bdfopt
+    solver
+     1
+    multistate
+     2soc  400
+    hess
+     final
+    $end
+
+    $xuanyuan
+    $end
+
+    %cp $BDF_WORKDIR/$BDFTASK.scforb.1   $BDF_WORKDIR/$BDFTASK.scforb    2>/dev/null || :
+    $SCF
+    rks
+    dft
+     pbe0
+    charge
+     0
+    spinmulti
+     1
+    $END
+    %cp $BDF_WORKDIR/$BDFTASK.scforb     $BDF_WORKDIR/$BDFTASK.scforb.1
+
+    $resp
+    geom
+    norder
+     1
+    method
+     1
+    $end
+
+    %cp $BDF_WORKDIR/$BDFTASK.egrad1     $BDF_WORKDIR/$BDFTASK.egrad.1   2>/dev/null || :
+    %cp $BDF_WORKDIR/$BDFTASK.hess       $BDF_WORKDIR/$BDFTASK.hess.1    2>/dev/null || :
+
+    %cp $BDF_WORKDIR/$BDFTASK.scforb.2   $BDF_WORKDIR/$BDFTASK.scforb    2>/dev/null || :
+    $SCF
+    uks
+    dft
+     pbe0
+    charge
+     0
+    spinmulti
+     3
+    $END
+    %cp $BDF_WORKDIR/$BDFTASK.scforb     $BDF_WORKDIR/$BDFTASK.scforb.2
+
+    $resp
+    geom
+    norder
+     1
+    method
+     1
+    $end
+
+    %cp $BDF_WORKDIR/$BDFTASK.egrad1     $BDF_WORKDIR/$BDFTASK.egrad.2   2>/dev/null || :
+    %cp $BDF_WORKDIR/$BDFTASK.hess       $BDF_WORKDIR/$BDFTASK.hess.2    2>/dev/null || :
+
+
+多态混合模型的主要用途是研究多态反应，优化自旋混合态的反应物，中间体，产物，过渡态，
+以及反应路径。相比于MECP优化，它能提供更多信息（例如，如果MECP导致新的过渡态，多态混合模型可以估算MECP附近的振动频率和热化学量）。
+当原子不太重的情况下（5d之前），多态混合模型比严格考虑旋轨耦合的二分量或四分量相对论方法有更多优势。
 
 
 
