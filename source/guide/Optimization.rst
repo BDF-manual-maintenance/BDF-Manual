@@ -1144,10 +1144,6 @@ CI-NEB计算经常不收敛。有以下处理方法：
 
     $resp
     geom
-    norder
-     1
-    method
-     1
     $end
 
     %cp $BDF_WORKDIR/$BDFTASK.egrad1     $BDF_WORKDIR/$BDFTASK.egrad.1
@@ -1168,10 +1164,6 @@ CI-NEB计算经常不收敛。有以下处理方法：
 
     $resp
     geom
-    norder
-     1
-    method
-     1
     $end
 
     %cp $BDF_WORKDIR/$BDFTASK.egrad1     $BDF_WORKDIR/$BDFTASK.egrad.2
@@ -1245,10 +1237,6 @@ CI-NEB计算经常不收敛。有以下处理方法：
 
     $resp
     geom
-    norder
-     1
-    method
-     1
     $end
 
     %cp $BDF_WORKDIR/$BDFTASK.egrad1     $BDF_WORKDIR/$BDFTASK.egrad.1   2>/dev/null || :
@@ -1268,10 +1256,6 @@ CI-NEB计算经常不收敛。有以下处理方法：
 
     $resp
     geom
-    norder
-     1
-    method
-     1
     $end
 
     %cp $BDF_WORKDIR/$BDFTASK.egrad1     $BDF_WORKDIR/$BDFTASK.egrad.2   2>/dev/null || :
