@@ -472,24 +472,31 @@ BDF用户既可以使用BDF基组库中的标准基组，也可以使用自定�
     |                        | | CRENBS                    | | 21- 36, 39- 54, 57, 72- 86,          | SOECP，大芯            |
     |                        |                             | | 104-118                              |                        |
     +------------------------+-----------------------------+----------------------------------------+------------------------+
-    | Ahlrichs               | | Def2-SVP                  | 1- 36 (全电子), 37- 57, 72- 86         | TM73是新版             |
-    |                        | | Def2-SV(P)                |                                        |                        |
+    | Ahlrichs               | | Def2-SVP-old              | 1- 36 (全电子), 37- 57, 72- 86         | | -old是旧版           |
+    |                        | | Def2-SV(P)-old            |                                        | | -G16采用完整赝势     |
+    |                        | | Def2-SVPD-old             |                                        |                        |
+    |                        | | Def2-TZVP-old             |                                        |                        |
+    |                        | | Def2-TZVPD-old            |                                        |                        |
+    |                        | | Def2-TZVP-F-old           |                                        |                        |
+    |                        | | Def2-TZVPP-F-old          |                                        |                        |
+    |                        | | Def2-TZVPP-old            |                                        |                        |
+    |                        | | Def2-TZVPPD-old           |                                        |                        |
+    |                        | | Def2-QZVP-old             |                                        |                        |
+    |                        | | Def2-QZVPD-old            |                                        |                        |
+    |                        | | Def2-QZVPP-old            |                                        |                        |
+    |                        | | Def2-QZVPPD-old           |                                        |                        |
+    |                        | | Def2-SV(P)-G16            |                                        |                        |
+    |                        | | Def2-SVP-G16              |                                        |                        |
+    |                        | | Def2-SVPD-G16             |                                        |                        |
+    |                        | | Def2-TZVP-G16             |                                        |                        |
+    |                        | | Def2-TZVPP-G16            |                                        |                        |
+    |                        | | Def2-QZVP-G16             |                                        |                        |
+    |                        | | Def2-QZVPP-G16            |                                        |                        |
     |                        | | Def2-SVPD                 |                                        |                        |
-    |                        | | Def2-SVPD-TM73            |                                        |                        |
-    |                        | | Def2-TZVP                 |                                        |                        |
     |                        | | Def2-TZVPD                |                                        |                        |
-    |                        | | Def2-TZVPD-TM73           |                                        |                        |
-    |                        | | Def2-TZVP-F               |                                        |                        |
-    |                        | | Def2-TZVPP-F              |                                        |                        |
-    |                        | | Def2-TZVPP                |                                        |                        |
     |                        | | Def2-TZVPPD               |                                        |                        |
-    |                        | | Def2-TZVPPD-TM73          |                                        |                        |
-    |                        | | Def2-QZVP                 |                                        |                        |
     |                        | | Def2-QZVPD                |                                        |                        |
-    |                        | | Def2-QZVPD-TM73           |                                        |                        |
-    |                        | | Def2-QZVPP                |                                        |                        |
     |                        | | Def2-QZVPPD               |                                        |                        |
-    |                        | | Def2-QZVPPD-TM73          |                                        |                        |
     |                        | | ma-Def2-SV(P)             |                                        |                        |
     |                        | | ma-Def2-SVP               |                                        |                        |
     |                        | | ma-Def2-TZVP              |                                        |                        |
@@ -497,14 +504,14 @@ BDF用户既可以使用BDF基组库中的标准基组，也可以使用自定�
     |                        | | ma-Def2-QZVP              |                                        |                        |
     |                        | | ma-Def2-QZVPP             |                                        |                        |
     +                        +-----------------------------+----------------------------------------+------------------------+
-    |                        | | Def2-SV(P)-TM73           | 1- 36 (全电子), 37- 86                 | TM73是新版             |
-    |                        | | Def2-SVP-TM73             |                                        |                        |
-    |                        | | Def2-TZVP-TM73            |                                        |                        |
-    |                        | | Def2-TZVPP-TM73           |                                        |                        |
-    |                        | | Def2-TZVP-F-TM73          |                                        |                        |
-    |                        | | Def2-TZVPP-F-TM73         |                                        |                        |
-    |                        | | Def2-QZVP-TM73            |                                        |                        |
-    |                        | | Def2-QZVPP-TM73           |                                        |                        |
+    |                        | | Def2-SV(P)                | 1- 36 (全电子), 37- 86                 |                        |
+    |                        | | Def2-SVP                  |                                        |                        |
+    |                        | | Def2-TZVP                 |                                        |                        |
+    |                        | | Def2-TZVPP                |                                        |                        |
+    |                        | | Def2-TZVP-F               |                                        |                        |
+    |                        | | Def2-TZVPP-F              |                                        |                        |
+    |                        | | Def2-QZVP                 |                                        |                        |
+    |                        | | Def2-QZVPP                |                                        |                        |
     +                        +-----------------------------+----------------------------------------+------------------------+
     |                        | | DHF-SV(P)                 | 37- 56, 72- 86                         | SOECP                  |
     |                        | | DHF-SVP                   |                                        |                        |
@@ -560,6 +567,19 @@ BDF用户既可以使用BDF基组库中的标准基组，也可以使用自定�
     +                        +-----------------------------+----------------------------------------+------------------------+
     |                        | | Stuttgart-ECPMDFSO-QZVP   | 19- 20, 37- 38, 55- 56, 87- 92         | SOECP，小芯            |
     +------------------------+-----------------------------+----------------------------------------+------------------------+
+
+.. note:: **关于Def2系列基组**
+
+    1. Def2系列基组是采用Turbomole程序开发的，“Def2”表示该程序的“第二套默认基组”。
+    2. 原始的Def2系列基组（后缀 **-old**）存在一些缺陷，在Turbomole 7.3之后版本的Def2基组中作了修正，包括：
+       Ba增加了f极化函数（个别QZ基组还增加了g函数）；对Def2-QZVPD和Def2-QZVPPD重新优化了I的f、g函数；Def2-QZVPPD补充了Mn缺失的f函数；
+       部分Def2基组支持镧系原子。
+    3. Def2基组对Kr之后的原子采用Stuttgart/Cologne赝势。由于当时的Turbomole程序不支持高角动量赝势，故对赝势做了截断，并沿用至今。
+       这会导致0.1 — 1 mHartree量级的能量差。而在Gaussian 16程序中，使用了标准的Stuttgart/Cologne赝势（用后缀 **-G16** 加以区分）。
+    4. 通常情况下用Def2-...或Def2-...-G16均可，旋轨耦合计算可以用SOECP版本的DHF-...基组。
+       在涉及Kr之后原子的情况下，如果想重复Gaussian 16程序Def2系列基组的计算结果，必须用Def2-...-G16基组。
+       不建议使用原始的Def2-...-old基组，除非为了重复涉及Mn、I、Ba原子的早期计算结果。
+
 
 .. _f-in-core:
 
