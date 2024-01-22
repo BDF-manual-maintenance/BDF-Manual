@@ -126,8 +126,8 @@ BDF溶剂化模型支持的功能：
     swig # swig | switching | ses | sphere，默认为 swig
   uatm # 联合原子拓扑方法
     false # false | true，默认为 false
-  RadiusType
-    UFF | Bondi 
+  radiusType
+    UFF # UFF | Bondi，默认为 UFF
   vdWScale
     1.1 # 默认 1.1, 即 1.1 倍 RadiusType 半径
   radii
@@ -362,7 +362,7 @@ BDF目前支持一阶微扰态特定的能量计算（ptSS），以下是采用 
     1 2 3
   norder
     0
-  SolNeqSS
+  solneqss
   $end
 
 其中，在 ``resp`` 中加入 ``solneqss`` 关键词，表示要进行态特定非平衡溶剂化效应计算。指定 ``norder`` 为 0 ，表示不进行梯度的计算。用 ``iroot`` 指定计算哪些态。
@@ -440,7 +440,7 @@ BDF目前还支持矫正的线性响应的计算（corrected linear response, cL
   norder
     0
   solneqlr
-  SolNeqSS
+  solneqss
   $end
 
 在文件中的找到 **第一个TDDFT** 的输出， 以及resp模块中的cLR输出：
@@ -577,7 +577,7 @@ BDF目前还支持矫正的线性响应的计算（corrected linear response, cL
   norder
     0
   #soleqlr
-  Soleqss
+  soleqss
   $end
 
   $SCF
