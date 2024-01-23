@@ -249,7 +249,7 @@ BDF溶剂化模型支持的功能：
 
 激发态溶剂化效应需要考虑非平衡溶剂化现象。溶剂的极化可以分为快极化和慢极化部分。垂直吸收和发射过程十分迅速，溶剂的偶极和构型不能迅速调整至与溶质电荷达到平衡的状态，于是需要考虑非平衡溶剂化效应。
 
-传统非平衡溶剂化理论中平衡态到非平衡态的可逆功积分违背了经典热力学原理，会导致溶剂重组能的高估。在进行态特定计算时，采用了李象远教授发展的非平衡溶剂化新理论（X. Y. Li. Int. J. Quantum Chem. 2015, 115(11): 700-721）。
+传统非平衡溶剂化理论中平衡态到非平衡态的可逆功积分违背了经典热力学原理，会导致溶剂重组能的高估。在进行态特定计算时，采用了李象远教授课题组发展的非平衡溶剂化新理论（X. Y. Li. Int. J. Quantum Chem. 2015, 115(11): 700-721）。
 
 激发态溶剂化效应计算
 ----------------------------------------------------------
@@ -377,7 +377,7 @@ BDF目前支持一阶微扰态特定的能量计算（ptSS），以下是采用 
  Nonequilibrium solvation free energy               =   -0.0700 eV
  Equilibrium solvation free energy                  =   -0.1744 eV
 
-其中 Corrected vertical absorption energy 表示采用李象远教授发展的非平衡溶剂化新理论计算的激发能矫正。
+其中 Corrected vertical absorption energy 表示采用李象远教授课题组发展的非平衡溶剂化新理论计算的激发能矫正。
 
 上面的例子中，垂直吸收能为 :math:`3.69eV`。
 
@@ -601,7 +601,7 @@ BDF目前还支持矫正的线性响应的计算（corrected linear response, cL
  Nonequilibrium solvation free energy               =   -0.0964 eV
  Equilibrium solvation free energy                  =   -0.1145 eV
 
-其中  Corrected vertical emission energy 表示采用李象远教授发展的非平衡溶剂化新理论计算的激发能矫正。
+其中  Corrected vertical emission energy 表示采用李象远教授课题组发展的非平衡溶剂化新理论计算的激发能矫正。
 
 上面的例子中，垂直发射能为 :math:`2.81eV`。
 
