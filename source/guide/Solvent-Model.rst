@@ -194,6 +194,10 @@ BDF溶剂化模型支持的功能：
   $END
 
 
+.. note::
+
+   使用 ``cosmosave`` 关键词可以保存孔穴体积、表面积，tesserae坐标、电荷、面积等信息到工作目录的.cosmo文件，如有需要，可以利用 ``$BDFHOME/sbin/conv2gaucosmo.py`` 可以将其转化为类似gaussian的cosmors关键词所生成的文件的格式。
+
 非静电溶剂化能计算
 ----------------------------------------------------------
 .. _SolventNonelec:
