@@ -85,6 +85,27 @@ Alpha和Beta两个关键词必须联用，用于UHF/UKS计算，分别指定alph
 
 此时运行mol-M062X-Energy.inp，即可读取B3LYP单点计算的波函数作为初猜（尽管B3LYP单点计算所用的分子结构和当前计算不同，泛函也不相同）。
 
+
+:guilabel:`SadGuessAverageOutPartiallyFilledShell`/:guilabel:`SadAvgPart` 参数类型：Boolean
+-------------------------------------------------------------------------------------------------
+指定在做 Superposition of Atomic Density 初猜时所进行的原子计算中使用对非满占据的支壳层进行平均化占据的电子排布方案. 该选项为默认值且在未启用 `SecScf` 时为唯一选项
+
+
+:guilabel:`SadGuessAverageOutValenceShell`/:guilabel:`SadAvgVal` 参数类型：Boolean
+----------------------------------------------------------------------------------------
+指定在做 Superposition of Atomic Density 初猜时进行的原子计算需使用对整个价层进行平均化的电子占据模式. 该选项只能在启用 `SecScf` 后使用
+
+
+:guilabel:`SadGuessAverageOutPartiallyFilledShellFor`/:guilabel:`SadAvgPartFor` 参数类型：整型
+-------------------------------------------------------------------------------------------------------
+指定在做 Superposition of Atomic Density 初猜时进行的对原子序数为特定值原子计算需使用对非满占据的支壳层进行平均化占据的电子排布方案. 如需指定多种元素则需使用该输入数次
+
+
+:guilabel:`SadGuessAverageOutValenceShellFor`/:guilabel:`SadAvgValFor` 参数类型：整型
+-------------------------------------------------------------------------------------------
+指定在做 Superposition of Atomic Density 初猜时进行的对原子序数为特定值原子计算需使用对整个价层进行平均化的电子占据模式. 如需指定多种元素则需使用该输入数次
+
+
 :guilabel:`Mixorb` 参数类型：整数/浮点数组
 ---------------------------------------------------
 将初猜轨道按一定比例进行混合。Mixorb后的第一行是一个整数（以下记为N），表示需要混合的轨道对的数目；第2行到第N+1行每行为5个数，给出需要混合的轨道对的信息。其中每一行的第一个数表示混合的是alpha还是beta轨道（1为alpha，2为beta；对于RHF/RKS/ROHF/ROKS计算，该数必须为1）；第二个数表示待混合轨道的不可约表示编号（对于不考虑点群对称性的计算，该数必须为1）；第三、第四个数表示待混合轨道在所指定不可约表示下的序号；第五个数（以下记为 :math:`\theta` ，单位：度）表示将这两个轨道按以下公式进行混合：
@@ -331,15 +352,88 @@ Alpha和Beta两个关键词必须联用，用于UHF/UKS计算，分别指定alph
 
  当且仅当以下任何一条满足时，程序认为SCF收敛：（1）能量变化小于ThrEne，且RMS密度矩阵元变化小于ThrDen；（2）能量变化小于ThrEne的0.1倍，且RMS密度矩阵元变化小于ThrDen的1.5倍；（3）最大密度矩阵元变化小于ThrDen。
 
-:guilabel:`NoDiis` 参数类型：Bool型
-------------------------------------------------
-指定不使用DIIS加速SCF收敛。一般只有在SCF能量以较大幅度（> 1.0E-5）振荡不收敛，且Damp和Vshift效果不明显时，才需要指定NoDiis。
+:guilabel:`NoXiis`/:guilabel:`NoDiis` 参数类型：Bool型
+----------------------------------------------------------
+指定不使用 DIIS 家族的收敛加速算法加速 SCF 收敛。一般只有在SCF能量以较大幅度（> 1.0E-5）振荡不收敛，且 Damp 和 VShift 效果不明显时，才需要指定 NoXiis。
 
-:guilabel:`MaxDiis` 参数类型：整型
----------------------------------------------------
+
+.. comment :guilabel:`XiisAlgorithmId`/:guilabel:`XiisId` 参数类型: 整型
+.. comment ------------------------------------------------------------------
+.. comment 指定使用 DIIS 家族中的具体那一种算法.
+.. comment
+.. comment  * 默认值: 0
+.. comment  * 可选值: -1, 0, 1, 3, 4, 7, 8
+.. comment
+.. comment .. hint::
+.. comment     * 指定 DIIS 类算法的另一种方式是直接在 SCF 输入块使用括号中给出的算法名称. 注意, 算法名称只能直接在 SCF 输入块中指定
+.. comment     * EDIIS, ADIIS, EDIIS+DIIS, 及 ADIIS+DIIS 不能在禁用了可选依赖项 `NLopt` 的编译中使用
+
+
+:guilabel:`Diis` 参数类型: boolean
+-----------------------------------------------------
+指定使用 DIIS 家族中的传统 DIIS 算法. 该项为默认值
+
+
+:guilabel:`Lciis` 参数类型: boolean
+-----------------------------------------------------
+指定使用 DIIS 家族中的 LCIIS 算法
+
+
+:guilabel:`Ediis` 参数类型: boolean
+-----------------------------------------------------
+指定使用 DIIS 家族中的 EDIIS 算法. 用户应首先考虑使用 EDIIS + DIIS 而非纯 EDIIS
+
+
+:guilabel:`Adiis` 参数类型: boolean
+-----------------------------------------------------
+指定使用 DIIS 家族中的 ADIIS 算法. 用户应首先考虑使用 ADIIS + DIIS 而非纯 ADIIS
+
+
+:guilabel:`EdiisPlusDiis` 参数类型: boolean
+-----------------------------------------------------
+指定使用 DIIS 家族中的 EDIIS + DIIS 算法
+
+
+:guilabel:`AdiisPlusDiis` 参数类型: boolean
+-----------------------------------------------------
+指定使用 DIIS 家族中的 ADIIS + DIIS 算法
+
+
+:guilabel:`MaxXiis`/:guilabel:`MaxDiis` 参数类型：整型
+-----------------------------------------------------------
  * 默认值：8
 
-指定DIIS方法的子空间维数。
+
+指定 DIIS 家族方法的最大子空间维数。
+
+:guilabel:`MinXiis`/:guilabel:`MinDiis` 参数类型：整型
+-----------------------------------------------------------
+ * 默认值：2
+
+指定 DIIS 家族方法的最小子空间维数。
+
+
+:guilabel:`XiisMode`/:guilabel:`DiisMode` 参数类型: 整型
+--------------------------------------------------------------------
+当 DIIS 类方法所用的存储策略. 具体的来说, 指的是在当子空间维度达到最大值时的做法
+
+ * 默认值: 0
+ * 可选值: 0 (删除最旧的数条记录直至空间维度为最小值), 1 (删除最旧的一条记录), 3 (删除对应迭代均方误差最大的那条记录), 4 (删除对应迭代误差矩阵元绝对值最大的那条记录)
+
+.. note::
+    * 选项 3 和 4 只在启用了 `NLopt` 后可用
+    * 选项 3 和 4 的收敛效果随通常较选项 0 更好, 但偶尔可能引起稳定振荡不收敛问题. 该问题可尝试调节能级移动来解决
+
+
+:guilabel:`DoNotOrthogonalizeDiisErrorMatrix` 参数类型: Boolean
+--------------------------------------------------------------------
+指定传统 DIIS 算法使用非正交化的误差矩阵. 该选项默认启用
+
+
+:guilabel:`OrthogonalizeDiisErrorMatrix` 参数类型: Boolean
+--------------------------------------------------------------------
+指定传统 DIIS 算法使用正交化的误差矩阵, 仅在启用了 `NLopt` 后可用. 该选项默认不启用且在出现基组线性相关时将被自动关闭
+
 
 :guilabel:`SMH` 参数类型：Bool型
 ------------------------------------------------
@@ -490,22 +584,23 @@ Ifpair参数指定电子如何激发，确定mom方法的电子占初态，必�
 -----------------------------------------------------------
 指定固定的分子轨道。
 
-:guilabel:`EnableSecondOrderScf` / :guilabel:`EnableApproxSecondOrderScf` 参数类型: Bool 型
+:guilabel:`EnableSecondOrderScf` & :guilabel:`EnableApproxSecondOrderScf` 参数类型: Bool 型
 ----------------------------------------------------------------------------------------------
-指定启用二阶 (或近似的二阶) SCF 并使用默认设置. 严格的二次收敛很昂贵, 仅应在无法通过其它收敛算法得到稳定解时使用.
+分别用于启用二阶及近似的二阶 SCF 并使用默认设置. 严格的二次收敛很昂贵, 仅应在无法通过其它收敛算法得到稳定解时使用.
 
 .. hint::
     * 二阶 (及近似的二阶) SCF 目前不支持 iOI 等算法
     * 二阶 (及近似的二阶) SCF 目前不支持限制性开壳层计算
     * 二阶 (及近似的二阶) SCF 目前不支持相对论计算
 
-:guilabel:`DisableSecondOrderScf` / :guilabel:`DisableApproxSecondOrderScf` 参数类型: Bool 型
+:guilabel:`DisableSecondOrderScf` & :guilabel:`DisableApproxSecondOrderScf` 参数类型: Bool 型
 ------------------------------------------------------------------------------------------------
-指定禁用二阶 (或近似的二阶) SCF.
+分别用于禁用二阶及近似的二阶 SCF
 
-:guilabel:`SecondOrderConfig` / :guilabel:`ApproxSecondOrderConfig` 参数类型: 字符串
----------------------------------------------------------------------------------------
-指定二阶 (或近似的二阶)  SCF 所用的高级设置. 一般用户仅需指定 ``EnableSecondOrderScf`` (或 ``EnableApproxSecondOrderScf``) 关键词, 无需指定该项.
+
+:guilabel:`SecondOrderConfig` & :guilabel:`ApproxSecondOrderConfig` 输入块
+-------------------------------------------------------------------------------
+分别用于指定二阶及近似二阶 SCF 所用的高级设置. 一般用户仅需指定 ``EnableSecondOrderScf`` 关键词, 无需指定该项.
 
 .. code-block:: bdf
 
@@ -544,8 +639,7 @@ Ifpair参数指定电子如何激发，确定mom方法的电子占初态，必�
 
 * ``Enable``: 指定启用二阶 SCF 并将启用表达式将为默认设置
 * ``Disable``: 指定禁用二阶 SCF
-* ``EnableExpression``: 指定启用表达式
-    指定启用表达式将隐式设定 ``Enable`` 关键词. 其内容可为
+* ``EnableExpression``: 指定启用表达式 (指定启用表达式将隐式设定 ``Enable`` 关键词)
 
     - ``AfterIteration`` + 整型数: 指定在一定标准 SCF 迭代后启用
     - ``AfterDeltaEnergyLessThan`` + 浮点数: 指定在执行标准SCF迭代至能量误差低于一定值后启用
@@ -568,3 +662,6 @@ Ifpair参数指定电子如何激发，确定mom方法的电子占初态，必�
 * ``ForbidConverge``: 禁止 SCF 于二次收敛迭代过程中宣布 SCF 已收敛
 * ``ScfConvergeGradientThreshold``, 浮点型: 指定在能量-轨道梯度之模低于一定值后认为 SCF 已收敛. 仅在已设 ``AllowConverge`` 时生效
 * ``QuasiNewtonAlgorithm``, 字符串: 指定所用伪牛顿算法, 可选项有 ``BFGS`` (默认), ``SR1``, 及 ``DFP``. 仅在使用近似的二阶 SCF 时生效
+
+.. note::
+    相比 BDF 的其它输入块, ``SecondOrderConfig`` 输入块中的浮点型参数只能用 e 或 E 来标记科学计数法, 不能使用 d 及 D. 使用不受支持的输入格式将引起意想不到的后果
