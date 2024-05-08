@@ -30,3 +30,5 @@ BDF各模块的调用关系参见 :ref:`BDF模块及计算流程图<BDFpromodule
 .. include:: module/nmr.rst
 
 .. include:: module/irc.rst
+
+.. include:: module/mcscf.rst

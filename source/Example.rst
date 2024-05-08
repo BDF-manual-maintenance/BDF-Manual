@@ -1364,3 +1364,197 @@
      $mp2
      $end
 
+示例18：MCSCF计算(SVD with small basis set VAOs by keyword 'VSD')
+------------------------------------------------
+算例下载链接 :download:`test126.zip <files/test126.zip>`
+
+.. code-block:: bdf
+
+    $COMPASS
+    Title
+     C6H6 Molecule test run, CC-PVDZ
+    Basis
+    3-21G
+    Geometry
+     C    0.00000000000000   1.39499100000000   0.00000000000000
+     C   -1.20809764405066   0.69749550000000   0.00000000000000
+     C    0.00000000000000  -1.39499100000000   0.00000000000000
+     C   -1.20809764405066  -0.69749550000000   0.00000000000000
+     C    1.20809764405066  -0.69749550000000   0.00000000000000
+     C    1.20809764405066   0.69749550000000   0.00000000000000
+     H    0.00000000000000   2.49460100000000   0.00000000000000
+     H   -2.16038783830606   1.24730050000000   0.00000000000000
+     H    0.00000000000000  -2.49460100000000   0.00000000000000
+     H   -2.16038783830607  -1.24730050000000   0.00000000000000
+     H    2.16038783830607  -1.24730050000000   0.00000000000000
+     H    2.16038783830606   1.24730050000000   0.00000000000000
+    End geometry
+    Check
+    Group
+    D(2h)
+    saorb
+    $END
+    
+    %cp $BDF_WORKDIR/$BDFTASK.chkfil $BDF_WORKDIR/$BDFTASK.chkfil1
+    
+    $COMPASS 
+    Title
+     C6H6 Molecule test run, CC-PVDZ
+    Basis
+    6-31GP
+    Geometry
+     C    0.00000000000000   1.39499100000000   0.00000000000000
+     C   -1.20809764405066   0.69749550000000   0.00000000000000
+     C    0.00000000000000  -1.39499100000000   0.00000000000000
+     C   -1.20809764405066  -0.69749550000000   0.00000000000000
+     C    1.20809764405066  -0.69749550000000   0.00000000000000
+     C    1.20809764405066   0.69749550000000   0.00000000000000
+     H    0.00000000000000   2.49460100000000   0.00000000000000
+     H   -2.16038783830606   1.24730050000000   0.00000000000000
+     H    0.00000000000000  -2.49460100000000   0.00000000000000
+     H   -2.16038783830607  -1.24730050000000   0.00000000000000
+     H    2.16038783830607  -1.24730050000000   0.00000000000000
+     H    2.16038783830606   1.24730050000000   0.00000000000000
+    End geometry
+    Check
+    Group
+      D(2h)
+    saorb
+    $END
+    
+    $xuanyuan
+    $end
+    
+    $scf
+    RHF
+    molden
+    spin
+    1
+    $end
+    
+    %cp $BDF_WORKDIR/$BDFTASK.scforb $BDF_WORKDIR/$BDFTASK.inporb
+    
+    $expandmo
+    vcmo
+    minbas
+    6
+    1C|2P0 
+    2C|2P0   
+    3C|2P0   
+    4C|2P0   
+    5C|2P0   
+    6C|2P0   
+    phosp
+    6
+    2 1 2 6 7 0
+    2 2 1 4 8 0
+    2 3 4 5 9 0
+    2 4 2 3 10 0
+    2 5 3 6 11 0
+    2 6 1 5 12 0 
+    $end
+    
+    %cp $BDF_WORKDIR/$BDFTASK.exporb $BDF_WORKDIR/$BDFTASK.inporb
+    
+    $MCSCF
+    automc
+    spin
+     1
+    symmetry
+     1
+    ROOTPRT
+     1
+    roots
+    1 1 1
+    prtcri
+    0.1
+    molden
+    guess
+    read
+    icas
+    $END
+    
+    %cp $BDF_WORKDIR/$BDFTASK.casorb $BDF_WORKDIR/$BDFTASK.inporb
+    %cp $BDF_WORKDIR/$BDFTASK.chkfil $BDF_WORKDIR/$BDFTASK.chkfil2
+    
+    $expandmo
+    vsd
+    $end
+    
+    %cp $BDF_WORKDIR/$BDFTASK.exporb $BDF_WORKDIR/$BDFTASK.exporb.1
+    %cp $BDF_WORKDIR/$BDFTASK.exporb.molden $BDF_WORKDIR/$BDFTASK.exporb.1.molden
+    
+    
+    %cp $BDF_WORKDIR/$BDFTASK.exporb $BDF_WORKDIR/$BDFTASK.inporb
+    
+    $MCSCF
+    close
+    6    3    0    0    0    0    4    5
+    active
+    0    0    2    1    1    2    0    0
+    actele
+     6
+    spin
+     1
+    symmetry
+     1
+    ROOTPRT
+     1
+    roots
+    1 1 1
+    prtcri
+    0.1
+    molden
+    guess
+    read
+    XvrSet
+    5    4    3    3    3    3    4    5
+    virdel
+    $END
+    
+    $XIANCI
+    core
+     2 1 0 0 0 0 1 2 
+    Delete
+    10 8 2 1 1 2 7 11
+    Orbtxt
+     casorb
+    sdspt2
+    $END
+    
+    %cp $BDF_WORKDIR/$BDFTASK.exporb $BDF_WORKDIR/$BDFTASK.inporb
+    
+    $MCSCF
+    close
+    6    3    0    0    0    0    4    5
+    active
+    0    0    2    1    1    2    0    0
+    actele
+     6
+    spin
+     1
+    symmetry
+     1
+    ROOTPRT
+     1
+    roots
+    1 1 1
+    prtcri
+    0.1
+    molden
+    guess
+    read
+    XvrSet
+    5    4    3    3    3    3    4    5
+    $END
+    
+    $XIANCI
+    core 
+     2 1 0 0 0 0 1 2 
+    Delete
+     5 4 3 3 3 3 4 5
+    Orbtxt
+     casorb
+    xsdsci
+    vsd
+    $END
