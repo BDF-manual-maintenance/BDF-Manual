@@ -52,6 +52,7 @@ BDF内置的高斯基组主要来自以下基组库网站，各种基组的原�
 * Clarkson大学ECP基组库：SOECP基组。 https://people.clarkson.edu/~pchristi/reps.html
 * ccECP基组库：标量ECP基组；Kr之后是SOECP基组。 https://pseudopotentiallibrary.org/
 * Molpro基组库：全电子基组，ECP基组（不显示ECP参数）。 https://www.molpro.net/
+* ccRepo基组库：收录了最新开发的关联一致基组，包括全电子非相对论，全电子相对论，SOECP基组（不显示ECP参数），和密度拟合等多种类型。 http://www.grant-hill.group.shef.ac.uk/ccrepo/
 
 此外，有个别元素的内置基组来自原始文献：
 
