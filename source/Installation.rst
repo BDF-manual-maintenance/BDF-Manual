@@ -353,3 +353,288 @@ pDynamo-2运行时，默认调用sbin目录下的 ``qmmmrun.sh`` 文件进行QM�
   python RunExamples.py
 
 
+安装和运行 (WSL)
+************************************
+
+总结
+========================================================================================================================
+通过适用于 Linux 的 Windows 子系统 (WSL), BDF (北京密度泛函程序) 可被安装至运行 Windows 操作系统的计算机上. 本文档记录了可分发的 BDF 镜像的构造及部署步骤. 构造可分发的 BDF 镜像是程序发布者的工作, 普通用户无需阅读关于镜像的构造部分的内容.
+
+前提条件
+========================================================================================================================
+本文档假设您的计算机已
+
+- 启用 WSL, 并已
+- 更新 WSL 至一支持 WSL 2 的版本 (可选, 但强烈建议.)
+
+.. note::
+
+   -  WSL 的安装步骤可参见 `Install WSL \| Microsoft Learn <https://learn.microsoft.com/en-us/windows/wsl/install>`_.
+   -  若要安装 WSL, 虚拟化技术必须被 (从 BIOS 或 UEFI 里) 启用. 要检查您的计算机是否已经启用虚拟化技术可查看 Windows 任务管理器 > 性能 > CPU > 虚拟化.
+   -  我们推荐使用 WSL 2. 如果您想使用 WSL 1, 则需要执行一些未包含在当前版本的文档中的额外步骤. 您可以在 `ArchWSL Documentation <https://wsldl-pg.github.io/ArchW-docs/Known-issues/>`_ 中找到更多信息. WSL 1 同 WSL 2 的比较见 `Comparing WSL Versions \| Microsoft Learn <https://learn.microsoft.com/en-us/windows/wsl/compare-versions>`_.
+
+创建 BDF 可分发镜像的步骤
+========================================================================================================================
+
+1. 将 BDF Distributable Blank 注册为一新的 WSL distro
+------------------------------------------------------------------------------------------------------------------------
+
+在 Windows PowerShell 中执行下面的命令
+
+.. code:: powershell
+
+    wsl --import BdfServer <InstallLocation> BdfDistributableBlank.vhdx --version 2 --vhd
+
+或
+
+.. code:: powershell
+
+    wsl --import BdfServer <InstallLocation> BdfDistributableBlank.tar.gz --version 2
+
+要确认新的 distro 以被成功注册可以运行下面的命令 ``wsl -l -v``.
+您应期待类似下面的内容被打印至屏幕 (注意最后一行)
+
+.. code:: console
+
+    PS C:\Users\UserName> wsl -l -v
+      NAME                   STATE           VERSION
+    * Arch                   Running         2
+      CentOS8                Stopped         2
+      openSUSE               Stopped         2
+      BdfServer              Stopped         2
+
+.. note::
+   -  BdfDistributableBlank 可从\ `此处 <https://github.com/AndBrn743/BdfDistributableBlank/releases>`__\ 获取.
+   -  请将 ``<InstallLocation>`` 替换为真正的安装路径.
+   -  您不一定需要将其命名为 ``BdfServer``.
+
+2. 下载, 编译, 并安装 BDF
+------------------------------------------------------------------------------------------------------------------------
+
+2.1. 进入 BdfServer distro
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+在 Windows PowerShell 运行下面的命令
+
+.. code:: powershell
+
+   wsl -d BdfServer
+
+现在您应进入 BdfServer distro 的一个Bash shell 实例
+
+2.2. 进行系统更新 (可选)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+在 Linux Bash shell 中执行
+
+.. code:: bash
+
+   pacman -Syyu
+
+并按照屏幕上的指示操作
+
+.. note::
+   -  您可在 `ArchLinux wiki <https://wiki.archlinux.org/title/Pacman>`_ 上阅读关于 ``pacman`` 的更多信息
+
+2.3. 下载或复制 BDF 源文件至 BdfServer
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+在 Linux 的Bash shell 运行下面的命令
+
+.. code:: bash
+
+   git clone user_name@server:/path/to/bdf-pkg
+
+如,
+
+.. code:: bash
+
+   git clone user_name@182.92.69.169:/opt/gitroot/bdf-pkg
+
+或
+
+.. code:: bash
+
+   cp /mnt/windows/path/to/bdf-pkg.tar.gz .
+
+如,
+
+.. code:: bash
+
+   cp /mnt/d/data/bdf-pkg.tar.gz .
+
+如果 ``bdf-pkg.tar.gz`` 可以在 Windows 下的路径 ``D:\data\bdf-pkg.tar.gz`` 中被找到
+
+2.4. 编译并安装 BDF
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+BDF Distributable Blank (BDF) 自带一 ``compile_and_install_bdf`` 脚本. 在 Linux Bash shell 中运行 ``compile_and_install_bdf`` 便可自动使用 BDB 捆绑的线性代数库编译 BDF 并将 BDF 安装至一合适的路径下. 若 BDF 的源代码所在文件夹为 ``bdf-pkg`` 且位于当前工作目录或当前用户的 home 路径下, 则您仅需运行下面的命令:
+
+.. code:: bash
+
+   compile_and_install_bdf
+
+您也可以将 BDF 源代码所在的自定义路径作为 ``compile_and_install_bdf`` 的第一个命令行参数传给它, 如
+
+.. code:: bash
+
+   compile_and_install_bdf /custom/path/to/bdf/source/files
+
+额外的 build flags 也可被直接传给 ``compile_and_install_bdf``, 如
+
+.. code:: bash
+
+   compile_and_install_bdf -DENABLE_LICENSE=YES -DONLY_BDFPRO=YES
+
+.. note::
+
+   -  请用管理员权限运行 ``compile_and_install_bdf`` 脚本
+   -  ``compile_and_install_bdf`` 脚本不支持自定义安装路径. 将 BDF 安装至非默认路径将导致捆绑的 BDF 运行脚本 ``bdf`` 不可用
+   -  在编译和安装完成后 ``compile_and_install_bdf`` 将询问您是否希望删除编译路径, 源代码所在文件夹, 及 pacman 缓存. 除非您有特殊原因, 否则请全部选择 ``Y``
+
+2.5. 清理
+^^^^^^^^^^^^^^^^^^
+
+-  删除 BDF 编译文件夹, 若尚未删除
+-  删除 BDF 源代码文件夹, 若尚未删除
+-  删除 pacman 的全部缓存文件, 若尚未删除 (执行 ``pacman -Scc`` 并对所有选择都选择 ``Y``)
+-  删除 IDE 及代码编辑器 (如, Visual Studio, Visual Studio Code, CLion, Rider, 及 PyCharm) 的缓存文件及文件夹, 若您曾将它们连接至 ``BdfServer``
+-  删除其它零时文件及文件夹
+
+3. 产生可分发镜像
+------------------------------------------------------------------------------------------------------------------------
+
+3.1. 关闭所有连接至 ``BdfServer`` 了的所有 Windows 程序, 其中包括但不限于 ``conhost.exe``, Windows Terminal, Windows File Explorer, Visual Studio, 及 Visual Studio Code
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+3.2. 将 WSL 置于关机状态
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+在 Windows PowerShell 运行下面的命令
+
+.. code:: powershell
+
+   wsl --shutdown
+
+.. attention::
+   -  仅运行 ``wsl -t BdfServer`` 据我们的经验无法达到相同的效果, 您的结果可能与我们不同
+   -  ``BdfServer`` 可以被连接至其的 Windows 程序重新启动, 若如此将影响下一步
+
+3.3. 导出 BDF 可发布镜像
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+3.3.1. 导出 tar 格式的可分发镜像
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+请在 Windows PowerShell 中运行下面的命令
+
+.. code:: powershell
+
+   wsl --export BdfServer BdfServer.tar.gz
+
+输出文件 ``BdfServer.tar.gz`` 就是可分发镜像
+
+3.3.2. 导出 virtual disk (vhdx) 格式的可分发镜像
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+请在 Windows PowerShell 中运行下面的命令
+
+.. code:: powershell
+
+   wsl --export BdfServer BdfServer.vhdx --vhd
+
+输出文件 ``BdfServer.vhdx`` 就是可分发镜像
+
+部署可分发镜像的步骤
+========================================================================================================================
+
+在将可分发镜像部署在用户计算机上时需运行下面的 Windows PowerShell 命令
+
+.. code:: powershell
+
+   wsl --import BdfServer <InstallLocation> BdfServer.tar.gz --version 2
+
+或
+
+.. code:: powershell
+
+   wsl --import BdfServer <InstallLocation> BdfServer.vhdx --version 2 --hvd
+
+.. note::
+
+   -  请将 ``<InstallLocation>`` 替换为真正的安装路径.
+   -  您不一定需要将其命名为 BdfServer.
+   -  由此, 用户便可正常使用 BDF. 然而, 我们强烈建议用户在 ``BdfServer`` 添加一非 root 账户并将该账户设为默认登录账户. 该步骤的指南可参见\ `此处 <https://wsldl-pg.github.io/ArchW-docs/locale/zh-CN/How-to-Setup/#%E5%AE%8C%E6%88%90%E5%AE%89%E8%A3%85%E5%90%8E%E7%9A%84%E6%93%8D%E4%BD%9C>`__.
+
+常用命令
+========================================================================================================================
+
+-  若需通过 PowerShell 来间接运行一个 BdfServer 上的命令, 如, ``htop``,
+   可以使用下面的命令
+
+.. code:: powershell
+
+   wsl -d BdfServer htop
+
+-  若需通过 PowerShell 来在当前 Windows 路径下运行一个
+   BdfServer上的命令, 如 ``ls``, 可以使用下面的命令
+
+.. code:: powershell
+
+   wsl -d BdfServer ls
+
+-  若需通过 PowerShell 来在一给定 Linux 路径 (如 ``~/tasks``) 下运行一个
+   BdfServer 上的命令可使用下面的命令
+
+.. code:: powershell
+
+   wsl -d BdfServer --cd ~/tasks ls
+
+-  如需将当前 Windows 路径下的文件复制或剪切至 BdfServer上的某一路径 (如
+   ``~/tasks``) 可使用下面的 Windows PowerShell 命令
+
+.. code:: powershell
+
+   wsl -d BdfServer cp MyWindowsFile.txt ~/tasks/
+
+或
+
+.. code:: powershell
+
+   wsl -d BdfServer mv MyWindowsFile.txt ~/tasks/
+
+-  如需将 BdfServer 路径, 如 ``~/tasks``, 下的某一文件复制或剪切至当前
+   Windows 路径可使用下面的 Windows PowerShell 命令
+
+.. code:: powershell
+
+   wsl -d BdfServer cp ~/tasks/MyLinuxFile.txt .
+
+或
+
+.. code:: powershell
+
+   wsl -d BdfServer mv ~/tasks/MyLinuxFile.txt .
+
+-  欲在一 Windows 路径下运行 BDF 计算任务可以使用下面的命令
+
+.. code:: powershell
+
+   wsl -d BdfServer bdf BdfCalculationInputFile.inp
+
+-  如需使用 Windows File Explorer 来打开某一 BdfServer 路径, 如
+   ``~/tasks``, 可执行下面的 Windows PowerShell 命令
+
+.. code:: powershell
+
+   wsl -d BdfServer --cd ~/tasks/ explorer.exe .
+
+.. attention::
+
+   根据 WSL 的版本不同直接在 Windows 路径下直接执行 BDF 计算可能是, 也可能不是一个好的方案. 对 WSL 1 来说, 如此行没有任何问题. 对 WSL2 来说, 由于 Windows 和 WSL 文件系统间的 IO 操作很慢, 使得此举不优. 因此, 对 WSL 2 来说, 我们建议 将BDF 输入文件复制至 BdfServer 的文件系统内并在 BdfServer 的文件系统内执行计算. 用于在 Windows 和 WSL 文件系统间进行文件复制和剪切的命令在上文已给出.
+
+备注
+========================================================================================================================
+
+-  BDF Distributable Blank (BDB) 是一类似于可分发的 BDF WSL 镜像 (BDI). 它们的区别在于 BDB 上没有安装 BDF, 其上装有的是编译和安装 BDF 所需的依赖库及软件. 因此 BDB 的文件大小远远小于 BDI 且可被重用数年 (我们仍然建议每年更新 BDB 一次), 而 BDI 文件很大且每次 BDF 更新时都应被完全替换.
+-  由于可分发镜像中不仅包含 BDF 且包含它的依赖项, 可分发镜像文件的的大小可达 10 GB. 分发者应合理选择分发介质.
