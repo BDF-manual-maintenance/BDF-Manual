@@ -31,6 +31,17 @@ BDF的研发任重而道远。其成功与否不仅取决于研发人员的长�
 功能更新
 ================================================   
 
+2024A版本（2024.1）
+
+  * 溶剂模型更新：支持多种隐式溶剂化模型（IEFPCM、COSMO、CPCM、SS(V)PE、ddCOSMO、SMD）。支持基态溶剂效应单点能、梯度、Hessian计算，线性响应溶剂化理论(LR-TDDFT)激发态能量、梯度和结构优化计算，基于非平衡溶剂的吸收和发射光谱计算，校正线性响应方法 (noneq-cLR-TDDFT)和态特定方法(noneg-SS-TDDFT)。
+  * 支持Meta-GGA、赝势的解析hessian
+  * 激发态计算：快速近似计算大体系吸收光谱的方法（sTDA、sTDDFT），电子圆二色性（ECD）谱的计算，激发态的定域化。
+  * 补充支持libxc泛函库中GGA、杂化GGA、Meta-GGA等泛函
+  * BSSE校正：支持调整dummy atom，可以设置多种dummy atom，对dummy atom可以用不同的基组。
+  * 结构优化混合算法：支持结合RFO、RFO-GDIIS和GEDIIS方法的高效混合优化算法。
+  * 二阶 (近似的二阶) SCF方法：帮助SCF收敛。
+  * 支持极化率计算
+
 2023A版本（2023.2）
 
   * 更新二阶解析Hessian：支持包括Hartree-Fock方法，LDA、GGA、全局杂化泛函和范围分离泛函，ECP基组的DFT计算。可应用于化学反应过渡态搜索模块，频率分析及计算热力学数据
