@@ -14,13 +14,13 @@ xianci模块来自Xi'an-CI程序包，执行ucMRCISD, icMRCISD，XSDSCI, CB-MRPT
 指定计算的根的数目并设置需要计算的根的编号。若使用此关键词，'Roots'关键词将失效。
 此关键词只可以用于所有CASPT2,NEVPT2, SDSPT2, SDSCI and XSDSCI类方法。
 
-示例如下：
+示例如下：第一行是需要计算的态的数目，第二行是所选电子态（根）的编号。
+
 .. code-block:: python
 
      $xianci
-     istate
-     2  # 需要计算的态的数目。
-     1 3 # 所选根（电子态）的编号。
+     2
+     1 3 
      $end
 
 :guilabel:`Spin` 参数类型：整型
