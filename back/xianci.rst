@@ -1,6 +1,6 @@
 xianci模块
 ================================================
-xianci模块来自Xi‘anCI程序包，执行内收缩MRCI计算，MRPT2，NEVPT2，SDS-PT2等计算。xianci模块也可以执行非收缩MRCI计算，相当于将DRT和MRCI模块合并在一起。
+xianci模块来自Xi‘anCI程序包，执行ucMRCISD, icMRCISD，CB-MRPT2/3，MS-CASPT2, XMS-CASPT2, XDW-CASPT2, RMS-CASPT2, MS-NEVPT2，SS-NEVPT3, SDSPT2f, SDSPT2, SDSCIf, SDSCI等计算。
 
 **基本控制参数**
 
