@@ -454,6 +454,7 @@ xianci模块来自Xi'an-CI程序包，执行ucMRCI, icMRCI，XSDSCI, CB-MRPT2/3�
 * 对每个态是独立的Q空间。
 
 **算例**
+
 :guilabel:`test069.inp`
 ------------------------------------------------
 
