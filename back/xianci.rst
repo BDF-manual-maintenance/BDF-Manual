@@ -12,12 +12,14 @@ xianci模块来自Xi'an-CI程序包，执行ucMRCI, icMRCI，XSDSCI, CB-MRPT2/3�
 
 :guilabel:`Istate` 参数类型：整型
 ------------------------------------------------
-指定计算的根的数目并设置需要计算的根的编号。若使用此关键词，'Roots'关键词将失效。
-* 注意：此关键词只可以用于所有CASPT2,NEVPT2, SDSPT2, SDSCI and XSDSCI类方法。
+指定计算的根的数目并设置需要计算的根的编号。若使用此关键词，关键词``Roots``将失效。
+
+.. attention::
+   此关键词只可以用于所有CASPT2,NEVPT2, SDSPT2, SDSCI and XSDSCI类方法。
 
 示例如下：第一行1个整数，设置需要计算的态的数目，第二行设置所选电子态（根）的编号。
 
-.. code-block:: python
+.. code-block:: bdf
 
      $xianci
      ...
@@ -70,7 +72,8 @@ xianci模块来自Xi'an-CI程序包，执行ucMRCI, icMRCI，XSDSCI, CB-MRPT2/3�
 :guilabel:`XvrUse` 参数类型：Bool型
 ------------------------------------------------
 当未使用关键词 'Dele' 设置需删除的分子轨道（MOs）时，关键字 'XvrUse' 用于通过 MCSCF XVR 方法选择性删除虚轨道。
-* 默认值: .false.，但需注意：若同时指定了 'Dele' 和 'XvrUse'，则 'Dele' 关键字优先于 'XvrUse'。
+.. attention::
+   若同时指定了 'Dele' 和 'XvrUse'，则 'Dele' 关键字优先于 'XvrUse'。
 
 :guilabel:`Rootprt` 参数类型：整型
 ------------------------------------------------
@@ -457,6 +460,196 @@ xianci模块来自Xi'an-CI程序包，执行ucMRCI, icMRCI，XSDSCI, CB-MRPT2/3�
 
 :guilabel:`test069.inp`
 ------------------------------------------------
+.. attention::
+   SDSPT2(f)，SDSCI(f)，XSDSCI，icMRCI的能量取+Q1（Pople Correction）的结果。
+   ucMRCI的能量取+Q3（Davdison Correction）的结果。   
+
+.. code-block:: bdf
+
+     $xianci
+     core 
+     2 0 0 2  
+     nroots
+     1
+     spin
+     1 
+     symmetry
+     1
+     pmin
+     1.d-3
+     qmindv
+     1.d-5
+     qminvd
+     1.d-5
+     epic
+     1.d-5
+     CASPT2 # MS-CASPT2 with generalized Fock as H0
+     DBLOCH # the threshold of solving BLOCH equation
+     1.d-4  # default : 1.d-4
+     RLS    # Real Level Shift
+     0.0    # default : 0.0
+     #ILS    # Imaginary Level Shift
+     #0.0    # default : 0.0
+     $end
+
+     Output :
+
+     CASPT2 calculation is completed.
+
+     NROOT        MC ENERGY       SS-CASPT2 ENERGY    MS-CASPT2 ENERGY    SS-CASPT3 ENERGY    MS-CASPT3 ENERGY
+       1       -154.98370235       -155.47704723       -155.47704723          0.00000000          0.00000000
+ 
+.. code-block:: bdf
+
+     $xianci
+     core
+     2 0 0 2
+     nroots
+     1
+     spin
+     1
+     symmetry
+     1
+     nevpt2 
+     $end
+
+     Output:
+
+     NEVPT2 calculation is completed.
+
+     NROOT        MC ENERGY       SS-NEVPT2 ENERGY    MS-NEVPT2 ENERGY    SS-NEVPT3 ENERGY    MS-NEVPT3 ENERGY
+       1       -154.98370416       -155.47772092       -155.47772092          0.00000000          0.00000000
+
+.. code-block:: bdf
+ 
+     $xianci
+     core
+     2 0 0 2
+     nroots
+     1
+     spin
+     1
+     symmetry
+     1
+     sdspt2f 
+     dbloch 
+     1.d-4 
+     rls 
+     0.0 
+     $end
+ 
+     Output:
+
+     MRPT2 calculation is completed.
+
+     NROOT   MC ENE      SS-CASPT2 ENE   MS-CASPT2 ENE    SDSPT2 ENE  SDSPT2+Q1 ENE  SDSPT2+Q2 ENE   SDSPT2+Q3 ENE   DAVCOEF
+       1  -154.98370416  -155.47702635   -155.47702635 -155.41225671  -155.47144162  -155.47211363  -155.46852939   0.883932
+   
+.. code-block:: bdf
+ 
+     $xianci
+     core
+     2 0 0 2
+     nroots
+     1
+     spin
+     1
+     symmetry
+     1
+     sdspt2 
+     $end
+
+     Output:
+
+     MRPT2 calculation is completed.
+
+     NROOT   MC ENE     SS-NEVPT2 ENE  MS-NEVPT2 ENE  SDSPT2 ENE    SDSPT2+Q1 ENE  SDSPT2+Q2 ENE   SDSPT2+Q3 ENE   DAVCOEF
+       1  -154.98370416 -155.47772092  -155.47772092  -155.41222583 -155.47205111  -155.47273880   -155.46903845   0.882941
+
+.. code-block:: bdf
+
+     $xianci
+     core
+     2 0 0 2
+     nroots
+     1
+     spin
+     1
+     symmetry
+     1
+     sdscif 
+     $end
+
+     Output:
+
+     MRPT2 calculation is completed.
+
+     NROOT   MC ENE    SS-CASPT2 ENE  MS-CASPT2 ENE  SDSCI  ENE    SDSCI+Q1  ENE  SDSCI+Q2  ENE   SDSCI+Q3  ENE   DAVCOEF
+       1 -154.98370416 -155.47702635  -155.47702635  -155.43865322 -155.51060490  -155.51155875   -155.50597757   0.871094
+     
+.. code-block:: bdf
+
+     $xianci
+     core
+     2 0 0 2
+     nroots
+     1
+     spin
+     1
+     symmetry
+     1
+     sdsci 
+     $end
+     
+     Output:
+
+     MRPT2 calculation is completed.
+
+     NROOT   MC ENE     SS-NEVPT2 ENE  MS-NEVPT2 ENE  SDSCI  ENE    SDSCI+Q1  ENE   SDSCI+Q2  ENE   SDSCI+Q3  ENE   DAVCOEF
+       1  -154.98370416 -155.47772092  -155.47772092  -155.43734298 -155.50941634   -155.51037685   -155.50474252   0.870644
+
+.. code-block:: bdf
+     
+     $xianci
+     core
+     2 0 0 2
+     nroots
+     1
+     spin
+     1
+     symmetry
+     1
+     xsdsci 
+     ncisave
+     10
+     $end
+
+     Output:
+
+     Roots of Heff are calculated are listed below: 
+ 
+                     ENE             ENE + Pople       ENE + App Pople       ENE + DAV           ENE + MEISS
+     root   1   -155.44999113       -155.52660992       -155.52767146       -155.52133469       -155.51198622
+    
+
+.. code-block:: bdf
+
+     $xianci
+     core
+     2 0 0 2
+     nroots
+     1
+     spin
+     1
+     symmetry
+     1
+     $end
+
+     Output:  
+     Roots of Heff are calculated are listed below:  
+                       ENE           ENE + Pople       ENE + App Pople       ENE + DAV           ENE + MEISS
+     root   1    -155.45099589       -155.52816454       -155.52923990       -155.52280494       -155.51339548
+ 
 
 :guilabel:`test080.inp`
 ------------------------------------------------
