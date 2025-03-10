@@ -15,7 +15,7 @@ xianci模块来自Xi'an-CI程序包，执行ucMRCI, icMRCI，XSDSCI, CB-MRPT2/3�
 指定计算的根的数目并设置需要计算的根的编号。若使用此关键词，关键词``Roots``将失效。
 
 .. attention::
-   此关键词只可以用于所有CASPT2,NEVPT2, SDSPT2, SDSCI and XSDSCI类方法。
+ 此关键词只可以用于所有CASPT2,NEVPT2, SDSPT2, SDSCI and XSDSCI类方法。
 
 示例如下：第一行1个整数，设置需要计算的态的数目，第二行设置所选电子态（根）的编号。
 
@@ -73,7 +73,9 @@ xianci模块来自Xi'an-CI程序包，执行ucMRCI, icMRCI，XSDSCI, CB-MRPT2/3�
 ------------------------------------------------
 当未使用关键词 'Dele' 设置需删除的分子轨道（MOs）时，关键字 'XvrUse' 用于通过 MCSCF XVR 方法选择性删除虚轨道。
 .. attention::
-   若同时指定了 'Dele' 和 'XvrUse'，则 'Dele' 关键字优先于 'XvrUse'。
+ 若同时指定了 'Dele' 和 'XvrUse'，则 'Dele' 关键字优先于 'XvrUse'。
+
+* 完整输入逻辑参见示例：test126.inp
 
 :guilabel:`Rootprt` 参数类型：整型
 ------------------------------------------------
