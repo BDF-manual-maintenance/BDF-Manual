@@ -12,6 +12,8 @@ autofrag的主要功能是对大分子进行自动分片，并自动产生FLMO�
 
 ``autofrag`` 必须放在 ``compass`` 之前。autofrag会处理 ``compass`` 模块中的分子结构，进行分子键判断，分片等。autofrag后的输入还被作为产生分子片段及整体计算输入的模版。利用autofrag做完整的例子见 :ref:`iOI-SCF计算示例<iOI-Example>`
 
+注意：当使用 ``autofrag`` 模块时， ``compass`` 模块必须在直角坐标下定义分子坐标，且不能用 ``file=filename.xyz`` 语法从另一个文件里读入分子坐标。
+
 :guilabel:`Method` 参数类型：字符串
 ------------------------------------------------
  * 默认值：FLMO
