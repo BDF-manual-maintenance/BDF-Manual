@@ -333,13 +333,13 @@ xianci模块来自Xi'an-CI程序包，执行ucMRCI, icMRCI，XSDSCI, CB-MRPT2/3�
 指定执行SDSPT2f计算。
 * 激发波函数的系数采用微扰方法（广义Fock算符作为H0），可能出现Intruder State问题。
 
-:guilabel:`RLS` 参数类型：浮点型
+:guilabel:`Rshift` 参数类型：浮点型
 ------------------------------------------------
 指定弱化CASPT2等基于广义Fock算符作为H0方法的Intruder State问题所需Real Level Shift参数。
 ** 默认值：0.0
 * 建议值: 0.3
 
-:guilabel:`ILS` 参数类型：浮点型
+:guilabel:`Ishift` 参数类型：浮点型
 ------------------------------------------------
 指定弱化CASPT2等基于广义Fock算符作为H0方法的Intruder State问题所需Imaginary Level Shift参数。
 * 默认值：0.0
