@@ -34,7 +34,7 @@ expandmo模块主要实现小基组分子轨道到大基组的扩展，用于加
 
 :guilabel:`S12cmo` 参数类型：Bool型
 ------------------------------------------------
-指定计算两个不同分子构型之间的轨道重叠矩阵。
+指定计算两个不同分子构型之间的轨道重叠矩阵，并根据第一构型的分子轨道将第二构型的分子轨道进行匹配，使得第二构型的分子轨道与第一构型的分子轨道相似。目前这个轨道匹配只适用于没有对称性的分子体系。
 
 第一构型文件路径:
 检查文件：$BDF_WORKDIR/$BDFTASK.chkfil1
@@ -48,6 +48,138 @@ expandmo模块主要实现小基组分子轨道到大基组的扩展，用于加
   1. 作用：量化不同构型（如几何优化前后、反应路径节点）的分子轨道重叠程度，用于分析构型变化对电子态的影响。
   2. 输出形式：矩阵数据通常写入指定输出文件，格式为行列对应的数值表。
   3. 典型应用：过渡态分析、构型相关性研究、轨道连续性追踪。
+
+.. code-block:: bdf
+      $compass
+      title
+      c2h4 molecule test run
+      basis
+      cc-pvdz
+      geometry
+      c 0.00000000 0.00000000 1.25306000
+      c 0.00000000 0.00000000 -1.25306000
+      h 1.74646000 0.00000000 2.37500000
+      h -1.74646000 0.00000000 2.37500000
+      h 1.74646000 0.00000000 -2.37500000
+      h -1.74646000 0.00000000 -2.37500000
+      end geometry
+      nosym
+      unit
+      bohr
+      skeleton
+      RI-C
+      cc-pvdz
+      $end
+      
+      %cp $BDF_WORKDIR/$BDFTASK.chkfil $BDF_WORKDIR/$BDFTASK.chkfil1
+      
+      $xuanyuan
+      $end
+      
+      $scf
+      RHF
+      $end
+      
+      %cp $BDF_WORKDIR/$BDFTASK.scforb $BDF_WORKDIR/$BDFTASK.inporb
+      
+      $expandmo
+      vcmo
+      minbas
+      4
+      1C|2P-1  
+      1C|2P0   
+      2C|2P-1   
+      2C|2P0   
+      $end
+      
+      %cp $BDF_WORKDIR/$BDFTASK.exporb $BDF_WORKDIR/$BDFTASK.inporb
+      
+      $mcscf
+      automc
+      spin
+      1
+      roots
+      2 2 1
+      symmetry
+      1
+      guess
+      read
+      molden
+      quasi
+      $end
+      
+      %cp $BDF_WORKDIR/$BDFTASK.casorb $BDF_WORKDIR/$BDFTASK.inporb1
+      
+      $compass
+      title
+      c2h4 molecule test run
+      basis
+      cc-pvdz
+      geometry
+      c 0.00000000 0.00000000 1.35306000
+      c 0.00000000 0.00000000 -1.35306000
+      h 1.74646000 0.00000000 2.37500000
+      h -1.74646000 0.00000000 2.37500000
+      h 1.74646000 0.00000000 -2.37500000
+      h -1.74646000 0.00000000 -2.37500000
+      end geometry
+      #nosym
+      unit
+      bohr
+      skeleton
+      RI-C
+      cc-pvdz
+      $end
+      
+      %cp $BDF_WORKDIR/$BDFTASK.chkfil $BDF_WORKDIR/$BDFTASK.chkfil2
+      
+      $xuanyuan
+      $end
+      
+      $scf
+      RHF
+      $end
+      
+      %cp $BDF_WORKDIR/$BDFTASK.scforb $BDF_WORKDIR/$BDFTASK.inporb
+      
+      $expandmo
+      vcmo
+      minbas
+      4
+      1C|2P-1  
+      1C|2P0   
+      2C|2P-1   
+      2C|2P0   
+      $end
+      
+      %cp $BDF_WORKDIR/$BDFTASK.exporb $BDF_WORKDIR/$BDFTASK.inporb
+      
+      $mcscf
+      automc
+      #close
+      #6
+      #active
+      #4
+      #actele
+      #4
+      spin
+      1
+      roots
+      2 2 1
+      symmetry
+      1
+      guess
+      read
+      molden
+      quasi
+      $end
+      
+      %cp $BDF_WORKDIR/$BDFTASK.casorb $BDF_WORKDIR/$BDFTASK.inporb2
+      
+      $expandmo
+      s12cmo
+      $end
+      
 
 :guilabel:`Core` 参数类型：整型数组
 ------------------------------------------------
