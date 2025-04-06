@@ -364,6 +364,7 @@ BDF目前支持一阶微扰态特定的能量计算（ptSS），以下是采用 
     2
   iroot
     1 2 3
+  geom
   norder
     0
   solneqss
@@ -441,6 +442,7 @@ BDF目前还支持矫正的线性响应的计算（corrected linear response, cL
     2
   iroot
     1
+  geom
   norder
     0
   solneqlr
@@ -578,6 +580,7 @@ BDF目前还支持矫正的线性响应的计算（corrected linear response, cL
     2
   iroot
     1
+  geom
   norder
     0
   #soleqlr
