@@ -1,4 +1,4 @@
-xianci模块
+多参考态组态相互作用及多参考态二阶微扰理论计算 - xianci模块
 ================================================
 xianci模块来自Xi'an-CI程序包，执行ucMRCI, icMRCI，XSDSCI, CB-MRPT2/3，MS-CASPT2, XMS-CASPT2, XDW-CASPT2, RMS-CASPT2, MS-NEVPT2，SS-NEVPT3, SDSPT2f, SDSPT2, SDSCIf, SDSCI等计算。
 
