@@ -192,7 +192,6 @@ BDF需在Linux终端下运行。运行BDF，需要先准备输入文件，输入
     #!/bin/bash
 
     export BDFHOME=/home/user/bdf-pkg-pro
-    export BDF_WORKDIR=./
     export BDF_TMPDIR=/tmp/$RANDOM
 
     ulimit -s unlimited
@@ -277,7 +276,6 @@ Slurm提交BDF作业的脚本示例如下：
     export BDFHOME=/home/bbs/bdf-pkg-pro
     
     # 指定BDF运行的临时文件存储目录
-    export BDF_WORKDIR=./
     export BDF_TMPDIR=/tmp/$RANDOM
     
     # 指定OpenMP的Stack内存大小
