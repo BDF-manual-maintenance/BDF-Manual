@@ -23,7 +23,7 @@ BDFOPT模块是BDF程序的分子几何结构优化模块，可用来寻找能�
  * 默认值：0
  * 可选值：0、1、2
 
-用于圆锥交点（conical intersection；CI）、系间穿越（intersystem crossing；ISC）等的多态优化。目前仅支持DL-Find优化器。
+用于圆锥交点（conical intersection；CI）、系间窜越（intersystem crossing；ISC）等的多态优化。目前仅支持DL-Find优化器。
 
  * ``Imulti = 0`` ，不执行多态优化（默认）
  * ``Imulti = 1`` ，用惩罚函数方法优化CI或ISC，不需要计算非绝热耦合或态间耦合梯度
