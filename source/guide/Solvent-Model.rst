@@ -83,7 +83,7 @@ BDF溶剂化模型支持的功能：
   solmodel
     IEFPCM   #溶剂模型
 
-对于COSMO和CPCM，可以通过 ``cosmoFactorK`` 来指定the dielectric screening factor， :math:`f_\epsilon=\frac{\epsilon-1}{\epsilon+k}` ，中k的大小。对于COSMO，k默认为0.5；对于CPCM，k默认为0。
+未指定特定模型时，将默认使用IEFPCM模型。对于COSMO和CPCM，可以通过 ``cosmoFactorK`` 来指定the dielectric screening factor， :math:`f_\epsilon=\frac{\epsilon-1}{\epsilon+k}` ，中k的大小。对于COSMO，k默认为0.5；对于CPCM，k默认为0。
 
 .. code-block:: bdf 
 
