@@ -21,6 +21,10 @@ resp模块用于计算DFT/TDDFT的梯度，TDDFT理论级别下的非绝热耦�
 
 可选值：1.梯度或fo-NACMEs；2.Hessian
 
+:guilabel:`MaxMem` 参数类型：整型
+------------------------------------------------
+解析Hessian计算所需的堆内存，单位为GB，默认值为32。堆内存与栈内存之和必须小于节点总物理内存，考虑到内存估计的误差及同一个节点上的其他进程消耗的内存，建议小于节点总物理内存的80%。也即： ``OMP_STACKSIZE*OMP_NUM_THREADS + maxmem <= 物理内存*80%`` 。对于解析Hessian计算，建议 ``OMP_STACKSIZE*OMP_NUM_THREADS`` 为 ``maxmem`` 的1/3~1/10左右，但若这使得 ``OMP_STACKSIZE`` 小于1G，则设置 ``OMP_STACKSIZE=1G`` 。注意该关键词仅对解析Hessian计算有效，对resp模块支持的其他计算类型无效，尽管后者也会消耗堆内存，这是因为一般来说仅对解析Hessian计算，堆内存才占据总内存消耗的较大比例。特别地，该关键词对数值Hessian计算无效。
+
 :guilabel:`NFiles` 参数类型：整型
 ------------------------------------------------
 对于TD-DFT响应性质计算，指定读取哪个$tddft块的计算结果；注意当该参数等于x时，并不简单代表读取第x个$tddft块的计算结果，而是指读取istore值为x的那个$tddft块的计算结果。例如对于某闭壳层分子的以下输入（$compass、$xuanyuan、$scf略去）：
