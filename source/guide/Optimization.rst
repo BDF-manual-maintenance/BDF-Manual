@@ -489,6 +489,175 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
     1. 虽然opt+freq计算中的结构优化步骤支持在非C(1)点群下计算，但数值频率计算步骤仍然必须在C(1)群下计算。所以如果用户计算的分子具有点群对称性，且希望指定各个不可约表示的轨道占据数或指定优化某个特定不可约表示下的激发态，则必须先做结构优化，再根据前述步骤手动指认相应的轨道/激发态对应于C(1)群下的哪些轨道/激发态，再在C(1)群下进行数值频率计算，而不能直接做opt+freq计算。
     2. 对于大分子（例如100个原子以上）、柔性分子，以及非共价相互作用比较重要的体系的自由能、熵计算，建议打开QRRHO，有助于提高精度，方法为在 ``$bdfopt`` 块中增加 ``QRRHO`` 关键字。对于刚性小体系，QRRHO对计算结果几乎没有影响。开启QRRHO后，自由能、熵结果与ORCA、Turbomole可比，但与Gaussian不可比。若所研究的课题涉及至少一个非共价相互作用很重要的体系的自由能计算，且不需要计算结果与Gaussian可比，则建议总是打开QRRHO。注意若同一个工作既涉及需要开QRRHO的计算，又涉及不是一定要开QRRHO的计算，则应当统一开QRRHO，否则属于理论级别不统一，结果不可比。
     3. 解析Hessian计算的内存并非完全由环境变量 ``OMP_STACKSIZE`` 控制（后者只控制每个核的栈内存，而不控制堆内存），而是还由 ``resp`` 模块的 ``maxmem`` 关键词控制（该关键词控制的是所有核的总堆内存，在2025年7月及之后的版本中支持）。堆内存与栈内存之和必须小于节点总物理内存，考虑到内存估计的误差及同一个节点上的其他进程消耗的内存，建议小于节点总物理内存的80%。也即： ``OMP_STACKSIZE*OMP_NUM_THREADS + maxmem <= 物理内存*80%`` 。对于解析Hessian计算，建议 ``OMP_STACKSIZE*OMP_NUM_THREADS`` 为 ``maxmem`` 的1/3~1/10左右，但若这使得 ``OMP_STACKSIZE`` 小于1G，则设置 ``OMP_STACKSIZE=1G`` 。
+    4. 默认情况下，程序会用用户分配的所有的核计算一个梯度，然后再用所有的核计算下一个梯度，等等。当计算所用核数较多（如大于16），且体系较大（如多于50个原子）时，用完美并行（embarrassingly parallel）的方法进行梯度计算往往是更高效的。此时可以在bdfopt模块中指定 ``ParHess`` 关键字，此时默认会开启OMP_NUM_THREADS个进程，每个进程计算一个梯度，且每个梯度计算仅用一个核，仅当计算接近结束、剩余待计算梯度数目小于OMP_NUM_THREADS时，每个梯度计算用的核数才会动态增加。当设定NCorePerGrad关键词时，每个梯度计算使用NCorePerGrad个核，有助于改善计算末期的负载均衡，适用于计算所用核数非常多而体系不是很大的情形。注意：ParHess关键字仅在2025年7月及以后的BDF版本中可用，且要求用户安装Python3、NumPy和SciPy。
+
+O1NumHess：仅用O(1)个梯度进行近似的数值频率计算
+---------------------------------------------------------------
+
+传统的数值Hessian算法需要计算6N个梯度，其中N为原子数，当体系较大时计算量非常可观。之所以需要O(N)个梯度，是因为Hessian包含O(N^2)个矩阵元，而每个梯度仅包含O(N)个数字，因此从信息论角度讲，需要O(N)个梯度才能唯一确定Hessian的所有矩阵元。然而，大体系的Hessian通常是稀疏的，即使不是稀疏的（例如对于HOMO-LUMO gap较小的体系或激发态，Hessian的稀疏性往往较差），其非对角块也往往有一定结构，即呈现低秩性。因此，仅需O(N)个参数即可以较高精度近似描述整个Hessian，也就是说只需要O(1)个梯度，原则上即可近似地计算出整个Hessian，只不过需要较复杂的数据处理方法。
+
+自2025年7月起，BDF接入了O1NumHess库（后者将于近期在GitHub上开源，相关文章正在撰写中），支持用O(1)个梯度计算数值Hessian。不管对于多大的体系，O1NumHess的计算量都比传统数值Hessian算法小50%以上；对于足够大的体系，O1NumHess仅需计算100个左右的梯度，对于150原子以上的体系其计算量可小至传统数值Hessian的1/10左右。因此O1NumHess的主要应用场合是在程序暂不支持解析Hessian的情形下，例如计算TDDFT Hessian，或在开启MPEC+COSX的情况下计算基态Hessian的情况下，此时打开O1NumHess可以大大节约时间。当所用理论方法支持解析Hessian时，虽然对于小体系，或在内存充足的条件下，O1NumHess的计算速度往往较解析Hessian更慢，但是在内存受限情况下，O1NumHess的计算速度是有可能较解析Hessian更快的。精度方面，默认设置下，O1NumHess的振动频率精度一般约为1~2 cm-1，Gibbs自由能误差一般约为0.1~0.2 kcal/mol左右；对频率或自由能作差时，误差还能进一步抵消。
+
+使用O1NumHess算法的方法为在普通Hessian输入文件的基础上，在bdfopt模块中添加 ``o1numhess`` 关键词。例如以下输入文件在HF/STO-3G级别下计算1-辛醇的Hessian：
+
+.. code-block:: bdf
+
+    $compass
+    Title
+     1-Oct-OH
+    Basis
+     STO-3G
+    Geometry
+     C                  0.35104892    5.02179154    0.00000000
+     H                  0.96877389    5.02880594   -0.87365134
+     H                  0.96877389    5.02880594    0.87365134
+     H                 -0.27659591    5.88837215    0.00000000
+     C                 -0.52373598    3.75437236    0.00000000
+     H                 -1.14146094    3.74735795    0.87365134
+     H                 -1.14146094    3.74735795   -0.87365134
+     C                  0.37960332    2.50714418    0.00000000
+     H                  0.99732828    2.51415859   -0.87365134
+     H                  0.99732828    2.51415859    0.87365134
+     C                 -0.49518158    1.23972500    0.00000000
+     H                 -1.11290655    1.23271060   -0.87365134
+     H                 -1.11290655    1.23271060    0.87365134
+     C                  0.40815771   -0.00750317    0.00000000
+     H                  1.02588267   -0.00048876    0.87365134
+     H                  1.02588267   -0.00048876   -0.87365134
+     C                 -0.46662719   -1.27492235    0.00000000
+     H                 -1.08435216   -1.28193676   -0.87365134
+     H                 -1.08435216   -1.28193676    0.87365134
+     C                  0.43671210   -2.52215052    0.00000000
+     H                  1.05443707   -2.51513612    0.87365134
+     H                  1.05443707   -2.51513612   -0.87365134
+     C                 -0.43807280   -3.78956970    0.00000000
+     H                 -1.05579776   -3.79658411   -0.87365134
+     H                 -1.05579776   -3.79658411    0.87365134
+     O                  0.40074226   -4.94771015    0.00000000
+     H                 -0.14457820   -5.73778964    0.00000000
+    End Geometry
+    nosym
+    norotate
+    $end
+    
+    $bdfopt
+    hess
+    only
+    qrrho # not necessary for o1numhess, but necessary for large, esp. noncovalent systems
+    o1numhess
+    ncorepergrad
+    2 # number of cores per gradient calculation, default: 1
+    $end
+    
+    $xuanyuan
+    $end
+    
+    $scf
+    RHF
+    $end
+    
+    $resp
+    geom
+    $end
+
+注意这里还涉及一个新的关键词 ``ncorepergrad`` ，该关键词指定每个梯度计算用多少个核。例如当 ``OMP_NUM_THREADS`` 为8，而 ``ncorepergrad`` 为2时，表示：程序同时进行4个梯度计算，每个计算使用2个核；但当剩余待计算的梯度数目不到4个时，每个梯度计算可能会使用2个以上的核数，但所有梯度计算的总核数仍然不超过8个。 ``ncorepergrad`` 的设置只会影响计算速度，而不会影响结果的正确性。 ``ncorepergrad`` 的最优取值应使得OMP_NUM_THREADS除以 ``ncorepergrad`` 约为预期需要计算的梯度数的1/5~1/10左右（预期需要计算的梯度数按min(100, 3N-4)估算，N为体系原子数），但若这使得 ``ncorepergrad`` 小于1，则取 ``ncorepergrad=1`` 。该设置一般可实现负载均衡和并行效率的较好平衡。
+
+计算分为三个阶段，第一阶段进行大部分梯度的计算：
+
+.. code-block:: bdf
+
+    Stage 1: Initial estimation of the Hessian
+    Start O1NumHess run...
+    7 displacement directions given on input
+    44 displacement directions generated
+    Total number of displacement directions: 51
+    46 gradients will be calculated
+    Start gradient calculations...
+    Gradient calculations finished
+    Enter _genODLRHessian
+    Enter _genLocalHessian
+    Successful termination of _genLocalHessian, time = 0.08 sec
+    Error norm of the predicted gradient: 6.71e-03
+    The gradients cannot be exactly reproduced by a symmetric Hessian.
+    Exit _genODLRHessian
+    Successful termination of _genODLRHessian, time = 0.08 sec
+    Error norm of the predicted gradient: 6.06e-03
+    Stage 1 done, total time: 93.50 sec
+
+可以看到程序产生了51个扰动的方向，但有的扰动方向下需要进行双向数值差分，大部分扰动方向下只需进行单向数值差分，且有的扰动方向对Hessian的贡献无需计算即可得知（即平动、转动）。因此该步骤实际仅需计算46个梯度。得到梯度后，程序调用 ``_genODLRHessian`` ，在假设Hessian的非对角块低秩的情况下，对Hessian矩阵元进行估算。接下来是第二阶段，程序将Hessian对角化：
+
+.. code-block:: bdf
+
+    Stage 2: Check imaginary modes
+     - 12 imaginary mode(s) found
+    Stage 2 done, total time: 0.00 sec
+
+因计算误差，Hessian包含大量的小虚频。接下来在第三阶段中，程序在这些虚频的方向上进行更多的梯度计算，以确认这些虚频是否真的存在：
+
+.. code-block:: bdf
+
+    Stage 3: Displace along the imaginary modes
+    Start O1NumHess run...
+    63 displacement directions given on input
+    0 displacement directions generated
+    Total number of displacement directions: 63
+    12 gradients will be calculated
+    Start gradient calculations...
+    Gradient calculations finished
+    Enter _genODLRHessian
+    Enter _genLocalHessian
+    Successful termination of _genLocalHessian, time = 0.03 sec
+    Error norm of the predicted gradient: 1.55e-02
+    Successful termination of _genODLRHessian, time = 0.05 sec
+    Error norm of the predicted gradient: 1.45e-02
+    Stage 3 done, total time: 23.31 sec
+    Exit runO1NumHess
+    BDF numerical Hessian done, total time: 117.07 sec
+
+因此，整个计算调用的梯度计算数目为46+12=58个。因体系含有27个原子，传统数值Hessian算法将需要27*6=162个梯度计算，也即O1NumHess相比传统数值Hessian算法的加速比为2.8。对于更大的体系，加速比一般更加显著。
+
+与其他Hessian计算相同，输出文件接下来打印Hessian矩阵，频率分析结果，及热化学分析结果。其中热化学分析结果为
+
+.. code-block:: bdf
+
+     ====================================================================================
+    
+     Thermal correction energies                              Hartree            kcal/mol
+     Zero-point Energy                          :            0.299658          188.037987
+     Thermal correction to Energy               :            0.305404          191.644150
+     Thermal correction to Enthalpy             :            0.306349          192.236635
+     Thermal correction to Gibbs Free Energy    :            0.268255          168.332795
+    
+     Sum of electronic and zero-point Energies  :         -383.302117
+     Sum of electronic and thermal Energies     :         -383.296370
+     Sum of electronic and thermal Enthalpies   :         -383.295426
+     Sum of electronic and thermal Free Energies:         -383.333519
+     ====================================================================================
+
+对比解析Hessian的结果：
+
+     ====================================================================================
+    
+     Thermal correction energies                              Hartree            kcal/mol
+     Zero-point Energy                          :            0.299816          188.137300
+     Thermal correction to Energy               :            0.305553          191.737267
+     Thermal correction to Enthalpy             :            0.306497          192.329753
+     Thermal correction to Gibbs Free Energy    :            0.268419          168.435170
+    
+     Sum of electronic and zero-point Energies  :         -383.301959
+     Sum of electronic and thermal Energies     :         -383.296222
+     Sum of electronic and thermal Enthalpies   :         -383.295278
+     Sum of electronic and thermal Free Energies:         -383.333356
+     ====================================================================================
+
+可以看到零点能、自由能误差仅0.1 kcal/mol。因一般关心零点能、自由能的差而非绝对数值，在作差时还可以实现误差抵消，导致最终结果的误差更低。
+
+.. note::
+
+    1. O1NumHess需要用户安装Python3（3.6或以上版本）、NumPy和SciPy。若用户在登录节点上安装了Python3、NumPy和SciPy，但没有在计算节点上安装，需要确认计算节点是否能正确调用这三者。
+    2. 计算会产生大量的形如$BDFTASK_000.*, $BDFTASK_001.*等的文件（其中数字部分未必是3位），如不希望这些文件占据硬盘空间，可在计算结束后用脚本自动删除。之所以程序不自动删除这些文件，是为了在梯度计算出现SCF不收敛等问题时，方便排查不收敛的原因。
+    3. 由以上算例和TDDFT梯度计算的输入文件写法，不难推知用O1NumHess计算TDDFT Hessian的输入文件写法，此处不另给算例。其中TDDFT Hessian除用于计算热化学校正量、激发态虚频数目外，还可结合MOMAP用于计算振动分辨光谱、跃迁速率等。
+    4. O1NumHess也可用于计算结构优化的初始Hessian，或在结构优化结束后计算Hessian（即"opt freq"计算）。
 
 过渡态结构优化：HCN/HNC异构反应的过渡态优化和频率计算
 ---------------------------------------------------------------
