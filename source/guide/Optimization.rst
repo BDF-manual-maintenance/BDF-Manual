@@ -636,6 +636,8 @@ O1NumHess：仅用O(1)个梯度进行近似的数值频率计算
 
 对比解析Hessian的结果：
 
+.. code-block:: bdf
+
      ====================================================================================
     
      Thermal correction energies                              Hartree            kcal/mol
