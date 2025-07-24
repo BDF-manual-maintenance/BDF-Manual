@@ -46,12 +46,11 @@ BDF内置的高斯基组主要来自以下基组库网站，各种基组的原�
 
 * Basis Set Exchange :cite:`bse2019` ：全电子基组，标量ECP基组，可以输出BDF格式（注意：ECP基组要手动调整ECP数据的位置）。 https://www.basissetexchange.org/
 * Stuttgart/Cologne赝势基组库：主要是SOECP基组和“f-in-core”基组，以及少量早期的标量ECP基组。 http://www.tc.uni-koeln.de/PP/clickpse.en.html
-* Turbomole基组库：全电子基组，标量ECP基组，SOECP基组。 http://www.cosmologic-services.de/basis-sets/basissets.php
-* Dyall相对论基组：全电子相对论基组。 http://dirac.chem.sdu.dk/basisarchives/dyall/index.html
+* Turbomole基组库：全电子基组，标量ECP基组，SOECP基组。 https://basissets.turbomole.org/
+* Dyall相对论基组：全电子相对论基组。 https://zenodo.org/records/7574629
 * Sapporo基组库：全电子基组。 http://sapporo.center.ims.ac.jp/sapporo/
-* Clarkson大学ECP基组库：SOECP基组。 https://people.clarkson.edu/~pchristi/reps.html
+* Clarkson大学ECP基组库：SOECP基组。 https://people.clarkson.edu/~pchristi/reps.html （已失效）
 * ccECP基组库：标量ECP基组；Kr之后是SOECP基组。 https://pseudopotentiallibrary.org/
-* Molpro基组库：全电子基组，ECP基组（不显示ECP参数）。 https://www.molpro.net/info/basis.php
 * ccRepo基组库：收录了最新开发的关联一致基组，包括全电子非相对论，全电子相对论，SOECP基组（不显示ECP参数），和密度拟合等多种类型。 http://www.grant-hill.group.shef.ac.uk/ccrepo/
 
 此外，有个别元素的内置基组来自原始文献：
@@ -671,7 +670,7 @@ BDF可以使用非内置基组，有两种方法。一种方法是在 **COMPASS*
    # Supported elements: He and Al
 
    ****                                        # 4个星号打头的行，接下来是一个元素的基组
-   He      2    1                              # 元素符号，核电荷数，基函数的最高角动量+1
+   He      2    1                              # 元素符号，核电荷数，基函数的最高角动量：1=p，2=d...
    S      4    2                               # S型GTO基函数，4个原函数收缩成2个
                   3.836000E+01                 # 4个S型高斯原函数的指数
                   5.770000E+00
@@ -728,7 +727,7 @@ BDF可以使用非内置基组，有两种方法。一种方法是在 **COMPASS*
    D       1    1
                0.19330000
         1.0000000000
-   ECP                     # 价基函数之后立即接关键词ECP（全部大写），表示后面是ECP数据部分
+   ECP                     # 价基函数之后立即接关键词ECP，表示后面是ECP数据部分
    Al    10    2    2      # 相同的元素符号，芯电子数，ECP最高角动量，可选的SOECP最高角动量
    D potential  4                                    # ECP最高角动量（D函数）的势函数个数
       2      1.22110000000000     -0.53798100000000  # R的幂，指数，因子（下同）
