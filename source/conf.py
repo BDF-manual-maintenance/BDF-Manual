@@ -66,7 +66,7 @@ latex_elements = {
     'preamble': r'''
 \usepackage{cite}
 \usepackage{longtable}
-\documentclass[openany]{book}
+%\documentclass[openany]{book}
 \let\cleardoublepage\clearpage
 \usepackage[version=4]{mhchem}
 \hypersetup{unicode=true}

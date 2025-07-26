@@ -238,13 +238,13 @@ EFG计算的关键词为 ``relefg`` 。
 当同位素的Q实验值或理论预测值已知时（对于 :math:`\ce{^{57}Fe}` ，I=1/2 核基态的 Q 值为零，只有 I=3/2第一激发态的核四极矩可以与EFG发生相互作用，
 该态的Q值为 0.160 barn），程序会打印 :math:`eQq` ，在本例中是-8.4172 MHz。
 
-穆斯堡尔谱测量的核四极分裂 :math:`\Delta E_{Q}` 与NQCC满足一定的关系。例如，对于 :math:`\ce{^{57}Fe}` 的I=1/2 → I=3/2核激发跃迁，
-γ 线激发能 :math:`E_\gamma` 为14.412497 KeV，有
+穆斯堡尔谱测量的核四极分裂 :math:`\Delta E_{Q}` 与NQCC满足一定的关系。例如，对于 :math:`\ce{^{57}Fe}` 的I=1/2 → I=3/2核激发跃迁，有
 
 .. math::
     \Delta E_{Q} = \frac{c}{E_\gamma} \frac{eQq}{2} \left(1+\frac{\eta^2}{3}\right)^{1/2} 
 
-其中， :math:`\Delta E_{Q}` 的单位取 1 mm/s， :math:`c / E_\gamma = 11.6248` 为 MHz 到 mm/s 的换算因子。
+其中， :math:`\Delta E_{Q}` 的单位取 mm/s， :math:`E_\gamma = 14.412497` KeV 为 γ 线的激发能，
+:math:`c / E_\gamma = 11.6248` 为 MHz 到 mm/s 的换算因子。
 
 对于其它核素，习惯上仍然选取 I=3/2 的核基态或第一激发态作为参考（如果存在的话），这样上面的 :math:`\Delta E_{Q}` 公式依旧成立，
 只不过 :math:`E_\gamma` 要改为该核素第一激发能的实验值。
