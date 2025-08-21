@@ -496,7 +496,7 @@ O1NumHess：仅用O(1)个梯度进行近似的数值频率计算
 
 传统的数值Hessian算法需要计算6N个梯度，其中N为原子数，当体系较大时计算量非常可观。之所以需要O(N)个梯度，是因为Hessian包含O(N^2)个矩阵元，而每个梯度仅包含O(N)个数字，因此从信息论角度讲，需要O(N)个梯度才能唯一确定Hessian的所有矩阵元。然而，大体系的Hessian通常是稀疏的，即使不是稀疏的（例如对于HOMO-LUMO gap较小的体系或激发态，Hessian的稀疏性往往较差），其非对角块也往往有一定结构，即呈现低秩性。因此，仅需O(N)个参数即可以较高精度近似描述整个Hessian，也就是说只需要O(1)个梯度，原则上即可近似地计算出整个Hessian，只不过需要较复杂的数据处理方法。
 
-自2025年7月起，BDF接入了O1NumHess库（后者将于近期在GitHub上开源，相关文章正在撰写中），支持用O(1)个梯度计算数值Hessian。不管对于多大的体系，O1NumHess的计算量都比传统数值Hessian算法小50%以上；对于足够大的体系，O1NumHess仅需计算100个左右的梯度，对于150原子以上的体系其计算量可小至传统数值Hessian的1/10左右。因此O1NumHess的主要应用场合是在程序暂不支持解析Hessian的情形下，例如计算TDDFT Hessian，或在开启MPEC+COSX的情况下计算基态Hessian的情况下，此时打开O1NumHess可以大大节约时间。当所用理论方法支持解析Hessian时，虽然对于小体系，或在内存充足的条件下，O1NumHess的计算速度往往较解析Hessian更慢，但是在内存受限或并行核数较多的情况下，O1NumHess的计算速度是有可能较解析Hessian更快的。精度方面，默认设置下，O1NumHess的平均振动频率误差一般为2~5 cm-1，反应Gibbs自由能误差一般在1 kcal/mol左右。
+自2025年7月起，BDF接入了O1NumHess库（相关文章已上传至arXiv :cite:`O1NumHess` ），支持用O(1)个梯度计算数值Hessian。该部分代码除作为BDF的一部分发行外，也已单独在GitHub上开源（https://github.com/ilcpm/O1NumHess、https://github.com/ilcpm/O1NumHess_QC/），可结合更早版本的BDF使用，使用方法参见http://bbs.keinsci.com/thread-55109-1-3.html。不管对于多大的体系，O1NumHess的计算量都比传统数值Hessian算法小50%以上；对于足够大的体系，O1NumHess仅需计算100个左右的梯度，对于150原子以上的体系其计算量可小至传统数值Hessian的1/10左右。因此O1NumHess的主要应用场合是在程序暂不支持解析Hessian的情形下，例如计算TDDFT Hessian，或在开启MPEC+COSX的情况下计算基态Hessian的情况下，此时打开O1NumHess可以大大节约时间。当所用理论方法支持解析Hessian时，虽然对于小体系，或在内存充足的条件下，O1NumHess的计算速度往往较解析Hessian更慢，但是在内存受限或并行核数较多的情况下，O1NumHess的计算速度是有可能较解析Hessian更快的。精度方面，默认设置下，O1NumHess的平均振动频率误差一般为2~5 cm-1，反应Gibbs自由能误差一般在1 kcal/mol左右。
 
 使用O1NumHess算法的方法为在普通Hessian输入文件的基础上，在bdfopt模块中添加 ``o1numhess`` 关键词。例如以下输入文件在HF/STO-3G级别下计算1-辛醇的Hessian：
 
