@@ -17,6 +17,8 @@
 
 .. include:: guide/FLMOMethod.rst
 
+.. include:: guide/EDA.rst
+
 .. include:: guide/TD.rst
 
 .. include:: guide/NMR.rst

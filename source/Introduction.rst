@@ -57,4 +57,4 @@ BDF的研发任重而道远。其成功与否不仅取决于研发人员的长�
 免费试用BDF
 ================================================   
 
-有意使用BDF软件的用户可在 https://iresearch.net.cn/web/personal-space/activity-page 注册鸿之微云账号，申请免费试用。此外，用户可直接发送试用申请邮件至sales@hzwtech.com，或者直接拨打021-50550302即可申请使用。
+有意使用BDF软件的用户可在 https://cloud.hzwtech.com/web/trial 注册鸿之微云账号，申请免费试用。此外，用户可直接发送试用申请邮件至sales@hzwtech.com，或者直接拨打021-50550302即可申请使用。

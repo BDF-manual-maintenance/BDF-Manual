@@ -275,7 +275,7 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
     geom
     $end
 
-其中分子结构为上述结构优化任务得到的收敛的结构。注意我们在BDFOPT模块中添加了 ``hess only`` ，其中 ``hess`` 代表计算（数值）Hessian，而 ``only`` 的含义将在后续章节详述。程序将分子中的每个原子分别向x轴正方向、x轴负方向、y轴正方向、y轴负方向、z轴正方向、z轴负方向进行扰动，并计算扰动结构下的梯度，如：
+其中分子结构为上述结构优化任务得到的收敛的结构。注意我们在BDFOPT模块中添加了 ``hess only`` ，其中 ``hess`` 代表计算（数值）Hessian，而 ``only`` 的含义将在后续章节详述。对于基态DFT计算，程序进行解析Hessian计算，在.out文件里的输出较少，Hessian的计算细节输出到.out.tmp文件中。对于TDDFT等暂不支持解析Hessian的理论级别，如TDDFT，程序将自动改为数值Hessian计算，此时程序将分子中的每个原子分别向x轴正方向、x轴负方向、y轴正方向、y轴负方向、z轴正方向、z轴负方向进行扰动，并计算扰动结构下的梯度，如：
 
 .. code-block::
 
@@ -486,7 +486,180 @@ BDF的结构优化是由BDFOPT模块来实现的，支持基于牛顿法和准�
 
 .. note::
 
-    虽然opt+freq计算中的结构优化步骤支持在非C(1)点群下计算，但数值频率计算步骤仍然必须在C(1)群下计算。所以如果用户计算的分子具有点群对称性，且希望指定各个不可约表示的轨道占据数或指定优化某个特定不可约表示下的激发态，则必须先做结构优化，再根据前述步骤手动指认相应的轨道/激发态对应于C(1)群下的哪些轨道/激发态，再在C(1)群下进行数值频率计算，而不能直接做opt+freq计算。
+    1. 虽然opt+freq计算中的结构优化步骤支持在非C(1)点群下计算，但数值频率计算步骤仍然必须在C(1)群下计算。所以如果用户计算的分子具有点群对称性，且希望指定各个不可约表示的轨道占据数或指定优化某个特定不可约表示下的激发态，则必须先做结构优化，再根据前述步骤手动指认相应的轨道/激发态对应于C(1)群下的哪些轨道/激发态，再在C(1)群下进行数值频率计算，而不能直接做opt+freq计算。
+    2. 对于大分子（例如100个原子以上）、柔性分子，以及非共价相互作用比较重要的体系的自由能、熵计算，建议打开QRRHO，有助于提高精度，方法为在 ``$bdfopt`` 块中增加 ``QRRHO`` 关键字。对于刚性小体系，QRRHO对计算结果几乎没有影响。开启QRRHO后，自由能、熵结果与ORCA、Turbomole可比，但与Gaussian不可比。若所研究的课题涉及至少一个非共价相互作用很重要的体系的自由能计算，且不需要计算结果与Gaussian可比，则建议总是打开QRRHO。注意若同一个工作既涉及需要开QRRHO的计算，又涉及不是一定要开QRRHO的计算，则应当统一开QRRHO，否则属于理论级别不统一，结果不可比。
+    3. 解析Hessian计算的内存并非完全由环境变量 ``OMP_STACKSIZE`` 控制（后者只控制每个核的栈内存，而不控制堆内存），而是还由 ``resp`` 模块的 ``maxmem`` 关键词控制（该关键词控制的是所有核的总堆内存，在2025年7月及之后的版本中支持）。堆内存与栈内存之和必须小于节点总物理内存，考虑到内存估计的误差及同一个节点上的其他进程消耗的内存，建议小于节点总物理内存的80%。也即： ``OMP_STACKSIZE*OMP_NUM_THREADS + maxmem <= 物理内存*80%`` 。对于解析Hessian计算，建议 ``OMP_STACKSIZE*OMP_NUM_THREADS`` 为 ``maxmem`` 的1/3~1/10左右，但若这使得 ``OMP_STACKSIZE`` 小于1G，则设置 ``OMP_STACKSIZE=1G`` 。
+    4. 默认情况下，程序会用用户分配的所有的核计算一个梯度，然后再用所有的核计算下一个梯度，等等。当计算所用核数较多（如大于16），且体系较大（如多于50个原子）时，用完美并行（embarrassingly parallel）的方法进行梯度计算往往是更高效的。此时可以在bdfopt模块中指定 ``ParHess`` 关键字，此时默认会开启OMP_NUM_THREADS个进程，每个进程计算一个梯度，且每个梯度计算仅用一个核，仅当计算接近结束、剩余待计算梯度数目小于OMP_NUM_THREADS时，每个梯度计算用的核数才会动态增加。当设定NCorePerGrad关键词时，每个梯度计算使用NCorePerGrad个核，有助于改善计算末期的负载均衡，适用于计算所用核数非常多而体系不是很大的情形。注意：ParHess关键字仅在2025年7月及以后的BDF版本中可用，且要求用户安装Python3、NumPy和SciPy。
+
+O1NumHess：仅用O(1)个梯度进行近似的数值频率计算
+---------------------------------------------------------------
+
+传统的数值Hessian算法需要计算6N个梯度，其中N为原子数，当体系较大时计算量非常可观。之所以需要O(N)个梯度，是因为Hessian包含O(N^2)个矩阵元，而每个梯度仅包含O(N)个数字，因此从信息论角度讲，需要O(N)个梯度才能唯一确定Hessian的所有矩阵元。然而，大体系的Hessian通常是稀疏的，即使不是稀疏的（例如对于HOMO-LUMO gap较小的体系或激发态，Hessian的稀疏性往往较差），其非对角块也往往有一定结构，即呈现低秩性。因此，仅需O(N)个参数即可以较高精度近似描述整个Hessian，也就是说只需要O(1)个梯度，原则上即可近似地计算出整个Hessian，只不过需要较复杂的数据处理方法。
+
+自2025年7月起，BDF接入了O1NumHess库（相关文章已上传至arXiv :cite:`O1NumHess` ），支持用O(1)个梯度计算数值Hessian。该部分代码除作为BDF的一部分发行外，也已单独在GitHub上开源（https://github.com/ilcpm/O1NumHess、https://github.com/ilcpm/O1NumHess_QC/），可结合更早版本的BDF使用，使用方法参见http://bbs.keinsci.com/thread-55109-1-3.html。不管对于多大的体系，O1NumHess的计算量都比传统数值Hessian算法小50%以上；对于足够大的体系，O1NumHess仅需计算100个左右的梯度，对于150原子以上的体系其计算量可小至传统数值Hessian的1/10左右。因此O1NumHess的主要应用场合是在程序暂不支持解析Hessian的情形下，例如计算TDDFT Hessian，或在开启MPEC+COSX的情况下计算基态Hessian的情况下，此时打开O1NumHess可以大大节约时间。当所用理论方法支持解析Hessian时，虽然对于小体系，或在内存充足的条件下，O1NumHess的计算速度往往较解析Hessian更慢，但是在内存受限或并行核数较多的情况下，O1NumHess的计算速度是有可能较解析Hessian更快的。精度方面，默认设置下，O1NumHess的平均振动频率误差一般为2~5 cm-1，反应Gibbs自由能误差一般在1 kcal/mol左右。
+
+使用O1NumHess算法的方法为在普通Hessian输入文件的基础上，在bdfopt模块中添加 ``o1numhess`` 关键词。例如以下输入文件在HF/STO-3G级别下计算1-辛醇的Hessian：
+
+.. code-block:: bdf
+
+    $compass
+    Title
+     1-Oct-OH
+    Basis
+     STO-3G
+    Geometry
+     C                  0.35104892    5.02179154    0.00000000
+     H                  0.96877389    5.02880594   -0.87365134
+     H                  0.96877389    5.02880594    0.87365134
+     H                 -0.27659591    5.88837215    0.00000000
+     C                 -0.52373598    3.75437236    0.00000000
+     H                 -1.14146094    3.74735795    0.87365134
+     H                 -1.14146094    3.74735795   -0.87365134
+     C                  0.37960332    2.50714418    0.00000000
+     H                  0.99732828    2.51415859   -0.87365134
+     H                  0.99732828    2.51415859    0.87365134
+     C                 -0.49518158    1.23972500    0.00000000
+     H                 -1.11290655    1.23271060   -0.87365134
+     H                 -1.11290655    1.23271060    0.87365134
+     C                  0.40815771   -0.00750317    0.00000000
+     H                  1.02588267   -0.00048876    0.87365134
+     H                  1.02588267   -0.00048876   -0.87365134
+     C                 -0.46662719   -1.27492235    0.00000000
+     H                 -1.08435216   -1.28193676   -0.87365134
+     H                 -1.08435216   -1.28193676    0.87365134
+     C                  0.43671210   -2.52215052    0.00000000
+     H                  1.05443707   -2.51513612    0.87365134
+     H                  1.05443707   -2.51513612   -0.87365134
+     C                 -0.43807280   -3.78956970    0.00000000
+     H                 -1.05579776   -3.79658411   -0.87365134
+     H                 -1.05579776   -3.79658411    0.87365134
+     O                  0.40074226   -4.94771015    0.00000000
+     H                 -0.14457820   -5.73778964    0.00000000
+    End Geometry
+    nosym
+    norotate
+    $end
+    
+    $bdfopt
+    hess
+    only
+    qrrho # not necessary for o1numhess, but necessary for large, esp. noncovalent systems
+    o1numhess
+    ncorepergrad
+    2 # number of cores per gradient calculation, default: 1
+    $end
+    
+    $xuanyuan
+    $end
+    
+    $scf
+    RHF
+    $end
+    
+    $resp
+    geom
+    $end
+
+注意这里还涉及一个新的关键词 ``ncorepergrad`` ，该关键词指定每个梯度计算用多少个核。例如当 ``OMP_NUM_THREADS`` 为8，而 ``ncorepergrad`` 为2时，表示：程序同时进行4个梯度计算，每个计算使用2个核；但当剩余待计算的梯度数目不到4个时，每个梯度计算可能会使用2个以上的核数，但所有梯度计算的总核数仍然不超过8个。 ``ncorepergrad`` 的设置只会影响计算速度，而不会影响结果的正确性。 ``ncorepergrad`` 的最优取值应使得OMP_NUM_THREADS除以 ``ncorepergrad`` 约为预期需要计算的梯度数的1/5~1/10左右（预期需要计算的梯度数按min(100, 3N-4)估算，N为体系原子数），但若这使得 ``ncorepergrad`` 小于1，则取 ``ncorepergrad=1`` 。该设置一般可实现负载均衡和并行效率的较好平衡。
+
+计算分为三个阶段，第一阶段进行大部分梯度的计算：
+
+.. code-block:: bdf
+
+    Stage 1: Initial estimation of the Hessian
+    Start O1NumHess run...
+    7 displacement directions given on input
+    44 displacement directions generated
+    Total number of displacement directions: 51
+    46 gradients will be calculated
+    Start gradient calculations...
+    Gradient calculations finished
+    Enter _genODLRHessian
+    Enter _genLocalHessian
+    Successful termination of _genLocalHessian, time = 0.08 sec
+    Error norm of the predicted gradient: 6.71e-03
+    The gradients cannot be exactly reproduced by a symmetric Hessian.
+    Exit _genODLRHessian
+    Successful termination of _genODLRHessian, time = 0.08 sec
+    Error norm of the predicted gradient: 6.06e-03
+    Stage 1 done, total time: 93.50 sec
+
+可以看到程序产生了51个扰动的方向，但有的扰动方向下需要进行双向数值差分，大部分扰动方向下只需进行单向数值差分，且有的扰动方向对Hessian的贡献无需计算即可得知（即平动、转动）。因此该步骤实际仅需计算46个梯度。得到梯度后，程序调用 ``_genODLRHessian`` ，在假设Hessian的非对角块低秩的情况下，对Hessian矩阵元进行估算。接下来是第二阶段，程序将Hessian对角化：
+
+.. code-block:: bdf
+
+    Stage 2: Check imaginary modes
+     - 12 imaginary mode(s) found
+    Stage 2 done, total time: 0.00 sec
+
+因计算误差，Hessian包含大量的小虚频。接下来在第三阶段中，程序在这些虚频的方向上进行更多的梯度计算，以确认这些虚频是否真的存在：
+
+.. code-block:: bdf
+
+    Stage 3: Displace along the imaginary modes
+    Start O1NumHess run...
+    63 displacement directions given on input
+    0 displacement directions generated
+    Total number of displacement directions: 63
+    12 gradients will be calculated
+    Start gradient calculations...
+    Gradient calculations finished
+    Enter _genODLRHessian
+    Enter _genLocalHessian
+    Successful termination of _genLocalHessian, time = 0.03 sec
+    Error norm of the predicted gradient: 1.55e-02
+    Successful termination of _genODLRHessian, time = 0.05 sec
+    Error norm of the predicted gradient: 1.45e-02
+    Stage 3 done, total time: 23.31 sec
+    Exit runO1NumHess
+    BDF numerical Hessian done, total time: 117.07 sec
+
+因此，整个计算调用的梯度计算数目为46+12=58个。因体系含有27个原子，传统数值Hessian算法将需要27*6=162个梯度计算，也即O1NumHess相比传统数值Hessian算法的加速比为2.8。对于更大的体系，加速比一般更加显著。
+
+与其他Hessian计算相同，输出文件接下来打印Hessian矩阵，频率分析结果，及热化学分析结果。其中热化学分析结果为
+
+.. code-block:: bdf
+
+     ====================================================================================
+    
+     Thermal correction energies                              Hartree            kcal/mol
+     Zero-point Energy                          :            0.299658          188.037987
+     Thermal correction to Energy               :            0.305404          191.644150
+     Thermal correction to Enthalpy             :            0.306349          192.236635
+     Thermal correction to Gibbs Free Energy    :            0.268255          168.332795
+    
+     Sum of electronic and zero-point Energies  :         -383.302117
+     Sum of electronic and thermal Energies     :         -383.296370
+     Sum of electronic and thermal Enthalpies   :         -383.295426
+     Sum of electronic and thermal Free Energies:         -383.333519
+     ====================================================================================
+
+对比解析Hessian的结果：
+
+.. code-block:: bdf
+
+     ====================================================================================
+    
+     Thermal correction energies                              Hartree            kcal/mol
+     Zero-point Energy                          :            0.299816          188.137300
+     Thermal correction to Energy               :            0.305553          191.737267
+     Thermal correction to Enthalpy             :            0.306497          192.329753
+     Thermal correction to Gibbs Free Energy    :            0.268419          168.435170
+    
+     Sum of electronic and zero-point Energies  :         -383.301959
+     Sum of electronic and thermal Energies     :         -383.296222
+     Sum of electronic and thermal Enthalpies   :         -383.295278
+     Sum of electronic and thermal Free Energies:         -383.333356
+     ====================================================================================
+
+可以看到零点能、自由能误差仅0.1 kcal/mol。因一般关心零点能、自由能的差而非绝对数值，在作差时还可以实现误差抵消，导致最终结果的误差更低。
+
+.. note::
+
+    1. O1NumHess需要用户安装Python3（3.6或以上版本）、NumPy和SciPy。若用户在登录节点上安装了Python3、NumPy和SciPy，但没有在计算节点上安装，需要确认计算节点是否能正确调用这三者。
+    2. 计算会产生大量的形如$BDFTASK_000.*, $BDFTASK_001.*等的文件（其中数字部分未必是3位），如不希望这些文件占据硬盘空间，可在计算结束后用脚本自动删除。之所以程序不自动删除这些文件，是为了在梯度计算出现SCF不收敛等问题时，方便排查不收敛的原因。也可在 `$bdfopt` 输入块中加入 `deletegradfiles` 关键词，会在每个梯度计算正常结束后，自动将上述文件中占用硬盘空间最大的几个文件（如*.scforb文件）删除，但对于报错的梯度计算，仍保留对应的*.scforb等文件，以备排查报错原因。
+    3. 由以上算例和TDDFT梯度计算的输入文件写法，不难推知用O1NumHess计算TDDFT Hessian的输入文件写法，此处不另给算例。其中TDDFT Hessian除用于计算热化学校正量、激发态虚频数目外，还可结合MOMAP用于计算振动分辨光谱、跃迁速率等。
+    4. O1NumHess也可用于计算结构优化的初始Hessian，或在结构优化结束后计算Hessian（即"opt freq"计算）。
 
 过渡态结构优化：HCN/HNC异构反应的过渡态优化和频率计算
 ---------------------------------------------------------------
@@ -1475,6 +1648,125 @@ BDF还支持在结构优化中限制一个或多个内坐标的值，方法是�
 .. note::
 
     以上算例中，同时满足各个内坐标限制条件是数学上不可能的。有时虽然同时满足各个限制条件在数学上可能，但初始结构离满足限制条件的结构太远，此时程序仍然可能找不到同时满足所有限制条件的结构，并打印警告或报错退出。
+
+柔性扫描
+-------------------------------------------------------
+
+2025年6月及之后的BDF版本支持柔性扫描功能，可以做任意维的柔性扫描，且各个扫描点既可以是等间距的（网格扫描），也可以不等间距（散点扫描）。如以下写法表示将第5个原子与第6个原子之间的键长从4.0埃扫描至1.0埃，步长0.1埃：
+
+.. code-block:: bdf
+
+    $bdfopt
+    solver
+      1 # 柔性扫描必须指定solver=1
+    scan
+      1 # 扫描1个坐标
+      5 6 = 4.0 1.0 -0.1 # 注意因为从大到小扫描，步长是负的
+    $end
+
+以下写法表示将第5个原子与第6个原子之间的键长从4.0埃扫描至1.0埃，但扫描步长并非定值，只扫描4.0、3.0、2.5、2.0、1.8、1.6、1.4、1.2、1.0埃共9个键长：
+
+.. code-block:: bdf
+
+    $bdfopt
+    solver
+      1
+    scan
+      1 9 # 扫描1个坐标，扫9个点
+      5 6 # 这个坐标是第5个原子与第6个原子之间的键长
+      4.0 # 从这行开始是键长的值
+      3.0
+      2.5
+      2.0
+      1.8
+      1.6
+      1.4
+      1.2
+      1.0
+    $end
+
+以下写法表示做二维扫描，第一个维度是原子2、4、5的键角，第二个维度是原子2、4、5、13的二面角，前者从90度扫到120度，步长5度，后者从0度扫到360度，步长10度：
+
+.. code-block:: bdf
+
+    $bdfopt
+    solver
+      1 # 柔性扫描必须指定solver=1
+    scan
+      2 # 扫描2个坐标
+      2 4 5 = 90 120 5
+      2 4 5 13 = 0 360 10
+    $end
+
+在上例中，程序首先固定键角为90度，将二面角从0度、10度……一直扫到360度（360度在程序里显示为0度，但因为扫描的每一步都是以前一步的结构作为初猜的，扫回0度以后的结构未必与扫描的第一个点的0度结构相符），然后才将键角增加为95度，继续将二面角从0度、10度……一直扫到360度，以此类推。
+
+以下写法表示将原子1、2所成的键从1.5埃扫到2.0埃，步长0.1，并固定原子3、4所成的键的键长与原子1、2所成的键的键长相等：
+
+.. code-block:: bdf
+
+    $bdfopt
+    solver
+      1
+    scan
+      2 6 # 扫描2个坐标，扫6个点
+      1 2
+      3 4
+      1.5 1.5 # 从这行开始是键长的值
+      1.6 1.6
+      1.7 1.7
+      1.8 1.8
+      1.9 1.9
+      2.0 2.0
+    $end
+
+由上例可以看出，对于多根键同时形成的协同反应的过渡态初步搜索，一维扫描无法胜任时，无需做完整的二维扫描（需要扫36个点），只需扫描二维势能面上较重要的区域，即两根键键长相同的区域（只需扫6个点），由此可以大大节省时间。若已知该反应并非严格的同步反应，即一根键形成得比另一根键稍早，也可以相应地调整需要扫描势能面上的哪些点，使一根键的键长随扫描过程增加得比另一根键更快。
+
+扫描结果以三种形式输出。首先，可以从输出文件看到当前扫描的内坐标：
+
+.. code-block:: bdf
+
+     =================================================
+     Relaxed surface scan step     1
+     Bond      1    2 =    1.10000 Ang
+     Angle     1    2    3 =  180.00000 Deg
+     =================================================
+
+
+每打印一次 ``Relaxed surface scan step`` ，都会打印若干步限制性优化的信息（即若干组结构、能量和梯度），其中只有最后一步才是收敛的柔性扫描曲线/曲面结果。
+
+其次，可以从 ``$BDFTASK.scanpes`` 文件读取扫描结果汇总信息：
+
+.. code-block:: bdf
+
+     Scan step        1
+     Bond      1    2 =     1.10000000
+     Angle     1    2    3 =   180.00000000
+     Energy=      -91.68864589
+     Geometry=
+    H             0.00000000      0.00000000     -1.59772393
+    C             0.00000000      0.00000000     -0.49772393
+    N             0.00000000      0.00000000      0.65486679
+     Gradient=
+    H             0.00000000     -0.00000000     -0.02545813
+    C            -0.00000000     -0.00000000      0.02525156
+    N             0.00000000      0.00000000      0.00020656
+    
+     Scan step        2
+     Bond      1    2 =     1.10000000
+     Angle     1    2    3 =   150.00000000
+     Energy=      -91.67474826
+     Geometry=
+    H            -1.54410087     -0.13580336      0.00000000
+    C            -0.48560359      0.16350169      0.00000000
+    N             0.63681749     -0.12074382      0.00000000
+     Gradient=
+    H            -0.01385239     -0.03003724      0.00000000
+    C             0.01979162      0.05316515      0.00000000
+    N            -0.00593924     -0.02312791      0.00000000
+    
+    ...
+
+最后，每步结构优化的结构会输出到 ``$BDFTASK.optgeom1`` 、 ``$BDFTASK.optgeom2`` ……等文件中，其与一般的 ``.optgeom`` 文件格式相同，可进行可视化、格式转换、后续计算等。
 
 激发态结构优化
 -------------------------------------------------------
