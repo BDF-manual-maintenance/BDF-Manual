@@ -39,8 +39,9 @@ BDF完整版部分模块手册
 
 .. include:: wftheory/traint.rst
 
-.. include:: wftheory/drt.rst
-
 .. include:: wftheory/xianci.rst
 
+.. include:: wftheory/drt.rst
+
+.. include:: wftheory/mrci.rst
 
