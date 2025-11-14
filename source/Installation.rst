@@ -24,20 +24,29 @@
 
 从BDF的源代码直接编译安装，对于编译器和数学库的最低要求是：
 
- * Fortran编译器（支持Fortran 95及以上版本的语法）
- * C++ 编译器（支持C++03及以上版本的语法）
- * C 编译器
- * BLAS/LAPACK 数学库，接口需为64位整数
- * CMake 3.15版本及以上（使用cmake进行编译）
- * Python 2.7及以上版本。Python 2与Python 3不兼容，Python 3目前还未完全适配
- 
-通常使用GCC 4.6及以上的版本即可正常编译。
+ * Fortran 编译器
+    * gfortran 7.5 及以上, ifort 17 及以上, ifx 2024 及以上
+ * C 编译器 (原则上完全支持 `C11 <http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1548.pdf>`_ 并能够向后兼容至 `C17 <https://files.lhmouse.com/standards/ISO%20C%20N2176.pdf>`_)
+    * gcc 4.8.5 及以上, icc 17 及以上, clang 5.0.0 及以上, icx 的任意版本, AppleClang 的任意版本
+ * C++ 编译器 (原则上完全支持 `C++17 <https://wg21.link/std17>`_ 及以上)
+    * g++ 8.1 及以上, clang++ 5.0.0 及以上, icpc 19.0.1 及以上, icpx 的任意版本, AppleClang 的任意版本
+ * C++ 标准库/标准模板库 STL (原则上完全支持 `C++17 <https://wg21.link/std17>`_ 及以上. 原则上可以使用 GCC, LLVM, 及 Microsoft 对 STL 的实现)
+    * GCC STL (也作 libstdc++ 或 glibcxx) 需要发行系列 8 及以上, LLVM STL (也作 libc++ 或 libcpp) 需要发行系列 16 及以上, MSVC STL 要求在 19.14 及以上
+ * BLAS 及 LAPACK 数学库，需提供 64 位整数接口
+    * 推荐使用由 Intel MKL, AMD ACML, OpenBLAS 等提供的 BLAS 及 LAPACK 实现
+ * CMake 3.15 及以上
+ * Python 3
 
 可选配置：
- * Intel Parallel Studio XE Cluster版C/C++、Fortran编译器
- * 优化的BLAS/LAPACK 库（如Intel的MKL，AMD的ACML，OpenBLAS等）
- * 编译并行版本的BDF，需要Openmpi 1.4.1或以上版本
- * 编译GPU版的BDF，需要OpenCL 1.5或以上版本，以及AMD的Rocm或Nvidia的Cuda
+ * 编译并行版本的 BDF, 需要 Openmpi 1.4.1 或以上版本
+ * 编译 GPU 版的 BDF, 需要 OpenCL 1.5 或以上版本，以及 AMD 的 ROCm 或 Nvidia 的 CUDA
+
+.. attention::
+
+    Intel 并没有实现 STL. 根据平台, Intel 编译器将使用 GCC 或 Microsoft 的 STL 实现.
+
+    Intel 编译器需要使用 GCC 或 MSVC 提供的基础设施. Intel 编译器不会为您检查并自动选择其所兼容的 GCC 和/或 MSVC 版本.
+    您的 Intel 编译器所兼容的 GCC 和/或 MSVC 版本会在其 Release Note 中列出.
 
 cmake编译BDF
 ==========================================================================
