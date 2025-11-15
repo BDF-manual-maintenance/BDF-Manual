@@ -175,9 +175,9 @@ cmake编译BDF
 6. 在Mac OS平台编译BDF
 ---------------------------------------------------------------------
 
-Intel MKL已经不支持，Mac平台，可以使用netlib的blas和lapack库替代MKL数学库。代码可以从https://www.netlib.org/lapack/index.html下载。需要注意的是，BDF的Fortran代码默认的整数长度为64位，netlib的数学库在编译时应默认开启64位整数支持。此外，BDF的部分代码基于C++开发，需要netlib的lapackc扩展库支持。
+Intel MKL已经不支持Mac平台，可以使用netlib的blas和lapack库替代MKL数学库。代码可以从https://www.netlib.org/lapack/index.html下载。需要注意的是，BDF的Fortran代码默认的整数长度为64位，netlib的数学库在编译时应默认开启64位整数支持。此外，BDF的部分代码基于C++开发，需要netlib的lapackc扩展库支持。
 
-首先，编译netlib的lapack数学库。在lapack-3.10.0目录下，有一个示例文件make.inc.example，将其复制为make.inc，修改C及Fortran编译器和它们的编译参数，如下:
+首先，编译netlib的lapack数学库。在lapack-3.12.1目录下，有一个示例文件make.inc.example，将其复制为make.inc，修改C及Fortran编译器和它们的编译参数，如下:
 
 .. code-block::
 
