@@ -172,6 +172,49 @@ cmake编译BDF
 .. Hint::
    SecScf 模块 (提供二阶 SCF 功能) 要求使用最低 C++14, 建议使用 C++17, 标准进行编译. 您若希望使用该模块提供的功能请在运行 setup 脚本时传入 ``ALLOW_CXX17=YES``, CMake 将自动进行对您的编译器及 STL 进行功能测试, 若测试通过则 SecScf 将被自动启用
 
+6. 在Mac OS平台编译BDF
+---------------------------------------------------------------------
+
+Intel MKL已经不支持，Mac平台，可以使用netlib的blas和lapack库替代MKL数学库。代码可以从https://www.netlib.org/lapack/index.html下载。需要注意的是，BDF的Fortran代码默认的整数长度为64位，netlib的数学库在编译时应默认开启64位整数支持。此外，BDF的部分代码基于C++开发，需要netlib的lapackc扩展库支持。
+
+首先，编译netlib的lapack数学库。在lapack-3.10.0目录下，有一个示例文件make.inc.example，将其复制为make.inc，修改C及Fortran编译器和它们的编译参数，如下:
+
+.. code-block::
+
+    CC = gcc   
+    CFLAGS = -O3 -m64 -DHAVE_LAPACK_CONFIG_H -DLAPACK_COMPLEX_STRUCTURE -DLAPACK_ILP64
+
+    FC = gfortran
+    FFLAGS = -O2 -frecursive -fdefault-integer-8
+    FFLAGS_DRV = $(FFLAGS)
+    FFLAGS_NOOPT = -O0 -frecursive -fdefault-integer-8
+
+这里，CC和CFLAGS分别定义C编译器和C编译参数，FC和FFLAGS分别定义Fortran编译器及Fortran编译参数。在然后在lapack-3.12.1的主目录下执行make命令，编译陈成功后生成liblapack.a,librefblas.a和libtmglib.a三个文件，分别对应lapack库，blas库和tgmglib库。Netlib的lapack默认不编译BLAS和lapack的C接口，所以要分别进入CBLAS和LPACKE目录执行make命令，生成libcblas.a和liblapacke.a两个文件。
+
+准备好blas和lapack库后，使用如下命令配置BDF，生成make文件
+
+.. code-block:: shell
+
+    # C, Fortran and C++ compiler
+    $ export FC=gfortran
+    $ export CC=gcc
+    $ export CXX=g++
+
+    # lib and include path for math libraries
+    $ export LIBMATH="-L/Users/bsuo/Library/mathlib/lapack-3.12.1 -llapack -lrefblas -lcblas -llapacke"
+    $ export INCMATH="-I/Users/bsuo/Library/mathlib/lapack-3.12.1/LAPACKE/include -I/Users/bsuo/Library/mathlib/lapack-3.12.1/CBLAS/include"
+
+    # Generate make files
+    $ ./setup --fc=${FC} --cc=${CC} --cxx=${CXX} --debug \
+        --int64 --mathinclude-flags="${INCMATH}" \
+        --mathlib-flags="${LIBMATH}" \
+        --blasdir="/Users/bsuo/Library/mathlib/lapack-3.12.1" \
+        --lapackdir="/Users/bsuo/Library/mathlib/lapack-3.12.1" \
+        $1
+    $ cd build
+    $ make -j8 &>log&
+    $ make -j8 install
+
 程序运行
 ==========================================================================
 
@@ -497,7 +540,7 @@ BDF Distributable Blank (BDF) 自带一 ``compile_and_install_bdf`` 脚本. 在 
 -  删除 BDF 源代码文件夹, 若尚未删除
 -  删除 pacman 的全部缓存文件, 若尚未删除 (执行 ``pacman -Scc`` 并对所有选择都选择 ``Y``)
 -  删除 IDE 及代码编辑器 (如, Visual Studio, Visual Studio Code, CLion, Rider, 及 PyCharm) 的缓存文件及文件夹, 若您曾将它们连接至 ``BdfServer``
--  删除其它零时文件及文件夹
+-  删除其它临时文件及文件夹
 
 3. 产生可分发镜像
 ------------------------------------------------------------------------------------------------------------------------

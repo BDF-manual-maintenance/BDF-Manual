@@ -684,7 +684,8 @@ Ifpair参数指定电子如何激发，确定mom方法的电子占初态，必�
     - ``AfterDeltaEnergyLessThan`` + 浮点数: 指定在执行标准SCF迭代至能量误差低于一定值后启用
     - ``AfterDeltaRmsDensityLessThan`` + 浮点数: 指定在执行标准SCF迭代至密度矩阵之误差低于一定值后启用
     - 自定义逻辑表达式. 注, 我们提供自定义表达式的目的是为方便开发人员调试程序及为高级用户提供更灵活的选项, 如果您对其感觉不适请考虑使用上文所述的默认选项或预设选项. 自定义表达式可用关键词为 ``Iteration``, ``DeltaEnergy``, 及 ``DeltaRmsDensity``. 可用算符有 ``&``, ``|``, ``!``, ``>``, ``<``, ``=``, 及 ``[]``. 算符均不可串联, 并在作用至变量后必须以逻辑求值算符 ``[]`` 括起. 表达式不区分大小写, 忽略全部空格字符, 这意味着 "DeltaRmsDensity" 与 "Delta RMS Density" 等价. 例:
-     ``[ [ Iteration > 10 ] & [ [ DeltaEnergy < 1e-3 ] | [![ DeltaRmsDensity > 2.5e-3 ]] ] ]``
+    ``[ [ Iteration > 10 ] & [ [ DeltaEnergy < 1e-3 ] | [![ DeltaRmsDensity > 2.5e-3 ]] ] ]`` 
+    
 * ``LevelShiftGradientThreshold``, 浮点型: 指定在能量-轨道梯度低于一定值后解除可信半径, 改用 Newton-Raphson 法计算旋转矢量
 * ``ConvergeGradientThreshold``, 浮点型: 指定在能量-轨道梯度值模低于一定值后停止二次 SCF 微迭代
 * ``ConvergeRotationThreshold``, 浮点型: 指定在旋转矢量之模长低于一定值后停止二次 SCF 微迭代
