@@ -39,6 +39,40 @@ make: *** [html] Error 1
 3. 检查RST语法是否符合Sphinx规范
 4. 确认所有依赖已正确安装
 
+============================================================
+AI深度分析:
+============================================================
+**错误分析**
+
+该错误是由于 Sphinx 文档编译过程中，Jinja2 模板引擎无法导入 `markupsafe` 库中的 `soft_unicode` 函数所致。
+
+**具体原因**
+
+1. `markupsafe` 库版本不兼容：`soft_unicode` 函数在 `markupsafe` 2.x 版本中被移除，仅保留在 1.x 版本中。
+2. Sphinx 使用的 Jinja2 模板引擎版本较老，不支持 `markupsafe` 2.x 版本。
+
+**修复方法**
+
+1. **降级 `markupsafe` 库版本**：使用 pip 安装 `markupsafe==1.1.0`，以恢复 `soft_unicode` 函数的兼容性。
+```bash
+pip install markupsafe==1.1.0
+```
+2. **升级 Jinja2 模板引擎版本**：更新 Sphinx 使用的 Jinja2 版本，以支持 `markupsafe` 2.x 版本。可以使用 pip 安装最新版 Jinja2：
+```bash
+pip install --upgrade jinja2
+```
+3. **升级 Sphinx 版本**：如果以上方法不奏效，可以尝试升级 Sphinx 到最新版本，可能包含对 `markupsafe` 2.x 版本的支持。
+
+**需要检查的文件和配置**
+
+1. `conf.py` 文件：检查 Sphinx 配置文件中是否有任何与 Jinja2 或 `markupsafe` 相关的设置。
+2. `requirements.txt` 文件（如果存在）：检查项目依赖文件中是否指定了 `markupsafe` 的版本。
+
+**预防措施**
+
+1. **保持依赖库更新**：定期更新项目依赖库，确保使用最新版本的 Sphinx、Jinja2 和 `markupsafe`。
+2. **锁定依赖库版本**：在 `requirements.txt` 文件中指定明确的依赖库版本，以避免意外升级导致兼容性问题。
+3. **监控编译日志**：密切关注 Sphinx 编译过程中的日志输出，及时发现和解决潜在的问题。
 
 完整输出:
 ------------------------------------------------------------
