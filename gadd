@@ -1,0 +1,14 @@
+git add  source/Input Library.rst
+git add  source/conf.py
+git add  source/guide/FLMOMethod.rst
+git add  source/module/bdfopt.rst
+git add  source/module/compass.rst
+git add  source/module/elecoup.rst
+git add  source/module/expandmo.rst
+git add  source/module/grad.rst
+git add  source/module/localmo.rst
+git add  source/module/mp2.rst
+git add  source/module/resp.rst
+git add  source/module/scf.rst
+git add  source/module/tddft.rst
+git add  source/module/xuanyuan.rst

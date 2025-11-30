@@ -1,0 +1,71 @@
+中文手册编译错误报告
+============================================================
+
+============================================================
+编译错误分析
+============================================================
+
+错误 1:
+----------------------------------------
+Traceback (most recent call last):
+  File "/Users/bsuo/opt/anaconda3/bin/sphinx-build", line 6, in <module>
+    from sphinx.cmd.build import main
+
+可能原因: 导入错误或依赖缺失
+
+错误 2:
+----------------------------------------
+  File "/Users/bsuo/opt/anaconda3/lib/python3.7/site-packages/jinja2/utils.py", line 642, in <module>
+    from markupsafe import Markup, escape, soft_unicode
+ImportError: cannot import name 'soft_unicode' from 'markupsafe' (/Users/bsuo/opt/anaconda3/lib/python3.7/site-packages/markupsafe/__init__.py)
+make: *** [html] Error 1
+
+
+可能原因: 导入错误或依赖缺失
+
+错误 3:
+----------------------------------------
+    from markupsafe import Markup, escape, soft_unicode
+ImportError: cannot import name 'soft_unicode' from 'markupsafe' (/Users/bsuo/opt/anaconda3/lib/python3.7/site-packages/markupsafe/__init__.py)
+make: *** [html] Error 1
+
+
+可能原因: 导入错误或依赖缺失
+
+
+建议:
+1. 检查上述错误信息
+2. 验证文件路径和引用是否正确
+3. 检查RST语法是否符合Sphinx规范
+4. 确认所有依赖已正确安装
+
+
+完整输出:
+------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/bsuo/opt/anaconda3/bin/sphinx-build", line 6, in <module>
+    from sphinx.cmd.build import main
+  File "/Users/bsuo/opt/anaconda3/lib/python3.7/site-packages/sphinx/cmd/build.py", line 23, in <module>
+    from sphinx.application import Sphinx
+  File "/Users/bsuo/opt/anaconda3/lib/python3.7/site-packages/sphinx/application.py", line 34, in <module>
+    from sphinx.highlighting import lexer_classes, lexers
+  File "/Users/bsuo/opt/anaconda3/lib/python3.7/site-packages/sphinx/highlighting.py", line 27, in <module>
+    from sphinx.ext import doctest
+  File "/Users/bsuo/opt/anaconda3/lib/python3.7/site-packages/sphinx/ext/doctest.py", line 28, in <module>
+    from sphinx.builders import Builder
+  File "/Users/bsuo/opt/anaconda3/lib/python3.7/site-packages/sphinx/builders/__init__.py", line 24, in <module>
+    from sphinx.io import read_doc
+  File "/Users/bsuo/opt/anaconda3/lib/python3.7/site-packages/sphinx/io.py", line 33, in <module>
+    from sphinx.util.rst import append_epilog, docinfo_re, prepend_prolog
+  File "/Users/bsuo/opt/anaconda3/lib/python3.7/site-packages/sphinx/util/rst.py", line 21, in <module>
+    from jinja2 import Environment
+  File "/Users/bsuo/opt/anaconda3/lib/python3.7/site-packages/jinja2/__init__.py", line 33, in <module>
+    from jinja2.environment import Environment, Template
+  File "/Users/bsuo/opt/anaconda3/lib/python3.7/site-packages/jinja2/environment.py", line 15, in <module>
+    from jinja2 import nodes
+  File "/Users/bsuo/opt/anaconda3/lib/python3.7/site-packages/jinja2/nodes.py", line 19, in <module>
+    from jinja2.utils import Markup
+  File "/Users/bsuo/opt/anaconda3/lib/python3.7/site-packages/jinja2/utils.py", line 642, in <module>
+    from markupsafe import Markup, escape, soft_unicode
+ImportError: cannot import name 'soft_unicode' from 'markupsafe' (/Users/bsuo/opt/anaconda3/lib/python3.7/site-packages/markupsafe/__init__.py)
+make: *** [html] Error 1
