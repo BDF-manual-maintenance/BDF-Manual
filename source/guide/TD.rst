@@ -2025,7 +2025,7 @@ BDF程序已经对Xe之前主族元素的全电子非相对论基组优化了Zef
 
 .. note::
 
-    基态和激发态之间的NACME、激发态和激发态之间的NACME均支持R-TDDFT、U-TDDFT、R-TDA和U-TDA，但均暂不支持X-TDDFT和X-TDA。
+    基态和激发态之间的NACME、激发态和激发态之间的NACME均支持R-TDDFT、U-TDDFT、R-TDA和U-TDA。自2026年1月起，也支持X-TDDFT和X-TDA。
 
 （1）基态和激发态之间的NACME： :math:`\ce{NO3}` 自由基的D0/D1 NACME（GB3LYP/cc-pVDZ）
 
