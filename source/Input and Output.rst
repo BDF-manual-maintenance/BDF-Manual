@@ -355,9 +355,16 @@ BDF的分子结构输入从 ``Geometry`` 开始，到 ``End geometry`` 结束，
 .. code-block:: bdf
  
  Geometry
- file=filename.xyz    # 需为当前工作下的文件 filename.xyz，只支持xyz格式的输入。
+ file=filename.xyz    # 需为当前工作目录下的文件 filename.xyz，只支持xyz格式的输入。
  End geometry
 
+自2026年1月的版本起，以上语法也支持以optgeom格式输入坐标，即
+
+.. code-block:: bdf
+ 
+ Geometry
+ file=filename.optgeom    # 需为当前工作目录下的文件 filename.optgeom
+ End geometry
 
 BDF输出文件
 ==========================================================================
