@@ -336,6 +336,7 @@ Slurm提交BDF作业的脚本示例如下：
     2. OpenMP并行的线程数。OMP_NUM_THREADS用于设定OpenMP的并行线程数。BDF依赖于OpenMP并行提高计算效率。如果用户使用了Bash Shell，可以用命令 ``export OMP_NUM_THREADS=N`` 指定使用N个OpenMP线程加速计算。其中N一般需要小于等于节点的物理核数。若用户没有使用作业管理系统，且同一个节点上已经跑了占用M个核的计算，则N一般需要小于物理核数减M。
     3. OpenMP可用栈区内存，用户可以用 ``export OMP_STACKSIZE=1024M`` 指定OpenMP每个线程可用的栈区内存大小，总的栈区内存大小为 ``OMP_STACKSIZE*OMP_NUM_THREADS`` 。
     4. 对于BDF商业版支持的大部分计算任务而言，当使用很多核并行计算时，程序使用的栈内存远多于堆内存，因此一般可只指定 ``OMP_STACKSIZE`` 而无需指定堆内存。但对于解析Hessian计算而言，堆内存往往占据程序消耗内存的大部分。2025年7月及之后的BDF版本允许用户调节堆内存，即在 ``resp`` 模块中用 ``maxmem`` 关键词指定（单位为GB，默认值32）。堆内存与栈内存之和必须小于节点总物理内存，考虑到内存估计的误差及同一个节点上的其他进程消耗的内存，建议小于节点总物理内存的80%。也即： ``OMP_STACKSIZE*OMP_NUM_THREADS + maxmem <= 物理内存*80%`` 。对于解析Hessian计算，建议 ``OMP_STACKSIZE*OMP_NUM_THREADS`` 为 ``maxmem`` 的1/3~1/10左右，但若这使得 ``OMP_STACKSIZE`` 小于1G，则设置 ``OMP_STACKSIZE=1G`` 。
+    5. 若BDF是用Intel或clang编译器编译的，视运行环境不同， ``OMP_STACKSIZE`` 可能不起作用，需要用 ``KMP_STACKSIZE`` 代替 ``OMP_STACKSIZE`` ，设置方法及注意事项与 ``OMP_STACKSIZE`` 相同。
 
 
 
