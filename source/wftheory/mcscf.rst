@@ -301,11 +301,14 @@ Inporb: 读入inporb作为初始猜测，inporb为文本格式，一般来自SCF
 :guilabel:`Superci` 参数类型：Bool型
 ------------------------------------------------
 指定使用一阶方法Super-CI-PT计算MCSCF。此关键词用于替代``Quasi``。
-* 此关键词所需分子轨道积分为(pw|uv)小于关键词``Quasi``的(pq|uv)，多用于原子轨道超过1500的分子体系。
-* 目前Superci可以用于RI与NoRI基组体系。
-* 若采用NoRI，Compass模块不能使用关键词Saorb，这是因为Superci使用的是直接原子轨道积分。
-* 目前的MCSCF使用NoRI+Superci时，不能使用core冻结轨道，且不能接XianCI计算。
-* 目前的MCSCF使用RI+Superci时，其计算功能与RI+Quasi一样。
+* 此关键词所需分子轨道积分为(pw|uv)小于关键词``Quasi``的(pq|uv)。
+* 目前Superci可以用于RI与NoRI基组体系。对于有对称性的分子体系，此方法无法使用Core关键词冻结双占据轨道。
+* 采用NoRI时，Compass模块若使用关键词Saorb，可以在算完MCSCF后，接着进行XianCI模块计算。
+* 采用NoRI时，Compass模块若不加关键词Saorb，则Superci使用的是直接原子轨道积分，可以用于原子轨道较多的体系(AO > 1500)，
+* 但无法进行后续XianCI模块计算。
+* 采用RI时，Compass模块需使用关键词RI-C设置辅助基组。若需要使用混合辅助基组，则需要设置本地辅助基组名：$BDF_WORKDIR/auxbas
+* 另外，对于BDF中RI-C辅助基组所在目录bdf-pkg-full/basis_library/RI-C中没有的辅助基组，
+* 可以使用bdf-pkg-full/sbin/auxbas-pyscf-bdf.py在pyscf软件中自动生成任意元素的辅助基组，并将其存在auxbas文件中。
 * Superci对轨道转动的最大步长较为敏感。其所使用的默认Maxstep=0.05。
 * Superci宏迭代步数较多。其所使用的默认Macit=100。
 * 若MCSCF未收敛，可以使用优化的轨道$BDF_WORKDIR/$BDFTASK.casorb作为初始猜测续算。
