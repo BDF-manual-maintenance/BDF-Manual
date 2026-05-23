@@ -33,8 +33,10 @@ BDF各模块的调用关系参见 :ref:`BDF模块及计算流程图<BDFpromodule
 
 .. include:: module/mcscf.rst
 
-BDF完整版部分模块手册
+.. only:: Full-Manual
 
+BDF多组态波函数方法模块手册
+   
 .. include:: wftheory/mcscf.rst
 
 .. include:: wftheory/traint.rst
@@ -45,3 +47,4 @@ BDF完整版部分模块手册
 
 .. include:: wftheory/mrci.rst
 
+.. include:: wftheory/vgmfci.rst

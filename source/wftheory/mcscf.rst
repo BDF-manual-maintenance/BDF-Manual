@@ -2,6 +2,8 @@
 ================================================
 多组态自洽场(Multi-configuration self consistent filed, MCSCF)计算模块，如果未定义活性空间，则进行二阶收敛的RHF计算。如果不优化分子轨道，仅进行CASCI计算。
 
+**基本控制参数**
+
 :guilabel:`AutoMC` 参数类型：Bool型
 ------------------------------------------------
 当用户显式设置 $expandmo 模块以启用活性空间自动选择时，
@@ -49,7 +51,7 @@ roots是多行参数，指定MCSCF计算多少个根，如何态平均。根据�
 第二行：指定对那些根做态平均。
 第三行：指定做态平均的根的权重，程序会自动归一化权重。
 
-.. code-block:: python
+.. code-block:: bdf 
 
      $MCSCF
      ...
@@ -59,7 +61,7 @@ roots是多行参数，指定MCSCF计算多少个根，如何态平均。根据�
      1 1 1      # 每个态的权重相同
      $End
 
-.. code-block:: python
+.. code-block:: bdf
 
      $MCSCF
      ...
@@ -75,7 +77,7 @@ MixCI是多行参数，参数控制对多个不同自旋多重度和对称性的
 第三行，每种态的数目。
 第四行，每种态的空间对称性。
 
-.. code-block:: python
+.. code-block:: bdf 
 
      $MCSCF
      ....
@@ -144,8 +146,9 @@ Inporb: 读入inporb作为初始猜测，inporb为文本格式，一般来自SCF
 需与expandmo模块的``VSD``关键词联用，用于定义XVR的初始化配置。
 
 .. attention::
- 指定MCSCF轨道排序规则:
- 强制轨道按 双占据（Closed）→ 活性（Active）→ 虚轨道（Vir）→ XVR 的顺序排列。
+
+  指定MCSCF轨道排序规则:
+  强制轨道按 双占据（Closed）→ 活性（Active）→ 虚轨道（Vir）→ XVR 的顺序排列。
 
 * 完整输入逻辑参见示例：test126.inp
 
@@ -161,13 +164,14 @@ Inporb: 读入inporb作为初始猜测，inporb为文本格式，一般来自SCF
 启用此关键词时，程序将保留XVR轨道而非默认的删除操作，实现跨模块数据复用。
 
 .. note::
-若未启用XvrUse，xianci模块将自动删除临时XVR并重新计算。
+   若未启用XvrUse，xianci模块将自动删除临时XVR并重新计算。
 
 * 完整输入逻辑参见示例：test126.inp
 
 :guilabel:`Solvate` 参数类型：Bool型
 ------------------------------------------------
 指定考虑溶剂化效应的MCSCF计算。
+
 .. note:: 
    所用溶剂、溶剂化模型、参数等都源自前面的SCF计算。
 

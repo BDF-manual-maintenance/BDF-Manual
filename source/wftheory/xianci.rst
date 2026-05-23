@@ -1,5 +1,5 @@
 多参考态组态相互作用及多参考态二阶微扰理论计算 - xianci模块
-================================================
+============================================================
 xianci模块来自Xi'an-CI程序包，执行ucMRCI, icMRCI，XSDSCI, CB-MRPT2/3，MS-CASPT2, XMS-CASPT2, XDW-CASPT2, RMS-CASPT2, MS-NEVPT2，SS-NEVPT3, SDSPT2f, SDSPT2, SDSCIf, SDSCI等计算。
 
 **基本控制参数**
@@ -72,8 +72,9 @@ xianci模块来自Xi'an-CI程序包，执行ucMRCI, icMRCI，XSDSCI, CB-MRPT2/3�
 :guilabel:`XvrUse` 参数类型：Bool型
 ------------------------------------------------
 当未使用关键词 'Dele' 设置需删除的分子轨道（MOs）时，关键字 'XvrUse' 用于通过 MCSCF XVR 方法选择性删除虚轨道。
+
 .. attention::
- 若同时指定了 'Dele' 和 'XvrUse'，则 'Dele' 关键字优先于 'XvrUse'。
+  若同时指定了 'Dele' 和 'XvrUse'，则 'Dele' 关键字优先于 'XvrUse'。
 
 * 完整输入逻辑参见示例：test126.inp
 
@@ -147,7 +148,7 @@ xianci模块来自Xi'an-CI程序包，执行ucMRCI, icMRCI，XSDSCI, CB-MRPT2/3�
 * 默认值：若使用关键词“readref”选参考组态，则可以不用此关键词。
 * 若用户想重新指定oCFG，则需要设定此关键词及nref个选定oCFG。
 
-.. code-block:: python
+.. code-block:: bdf 
 
      $xianci
      ...
@@ -420,6 +421,7 @@ xianci模块来自Xi'an-CI程序包，执行ucMRCI, icMRCI，XSDSCI, CB-MRPT2/3�
 ------------------------------------------------
 指定不计算SDSPT2(f)与SDSCI(f)所需Secondary states。
 * 默认使用此关键词。
+
 * 对于活性空间较大的SDSPT2(f)和SDSCI(f)计算，可以采用关键词“Nolan”取消计算量较大的构建Ps波函数的计算过程。
   基于此的SDSPT2(f)和SDSCI(f)方法构建的有效哈密顿矩阵的维数为2N维，一般情况下计算精度降低较小。
   但需要强调的是：在计算过程中出现电子态相交（如圆锥相交点）时，计算精度可能有一定程度的降低。
@@ -427,6 +429,7 @@ xianci模块来自Xi'an-CI程序包，执行ucMRCI, icMRCI，XSDSCI, CB-MRPT2/3�
 :guilabel:`Dylan` 参数类型：Bool型
 ------------------------------------------------
 指定截断近似计算SDSPT2(f)与SDSCI(f)所需Secondary states。
+
 * 对于活性空间较大的SDSPT2(f)和SDSCI(f)计算，可以采用关键词“Dylan”截断能量较高的Ps函数对Secondary states的贡献。
   基于此的SDSPT2(f)和SDSCI(f)方法构建的有效哈密顿矩阵的维数为3N维。
   一般情况下可以保持计算精度，但不同的分子构型所选Ps函数数目不同。
@@ -434,6 +437,7 @@ xianci模块来自Xi'an-CI程序包，执行ucMRCI, icMRCI，XSDSCI, CB-MRPT2/3�
 :guilabel:`Dolan` 参数类型：Bool型
 ------------------------------------------------
 指定采用Lanczos方法计算SDSPT2(f)与SDSCI(f)所需Secondary states。
+
 * 对于活性空间较大的SDSPT2(f)和SDSCI(f)计算，采用关键词“Dolan”计算Secondary states的计算量非常大。
   基于此的SDSPT2(f)和SDSCI(f)方法构建的有效哈密顿矩阵的维数为3N维。
   一般情况下可以保持计算精度，但较大的计算量使得不推荐使用此方案。
