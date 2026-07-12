@@ -600,7 +600,7 @@ BDF Distributable Blank (BDF) 自带一 ``compile_and_install_bdf`` 脚本. 在 
 
 .. code:: powershell
 
-   wsl --import BdfServer <InstallLocation> BdfServer.vhdx --version 2 --hvd
+   wsl --import BdfServer <InstallLocation> BdfServer.vhdx --version 2 --vhd
 
 .. note::
 
