@@ -1,3 +1,5 @@
+.. ifconfig: wftheory
+
 多组态自洽场 - mcscf模块
 ================================================
 多组态自洽场(Multi-configuration self consistent filed, MCSCF)计算模块，如果未定义活性空间，则进行二阶收敛的RHF计算。如果不优化分子轨道，仅进行CASCI计算。

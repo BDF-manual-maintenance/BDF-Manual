@@ -32,8 +32,11 @@ extensions = [
     "sphinx_copybutton",
     "sphinx_togglebutton",
     'sphinxcontrib.bibtex',
-    'sphinx.ext.mathjax'
+    'sphinx.ext.mathjax',
+    'sphinx.ext.ifconfig'
 ]
+
+wftheory = 'False'
 
 bibtex_bibfiles = ['refs.bib']
 

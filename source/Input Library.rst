@@ -31,9 +31,7 @@ BDF各模块的调用关系参见 :ref:`BDF模块及计算流程图<BDFpromodule
 
 .. include:: module/irc.rst
 
-.. include:: module/mcscf.rst
-
-.. only:: Full-Manual
+.. ifconfig:: wftheory == 'True' 
 
 BDF多组态波函数方法模块手册
    
