@@ -9,17 +9,17 @@ Hartree-Fock是量子化学最基本算法。本小节，我们将通过一个�
 -------------------------------------------------------
 首先准备水分子单点能量Hartree-Fock计算的输入文件，命名为 ``h2o.inp``, 输入内容如下：
 
-.. code-block:: bdf 
+.. code-block:: bdf
 
-    #!bdf.sh
-    HF/3-21G    
-  
+    #! bdf.sh
+    HF/3-21G
+
     Geometry
     O
-    H  1  R1 
+    H  1  R1
     H  1  R1  2 109.
-  
-    R1=1.0     # input bond length with the default unit angstrom
+
+    R1 1.0     # input bond length with the default unit angstrom
     End geometry
 
 输入解读如下：

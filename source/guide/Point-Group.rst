@@ -9,7 +9,7 @@ BDF支持在计算中考虑分子点群对称性。除某些计算任务（如�
 .. code-block:: bdf
 
     #! NH3.sh
-    HF/cc-pVDZ 
+    HF/cc-pVDZ
 
     geometry
      N                 -0.00000000   -0.00000000   -0.10000001
@@ -18,12 +18,14 @@ BDF支持在计算中考虑分子点群对称性。除某些计算任务（如�
      H                  0.81649655    0.47140450    0.23333324
     end geometry
 
-    $compass
-    Title
-      NH3
-    thresh
-      medium
-    $end
+    Module Setting
+      $compass
+      Title
+        NH3
+      thresh
+        medium
+      $end
+    End Setting
 
 对应的高级输入模式，**COMPASS** 中的内容为
 
@@ -110,12 +112,13 @@ BDF支持在计算中考虑分子点群对称性。除某些计算任务（如�
    I(h)                 Ag, T1g, T2g, Fg, Hg, Au, T1u, T2u, Fu, Hu
    ==================== ======================================================================================================
 
-用户也可强制程序在分子所属点群的某个子群下计算，方法是在COMPASS模块的输入里使用group关键词，如：
+用户也可强制程序在分子所属点群的某个子群下计算，方法是在简洁输入的全局参数区使用 ``Group`` 关键词（或在高级输入的COMPASS模块里使用group关键词），如：
 
 .. code-block:: bdf
 
   #! N2.sh
-  HF/def2-TZVP group=D(2h) 
+  HF/def2-TZVP
+  Group D(2h)
 
   geometry
     N  0.00 0.00 0.00

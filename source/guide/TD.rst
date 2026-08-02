@@ -27,16 +27,22 @@ R-TDDFT用于计算闭壳层体系。如果基态计算从RHF出发，TDDFT模�
 
 .. code-block:: bdf
 
-  #!bdf.sh
-  TDDFT/B3lyp/cc-pvdz iroot=1   
-  
+  #! bdf.sh
+  TDDFT/B3lyp/cc-pvdz
+
   geometry
   O
   H  1  R1
   H  1  R1  2 109.
-  
-  R1=1.0       # OH bond length in angstrom
+
+  R1 1.0       # OH bond length in angstrom
   end geometry
+
+  Module Setting
+    $tddft
+      iroot 1
+    $end
+  End Setting
 
 这里，关键词 ``TDDFT/B3lyp/cc-pvdz`` 指定执行TDDFT计算，所用泛函为 ``B3lyp`` ，基组为 ``cc-pVDZ`` 。
 与之对应的高级输入为：
@@ -91,7 +97,7 @@ R-TDDFT用于计算闭壳层体系。如果基态计算从RHF出发，TDDFT模�
    2
   $END
 
-此时每个不可约表示计算2个激发态，且每个不可约表示下计算得到的第一个激发态是该不可约表示下能量最低的激发态的概率较iroot=1时更高。此外，此时每个不可约表示下计算得到的第二个激发态大概率是该不可约表示下能量第二低的激发态，但满足这一点的概率较“计算得到的第一个激发态是该不可约表示下能量最低的激发态”的概率更低。如果进一步增加iroot，则计算得到的第一个激发态是能量最低的激发态的概率很快趋近于100%，但永远无法严格达到100%。
+此时每个不可约表示计算2个激发态，且每个不可约表示下计算得到的第一个激发态是该不可约表示下能量最低的激发态的概率较 ``iroot 1`` 时更高。此外，此时每个不可约表示下计算得到的第二个激发态大概率是该不可约表示下能量第二低的激发态，但满足这一点的概率较“计算得到的第一个激发态是该不可约表示下能量最低的激发态”的概率更低。如果进一步增加iroot，则计算得到的第一个激发态是能量最低的激发态的概率很快趋近于100%，但永远无法严格达到100%。
 
 出于类似的原因，不仅当计算1个激发态时常常需要将iroot设为大于1，当计算N（N>1）个激发态时，若想相对可靠地确保这N个激发态是能量最低的N个激发态，也需要将iroot设为大于N。一般而言，当分子满足下述条件之一时，应当将iroot设得较大，例如比所需的激发态数目大至少3个：（1）分子具有近似的点群对称性；（2）分子虽然具有精确的点群对称性，但是受程序限制或者应用户需要，计算在更低的点群下进行，例如在开壳层TDDFT（见下文）计算中，因开壳层TDDFT代码不支持非阿贝尔点群，而改为在最大的阿贝尔子群下进行计算。当分子不属于上述情况之一时，iroot只需比所需的激发态数目略大即可，例如大1~2个。
 
@@ -100,11 +106,17 @@ R-TDDFT用于计算闭壳层体系。如果基态计算从RHF出发，TDDFT模�
 .. code-block:: bdf
 
   #! tdtest.sh
-  TDDFT/B3lyp/3-21G nroot=0,0,1,1
- 
+  TDDFT/B3lyp/3-21G
+
    Geometry
    ...
    End geometry
+
+   Module Setting
+     $tddft
+       nroot 0,0,1,1
+     $end
+   End Setting
 
 或者
 
@@ -122,11 +134,17 @@ R-TDDFT用于计算闭壳层体系。如果基态计算从RHF出发，TDDFT模�
 .. code-block:: bdf
 
   #! tdtest.sh
-  TDDFT/B3lyp/3-21G iroot=-4
- 
+  TDDFT/B3lyp/3-21G
+
    Geometry
    ...
    End geometry
+
+   Module Setting
+     $tddft
+       iroot -4
+     $end
+   End Setting
 
 或者
 
@@ -396,22 +414,30 @@ Davidson迭代开始计算输出信息如下，
 
 .. code-block:: bdf
 
-    #!bdf.sh
-    TDDFT/B3lyp/cc-pvdz iroot=4 group=C(1) charge=1    
-    
+    #! bdf.sh
+    TDDFT/B3lyp/cc-pvdz
+    charge 1
+    Group C(1)
+
     geometry
     O
     H  1  R1
     H  1  R1  2 109.
-    
-    R1=1.0     # OH bond length in angstrom 
+
+    R1 1.0     # OH bond length in angstrom
     end geometry
+
+    Module Setting
+      $tddft
+        iroot 4
+      $end
+    End Setting
 
 这里，关键词
 
-* ``iroot=4`` 指定对每个不可约表示计算4个根；
-* ``charge=1`` 指定体系的电荷为+1；
-* ``group=C(1)`` 指定强制使用C1点群计算。
+* ``iroot 4`` （在 ``$tddft`` 块内）指定对每个不可约表示计算4个根；
+* ``charge 1`` （全局参数）指定体系的电荷为+1；
+* ``Group C(1)`` （全局参数）指定强制使用C1点群计算。
 
 与之对应的高级输入为，
 
@@ -494,12 +520,22 @@ X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系。
 .. code-block:: bdf
 
    #! N2+.sh
-   X-TDDFT/b3lyp/aug-cc-pvtz group=D(2h) charge=1 spinmulti=2 iroot=5
+   tddft/b3lyp/aug-cc-pvtz
+   charge 1
+   spinmulti 2
+   Group D(2h)
+   SpinAdapt True
 
    Geometry
      N 0.00  0.00  0.00
-     N 0.00  0.00  1.1164 
+     N 0.00  0.00  1.1164
    End geometry
+
+   Module Setting
+     $tddft
+       iroot 5
+     $end
+   End Setting
 
 高级输入：
 
@@ -594,15 +630,22 @@ X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系。
 .. code-block:: bdf
 
   #! bdf.sh
-  tdft/b3lyp/cc-pvdz iroot=4 spinflip=1
-  
+  tdft/b3lyp/cc-pvdz
+  spinflip 1
+
   geometry
   O
   H  1  R1
   H  1  R1  2 109.
-  
-  R1=1.0     # OH bond length in angstrom
+
+  R1 1.0     # OH bond length in angstrom
   end geometry
+
+  Module Setting
+    $tddft
+      iroot 4
+    $end
+  End Setting
 
 注意这里虽然关键词名为spinflip，但该计算并不是一个自旋翻转TDDFT计算，因为其计算的是三重态激发态的 :math:`M_S = 0` 组分而非 :math:`M_S = 1` 组分。对应的高级输入为：
 
@@ -676,13 +719,20 @@ TDDFT **默认只计算与参考态自旋相同的激发态**， 例如，:math:
 .. code-block::
 
    #! H2OTDDFT.sh
-   TDDFT/b3lyp/cc-pVDZ iroot=4 spinflip=0,1
+   TDDFT/b3lyp/cc-pVDZ
+   spinflip 0,1
 
    geometry
    O
    H   1  0.9
    H   1  0.9   2 109.0
-   end geometry    
+   end geometry
+
+   Module Setting
+     $tddft
+       iroot 4
+     $end
+   End Setting
 
 系统会运行两次TDDFT，分别计算单重态和三重态，其中单重态的输出为：
 
@@ -744,13 +794,22 @@ BDF不仅能从单重态出发计算三重态，还可以从自旋多重度更�
 .. code-block::
 
    #! H2OTDDFT.sh
-   TDA/b3lyp/cc-pVDZ spinmulti=3 iroot=-4 spinflip=-1
+   tddft/b3lyp/cc-pVDZ
+   spinmulti 3
+   spinflip -1
 
    geometry
    O
    H   1  0.9
    H   1  0.9   2 109.0
-   end geometry 
+   end geometry
+
+   Module Setting
+     $tddft
+       itda 1
+       iroot -4
+     $end
+   End Setting
 
 输出为：
 

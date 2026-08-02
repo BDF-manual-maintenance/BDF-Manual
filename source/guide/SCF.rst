@@ -16,7 +16,7 @@ BDF的自洽场包括Hartree-Fock和Kohn-Sham方法。
 
 .. code-block:: bdf
 
-    #!bdf.sh
+    #! bdf.sh
     UHF/3-21G 
 
     geometry
@@ -137,16 +137,17 @@ UHF计算输出和RHF类似，从 ``scf`` 模块输出可以检查电荷和自�
 
 .. code-block:: bdf
 
-    #!bdf.sh
-    rohf/cc-pvdz spinmulti=3
-    
+    #! bdf.sh
+    rohf/cc-pvdz
+    spinmulti 3
+
     geometry   # 输入坐标单位 Angstrom
      C     0.000000        0.00000        0.31399
      H     0.000000       -1.65723       -0.94197
      H     0.000000        1.65723       -0.94197
     end geometry
 
-这里，在第二行指定使用 ``ROHF`` 方法，且利用关键词 ``spinmulti=3`` 设定计算三重态。ROHF的输出和UHF类似，
+这里，在第二行指定使用 ``ROHF`` 方法，且利用全局参数 ``spinmulti 3`` 设定计算三重态。ROHF的输出和UHF类似，
 但其 ``Alpha`` 轨道和 ``Beta`` 是一样的，所以相对应的 ``Alpha`` 和 ``Beta`` 轨道能量相等，如下所示：
 
 .. code-block:: 
@@ -206,7 +207,7 @@ RKS，UKS，和ROKS计算
 
 .. code-block:: bdf
 
-  #!bdf.sh
+  #! bdf.sh
   B3lyp/3-21G    
 
   geometry
@@ -214,7 +215,7 @@ RKS，UKS，和ROKS计算
   H  1  R1 
   H  1  R1  2 109.
 
-  R1=1.0     # OH bond length, unit is Angstrom
+  R1 1.0     # OH bond length, unit is Angstrom
   end geometry
 
 这个输入对应的高级模式的输入为
@@ -259,15 +260,16 @@ RKS，UKS，和ROKS计算
 
 .. code-block:: bdf
 
-    #!bdf.sh
-    ROKS/B3lyp/cc-pvdz charge=1    
-    
+    #! bdf.sh
+    ROKS/B3lyp/cc-pvdz
+    charge 1
+
     geometry
     O
     H  1  R1
     H  1  R1  2 109.
-    
-    R1=1.0     # OH bond length in angstrom 
+
+    R1 1.0     # OH bond length in angstrom
     end geometry
 
 .. hint::
@@ -342,20 +344,22 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
 
 .. code-block:: bdf
 
-    #!bdf.sh
-    B3lyp/cc-pvdz     
-    
+    #! bdf.sh
+    B3lyp/cc-pvdz
+
     geometry
     O
     H  1  R1
     H  1  R1  2 109.
-    
-    R1=1.0     # OH bond length in angstrom 
+
+    R1 1.0     # OH bond length in angstrom
     end geometry
-    
-    $scf
-    D3   # Grimme's dispersion correction
-    $end
+
+    Module Setting
+      $scf
+        D3   # Grimme's dispersion correction
+      $end
+    End Setting
 
 .. tip::
 
@@ -401,21 +405,23 @@ D3色散矫正方法，需要在SCF模块的输入中指定D3关键词，输入�
 
 .. code-block:: bdf
 
-    #!bdf.sh
-    M062X/cc-pvdz     
-    
+    #! bdf.sh
+    M062X/cc-pvdz
+
     geometry
     O
     H  1  R1
     H  1  R1  2 109.
-    
-    R1=1.0     # OH bond length in angstrom 
+
+    R1 1.0     # OH bond length in angstrom
     end geometry
-    
-    $scf
-    grid # set numerical integration grid as ultra fine
-     ultra fine
-    $end
+
+    Module Setting
+      $scf
+        grid # set numerical integration grid as ultra fine
+         ultra fine
+      $end
+    End Setting
 
 BDF在Kohn-Sham计算的开始几步采用 ``Ultra coarse`` 积分格点，如下所示，
 

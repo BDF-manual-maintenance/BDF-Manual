@@ -15,9 +15,10 @@ BDF默认用Atom猜测。在简洁输入模式下可以使用关键词 ``guess``
 .. code-block:: bdf
 
     #! ch3cho.sh
-    HF/6-31G guess=Hcore unit=Bohr
-    
-    geometry    # notice: unit in Bohr 
+    HF/6-31G
+    Unit bohr
+
+    geometry    # notice: unit in Bohr
     C       0.1727682300       -0.0000045651       -0.8301598059
     C      -2.3763311896        0.0000001634        0.5600567139
     H       0.0151760290        0.0000088544       -2.9110013387
@@ -27,7 +28,13 @@ BDF默认用Atom猜测。在简洁输入模式下可以使用关键词 ``guess``
     O       2.2198078005        0.0000024315        0.2188182082
     end geometry
 
-这里，我们在第二行是用了关键词 ``guess=Hcore`` 指定使用 ``Hcore`` 猜测。SCF迭代了18次收敛。
+    Module Setting
+      $scf
+        guess Hcore
+      $end
+    End Setting
+
+这里，我们在 ``$scf`` 块内用关键词 ``guess Hcore`` 指定使用 ``Hcore`` 猜测，并用全局参数 ``Unit bohr`` 指定坐标单位。SCF迭代了18次收敛。
 
 .. code-block:: 
 
@@ -97,15 +104,15 @@ BDF的SCF计算默认采用原子密度矩阵构建分子密度矩阵的方式�
 
 .. code-block:: bdf
 
-    #!bdf.sh
-    RKS/B3lyp/cc-pvdz     
-    
+    #! bdf.sh
+    RKS/B3lyp/cc-pvdz
+
     geometry
     O
     H  1  R1
     H  1  R1  2 109.
-    
-    R1=1.0     # OH bond length in angstrom 
+
+    R1 1.0     # OH bond length in angstrom
     end geometry
 
 执行计算后，工作目录生成可读文件 ``h2o.scforb`` ，保存了SCF计算收敛的轨道.
@@ -115,21 +122,28 @@ BDF的SCF计算默认采用原子密度矩阵构建分子密度矩阵的方式�
 
 .. code-block:: bdf
 
-    #!bdf.sh
-    ROKS/B3lyp/cc-pvdz guess=readmo charge=1
-    
+    #! bdf.sh
+    ROKS/B3lyp/cc-pvdz
+    charge 1
+
     geometry
     O
     H  1  R1
     H  1  R1  2 109.
-    
-    R1=1.0     # OH bond length in angstrom
+
+    R1 1.0     # OH bond length in angstrom
     end geometry
-    
+
     %cp $BDF_WORKDIR/h2o.scforb $BDF_TMPDIR/${BDFTASK}.inporb
 
+    Module Setting
+      $scf
+        guess readmo
+      $end
+    End Setting
 
-这里，使用了关键词 ``guess=readmo`` ，指定要读入初始猜测轨道。初始猜测轨道是用 ``%`` 引导的拷贝命令从
+
+这里，使用了 ``$scf`` 块内的关键词 ``guess readmo`` ，指定要读入初始猜测轨道。初始猜测轨道是用 ``%`` 引导的拷贝命令从
 环境变量 ``BDF_WORKDIR`` 定义的文件夹中的h2o.scforb文件复制为 ``BDF_TMPDIR`` 中的 ``${BDFTASK}.inporb`` 文件。
 这里， ``BDF_WORKDIR`` 是执行计算任务的目录， ``BDF_TMPDIR`` 是BDF存储临时文件的目录。
 
@@ -819,7 +833,8 @@ BDF的一个重要特色是利用 **MPEC+COSX** 方法加速SCF、TDDFT的能量
 .. code-block:: bdf
 
     #! amylose2.sh
-    HF/cc-pvdz  MPEC+COSX
+    HF/cc-pvdz
+    MPEC+COSX
 
     Geometry
     H      -5.27726610038004     0.15767995434597     1.36892178079618
