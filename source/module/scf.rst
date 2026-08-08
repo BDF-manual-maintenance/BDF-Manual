@@ -1,3 +1,5 @@
+.. _scf_module:
+
 Hartree-Fock及Kohn-Sham自洽场计算 - SCF模块
 ================================================
 SCF模块是BDF的核心计算模块之一，进行Hartree-Fock和DFT计算。
@@ -8,9 +10,9 @@ SCF模块是BDF的核心计算模块之一，进行Hartree-Fock和DFT计算。
 ------------------------------------------------------------------------
 如果做Hartree-Fock计算，这三个参数必须3选1，用于控制Hartree-Fock计算的类型。
 
- * ``RHF`` Restricted Hartree-Fock
- * ``UHF`` Unrestricted Hartree-Fock
- * ``ROHF`` Restricted Open-shell Hartree-Fock
+ * ``RHF`` 限制性 Hartree-Fock
+ * ``UHF`` 非限制性 Hartree-Fock
+ * ``ROHF`` 限制性开壳层 Hartree-Fock
 
 :guilabel:`RKS` / :guilabel:`UKS` / :guilabel:`ROKS` 参数类型：Βοοl型
 ------------------------------------------------------------------------
@@ -67,7 +69,7 @@ Alpha和Beta两个关键词必须联用，用于UHF/UKS计算，分别指定alph
      3. 使用的点群必须相同；
      4. 使用的基组必须相同。
      
-     除此之外的大多数方面不要求相同，例如原子坐标、电荷、自旋多重度、泛函等等均可以不同。其中如果（1）、（2）、（3）均满足，只有（4）不满足，可以用 ``expandmo`` 模块将轨道文件所用的基组投影到当前计算所用基组上，再读取轨道作为初猜（参见 :doc:`expandmo` ）。
+     除此之外的大多数方面不要求相同，例如原子坐标、电荷、自旋多重度、泛函等等均可以不同。其中如果（1）、（2）、（3）均满足，只有（4）不满足，可以用 ``expandmo`` 模块将轨道文件所用的基组投影到当前计算所用基组上，再读取轨道作为初猜（参见  :ref:`expandmo<expandmo>` ）。
 
 例如，假如某输入文件mol-B3LYP-Energy.inp在B3LYP/def2-TZVP水平下计算了某分子在某个结构下的单点能，现改用M06-2X/def2-TZVP计算同一个分子在另一个结构下的单点能（输入文件名为mol-M062X-Energy.inp），则为节约计算时间，可以利用此前B3LYP/def2-TZVP水平下的收敛的SCF波函数：
 
@@ -168,7 +170,7 @@ Alpha和Beta两个关键词必须联用，用于UHF/UKS计算，分别指定alph
 
 :guilabel:`FACCO` 参数类型：浮点型
 ---------------------------------------------------
-指定泛函的MP2相关项比例。注意目前只有B2PLYP泛函允许用户自定义FACCO。例如以下输入通过改变B2PLYP的FACEX和FACCO，同时自定义MP2模块里的spin component scaling参数FSS和FOS（参见 :doc:`mp2` ），自定义了DSD-BLYP泛函：
+指定泛函的MP2相关项比例。注意目前只有B2PLYP泛函允许用户自定义FACCO。例如以下输入通过改变B2PLYP的FACEX和FACCO，同时自定义MP2模块里的spin component scaling参数FSS和FOS（参见 :doc:`module/mp2` ），自定义了DSD-BLYP泛函：
 
 .. code-block:: bdf
 
