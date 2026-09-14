@@ -447,10 +447,8 @@ Davidson迭代开始计算输出信息如下，
   #Notice: The unit of molecular coordinate is angstrom
   geometry
     O
-    H  1  R1
-    H  1  R1  2 109.
-    
-    R1=1.0     # OH bond length in angstrom 
+    H  1  1.0
+    H  1  1.0  2 109.
   end geometry
   basis
     cc-pVDZ 
@@ -655,10 +653,8 @@ X-TDDFT是一种自旋匹配TDDFT方法，用于计算开壳层体系。
   #Notice: Coordinate unit is angstrom
   geometry
   O
-  H  1  R1
-  H  1  R1  2 109.
-  
-  R1=1.0     # OH bond length in angstrom
+  H  1  1.0
+  H  1  1.0  2 109.
   end geometry
   basis
    cc-pvdz
@@ -870,8 +866,6 @@ BDF的iVI方法 :cite:`doi:10.1002/jcc.24907,doi:10.1002/jcc.25569` 为以上问
   $end
 
   $XUANYUAN
-  rs
-   0.3 # rs for wB97X
   $END
 
   $SCF
@@ -1899,7 +1893,7 @@ SOC计算结果为，
   * ``imatsoc`` 设置为 ``-1`` 可指定打印所有的耦合矩阵元;
   * 默认不计算打印跃迁偶极矩，设置 ``imatrso`` 为 ``-1`` 可以打印所有旋量态之间的跃迁偶极矩，设置 ``imatrso`` 为 ``-2`` 可以打印所有基态旋量态和所有激发态旋量态之间的跃迁偶极矩。
   * SOC计算的参考态必须要么是RHF/RKS，要么是ROHF/ROKS，不支持UHF/UKS。
-  * 当SOC计算的参考态为ROHF/ROKS时，isf=0的TDDFT计算必须使用X-TDA（即itest=1, icorrect=1, isf=0, itda=1；不支持full X-TDDFT），isf=1的TDDFT计算必须使用SF-TDA（即isf=1, itda=1；不支持full SF-TDDFT）。
+  * 当SOC计算的参考态为ROHF/ROKS时，isf=0的TDDFT计算必须使用X-TDA（即itest=1, icorrect=1, isf=0, itda=1；不支持full X-TDDFT），isf=1的TDDFT计算必须使用SF-TDA（即isf=1, itda=1；不支持full SF-TDDFT）。此外，此时isf=0的计算的 ``tddft`` 模块中必须打开 ``itrans=1`` ，以将跃迁矢量由自旋轨道基转至自旋张量基，否则结果错误。
 
 
 采用ECP基组的TDDFT-SOC自旋轨道耦合计算
