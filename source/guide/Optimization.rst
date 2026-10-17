@@ -1058,6 +1058,7 @@ IRC任务的高级输入为：
     
     * 使用IRC模块需要用户安装好numpy；
     * 用户可以把得到的坐标文件输入到Device Studio中，查看轨迹的变化情况，DS平台待更新此功能。
+    * 分子坐标必须直接写进compass模块，而不能用 `file=xxx.xyz` 或 `file=xxx.optgeom` 的语法从其他文件读取。
 
 
 用CI-NEB方法计算最低能量路径和优化过渡态
