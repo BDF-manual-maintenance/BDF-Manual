@@ -343,6 +343,10 @@ iVI的展开空间的最大维度。一般情况下程序会自动选定合理�
 
 计算将NTO输出为Molden格式的文件。文件名为 ``bdftask.tdno_irepm_staten.molden``，其中m，n的含义为第m个不可约表示的第n个根。
 
+.. note::
+
+     关键词 `Ntoanalyze` 必须写在一个单独的TDDFT块中，而不能和计算所用的TDDFT关键词写在同一个TDDFT块中。
+
 :guilabel:`TRDDens` 参数类型：Bool 
 输入激发态越迁密度到Cube文件。默认文件名为 ``bdftask.trd_irepm_staten.cube``。其中m，n的含义为第m个不可约表示的第n个根。
 
