@@ -1477,6 +1477,42 @@ BDF的iVI方法 :cite:`doi:10.1002/jcc.24907,doi:10.1002/jcc.25569` 为以上问
     2. 因BDF和其他程序确定分子标准取向以及分子坐标原点的方法不同，BDF计算出的长度表象下的转子强度可能与其他程序存在少许差别，这是正常现象，是由上述长度表象下的转子强度的理论缺陷所导致的，不代表计算结果错误。但速度表象下的转子强度理应和其他程序吻合较好。
     3. 对于柔性分子，单一构象的ECD计算结果不可靠，建议结合CREST、Molclus等软件进行构象搜索，对所有主要构象分别计算ECD谱后，进行Boltzmann加权平均。
 
+自然跃迁轨道（NTO）分析
+----------------------------------------------
+
+默认情况下，BDF仅打印基于正则轨道的激发态成分，如HOMO->LUMO、HOMO-1->LUMO+1等对某激发态的贡献大小等。对于某些体系，激发态涉及的跃迁众多，且各个跃迁的贡献大小相似，导致基于正则轨道难以简洁地描述某个激发态的成分。为了更加简洁高效地描述、分析激发态成分，可以对激发态进行NTO分析，方法为在 `$tddft` 模块后新增一个 `$tddft` 块：
+
+.. code-block:: bdf
+
+    ...
+    $tddft
+    ... # The TDDFT block responsible for the actual TDDFT calculation
+    istore
+    1
+    $end
+
+    $tddft # the extra TDDFT block
+    NTOanalyze
+    3 # number of excited states to be analyzed. If <=0, all states will be analyzed, and the next line needs not be given
+    1 2 3 # the indices of the excited states to be analyzed, counting from 1
+    $end
+
+计算会输出若干个包含NTO的molden文件，文件名为 `*.tdno_irepm_staten.molden` ，其中m为不可约表示编号，n为激发态编号。可利用任何支持打开molden文件的可视化软件对NTO进行可视化。由输出文件可以读取NTO的占据数：
+
+.. code-block:: bdf
+
+     Print NTO Lambda for checking ...
+     Lambda of Occupied orbitals
+        0.7937    0.1992
+     Lambda of virtual orbitals
+        0.7937    0.1992
+
+即第一对NTO的占据数为0.7937，第二对NTO的占据数为0.1992。
+
+.. note::
+
+    BDF仅把那些占据数不可忽略的NTO输出到molden文件，这一行为与其他某些软件（如ORCA）可能不同。因此，虽然可以用BDF输出的NTO重新构建非弛豫密度差矩阵，进而进行其他后续分析，但结果是近似的。
+
 激发态结构优化
 -------------------------------------------------------
 .. _TDDFTopt:
